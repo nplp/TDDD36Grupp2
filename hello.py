@@ -11,7 +11,7 @@ class HelloWorld:
     # This is a callback function. The data arguments are ignored
     # in this example. More on callbacks below.
     def hello(self, widget, data=None):
-        print "Hello World"
+        print "Hello World TESTING"
 
     def delete_event(self, widget, event, data=None):
         # If you return FALSE in the "delete_event" signal handler,
