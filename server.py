@@ -22,7 +22,8 @@ def handler(index,zero):
 	
 def disconnect(index):
 	socketArray[index].active = 0
-	send("Server message: " + str(socketArray[index].ADDR) + " disconnected.")
+	send("Server message: " + " str(socketArray[index].ADDR)" + " disconnected.")
+	#Sedan ska det stå ett id istället för socket array bla bla, typ id[i] eller nått.
 	socketArray[index].socket.close()
 
 def send(message):	
@@ -31,7 +32,7 @@ def send(message):
 		if socketArray[i].active:
 			socketArray[i].socket.send(message)
 HOST = '130.236.189.14'
-PORT = 2010
+PORT = 2011
 BUFF = 1024
 ADDR = (HOST, PORT)
 
