@@ -9,8 +9,8 @@ def receiver(clientSocket, ADDR):
 		print data
 
 message = ""
-HOST = '130.236.189.14'
-PORT = 2010
+HOST = '130.236.219.209'
+PORT = 2026
 BUFF = 1024
 ADDR = (HOST, PORT)
 
@@ -22,10 +22,9 @@ thread.start_new_thread(receiver, (clientSocket, ADDR))
 while 1:
 	data = raw_input()
 	message = data
-	if (data == '/quit'):
+	if (data == '/quit' or data == '/exit'):
 		clientSocket.send('/quit')
 		break
 	clientSocket.send(data)
-	print "skickat:"+message
 
 clientSocket.close()
