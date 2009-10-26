@@ -26,6 +26,5 @@ while 1:
 		clientSocket.send('/quit')
 		break
 	clientSocket.send(data)
-	print "skickat:"+message
 
 clientSocket.close()
