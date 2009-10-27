@@ -26,7 +26,19 @@ def handler(index,zero):
 		while 1:
 			data = socketArray[index].socket.recv(BUFF)
 			if(data == '/quit'): break
-			sendAll(str(userArray[index].name) + ": " + data)
+			elif(data == '/status'): sendTo("You are number " + str(index), index)
+			elif(data == '/list'):
+				String = ""
+				for i in range(len(userArray)):
+					String += str(i) + ": " + str(userArray[i].name)
+					if socketArray[i].active:
+						String += " (Active)"
+					else:
+						String += " (Inactive)"
+					String += "\n"
+				sendTo(String, index)
+			else:
+				sendAll(str(userArray[index].name) + ": " + data)
 	except Exception, e:
 		print "client disconnected"
 	disconnect(index)
@@ -42,12 +54,22 @@ def sendAll(message):
 	for i in range(len(socketArray)):
 		if socketArray[i].active:
 			socketArray[i].socket.send(message)
-HOST = '130.236.219.209'
-PORT = 2026
+
+def sendTo(message,index):
+	print "To " + userArray[index].name + ": " + message
+	if socketArray[index].active:	
+		socketArray[index].socket.send(message)
+
+def search(client):
+	for i in range(len(userArray)):
+		if(userArray[i].name == client):
+			return i
+	return -1
+
+HOST = '127.0.0.1'
+PORT = 2031
 BUFF = 1024
 ADDR = (HOST, PORT)
-
-CLIENTNAME = "Player1"
 
 print "Binding serverSocket to: ", ADDR
 
@@ -60,16 +82,36 @@ userArray = list()
 
 print "Server meddelande: Servern aer redo."
 
+def authentication(index):
+	CLIENTNAME = "Player1"
+	while 1:
+		socketArray[index].socket.send("Type a name: ")
+		CLIENTNAME = socketArray[index].socket.recv(BUFF)
+		if(search(CLIENTNAME) == -1): break
+	return CLIENTNAME
+
 while 1:
-	socketArray.append(socketClass())
-	socketArray[len(socketArray) - 1].socket, socketArray[len(socketArray) - 1].ADDR = copy(serverSocket.accept())
-	
-	socketArray[len(socketArray) - 1].socket.send("Type a name: ")
-	CLIENTNAME = socketArray[len(socketArray) - 1].socket.recv(BUFF)
+	inactive = -1
+	for i in range(len(socketArray)):
+		if(socketArray[i].active == 0): 
+			inactive = i;
+			break;
 
-	userArray.append(userClass(CLIENTNAME))
-	socketArray[len(socketArray) - 1].active = 1;
+	if(inactive == -1):
+		socketArray.append(socketClass())
+		socketArray[len(socketArray) - 1].socket, socketArray[len(socketArray) - 1].ADDR = copy(serverSocket.accept())
 
-	thread.start_new_thread(handler, ((len(socketArray) - 1),0))
+		userArray.append(userClass(authentication(len(socketArray) - 1)))
+		socketArray[len(socketArray) - 1].active = 1;
+
+		thread.start_new_thread(handler, ((len(socketArray) - 1),0))
+
+	else:
+		socketArray[inactive].socket, socketArray[inactive].ADDR = copy(serverSocket.accept())
+
+		userArray[inactive].name = authentication(inactive)
+		socketArray[inactive].active = 1;
+
+		thread.start_new_thread(handler, ((inactive),0))
 
 serverSocket.close()
