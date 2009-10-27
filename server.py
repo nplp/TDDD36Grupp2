@@ -1,4 +1,6 @@
 #server
+# -*- coding: ISO-8859-1 -*-
+# Ovanstående rad är ISO-kodning för att åäö ska funka.
 
 from socket import *
 from copy import copy
@@ -7,7 +9,7 @@ import thread
 class socketClass:
 	active = 0
 
-
+#Användarklassen
 class userClass:
 	name = "Player1"
 	password = "123"
@@ -19,6 +21,7 @@ class userClass:
 			return true
 		return false
 
+#Behandlar övergripande kommunikationen med och mellan klienterna. Sköter även kommandon.
 def handler(index,zero):
 	try:
 		sendAll("Server message: " + str(userArray[index].name) + " connected.")
@@ -44,22 +47,26 @@ def handler(index,zero):
 	disconnect(index)
 
 	
+#Anropas när klient loggar ut eller tappar kontakten.
 def disconnect(index):
 	socketArray[index].active = 0
 	sendAll("Server message: " + str(userArray[index].name) + " disconnected.")
 	socketArray[index].socket.close()
 
+#Broadcast
 def sendAll(message):	
 	print message
 	for i in range(len(socketArray)):
 		if socketArray[i].active:
 			socketArray[i].socket.send(message)
 
+#Skickar till enskild användare
 def sendTo(message,index):
 	print "To " + userArray[index].name + ": " + message
 	if socketArray[index].active:	
 		socketArray[index].socket.send(message)
 
+#Söker efter användarnamn och returnerar index
 def search(client):
 	for i in range(len(userArray)):
 		if(userArray[i].name == client):
@@ -80,8 +87,9 @@ serverSocket.listen(5)
 socketArray = list()
 userArray = list()
 
-print "Server meddelande: Servern aer redo."
+print "Server meddelande: Servern är redo."
 
+#Sköter inloggningen.
 def authentication(index):
 	CLIENTNAME = "Player1"
 	while 1:
@@ -90,6 +98,7 @@ def authentication(index):
 		if(search(CLIENTNAME) == -1): break
 	return CLIENTNAME
 
+#Lyssnar efter klienter som vill ansluta.
 while 1:
 	inactive = -1
 	for i in range(len(socketArray)):
@@ -97,6 +106,7 @@ while 1:
 			inactive = i;
 			break;
 
+	#Om det inte finns några platser som är inaktiva
 	if(inactive == -1):
 		socketArray.append(socketClass())
 		socketArray[len(socketArray) - 1].socket, socketArray[len(socketArray) - 1].ADDR = copy(serverSocket.accept())
@@ -106,6 +116,7 @@ while 1:
 
 		thread.start_new_thread(handler, ((len(socketArray) - 1),0))
 
+	#inactive är den inloggade inaktiva användaren med lägst index
 	else:
 		socketArray[inactive].socket, socketArray[inactive].ADDR = copy(serverSocket.accept())
 
