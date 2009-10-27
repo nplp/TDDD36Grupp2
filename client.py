@@ -4,17 +4,18 @@
 
 from socket import *
 import thread
+from message import *
+#import message
 
 # Tar emot meddelanden
 def receiver(clientSocket, ADDR):
 	i = 1
 	while 1:
-		data = clientSocket.recv(BUFF)
+		data = unicode(clientSocket.recv(BUFF), 'utf-8')
 		print data
 
-message = ""
 HOST = '127.0.0.1'
-PORT = 2031
+PORT = 2005
 BUFF = 1024
 ADDR = (HOST, PORT)
 
@@ -26,7 +27,9 @@ thread.start_new_thread(receiver, (clientSocket, ADDR))
 # Skickar meddelanden samt har hand om kommandon
 while 1:
 	data = raw_input()
-	message = data
+	msg = Message(data)
+	data = finishCMD(msg)
+		
 	if (data == '/quit' or data == '/exit'):
 		clientSocket.send('/quit')
 		break

@@ -40,6 +40,11 @@ def handler(index,zero):
 						String += " (Inactive)"
 					String += "\n"
 				sendTo(String, index)
+			elif(data.startswith('/whisper')):
+				msg = data.split(' ', 2)
+				i = search(msg[1])
+				if(i>-1):
+					sendTo(msg[2], i)
 			else:
 				sendAll(str(userArray[index].name) + ": " + data)
 	except Exception, e:
@@ -74,7 +79,7 @@ def search(client):
 	return -1
 
 HOST = '127.0.0.1'
-PORT = 2031
+PORT = 2005
 BUFF = 1024
 ADDR = (HOST, PORT)
 
