@@ -14,7 +14,7 @@ print 'charge level percentage',\
 x = float(dev_obj.GetProperty('battery.reporting.current'))
 y = float(dev_obj.GetProperty('battery.reporting.design'))
 
-print 'battery level: ', (x/y)*100,'%'
+print 'battery level: ', int((x/y)*100)+'%'
 #print 'charge unit', dev_obj.GetProperty('battery.reporting.unit')
 
 #print 'voltage current', dev_obj.GetProperty('battery.voltage.current')
