@@ -7,13 +7,10 @@ hal = dbus.Interface (hal_obj, 'org.freedesktop.Hal.Manager')
 uids = hal.FindDeviceByCapability('battery')
 dev_obj = bus.get_object ('org.freedesktop.Hal', uids[0])
 
-print 'charge level percentage',\
-      dev_obj.GetProperty('battery.charge_level.percentage')
-print 'charge current', dev_obj.GetProperty('battery.reporting.current')
-print 'charge design', dev_obj.GetProperty('battery.reporting.design')
-print 'charge last full',\
-      dev_obj.GetProperty('battery.reporting.last_full')
-print 'charge unit', dev_obj.GetProperty('battery.reporting.unit')
-print 'voltage current', dev_obj.GetProperty('battery.voltage.current')
-print 'voltage design', dev_obj.GetProperty('battery.voltage.design')
-print 'voltage unit', dev_obj.GetProperty('battery.voltage.unit')
+x = float(dev_obj.GetProperty('battery.reporting.current'))
+y = float(dev_obj.GetProperty('battery.reporting.design'))
+
+print 'battery level: ', int((x/y)*100),'%'
+x2 = float(dev_obj.GetProperty('battery.voltage.current'))
+y2 = float(dev_obj.GetProperty('battery.voltage.design'))
+print 'usage level', int((x2/y2)*100),'%'
