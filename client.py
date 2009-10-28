@@ -14,7 +14,7 @@ def receiver(clientSocket, ADDR):
 		print data
 
 
-HOST = '127.0.0.1'
+HOST = '130.236.217.40'
 PORT = 2021
 BUFF = 1024
 ADDR = (HOST, PORT)
