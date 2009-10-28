@@ -14,7 +14,7 @@ hal = dbus.Interface (hal_obj, 'org.freedesktop.Hal.Manager')
  #       print i
 
 # find all devices that have the capability 'laptop_panel'
-udis = hal.FindDeviceByCapability ('computer')
+uids = hal.FindDeviceByCapability ('computer')
 
 dev_obj = bus.get_object ('org.freedesktop.Hal', uids[0])
 print dev_obj.GetCPUFreqGovernor()
