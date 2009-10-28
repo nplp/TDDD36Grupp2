@@ -11,7 +11,6 @@ hal = dbus.Interface (hal_obj, 'org.freedesktop.Hal.Manager')
 
 # find all devices that have the capability 'laptop_panel'
 udis = hal.FindDeviceByCapability ('laptop_panel')
-print 'hejsan'
 for udi in udis:
         print udi
 
