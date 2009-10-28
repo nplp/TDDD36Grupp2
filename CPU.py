@@ -15,7 +15,7 @@ udis = hal.FindDeviceByCapability ('laptop_panel')
 
 
 # get a device object
-dev_obj = bus.get_object ('org.freedesktop.Hal', '/org/freedesktop/Hal/Device/LaptopPanel')
+dev_obj = bus.get_object ('org.freedesktop.Hal', uids[0])
 
 # get an interface to the device
 dev = dbus.Interface (dev_obj, 'org.freedesktop.Hal.Device')
