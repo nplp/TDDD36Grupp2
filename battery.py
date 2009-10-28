@@ -9,8 +9,8 @@ dev_obj = bus.get_object ('org.freedesktop.Hal', uids[0])
 
 #print 'charge design', dev_obj.GetProperty('battery.reporting.design')
 #print 'charge current', dev_obj.GetProperty('battery.reporting.current')
-x = dev_obj.GetProperty('battery.reporting.current')
-y = dev_obj.GetProperty('battery.reporting.design')
+float(x) = dev_obj.GetProperty('battery.reporting.current')
+float(y) = dev_obj.GetProperty('battery.reporting.design')
 
 print 'battery level: ', x/y
 #print 'charge unit', dev_obj.GetProperty('battery.reporting.unit')
