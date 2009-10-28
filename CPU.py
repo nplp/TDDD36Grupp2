@@ -11,11 +11,11 @@ hal = dbus.Interface (hal_obj, 'org.freedesktop.Hal.Manager')
 
 # find all devices that have the capability 'laptop_panel'
 udis = hal.FindDeviceByCapability ('laptop_panel')
-for udi in udis:
-        print udi
+
+
 
         # get a device object
-        dev_obj = bus.get_object ('org.freedesktop.Hal', udi)
+        dev_obj = bus.get_object ('org.freedesktop.Hal', udis[0])
 
         # get an interface to the device
         dev = dbus.Interface (dev_obj, 'org.freedesktop.Hal.Device')
