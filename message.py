@@ -2,7 +2,7 @@
 # -*- coding: ISO-8859-1 -*-
 # Ovanstående rad är ISO-kodning för att åäö ska funka.
 
-cmdArray = ("/exit", "/list", "/quit", "/status", "/whisper")
+cmdArray = ("/exit", "/list", "/ping", "/quit", "/status", "/whisper")
 
 class Message:
 	text = ""
