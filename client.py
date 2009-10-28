@@ -5,17 +5,17 @@
 from socket import *
 import thread
 from message import *
-#import message
+from time import time
 
 # Tar emot meddelanden
 def receiver(clientSocket, ADDR):
-	i = 1
 	while 1:
 		data = unicode(clientSocket.recv(BUFF), 'utf-8')
 		print data
 
+
 HOST = '127.0.0.1'
-PORT = 2005
+PORT = 2021
 BUFF = 1024
 ADDR = (HOST, PORT)
 
@@ -30,9 +30,12 @@ while 1:
 	msg = Message(data)
 	data = finishCMD(msg)
 		
-	if (data == '/quit' or data == '/exit'):
+	if(data.startswith('/quit') or data.startswith('/exit')):
 		clientSocket.send('/quit')
 		break
+	if(data.startswith('/ping')):
+		data = '/ping' + " " + str(time())
+		
 	clientSocket.send(data)
 
 clientSocket.close()
