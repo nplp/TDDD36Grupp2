@@ -14,17 +14,17 @@ udis = hal.FindDeviceByCapability ('laptop_panel')
 
 
 
-        # get a device object
-        dev_obj = bus.get_object ('org.freedesktop.Hal', udis[0])
+# get a device object
+dev_obj = bus.get_object ('org.freedesktop.Hal', udis[0])
 
-        # get an interface to the device
-        dev = dbus.Interface (dev_obj, 'org.freedesktop.Hal.Device')
-        print dev.GetProperty ('info.product')
-        print "Brightness levels:", dev.GetProperty ('laptop_panel.num_levels')
+# get an interface to the device
+dev = dbus.Interface (dev_obj, 'org.freedesktop.Hal.Device')
+print dev.GetProperty ('info.product')
+print "Brightness levels:", dev.GetProperty ('laptop_panel.num_levels')
 
-        # get a difference interface to the device
-        dev = dbus.Interface (dev_obj, 'org.freedesktop.Hal.Device.LaptopPanel')
-        # make some function calls
-        print "Current brightness:", dev.GetBrightness ()
-        dev.SetBrightness (int (sys.argv[1]))
-        print "New brightness:", dev.GetBrightness ()
+# get a difference interface to the device
+dev = dbus.Interface (dev_obj, 'org.freedesktop.Hal.Device.LaptopPanel')
+# make some function calls
+print "Current brightness:", dev.GetBrightness ()
+dev.SetBrightness (int (sys.argv[1]))
+print "New brightness:", dev.GetBrightness ()
