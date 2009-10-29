@@ -1,3 +1,7 @@
+
+# -*- coding: ISO-8859-1 -*-
+# Ovanstï¿ï¾¥ende rad ï¿ï¾¤r ISO-kodning fï¿ï¾¶r att ï¿ï¾¥ï¿ï¾¤ï¿ï¾¶ ska funka.
+
 import os
 import re
 import sys
@@ -22,7 +26,3 @@ while 1:
         print "server down"
     else:
         print "go ahead bitches"
-
-
-
-
