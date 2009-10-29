@@ -10,7 +10,7 @@ import gobject
 count = 0
 
 def blink_cb(device, loop):
-    
+    print "hej"
     global count
 
     device.display_state_on()
