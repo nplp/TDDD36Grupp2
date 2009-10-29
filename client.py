@@ -21,7 +21,7 @@ HOST2 = '130.236.218.134'
 #HOST2 = '192.160.200.1'
 PORT = 2040
 BUFF = 1024
-ADDR = (HOST, PORT)
+#ADDR = (HOST, PORT)
 
 # \d matchar antales received paket
 lifeline = re.compile(r"(\d) received")
