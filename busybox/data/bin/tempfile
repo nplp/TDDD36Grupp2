@@ -1,0 +1,69 @@
+#!/bin/sh
+
+set -x
+
+mode=0600
+ver=0.0.1
+
+usage() {
+    cat <<EOF
+Usage: tempfile [OPTION]
+
+Create a temporary file in a safe manner.
+
+-d, --directory=DIR  place temporary file in DIR
+-p, --prefix=STRING  set temporary file's prefix to STRING
+-s, --suffix=STRING  set temporary file's suffix to STRING
+-m, --mode=MODE      open with MODE instead of 0600
+-n, --name=FILE      use FILE instead of tempnam(3)
+    --help           display this help and exit
+    --version        output version information and exit
+
+EOF
+
+}
+
+showversion() {
+    echo "$0 wrapper $ver"
+}
+    
+
+while [ "$1" != "" ]; do
+    case $1 in
+	--help)
+	    usage
+	    exit 0;;
+	--version)
+	    showversion
+	    exit 0;;
+	-p|-s|-n)
+	    shift 2;;
+	--prefix=*|--suffix=*|--name=*)
+	    shift;;
+	-d|--directory)
+	    dir="$2"
+	    shift 2;;
+	--directory=*)
+	    dir=${1##--directory=} 
+	    shift;;
+	-m|--mode)
+	    mode="$2"
+	    shift 2;;
+	--mode=*)
+	    mode=${1##--mode=} 
+	    shift;;
+	--*)
+	    echo "Unknown option $1"
+	    shift;;
+	*)
+	    echo "Unknown parameter $1"
+	    shift;;
+    esac
+done
+
+[ x$dir = x ] || dir="-p $dir"
+
+set -e
+file=`mktemp /tmp/tmp.XXXXXXX`
+chmod $mode $file
+echo $file
