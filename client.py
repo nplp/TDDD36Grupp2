@@ -12,11 +12,11 @@ from time import time
 
 #checkar servern
 def checkServer():
-    serverSocket = socket.socket()
-    serverSocket.settimeout(0.25)
+    serverSocket = socket()
+    serverSocket.settimeout(1)
     try:
         serverSocket.connect((HOST, PORT))
-    except socket.error:
+    except error:
         return 1
 
 
@@ -33,10 +33,9 @@ def receiver(clientSocket, ADDR):
 
 HOST = '192.160.200.1'
 HOST2 = '130.236.216.90'
-PORT = 2040
+PORT = 2044
 BUFF = 1024
 #ADDR = (HOST, PORT)
-clientSocket = socket(AF_INET, SOCK_STREAM)
 status = checkServer()
 if (status):
     print "poop"
@@ -45,7 +44,11 @@ else:
     print "score"
     ADDR = (HOST, PORT)
     
+print ADDR
+
+clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.connect(ADDR)
+
 
 thread.start_new_thread(receiver, (clientSocket, ADDR))
 
