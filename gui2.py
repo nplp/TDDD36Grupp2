@@ -3,8 +3,7 @@
 # -*- coding: utf-8 -*-
 import pygtk
 pygtk.require('2.0')
-import gtk
-import gtk, gtk.glade
+import gtk.glade
 import sys
 sys.path.append('./kartkomponent')
 import data_storage
