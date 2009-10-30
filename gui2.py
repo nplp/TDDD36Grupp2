@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # example table.py
 # -*- coding: utf-8 -*-
-import data_storage
-import map_xml_reader
-import gui_map
-import gui
 import pygtk
 pygtk.require('2.0')
 import gtk
 import gtk, gtk.glade
+import sys
+sys.path.append('./kartkomponent')
+import data_storage
+import map_xml_reader
+import gui_map
+import gui
 
 class MenuExample:
 	
@@ -37,7 +39,8 @@ class MenuExample:
 	    self.tillbaka.hide()
 	   
     def kartan(self, widget, event, data=None):
-	    # Kartan
+	# Kartan
+		
 	self.tbaka("clicked", "hej")
 	
 	mapxml = map_xml_reader.MapXML("kartdata/map.xml")
