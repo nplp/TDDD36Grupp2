@@ -30,7 +30,7 @@ class recieverClass(Thread):
 		try:
 			while 1:
 				data = unicode(self.clientSocket.recv(BUFF), 'utf-8')
-				if(data != ""):
+				if(data != "" and data != " "):
 					if(data.startswith('/ping')):
 						s = data.split(' ', 1)
 						print s[0] + " " + str(time() - float(s[1]))
@@ -45,7 +45,7 @@ class recieverClass(Thread):
 
 HOST = '192.160.200.1'
 HOST2 = '130.236.216.90'
-PORT = 2045
+PORT = 2047
 BUFF = 1024
 
 status = checkServer()
