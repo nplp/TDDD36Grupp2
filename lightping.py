@@ -1,4 +1,6 @@
-
+import os
+import re
+import sys
 
 ping = os.popen("chroot /mnt/initfs ping 130.236.218.195")
 
