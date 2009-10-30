@@ -22,6 +22,7 @@ class MenuExample:
 	self.text.show()
 	self.samtal.show()
 	self.uppdragsmall.hide()
+	self.karta.hide()
 	self.tillbaka.show()
 		
     def synas2(self, widget, event, data=None):
@@ -40,7 +41,9 @@ class MenuExample:
 	   
     def kartan(self, widget, event, data=None):
 	# Kartan
-		
+	#if self.startakarta.visible == True:
+	#	pass
+	
 	self.tbaka("clicked", "hej")
 	
 	mapxml = map_xml_reader.MapXML("kartdata/map.xml")
@@ -144,19 +147,19 @@ class MenuExample:
 	#Knappar i verktygsmeny
 	
 	#Uppdragsmall
-	self.uppdragsmall = gtk.Button("uppdragsmall")
-	self.uppdragsmall.connect("clicked", self.callback, "uppdragsmall")
+	self.uppdragsmall = gtk.Button("Uppdragsmall")
+	self.uppdragsmall.connect("clicked", self.callback, "Uppdragsmall")
 	self.vbox2.pack_start(self.uppdragsmall, True, True,0)
 	
 	self.hbox.pack_start(self.vbox2, False, False, 0)
 	#Karta
-	self.karta = gtk.Button("karta")
-	self.karta.connect("clicked", self.kartan, "karta")
+	self.karta = gtk.Button("Karta")
+	self.karta.connect("clicked", self.kartan, "Karta")
 	self.vbox2.pack_start(self.karta, True, True,0)
 	
 	# Tillbaka
-	#self.tillbaka = gtk.Button("Tillbaka")
-        #self.tilbaka.connect("clicked", self.tillbaka, "Tillbaka")
+	self.tillbaka = gtk.Button("Tillbaka")
+        self.tillbaka.connect("clicked", self.tbaka, "Tillbaka")
 	#button.show()
 	self.vbox2.pack_start(self.tillbaka, True, True, 0)
       
