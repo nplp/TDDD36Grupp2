@@ -12,7 +12,7 @@ Host2 = '192.160.200.1'
 lifeline = re.compile(r"(\d) received")
 
 #pingar given ip ger sammafattning av försök
-ping = os.popen("ping -q -c2 " +Host,"r")
+ping = os.popen("chroot /mnt/initfs ping -q -c2 " +Host,"r")
 
 sys.stdout.flush()
 
