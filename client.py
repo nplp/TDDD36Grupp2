@@ -1,6 +1,6 @@
 #client
 # coding:utf-8
-# Ovanstående rad är ISO-kodning för att åäö ska funka.
+# Ovanstï¿¥ende rad ï¿¤r ISO-kodning fï¿¶r att ï¿¥ï¿¤ï¿¶ ska funka.
 
 import re
 import sys
@@ -10,45 +10,41 @@ import os
 from message import *
 from time import time
 
+#checkar servern
+def checkServer():
+    serverSocket = socket.socket()
+    serverSocket.settimeout(0.25)
+    try:
+        serverSocket.connect((HOST, PORT))
+    except socket.error:
+        return 1
+
+
 # Tar emot meddelanden
 def receiver(clientSocket, ADDR):
     while 1:
         data = unicode(clientSocket.recv(BUFF), 'utf-8')
         if(data == ""): pass
-		elif(data.startswith('/ping')):
-			s = data.split(' ', 1)
-			print s[0] + " " + str(time() - float(s[1]))
-		else:
-			print data
+        elif(data.startswith('/ping')):
+            s = data.split(' ', 1)
+            print s[0] + " " + str(time() - float(s[1]))
+        else:
+            print data
 
 HOST = '192.160.200.1'
 HOST2 = '130.236.216.90'
-#HOST2 = '192.160.200.1'
 PORT = 2040
 BUFF = 1024
 #ADDR = (HOST, PORT)
-
-# \d matchar antales received paket
-lifeline = re.compile(r"(\d) received")
-
-#pingar given ip ger sammafattning av försök
-ping = os.popen("ping -q -c2 " +HOST,"r")
-sys.stdout.flush()
-
-#Kollar igenom hela "filen" man får av ping.readline()
-while 1:
-   line = ping.readline()
-   if not line: break
-   igot = re.findall(lifeline,line)
-   if igot:
-    if(int(igot[0])==0):
-        print "server down"
-        ADDR = (HOST2, PORT)
-    else:
-        print "go ahead bitches"
-        ADDR = (HOST, PORT)
-
 clientSocket = socket(AF_INET, SOCK_STREAM)
+status = checkServer()
+if (status):
+    print "poop"
+    ADDR = (HOST2, PORT)
+else:
+    print "score"
+    ADDR = (HOST, PORT)
+    
 clientSocket.connect(ADDR)
 
 thread.start_new_thread(receiver, (clientSocket, ADDR))
