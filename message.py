@@ -1,5 +1,5 @@
 # Message
-# -*- coding: ISO-8859-1 -*-
+# coding:utf-8
 # Ovanstående rad är ISO-kodning för att åäö ska funka.
 
 cmdArray = ("/exit", "/list", "/ping", "/quit", "/status", "/whisper")

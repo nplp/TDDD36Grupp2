@@ -1,6 +1,6 @@
 #client
-# -*- coding: ISO-8859-1 -*-
-# Ovanstￃﾥende rad ￃﾤr ISO-kodning fￃﾶr att ￃﾥￃﾤￃﾶ ska funka.
+# coding:utf-8
+# Ovanst�ende rad �r ISO-kodning f�r att ��� ska funka.
 
 import re
 import sys
@@ -14,10 +14,15 @@ from time import time
 def receiver(clientSocket, ADDR):
     while 1:
         data = unicode(clientSocket.recv(BUFF), 'utf-8')
-        print data
+        if(data == ""): pass
+		elif(data.startswith('/ping')):
+			s = data.split(' ', 1)
+			print s[0] + " " + str(time() - float(s[1]))
+		else:
+			print data
 
 HOST = '192.160.200.1'
-HOST2 = '130.236.218.134'
+HOST2 = '130.236.216.90'
 #HOST2 = '192.160.200.1'
 PORT = 2040
 BUFF = 1024
