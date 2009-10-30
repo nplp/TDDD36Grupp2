@@ -9,4 +9,4 @@ while 1:
    print line
    if not line: break
 
-os.sys("ping -q -c2 " +130.236.218.195,"r")
+os.sys("ping -q -c2 " +"130.236.218.195","r")
