@@ -16,7 +16,7 @@ def disconnect(index):
 
 # Broadcast
 def sendAll(message):	
-	print message
+	print "To all: " + message
 	for i in range(len(sessionArray)):
 		if sessionArray[i].active:
 			sessionArray[i].socket.send(message)
@@ -36,7 +36,7 @@ def search(client):
 	return -1
 
 HOST = '130.236.216.90'
-PORT = 2040
+PORT = 2045
 BUFF = 1024
 ADDR = (HOST, PORT)
 
@@ -59,17 +59,16 @@ for s in USERS:
 
 print USERNAMES
 
-# Sessionsklassn
+# Sessionsklassen
 class sessionClass(Thread):
 	groups = list()
 	active = 1
+	lastWhisper = "ADMIN"
 	
 	def __init__(self, _index, _socket):
 		self.index = _index
 		self.socket = _socket
 		Thread.__init__(self)
-
-		
 
 	#Sköter inloggningen.
 	def authentication(self):
@@ -78,14 +77,13 @@ class sessionClass(Thread):
 			while 1:
 				self.socket.send("Type a name: ")
 				CLIENTNAME = self.socket.recv(BUFF)
-				if(search(CLIENTNAME) == -1):
-					if(CLIENTNAME in USERNAMES):
-						self.socket.send("Type your password: " + CLIENTNAME)
-						if(self.socket.recv(BUFF) + "\n" == USERLOGIN[CLIENTNAME]):
-							self.name = CLIENTNAME
-							#kollar att det inte finns någon med namnet CLIENTNAME. Funkar ej.
-							if(search(CLIENTNAME) != -1):
-								return CLIENTNAME
+				if(search(CLIENTNAME) == -1 and CLIENTNAME in USERNAMES):
+					self.socket.send("Type your password: " + CLIENTNAME)
+					if(self.socket.recv(BUFF) + "\n" == USERLOGIN[CLIENTNAME]):
+						self.name = CLIENTNAME
+						#kollar att det inte finns någon med namnet CLIENTNAME. Funkar ej.
+						if(search(CLIENTNAME) != -1):
+							return CLIENTNAME
 		except Exception, e:
 			print "Client lost"	
 		return ""
@@ -115,7 +113,17 @@ class sessionClass(Thread):
 					if(len(msg)>2):
 						i = search(msg[1])
 						if(i>-1):
-							sendTo(self.name + "(w): " + msg[2], i)
+							sessionArray[i].lastWhisper = self.name
+							sendTo(self.name + " (w): " + msg[2], i)
+							sendTo("You whispered to " + msg[1], self.index)
+				elif(data.startswith('/reply')):
+					msg = data.split(' ', 2)
+					if(len(msg)>1):
+						i = search(self.lastWhisper)
+						if(i>-1):
+							sessionArray[i].lastWhisper = self.name
+							sendTo(self.name + " (w): " + msg[1], i)
+							sendTo("You whispered to " + self.lastWhisper, self.index)
 				elif(data.startswith('/ping')):
 					msg = data.split(' ', 1)
 					i =  time()-float(msg[1])
@@ -127,8 +135,8 @@ class sessionClass(Thread):
 
 	# körs när man anropar start()
 	def run(self):
-		name = self.authentication()
-		if(name != ""):
+		self.name = self.authentication()
+		if(self.name != ""):
 			self.handler(0)
 		disconnect(self.index)
 

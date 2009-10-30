@@ -5,7 +5,7 @@
 import re
 import sys
 from socket import *
-import thread
+from threading import *
 import os
 from message import *
 from time import time
@@ -19,23 +19,35 @@ def checkServer():
     except error:
         return 1
 
+class recieverClass(Thread):
+	def __init__(self, _clientSocket, _ADDR):
+		self.clientSocket = _clientSocket
+		self.ADDR = _ADDR
+		Thread.__init__(self)
+	
+	# Tar emot meddelanden
+	def reciever(self):
+		try:
+			while 1:
+				data = unicode(self.clientSocket.recv(BUFF), 'utf-8')
+				if(data != ""):
+					if(data.startswith('/ping')):
+						s = data.split(' ', 1)
+						print s[0] + " " + str(time() - float(s[1]))
+					else:
+						print data
+		except Exception, e:
+			print "Connection lost"
 
-# Tar emot meddelanden
-def receiver(clientSocket, ADDR):
-    while 1:
-        data = unicode(clientSocket.recv(BUFF), 'utf-8')
-        if(data == ""): pass
-        elif(data.startswith('/ping')):
-            s = data.split(' ', 1)
-            print s[0] + " " + str(time() - float(s[1]))
-        else:
-            print data
+	def run(self):
+		self.reciever()
+
 
 HOST = '192.160.200.1'
 HOST2 = '130.236.216.90'
-PORT = 2044
+PORT = 2045
 BUFF = 1024
-#ADDR = (HOST, PORT)
+
 status = checkServer()
 if (status):
     print "poop"
@@ -49,8 +61,8 @@ print ADDR
 clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.connect(ADDR)
 
-
-thread.start_new_thread(receiver, (clientSocket, ADDR))
+recThread = recieverClass(clientSocket, ADDR)
+recThread.start()
 
 # Skickar meddelanden samt har hand om kommandon
 while 1:
