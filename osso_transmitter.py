@@ -40,6 +40,5 @@ send_button2 = gtk.Button("Send RPC2")
 hbox.add(send_button2)
 send_button2.connect("clicked",
                     send_rpc2, osso_c)
-send_button.show()
-send_button2.show()
+window.show_all()
 gtk.main() 
