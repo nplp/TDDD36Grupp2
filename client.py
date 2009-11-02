@@ -17,6 +17,7 @@ def checkServer():
     serverSocket.settimeout(1)
     try:
         serverSocket.connect(ADDR)
+        serverSocket.close()
     except error:
         return 1
     
@@ -28,9 +29,9 @@ def connect():
     else:
         print "score"
         ADDR = (HOST, PORT)
-    clientSocket = socket(AF_INET, SOCK_STREAM)
+        
+    #clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect(ADDR)
-
     recThread = recieverClass(clientSocket, ADDR)
     recThread.start()
 
@@ -76,10 +77,10 @@ class recieverClass(Thread):
 
 HOST = '130.236.189.22'
 HOST2 = '130.236.189.14'
-PORT = 2010
+PORT = 2000
 BUFF = 1024
 ADDR = (HOST,PORT)
-
+clientSocket = socket(AF_INET, SOCK_STREAM)
 connect()
 
 # Skickar meddelanden samt har hand om kommandon
@@ -99,6 +100,7 @@ while 1:
         print "Server has gone down, redirecting."
         print "The last messeage you sent had been lost and will have to resent"
         connect()
+   
     
 
 clientSocket.close()
