@@ -75,9 +75,9 @@ class recieverClass(Thread):
         self.reciever()
 
 
-HOST = '130.236.219.244'
-HOST2 = '130.236.189.14'
-PORT = 2001
+HOST = '130.236.189.14'
+HOST2 = '130.236.219.244'
+PORT = 2039
 BUFF = 1024
 ADDR = (HOST,PORT)
 clientSocket = socket(AF_INET, SOCK_STREAM)
