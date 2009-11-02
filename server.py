@@ -7,10 +7,17 @@ from copy import copy
 from threading import *
 from time import time
 from groups import *
+
+# Kodkommentarer
+#
+# status har tre värden: 
+# 0 = utloggad 
+# 1 = inaktiv
+# 2 = aktiv 
 	
 # Anropas när klient loggar ut eller tappar kontakten.
 def disconnect(index):
-	sessionArray[index].active = 0
+	sessionArray[index].status = 0
 	sendAll("Server message: " + str(sessionArray[index].name) + " disconnected.")
 	sessionArray[index].socket.close()
 
@@ -18,25 +25,25 @@ def disconnect(index):
 def sendAll(message):	
 	print "To all: " + message
 	for i in range(len(sessionArray)):
-		if sessionArray[i].active:
+		if(sessionArray[i].status > 0): # Skillnad mellan active och inactive
 			sessionArray[i].socket.send(message)
 
 # Skickar till enskild användare
 def sendTo(message,index):
 	print "To " + sessionArray[index].name + ": " + message
-	if sessionArray[index].active:	
+	if(sessionArray[index].status > 0):  # Skillnad mellan active och inactive
 		sessionArray[index].socket.send(message)
 
 # Söker efter användarnamn och returnerar index
 def search(client):
 	for i in range(len(sessionArray)):
 		if(sessionArray[i].name == client):
-			if(sessionArray[i].active == 1):
+			if(sessionArray[i].status > 0): # Skillnad mellan active och inactive
 				return i
 	return -1
 
-HOST = '130.236.216.90'
-PORT = 2045
+HOST = '127.0.0.1'
+PORT = 2055
 BUFF = 1024
 ADDR = (HOST, PORT)
 
@@ -62,7 +69,7 @@ print USERNAMES
 # Sessionsklassen
 class sessionClass(Thread):
 	groups = list()
-	active = 1
+	status = 2
 	lastWhisper = "ADMIN"
 	
 	def __init__(self, _index, _socket):
@@ -96,16 +103,22 @@ class sessionClass(Thread):
 	
 			while 1:
 				data = self.socket.recv(BUFF)
-				if(data.startswith('/quit')): break
-				elif(data.startswith('/status')): sendTo("You are number " + str(self.index), self.index)
+				if(data.startswith('/quit')):
+					disconnect(self.index)
+					break
+				elif(data.startswith('/status')): 
+					#sendTo("You are number " + str(self.index), self.index)
+					print "hej"
 				elif(data.startswith('/list')):
 					String = ""
 					for i in range(len(sessionArray)):
 						String += str(i) + ": " + str(sessionArray[i].name)
-						if sessionArray[i].active:
+						if(sessionArray[i].status == 2):
 							String += " (Active)"
-						else:
+						elif(sessionArray[i].status == 1):
 							String += " (Inactive)"
+						else:
+							String += " (Disconnected)"
 						String += "\n"
 					sendTo(String, self.index)
 				elif(data.startswith('/whisper')):
@@ -147,16 +160,17 @@ print "Server meddelande: Servern är redo."
 while 1:
 	inactive = len(sessionArray)
 	#for i in range(len(sessionArray)):
-	#	if(sessionArray[i].active == 0): 
+	#	if(sessionArray[i].status == 0): 
 	#		inactive = i;
 	#		break;
 	
 	print len(sessionArray)
 
-	#if(inactive == len(sessionArray)):
-	#	sessionArray.append(sessionClass(inactive))
 	socket, ADDR = copy(serverSocket.accept())
+	#if(inactive == len(sessionArray)):
 	sessionArray.append(sessionClass(inactive,socket))
+	#else:
+	#	sessionArray[inactive] = sessionClass(inactive,socket)
 	sessionArray[inactive].start()
 
 	#thread.start_new_thread(handler, (0))
