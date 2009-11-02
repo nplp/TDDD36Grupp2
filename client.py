@@ -28,8 +28,9 @@ def checkBattery():
 	dev_obj = bus.get_object ('org.freedesktop.Hal', uids[0])
 	x = float(dev_obj.GetProperty('battery.reporting.current'))
 	y = float(dev_obj.GetProperty('battery.reporting.design'))
-	if(int((x/y)*100) < 60):
-		print 'Nu har du',int(x/y),'% kvar i batteri.'
+	bat = int(x/y)*100
+	if(bat < 60):
+		print 'Nu har du',bat,'% kvar i batteri.'
 
 class recieverClass(Thread):
 	def __init__(self, _clientSocket, _ADDR):
