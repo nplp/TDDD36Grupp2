@@ -29,7 +29,7 @@ def checkBattery():
 	x = float(dev_obj.GetProperty('battery.reporting.current'))
 	y = float(dev_obj.GetProperty('battery.reporting.design'))
 	if(int((x/y)*100) < 60):
-	print 'Nu har du',int(x/y),'% kvar i batteri.'
+		print 'Nu har du',int(x/y),'% kvar i batteri.'
 
 class recieverClass(Thread):
 	def __init__(self, _clientSocket, _ADDR):
@@ -58,7 +58,7 @@ class recieverClass(Thread):
 
 HOST = '130.236.189.14'
 HOST2 = '130.236.216.90'
-PORT = 2040
+PORT = 2030
 BUFF = 1024
 
 status = checkServer()
