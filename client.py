@@ -59,7 +59,7 @@ class recieverClass(Thread):
 
 HOST = '130.236.189.14'
 HOST2 = '130.236.216.90'
-PORT = 2030
+PORT = 2020
 BUFF = 1024
 
 status = checkServer()
