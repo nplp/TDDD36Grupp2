@@ -28,7 +28,7 @@ def checkBattery():
 	dev_obj = bus.get_object ('org.freedesktop.Hal', uids[0])
 	x = float(dev_obj.GetProperty('battery.reporting.current'))
 	y = float(dev_obj.GetProperty('battery.reporting.design'))
-	bat = int(x/y)*100
+	bat = int((x/y)*100)
 	if(bat < 60):
 		print 'Nu har du',bat,'% kvar i batteri.'
 
