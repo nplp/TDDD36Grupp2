@@ -5,7 +5,7 @@
 from socket import *
 from copy import copy
 from threading import *
-from time import time
+from time import *
 from groups import *
 
 # Kodkommentarer
@@ -17,33 +17,36 @@ from groups import *
 	
 # Anropas när klient loggar ut eller tappar kontakten.
 def disconnect(index):
-	sessionArray[index].status = 0
-	sendAll("Server message: " + str(sessionArray[index].name) + " disconnected.")
-	sessionArray[index].socket.close()
+	if(len(socketArray) <= index or index < 0):
+		return
+	socketArray[index].status = 0
+	sendAll("Server message: " + str(socketArray[index].name) + " disconnected.")
+	socketArray[index].socket.close()
+	socketArray.pop(index)
 
 # Broadcast
-def sendAll(message):	
+def sendAll(message):
 	print "To all: " + message
-	for i in range(len(sessionArray)):
-		if(sessionArray[i].status > 0): # Skillnad mellan active och inactive
-			sessionArray[i].socket.send(message)
+	for i in range(len(socketArray)):
+		if(socketArray[i].status > 0 and i != 0): # Skillnad mellan active och inactive
+			socketArray[i].socket.send(message)
 
 # Skickar till enskild användare
 def sendTo(message,index):
-	print "To " + sessionArray[index].name + ": " + message
-	if(sessionArray[index].status > 0):  # Skillnad mellan active och inactive
-		sessionArray[index].socket.send(message)
+	print "To " + socketArray[index].name + ": " + message
+	if(socketArray[index].status > 0):  # Skillnad mellan active och inactive
+		socketArray[index].socket.send(message)
 
 # Söker efter användarnamn och returnerar index
 def search(client):
-	for i in range(len(sessionArray)):
-		if(sessionArray[i].name == client):
-			if(sessionArray[i].status > 0): # Skillnad mellan active och inactive
+	for i in range(len(socketArray)):
+		if(socketArray[i].name == client):
+			if(socketArray[index].status > 0): # Skillnad mellan active och inactive
 				return i
 	return -1
 
 HOST = '127.0.0.1'
-PORT = 2055
+PORT = 2113
 BUFF = 1024
 ADDR = (HOST, PORT)
 
@@ -51,9 +54,10 @@ print "Binding serverSocket to: ", ADDR
 
 serverSocket = socket(AF_INET, SOCK_STREAM)
 serverSocket.bind(ADDR)
-serverSocket.listen(20)
+serverSocket.listen(5)
 
-sessionArray = list()
+connectionQueue = list() # Låter endast en användare per IP ansluta åt gången
+socketArray = list() # Innehåller alla sockets vi kör
 openfile = open('users')
 USERS = openfile.readlines()
 USERLOGIN = dict()
@@ -69,12 +73,13 @@ print USERNAMES
 # Sessionsklassen
 class sessionClass(Thread):
 	groups = list()
-	status = 2
 	lastWhisper = "ADMIN"
+	status = 0
 	
-	def __init__(self, _index, _socket):
+	def __init__(self, _index, _socket, _ADDR):
 		self.index = _index
 		self.socket = _socket
+		self.ADDR = ADDR
 		Thread.__init__(self)
 
 	#Sköter inloggningen.
@@ -83,17 +88,18 @@ class sessionClass(Thread):
 		try:
 			while 1:
 				self.socket.send("Type a name: ")
-				CLIENTNAME = self.socket.recv(BUFF)
+				CLIENTNAME = ""
+				while(CLIENTNAME == ""):
+					CLIENTNAME = self.socket.recv(BUFF)
 				if(search(CLIENTNAME) == -1 and CLIENTNAME in USERNAMES):
-					self.socket.send("Type your password: " + CLIENTNAME)
+					self.socket.send("Type your password " + CLIENTNAME)
 					if(self.socket.recv(BUFF) + "\n" == USERLOGIN[CLIENTNAME]):
 						self.name = CLIENTNAME
-						#kollar att det inte finns någon med namnet CLIENTNAME. Funkar ej.
-						if(search(CLIENTNAME) != -1):
-							return CLIENTNAME
+						# Fel: Två klienter kan logga in med samma acc om de gör det samtidigt.
+						return CLIENTNAME
 		except Exception, e:
-			print "Client lost"	
-		return ""
+			print "Client lost: " + CLIENTNAME	
+		return "/ERROR"
 
 
 	#Behandlar övergripande kommunikationen med och mellan klienterna. Sköter även kommandon.
@@ -104,21 +110,17 @@ class sessionClass(Thread):
 			while 1:
 				data = self.socket.recv(BUFF)
 				if(data.startswith('/quit')):
-					disconnect(self.index)
 					break
 				elif(data.startswith('/status')): 
-					#sendTo("You are number " + str(self.index), self.index)
-					print "hej"
+					sendTo("You are number " + str(self.index), self.index)
 				elif(data.startswith('/list')):
 					String = ""
-					for i in range(len(sessionArray)):
-						String += str(i) + ": " + str(sessionArray[i].name)
-						if(sessionArray[i].status == 2):
+					for i in range(len(socketArray)):
+						String += str(i) + ": " + str(socketArray[i].name)
+						if(socketArray[i].status > 0):
 							String += " (Active)"
-						elif(sessionArray[i].status == 1):
-							String += " (Inactive)"
 						else:
-							String += " (Disconnected)"
+							String += " (Inactive)"
 						String += "\n"
 					sendTo(String, self.index)
 				elif(data.startswith('/whisper')):
@@ -126,7 +128,7 @@ class sessionClass(Thread):
 					if(len(msg)>2):
 						i = search(msg[1])
 						if(i>-1):
-							sessionArray[i].lastWhisper = self.name
+							socketArray[i].lastWhisper = self.name
 							sendTo(self.name + " (w): " + msg[2], i)
 							sendTo("You whispered to " + msg[1], self.index)
 				elif(data.startswith('/reply')):
@@ -134,7 +136,7 @@ class sessionClass(Thread):
 					if(len(msg)>1):
 						i = search(self.lastWhisper)
 						if(i>-1):
-							sessionArray[i].lastWhisper = self.name
+							socketArray[i].lastWhisper = self.name
 							sendTo(self.name + " (w): " + msg[1], i)
 							sendTo("You whispered to " + self.lastWhisper, self.index)
 				elif(data.startswith('/ping')):
@@ -148,31 +150,35 @@ class sessionClass(Thread):
 
 	# körs när man anropar start()
 	def run(self):
-		self.name = self.authentication()
-		if(self.name != ""):
+		self.name = ""
+		while(self.name == ""):
+			self.name = self.authentication()
+		if(self.name != "/ERROR"):
 			self.handler(0)
 		disconnect(self.index)
-
 
 print "Server meddelande: Servern är redo."
 
 #Lyssnar efter klienter som vill ansluta.
 while 1:
-	inactive = len(sessionArray)
-	#for i in range(len(sessionArray)):
-	#	if(sessionArray[i].status == 0): 
-	#		inactive = i;
+	freeSlot = len(socketArray)
+	#for i in range(len(socketArray)):
+	#	if(socketArray[i].active == 0): 
+	#		freeSlot = i;
 	#		break;
-	
-	print len(sessionArray)
+
+	for i in range(len(socketArray)):
+		print socketArray[i].name + ": " + str(socketArray[i].index)
 
 	socket, ADDR = copy(serverSocket.accept())
-	#if(inactive == len(sessionArray)):
-	sessionArray.append(sessionClass(inactive,socket))
+	
+	#socket, addr = copy(serverSocket.accept())
+	#if(freeSlot == len(socketArray)):
+	socketArray.append(sessionClass(freeSlot, socket, ADDR))
 	#else:
-	#	sessionArray[inactive] = sessionClass(inactive,socket)
-	sessionArray[inactive].start()
+	#	socketArray[freeSlot] = sessionClass(freeSlot,socket)
+	socketArray[freeSlot].status = 2
+	socketArray[freeSlot].start()
 
-	#thread.start_new_thread(handler, (0))
 
 serverSocket.close()
