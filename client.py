@@ -20,7 +20,7 @@ def checkServer():
     except error:
         return 1
 def checkBattery():
-	try
+	try:
 		bus = dbus.SystemBus()
 		hal_obj = bus.get_object ('org.freedesktop.Hal', 
                	           '/org/freedesktop/Hal/Manager')
@@ -32,7 +32,7 @@ def checkBattery():
 		bat = int((x/y)*100)
 		if(bat < 20):
 			print 'Nu har du',bat,'% kvar i batteri.'
-	except Exception,e :
+	except Exception, e :
 			print "Du sitter pa en loser dator och har inget batteri"	
 class recieverClass(Thread):
 	def __init__(self, _clientSocket, _ADDR):
