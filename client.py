@@ -9,7 +9,7 @@ from threading import *
 import os
 from message import *
 from time import time
-#import dbus
+import dbus
 
 #checkar servern
 def checkServer():
@@ -46,7 +46,7 @@ def checkBattery():
         x = float(dev_obj.GetProperty('battery.reporting.current'))
         y = float(dev_obj.GetProperty('battery.reporting.design'))
         bat = int((x/y)*100)
-        if(bat < 20):
+        if(bat < 100):
             print 'Nu har du',bat,'% kvar i batteri.'
     except Exception, e :
             print "Du sitter pa en loser dator och har inget batteri"       
