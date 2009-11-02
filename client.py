@@ -28,7 +28,7 @@ def checkBattery():
 	dev_obj = bus.get_object ('org.freedesktop.Hal', uids[0])
 	x = float(dev_obj.GetProperty('battery.reporting.current'))
 	y = float(dev_obj.GetProperty('battery.reporting.design'))
-	if(int((x/y)*100) < 20)
+	if(int((x/y)*100) < 60)
 	print 'Nu har du',int(x/y),'% kvar i batteri.'
 
 class recieverClass(Thread):
@@ -56,9 +56,9 @@ class recieverClass(Thread):
 		self.reciever()
 
 
-HOST = '192.160.200.1'
+HOST = '130.236.189.14'
 HOST2 = '130.236.216.90'
-PORT = 2047
+PORT = 2045
 BUFF = 1024
 
 status = checkServer()
