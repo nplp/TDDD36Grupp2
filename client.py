@@ -29,7 +29,7 @@ def checkBattery():
 	x = float(dev_obj.GetProperty('battery.reporting.current'))
 	y = float(dev_obj.GetProperty('battery.reporting.design'))
 	bat = int((x/y)*100)
-	if(bat < 60):
+	if(bat < 20):
 		print 'Nu har du',bat,'% kvar i batteri.'
 
 class recieverClass(Thread):
