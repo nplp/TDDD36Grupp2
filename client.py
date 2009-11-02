@@ -16,7 +16,7 @@ def checkServer():
     serverSocket = socket()
     serverSocket.settimeout(1)
     try:
-        serverSocket.connect((HOST, PORT))
+        serverSocket.connect(ADDR)
     except error:
         return 1
     
@@ -28,12 +28,11 @@ def connect():
     else:
         print "score"
         ADDR = (HOST, PORT)
-    
-        clientSocket = socket(AF_INET, SOCK_STREAM)
-        clientSocket.connect(ADDR)
+    clientSocket = socket(AF_INET, SOCK_STREAM)
+    clientSocket.connect(ADDR)
 
-        recThread = recieverClass(clientSocket, ADDR)
-        recThread.start()
+    recThread = recieverClass(clientSocket, ADDR)
+    recThread.start()
 
 def checkBattery():
     try:
@@ -76,9 +75,10 @@ class recieverClass(Thread):
 
 
 HOST = '130.236.189.22'
-HOST2 = '130.236.216.90'
-PORT = 2066
+HOST2 = '130.236.189.14'
+PORT = 2010
 BUFF = 1024
+ADDR = (HOST,PORT)
 
 connect()
 
