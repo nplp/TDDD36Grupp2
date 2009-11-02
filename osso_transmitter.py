@@ -28,12 +28,16 @@ window = hildon.Window()
 window.connect("destroy", gtk.main_quit)
 
 send_button = gtk.Button("Send RPC")
-window.add(send_button)
+hbox = gtk.HBox(homogeneous=False, spacing=0)
+
+window.add(hbox)
+
+hbox.add(send_button)
 send_button.connect("clicked",
                     send_rpc, osso_c)
 
 send_button2 = gtk.Button("Send RPC2")
-window.add(send_button2)
+hbox.add(send_button2)
 send_button2.connect("clicked",
                     send_rpc2, osso_c)
 send_button.show()
