@@ -17,12 +17,9 @@ from groups import *
 	
 # Anropas när klient loggar ut eller tappar kontakten.
 def disconnect(index):
-	if(len(socketArray) <= index or index < 0):
-		return
 	socketArray[index].status = 0
 	sendAll("Server message: " + str(socketArray[index].name) + " disconnected.")
 	socketArray[index].socket.close()
-	socketArray.pop(index)
 
 # Broadcast
 def sendAll(message):
@@ -45,8 +42,19 @@ def search(client):
 				return i
 	return -1
 
+def statusList():
+	String = ""
+	for i in range(len(socketArray)):
+		String += str(i) + ": " + str(socketArray[i].name)
+		if(socketArray[i].status > 0):
+			String += " (Active)"
+		else:
+			String += " (Inactive)"
+		String += "\n"
+	return String
+
 HOST = '127.0.0.1'
-PORT = 2113
+PORT = 2133
 BUFF = 1024
 ADDR = (HOST, PORT)
 
@@ -89,8 +97,15 @@ class sessionClass(Thread):
 			while 1:
 				self.socket.send("Type a name: ")
 				CLIENTNAME = ""
-				while(CLIENTNAME == ""):
+				i = 0
+				# Följande loop gör så att man slipper klienter som försöker ansluta och sedan bara lämna.
+				# Av någon anledning skickar dessa klienter en stadig ström av tomma strängar.
+				while(CLIENTNAME == "" and i<20):
 					CLIENTNAME = self.socket.recv(BUFF)
+					i = i+1
+				# Kicka om man inte skriver något efter 20 försök.
+				if(CLIENTNAME == ""):
+					return "/ERROR"
 				if(search(CLIENTNAME) == -1 and CLIENTNAME in USERNAMES):
 					self.socket.send("Type your password " + CLIENTNAME)
 					if(self.socket.recv(BUFF) + "\n" == USERLOGIN[CLIENTNAME]):
@@ -114,15 +129,7 @@ class sessionClass(Thread):
 				elif(data.startswith('/status')): 
 					sendTo("You are number " + str(self.index), self.index)
 				elif(data.startswith('/list')):
-					String = ""
-					for i in range(len(socketArray)):
-						String += str(i) + ": " + str(socketArray[i].name)
-						if(socketArray[i].status > 0):
-							String += " (Active)"
-						else:
-							String += " (Inactive)"
-						String += "\n"
-					sendTo(String, self.index)
+					sendTo(statusList(), self.index)
 				elif(data.startswith('/whisper')):
 					msg = data.split(' ', 2)
 					if(len(msg)>2):
@@ -153,22 +160,26 @@ class sessionClass(Thread):
 		self.name = ""
 		while(self.name == ""):
 			self.name = self.authentication()
+			print "Number: " + self.name + str(self.index)
 		if(self.name != "/ERROR"):
 			self.handler(0)
 		disconnect(self.index)
+		print self.name + " dead"
 
-print "Server meddelande: Servern är redo."
+print "Servermeddelande: Servern är redo."
 
 #Lyssnar efter klienter som vill ansluta.
 while 1:
 	freeSlot = len(socketArray)
 	#for i in range(len(socketArray)):
-	#	if(socketArray[i].active == 0): 
+	#	if(not socketArray[i].isAlive()): 
 	#		freeSlot = i;
 	#		break;
 
-	for i in range(len(socketArray)):
-		print socketArray[i].name + ": " + str(socketArray[i].index)
+	print statusList()
+
+	#for i in range(len(socketArray)):
+	#	print socketArray[i].name + ": " + str(socketArray[i].index)
 
 	socket, ADDR = copy(serverSocket.accept())
 	
