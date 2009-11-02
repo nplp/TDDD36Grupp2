@@ -9,6 +9,7 @@ from threading import *
 import os
 from message import *
 from time import time
+import dbus
 
 #checkar servern
 def checkServer():
@@ -18,6 +19,17 @@ def checkServer():
         serverSocket.connect((HOST, PORT))
     except error:
         return 1
+def checkBattery():
+	bus = dbus.SystemBus()
+	hal_obj = bus.get_object ('org.freedesktop.Hal', 
+                          '/org/freedesktop/Hal/Manager')
+	hal = dbus.Interface (hal_obj, 'org.freedesktop.Hal.Manager')
+	uids = hal.FindDeviceByCapability('battery')
+	dev_obj = bus.get_object ('org.freedesktop.Hal', uids[0])
+	x = float(dev_obj.GetProperty('battery.reporting.current'))
+	y = float(dev_obj.GetProperty('battery.reporting.design'))
+	if(int((x/y)*100) < 20)
+	print 'Nu har du',int(x/y),'% kvar i batteri.'
 
 class recieverClass(Thread):
 	def __init__(self, _clientSocket, _ADDR):
@@ -27,6 +39,7 @@ class recieverClass(Thread):
 	
 	# Tar emot meddelanden
 	def reciever(self):
+		checkBattery()
 		try:
 			while 1:
 				data = unicode(self.clientSocket.recv(BUFF), 'utf-8')
