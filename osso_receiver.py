@@ -15,6 +15,6 @@ rpc.set_rpc_callback("spam.eggs.osso_test_receiver",
                             "/spam/eggs/osso_test_receiver",
                             "spam.eggs.osso_test_receiver", callback_func,
                             osso_c)
-def test()
+def test():
     print "har var det text"
 gtk.main()
