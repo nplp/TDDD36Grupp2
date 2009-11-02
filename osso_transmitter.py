@@ -30,9 +30,10 @@ send_button = gtk.Button("Send RPC")
 window.add(send_button)
 send_button.connect("clicked",
                     send_rpc, osso_c)
-send_button = gtk.Button("Send RPC2")
+
+send_button2 = gtk.Button("Send RPC2")
 window.add(send_button2)
-send_button.connect("clicked2",
+send_button2.connect("clicked2",
                     send_rpc, osso_c)
 window.show_all()
 gtk.main() 
