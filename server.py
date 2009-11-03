@@ -39,7 +39,7 @@ def sendTo(message,index):
 def search(client):
 	for i in range(len(socketArray)):
 		if(socketArray[i].name == client):
-			if(socketArray[index].status > 0): # Skillnad mellan active och inactive
+			if(socketArray[i].status > 0): # Skillnad mellan active och inactive
 				return i
 	return -1
 
@@ -143,7 +143,7 @@ class sessionClass(Thread):
 							sendTo(self.name + " (w): " + msg[2], i)
 							sendTo("You whispered to " + msg[1], self.index)
 				elif(data.startswith('/reply')):
-					msg = data.split(' ', 2)
+					msg = data.split(' ', 1)
 					if(len(msg)>1):
 						i = search(self.lastWhisper)
 						if(i>-1):
