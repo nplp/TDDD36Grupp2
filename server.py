@@ -5,6 +5,7 @@
 from socket import *
 from copy import copy
 from threading import *
+import thread
 from time import *
 from groups import *
 
@@ -14,7 +15,7 @@ from groups import *
 # 0 = utloggad 
 # 1 = inaktiv
 # 2 = aktiv 
-	
+
 # Anropas när klient loggar ut eller tappar kontakten.
 def disconnect(index):
 	socketArray[index].status = 0
@@ -50,11 +51,14 @@ def statusList():
 			String += " (Active)"
 		else:
 			String += " (Inactive)"
+		if(socketArray[i].isAlive()):
+			String += " isAlive"
 		String += "\n"
 	return String
 
-HOST = '127.0.0.1'
-PORT = 2133
+HOST = '130.236.219.66'
+#HOST = '127.0.0.1'
+PORT = 2145
 BUFF = 1024
 ADDR = (HOST, PORT)
 
@@ -164,32 +168,45 @@ class sessionClass(Thread):
 		if(self.name != "/ERROR"):
 			self.handler(0)
 		disconnect(self.index)
-		print self.name + " dead"
 
 print "Servermeddelande: Servern är redo."
 
+
+
 #Lyssnar efter klienter som vill ansluta.
-while 1:
-	freeSlot = len(socketArray)
-	#for i in range(len(socketArray)):
-	#	if(not socketArray[i].isAlive()): 
-	#		freeSlot = i;
-	#		break;
+def listenToClients():
+	print "hej"
+	while 1:
+		freeSlot = len(socketArray)
+		#for i in range(len(socketArray)):
+		#	if(not socketArray[i].isAlive()): 
+		#		freeSlot = i;
+		#		break;
 
-	print statusList()
+		print statusList()
 
-	#for i in range(len(socketArray)):
-	#	print socketArray[i].name + ": " + str(socketArray[i].index)
+		#for i in range(len(socketArray)):
+		#	print socketArray[i].name + ": " + str(socketArray[i].index)
 
-	socket, ADDR = copy(serverSocket.accept())
+		socket, ADDR = copy(serverSocket.accept())
 	
-	#socket, addr = copy(serverSocket.accept())
-	#if(freeSlot == len(socketArray)):
-	socketArray.append(sessionClass(freeSlot, socket, ADDR))
-	#else:
-	#	socketArray[freeSlot] = sessionClass(freeSlot,socket)
-	socketArray[freeSlot].status = 2
-	socketArray[freeSlot].start()
+		#socket, addr = copy(serverSocket.accept())
+		#if(freeSlot == len(socketArray)):
+		socketArray.append(sessionClass(freeSlot, socket, ADDR))
+		#else:
+		#	socketArray[freeSlot] = sessionClass(freeSlot,socket)
+		socketArray[freeSlot].status = 2
+		socketArray[freeSlot].start()
+
+thread.start_new_thread(listenToClients, ())
+
+SERVERRUN = 1
+
+while SERVERRUN:
+
+	String = raw_input()
+	if(String.startswith("/exit")):
+		SERVERRUN = 0
 
 
 serverSocket.close()
