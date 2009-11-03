@@ -75,9 +75,11 @@ class recieverClass(Thread):
         self.reciever()
 
 
-HOST = '130.236.189.14'
-HOST2 = '130.236.219.244'
-PORT = 2039
+HOST2 = '227.0.0.1'
+HOST = '130.236.216.83'
+PORT = 2147
+if(len(sys.argv) > 1):
+	PORT = int(sys.argv[1])
 BUFF = 1024
 ADDR = (HOST,PORT)
 clientSocket = socket(AF_INET, SOCK_STREAM)
@@ -90,7 +92,10 @@ while 1:
     data = finishCMD(msg)
         
     if(data.startswith('/quit') or data.startswith('/exit')):
-        clientSocket.send('/quit')
+        try:    
+            clientSocket.send('/quit')
+        except Exception, e:
+            print "Server has gone down."
         break
     if(data.startswith('/ping')):
         data = '/ping' + " " + str(time())
