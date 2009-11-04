@@ -20,9 +20,6 @@ from groups import *
 
 ClientMutex = BoundedSemaphore(1)
 
-
-
-
 # ATOMISKA FUNKTIONER --------------------------------------------------------
 
 # Broadcast. Atomisk.
@@ -71,12 +68,16 @@ def atomic_reGroupClients():
 	ClientMutex.acquire()
 	delete = list()
 	for i in range(len(socketArray)):
-		if(not socketArray[i].isAlive()): 
+		print "Delete " + str(i)
+		if(not socketArray[i].isAlive()):
 			delete.append(i)
-			print "Delete " + socketArray[i].name
+
+	j = 0
 	for i in delete:
+		i = i-j
 		print "Delete " + socketArray[i].name
 		socketArray.pop(i)
+		j = j+1
 	ClientMutex.release()
 
 # ----------------------------------------------------------------------------
@@ -118,8 +119,8 @@ def statusList():
 		String += "\n"
 	return String
 
-HOST = '130.236.216.83'
-#HOST = '127.0.0.1'
+#HOST = '130.236.216.83'
+HOST = '127.0.0.1'
 PORT = 2147
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
@@ -151,11 +152,12 @@ class sessionClass(Thread):
 	groups = list()
 	lastWhisper = "ADMIN"
 	status = 0
-	
+
 	def __init__(self, _socket, _ADDR):
 		self.socket = _socket
 		self.ADDR = ADDR
 		Thread.__init__(self)
+
 
 	def sendBack(self, message):
 		print "Back to " + self.name + ": " + message
@@ -203,7 +205,9 @@ class sessionClass(Thread):
 
 			while 1:
 				data = self.socket.recv(BUFF)
-				if(data.startswith('/quit')):
+				if(data.startswith('/cleanup')):
+					thread.start_new_thread(atomic_reGroupClients, ())
+				elif(data.startswith('/quit')):
 					break
 				elif(data.startswith('/status')): 
 					self.sendBack("You are number " + str(search(self.name)))
@@ -244,36 +248,30 @@ class sessionClass(Thread):
 print "Servermeddelande: Servern är redo."
 
 
-
 #Lyssnar efter klienter som vill ansluta.
 def listenToClients():
 	while 1:
-		#atomic_reGroupClients()
-		freeSlot = len(socketArray)
-
+		socket, ADDR = copy(serverSocket.accept())
 		print statusList()
 
-		#for i in range(len(socketArray)):
-		#	print socketArray[i].name + ": " + str(socketArray[i].index)
-
-		socket, ADDR = copy(serverSocket.accept())
-	
-		#socket, addr = copy(serverSocket.accept())
-		#if(freeSlot == len(socketArray)):
+		# Atomisk ------ (reGroup kan råka ta bort socketen om de körs samtidigt)
+		ClientMutex.acquire()
 		socketArray.append(sessionClass(socket, ADDR))
-		#else:
-		#	socketArray[freeSlot] = sessionClass(freeSlot,socket)
-		socketArray[freeSlot].status = 2
-		socketArray[freeSlot].start()
+		socketArray[len(socketArray)-1].status = 2
+		socketArray[len(socketArray)-1].start()
+		ClientMutex.release()
+		# --------------
+
 
 thread.start_new_thread(listenToClients, ())
 
 SERVERRUN = 1
 
 while SERVERRUN:
-
 	String = raw_input()
 	if(String.startswith("x")):
 		SERVERRUN = 0
+	elif(String.startswith("r")):
+		thread.start_new_thread(atomic_reGroupClients, ())
 
 serverSocket.close()
