@@ -15,7 +15,7 @@ from groups import *
 #
 # status har tre värden: 
 # 0 = utloggad 
-# 1 = inaktiv
+# 1 = inaktiv - ej implementerad än.
 # 2 = aktiv 
 
 ClientMutex = BoundedSemaphore(1)
@@ -47,14 +47,6 @@ def atomic_sendTo(message,client):
 	ClientMutex.release()
 
 
-# Söker efter användarnamn och returnerar index. Atomisk.
-def atomic_search(client):
-	ClientMutex.acquire()
-	i = search(client)
-	ClientMutex.release()
-	return i # <== utanför semaphoren! Inte coolt!
-
-
 # Anropas när klient loggar ut eller tappar kontakten. Atomisk.
 def atomic_disconnect(client):
 
@@ -75,12 +67,17 @@ def atomic_setReply(client, replier):
 
 
 # Tar bort avloggade klienter. Atomisk.
-#def atomic_reGroupClients():
-#	ClientMutex.acquire()
-#	for i in range(len(socketArray)):
-#		if(not socketArray[i].isAlive()): 
-#			socketArray[i].pop()
-#	ClientMutex.release()
+def atomic_reGroupClients():
+	ClientMutex.acquire()
+	delete = list()
+	for i in range(len(socketArray)):
+		if(not socketArray[i].isAlive()): 
+			delete.append(i)
+			print "Delete " + socketArray[i].name
+	for i in delete:
+		print "Delete " + socketArray[i].name
+		socketArray.pop(i)
+	ClientMutex.release()
 
 # ----------------------------------------------------------------------------
 
@@ -115,7 +112,7 @@ def statusList():
 		if(socketArray[i].status > 0):
 			String += " (Active)"
 		else:
-			String += " (Inactive)"
+			String += " (Disconnected)"
 		if(socketArray[i].isAlive()):
 			String += " isAlive"
 		String += "\n"
@@ -181,12 +178,17 @@ class sessionClass(Thread):
 				# Kicka om man inte skriver något efter 20 försök.
 				if(CLIENTNAME == ""):
 					return "/ERROR"
-				print str(atomic_search(CLIENTNAME)-1)
-				if(atomic_search(CLIENTNAME) == -1 and CLIENTNAME in USERNAMES):
+				if(CLIENTNAME in USERNAMES):
 					self.socket.send("Type your password " + CLIENTNAME)
-					if(self.socket.recv(BUFF) + "\n" == USERLOGIN[CLIENTNAME]):
-						self.name = CLIENTNAME
-				# Fel: Två klienter kan logga in med samma acc om de gör det samtidigt.
+					login = self.socket.recv(BUFF) + "\n"
+					# Atomisk ------
+					ClientMutex.acquire()
+					if(search(CLIENTNAME) == -1):
+						if(login == USERLOGIN[CLIENTNAME]):
+							self.name = CLIENTNAME
+					ClientMutex.release()
+					# --------------
+					if(self.name == CLIENTNAME):
 						return CLIENTNAME
 		except Exception, e:
 			print "Client lost: " + CLIENTNAME + " exception: " + str(e)	
@@ -246,6 +248,7 @@ print "Servermeddelande: Servern är redo."
 #Lyssnar efter klienter som vill ansluta.
 def listenToClients():
 	while 1:
+		#atomic_reGroupClients()
 		freeSlot = len(socketArray)
 
 		print statusList()
