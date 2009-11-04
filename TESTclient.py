@@ -8,7 +8,7 @@ def receiver(clientSocket, ADDR):
 	while 1:
 		data = clientSocket.recv(BUFF)
 		print data
-subprocess.call('ssh -f krisse@130.236.219.200 -L 2001:127.0.0.1:2004 sleep 4', shell=True)
+subprocess.call('ssh -f kj@130.236.219.218 -L 2001:127.0.0.1:2161 sleep 4', shell=True)
 message = ""
 HOST = '127.0.0.1'
 PORT = 2001
