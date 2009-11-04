@@ -9,7 +9,17 @@ from threading import *
 import os
 from message import *
 from time import time
-import dbus
+#import dbus
+
+HOST2 = '130.236.219.244'
+HOST = '130.236.216.83'
+PORT = 2150
+if(len(sys.argv) > 1):
+	PORT = int(sys.argv[1])
+BUFF = 1024
+ADDR = (HOST,PORT)
+ADDR2 = (HOST2,PORT)
+clientSocket = socket(AF_INET, SOCK_STREAM)
 
 #checkar servern
 def checkServer():
@@ -17,13 +27,23 @@ def checkServer():
     serverSocket.settimeout(1)
     try:
         serverSocket.connect(ADDR)
+        serverSocket.shutdown(2)
         serverSocket.close()
+        return 0
     except error:
         return 1
     
 def connect():
-    status = checkServer()
-    if (status):
+    '''
+    try:
+         clientSocket.connect(ADDR)
+         print "vanlig"
+    except Exception, e:
+         clientSocket.connect(ADDR2)
+         print "backup"
+    '''
+    down = checkServer()
+    if (down):
         print "poop"
         ADDR = (HOST2, PORT)
     else:
@@ -68,21 +88,16 @@ class recieverClass(Thread):
                         print s[0] + " " + str(time() - float(s[1]))
                     else:
                         print data
+                else:
+                    print "rerouting"
+                    connect()
         except Exception, e:
-            print "Connection lost"
+            print e
+            #print "Connection lost"
 
     def run(self):
         self.reciever()
 
-
-HOST2 = '227.0.0.1'
-HOST = '130.236.216.83'
-PORT = 2147
-if(len(sys.argv) > 1):
-	PORT = int(sys.argv[1])
-BUFF = 1024
-ADDR = (HOST,PORT)
-clientSocket = socket(AF_INET, SOCK_STREAM)
 connect()
 
 # Skickar meddelanden samt har hand om kommandon
@@ -99,13 +114,6 @@ while 1:
         break
     if(data.startswith('/ping')):
         data = '/ping' + " " + str(time())
-    try:    
-        clientSocket.send(data)
-    except Exception, e:
-        print "Server has gone down, redirecting."
-        print "The last messeage you sent had been lost and will have to resent"
-        connect()
-   
-    
+    clientSocket.send(data)
 
 clientSocket.close()
