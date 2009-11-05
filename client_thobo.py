@@ -11,8 +11,10 @@ from message import *
 from time import time
 import subprocess
 #import dbus
+import osso
 
 #Variabler
+testmeddelande = "tjabba"
 HOST = '127.0.0.1'
 PORT = 2000
 if(len(sys.argv) > 1):
@@ -20,6 +22,15 @@ if(len(sys.argv) > 1):
 BUFF = 1024
 ADDR = (HOST, PORT)
 
+def callback_func(interface, method, arguments, user_data):
+    osso_c = user_data
+ 
+osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
+rpc = osso.Rpc(osso_c)
+rpc.set_rpc_callback("spam.eggs.osso_test_receiver",
+                            "/spam/eggs/osso_test_receiver",
+                            "spam.eggs.osso_test_receiver", callback_func,
+                            osso_c)
 
 #SSH anrop, startar ssh tunnel mot servern
 '''
@@ -105,9 +116,24 @@ class recieverClass(Thread):
 
 connect()
 
+
+#callback som tar emot meddelanden från UI processsen
+def callback_func(interface, method, arguments, user_data):
+    osso_c = user_data
+    testmeddelande = method
+    print testmeddelande
+ 
+osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
+rpc = osso.Rpc(osso_c)
+rpc.set_rpc_callback("spam.eggs.osso_test_receiver",
+                            "/spam/eggs/osso_test_receiver",
+                            "spam.eggs.osso_test_receiver", callback_func,
+                            osso_c)
+
 # Skickar meddelanden samt har hand om kommandon
 while 1:
     data = raw_input()
+    data = testmeddelande
     msg = Message(data)
     data = finishCMD(msg)
         
