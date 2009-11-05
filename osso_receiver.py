@@ -4,11 +4,7 @@ import gtk
  
 def callback_func(interface, method, arguments, user_data):
     print "RPC received"
-    print interface
-    print method
-    print arguments
-    print user_data
-    test()
+    test(method)
     osso_c = user_data
     osso_c.system_note_infoprint("osso_test_receiver: Received a RPC to %s." % method)
  
@@ -19,6 +15,6 @@ rpc.set_rpc_callback("spam.eggs.osso_test_receiver",
                             "/spam/eggs/osso_test_receiver",
                             "spam.eggs.osso_test_receiver", callback_func,
                             osso_c)
-def test():
-    print "har var det text"
+def test(x):
+    print x
 gtk.main()
