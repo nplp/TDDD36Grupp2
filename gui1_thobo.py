@@ -45,7 +45,7 @@ class MenuExample:
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 	
-    def send_rpc(widget, osso_c):
+    def send_rpc(self, widget, osso_c):
     	rpc = osso.Rpc(osso_c)
     	rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "thor")
 	
