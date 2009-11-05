@@ -81,7 +81,8 @@ class recieverClass(Thread):
     def reciever(self):
         try:
             while 1:
-                data = unicode(self.clientSocket.recv(BUFF), 'utf-8')
+                #data = unicode(self.clientSocket.recv(BUFF), 'utf-8')
+                data = str(self.clientSocket.recv(BUFF))
                 if(data != ""):
                     if(data.startswith('/ping')):
                         s = data.split(' ', 1)

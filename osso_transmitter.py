@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.5
 import osso
 import hildon
 import gtk
@@ -8,7 +8,7 @@ def send_rpc(widget, osso_c):
     rpc.rpc_run("spam.eggs.osso_test_receiver",
                    "/spam/eggs/osso_test_receiver",
                    "spam.eggs.osso_test_receiver",
-                   "do_something")
+                   "smisk_smisk", ("hej", "bajs"))
  
     print "RPC sent"
 
