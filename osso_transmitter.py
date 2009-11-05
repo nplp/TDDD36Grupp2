@@ -8,7 +8,7 @@ def send_rpc(widget, osso_c):
     rpc.rpc_run("spam.eggs.osso_test_receiver",
                    "/spam/eggs/osso_test_receiver",
                    "spam.eggs.osso_test_receiver",
-                   ("smisk_smisk", "hej"))
+                   "smisk_smisk", ("hej", "bajs"))
  
     print "RPC sent"
 
