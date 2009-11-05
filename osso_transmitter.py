@@ -5,10 +5,10 @@ import gtk
  
 def send_rpc(widget, osso_c):
     rpc = osso.Rpc(osso_c)
-    rpc.rpc_run("spam.eggs.osso_test_receiver",
-                   "/spam/eggs/osso_test_receiver",
-                   "spam.eggs.osso_test_receiver",
-                   "smisk_smisk", ("hej", "bajs"))
+    rpc.rpc_run("usr.share.dbus.osso_test_receiver",
+                   "/usr/share/dbus/osso_test_receiver",
+                   "usr.share.dbus.osso_test_receiver",
+                   "do_something", ("hej", "bajs"))
  
     print "RPC sent"
 
