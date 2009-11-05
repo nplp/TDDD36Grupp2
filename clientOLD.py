@@ -12,7 +12,7 @@ from time import time
 #import dbus
 
 HOST2 = '130.236.219.244'
-HOST = '127.0.0.1'
+HOST = '130.236.217.143'
 PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
