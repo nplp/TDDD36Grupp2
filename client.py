@@ -22,17 +22,14 @@ ADDR = (HOST, PORT)
 
 
 #SSH anrop, startar ssh tunnel mot servern
-'''
 try:
-	subprocess.check_call()
+	subprocess.call('ssh -f nikpe890@190.236.189.14 -L 2000:127.0.0.1:2148 sleep 4', shell=True)
 except error:
-	print "boobytrap"
-'''
-subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2000:127.0.0.1:2148 sleep 4', shell=True)
+	print 'no server baby'
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
-
+'''
 #Checkar servern
 def checkServer():
     serverSocket = socket()
@@ -44,7 +41,7 @@ def checkServer():
         return 0
     except error:
         return 1
- 
+''' 
 def connect():
     clientSocket.connect(ADDR)
     recThread = recieverClass(clientSocket, ADDR)
