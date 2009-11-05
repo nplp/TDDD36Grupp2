@@ -7,25 +7,27 @@ pygtk.require('2.0')
 import gtk, gobject
 import gtk
 import sys
-sys.path.append('./kartkomponent/kart')
+sys.path.append('.kartkomponent/kartdata')
 import data_storage
 import map_xml_reader
 import gui_map
 import gui
 
-def progress_timeout(self, pbobj):
+def progress_timeout(pbobj):
     	if pbobj.activity_check.get_active():
 		pbobj.pbar.pulse()
 	else:
-        	new_val = pbobj.pbar.get_fraction() + 0.01
-        	if new_val > 1.0:
-			new_val = 0.0
+		new_val = pbobj.pbar.get_fraction() + 0.01
+	if new_val > 1.0:
+	   new_val = 0.0
         # Set the new value
        	pbobj.pbar.set_fraction(new_val)
 	return True
-
+	
 class MenuExample:
-
+	
+    # Callback that toggles the activity mode of the progress
+    # bar	
     def toggle_activity_mode(self, widget, data=None):
         if widget.get_active():
             self.pbar.pulse()
@@ -37,8 +39,6 @@ class MenuExample:
             self.pbar.set_orientation(gtk.PROGRESS_RIGHT_TO_LEFT)
         elif self.pbar.get_orientation() == gtk.PROGRESS_RIGHT_TO_LEFT:
             self.pbar.set_orientation(gtk.PROGRESS_LEFT_TO_RIGHT)
-	    
-    
 	
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
@@ -145,6 +145,12 @@ class MenuExample:
         gtk.main_quit()
         return False
     
+    # Clean up allocated memory and remove the timer
+    def destroy_progress(self, widget, data=None):
+       self.timer = 0
+       gobject.source_remove(self.timer)
+       gtk.main_quit()
+
     def __init__(self):
         #Skapa fonster
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
@@ -152,13 +158,43 @@ class MenuExample:
         self.window.set_title("GUI")
         self.window.connect("delete_event", lambda w,e: gtk.main_quit())
 	
-	#Skapa en stor Hbox
-	self.hbox = gtk.HBox(False, 0)
 	
 	#Skapa en Vbox som sedan ska in i Hboxen och innehallar huvudknapparna i menyn
         self.vbox = gtk.VBox(False, 0)
 	self.vbox.set_size_request(198, 95)
         self.vbox.show()
+	
+	# Create a centering alignment object
+        self.align = gtk.Alignment(0.5, 0.5, 0, 0)
+        self.vbox.pack_start(self.align, False, False, 5)
+        self.align.show()
+	
+	#Progressbar
+        self.pbar = gtk.ProgressBar()
+	self.align.add(self.pbar)
+	self.pbar.show()
+	
+	self.timer = gobject.timeout_add(600, progress_timeout, self)
+	
+	# rows, columns, homogeneous
+        self.table = gtk.Table(1, 1, False)
+        self.vbox.pack_start(self.table, False, True, 0)
+        self.table.show()
+	
+	
+        # Add a check button to select displaying of the trough text
+        self.check = gtk.CheckButton()
+	self.activity_check = self.check
+        self.table.attach(self.check, 0, 1, 0, 1,
+                     gtk.EXPAND  | gtk.FILL, gtk.EXPAND | gtk.FILL,
+                     1, 1)
+        self.check.connect("clicked", self.toggle_activity_mode)
+
+	#Skapa en stor Hbox
+	self.hbox = gtk.HBox(False, 0)
+  	self.hbox.show()
+	
+	self.hbox.pack_start(self.vbox, False, False, 0)
 
 	#Knappar stor meny
         # Kommunikation
@@ -184,22 +220,7 @@ class MenuExample:
         self.avsluta.connect("clicked", lambda w: gtk.main_quit())
 	self.vbox.pack_start(self.avsluta, True, True,0)
         self.avsluta.show()
-	
-	#Progressbar:
-        self.pbar = gtk.ProgressBar()
-	self.timer = gobject.timeout_add(100, self.progress_timeout, self)
-	self.vbox.pack_start(self.pbar, True, True,0)
-	self.pbar.show()
-	
-	#right to left
-	# Add a check button to toggle orientation
-        check = gtk.CheckButton("Right to Left")
-        check.connect("clicked", self.toggle_orientation)
-        check.show()
-	self.vbox.pack_start(check, True, True,0)
 
-	self.hbox.pack_start(self.vbox, False, False, 0)
-	
 	#Knappar i undermenyer
 	#Knappar under kommunikation
 	#i en vbox
@@ -301,7 +322,6 @@ class MenuExample:
 	#Packa karta
 	self.vbox3.pack_start(self.startakarta,True,True,0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
-	#self.hbox.pack_start(self.vbox4, True, True, 0)
     	self.hbox.show()
 	self.window.add(self.hbox)
         self.window.show()
