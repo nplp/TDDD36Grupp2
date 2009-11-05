@@ -11,18 +11,29 @@ from message import *
 from time import time
 import subprocess
 #import dbus
-subprocess.call('ssh -f kj@130.236.219.218 -L 2000:127.0.0.1:2161 sleep 4', shell=True)
-HOST2 = '127.0.0.1'
+
+#Variabler
 HOST = '127.0.0.1'
 PORT = 2000
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
-ADDR = (HOST,PORT)
-ADDR2 = (HOST2,PORT)
+ADDR = (HOST, PORT)
+
+
+#SSH anrop, startar ssh tunnel mot servern
+'''
+try:
+	subprocess.check_call()
+except error:
+	print "boobytrap"
+'''
+subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2000:127.0.0.1:2148 sleep 4', shell=True)
+
+#Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
 
-#checkar servern
+#Checkar servern
 def checkServer():
     serverSocket = socket()
     serverSocket.settimeout(1)
@@ -33,28 +44,21 @@ def checkServer():
         return 0
     except error:
         return 1
-    
+ 
 def connect():
-    '''
-    try:
-         clientSocket.connect(ADDR)
-         print "vanlig"
-    except Exception, e:
-         clientSocket.connect(ADDR2)
-         print "backup"
-    '''
-    down = checkServer()
-    if (down):
-        print "poop"
-        ADDR = (HOST2, PORT)
-    else:
-        print "score"
-        ADDR = (HOST, PORT)
-        
-    #clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect(ADDR)
     recThread = recieverClass(clientSocket, ADDR)
     recThread.start()
+
+'''
+    down = checkServer()
+    if (down):
+        print "poop"
+        ADDR = (HOST, PORT)
+    else:
+        print "score"
+        ADDR = (HOST, PORT)
+'''
 
 def checkBattery():
     try:
