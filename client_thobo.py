@@ -11,6 +11,7 @@ from message import *
 from time import time
 import subprocess
 #import dbus
+import osso
 
 #Variabler
 HOST = '127.0.0.1'
