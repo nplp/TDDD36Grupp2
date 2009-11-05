@@ -47,7 +47,7 @@ class MenuExample:
 	
     def send_rpc(widget, osso_c):
     	rpc = osso.Rpc(osso_c)
-    	rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "Testar att skicka mellan processer")
+    	rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "thor")
 	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
