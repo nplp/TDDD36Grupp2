@@ -5,6 +5,10 @@ import gtk
 def callback_func(interface, method, arguments, user_data):
     print "RPC received"
     test(method)
+    print interface
+    print method
+    print arguments
+    print user_data
     osso_c = user_data
     osso_c.system_note_infoprint("osso_test_receiver: Received a RPC to %s." % method)
  
