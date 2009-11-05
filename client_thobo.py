@@ -14,6 +14,7 @@ import subprocess
 import osso
 
 #Variabler
+testmeddelande = "tjabba"
 HOST = '127.0.0.1'
 PORT = 2000
 if(len(sys.argv) > 1):
@@ -115,7 +116,7 @@ class recieverClass(Thread):
 
 connect()
 
-testmeddelande
+
 #callback som tar emot meddelanden från UI processsen
 def callback_func(interface, method, arguments, user_data):
     osso_c = user_data
