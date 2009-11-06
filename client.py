@@ -13,8 +13,8 @@ import subprocess
 #import dbus
 
 #Variabler
-HOST = '127.0.0.1'
-PORT = 2000
+HOST = '130.236.216.163'
+PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
@@ -23,7 +23,7 @@ ADDR = (HOST, PORT)
 
 #SSH anrop, startar ssh tunnel mot servern
 try:
-	subprocess.call('ssh -f nikpe890@190.236.189.14 -L 2000:127.0.0.1:2148 sleep 4', shell=True)
+	subprocess.call('ssh -f kj@130.236.216.163 -L 2150:127.0.0.1:2000 sleep 4', shell=True)
 except error:
 	print 'no server baby'
 
@@ -83,7 +83,7 @@ class recieverClass(Thread):
     def reciever(self):
         try:
             while 1:
-                data = unicode(self.clientSocket.recv(BUFF), 'utf-8')
+		data = str(self.clientSocket.recv(BUFF))
                 if(data != ""):
                     if(data.startswith('/ping')):
                         s = data.split(' ', 1)
