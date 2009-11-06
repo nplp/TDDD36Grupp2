@@ -1,6 +1,6 @@
 # client
 # coding:utf-8
-# Ovanst￯﾿ﾥende rad ￯﾿ﾤr ISO-kodning f￯﾿ﾶr att ￯﾿ﾥ￯﾿ﾤ￯﾿ﾶ ska funka.
+# Ovanstï¿¯ï¾¿ï¾¥ende rad ï¿¯ï¾¿ï¾¤r ISO-kodning fï¿¯ï¾¿ï¾¶r att ï¿¯ï¾¿ï¾¥ï¿¯ï¾¿ï¾¤ï¿¯ï¾¿ï¾¶ ska funka.
 
 import re
 import sys
@@ -39,7 +39,7 @@ try:
 except error:
 	print "boobytrap"
 '''
-subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2000:127.0.0.1:2148 sleep 4', shell=True)
+subprocess.call('ssh -f kj@130.236.216.163 -L 2151:127.0.0.1:2148 sleep 4', shell=True)
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
@@ -117,7 +117,7 @@ class recieverClass(Thread):
 connect()
 
 
-#callback som tar emot meddelanden fr�n UI processsen
+#callback som tar emot meddelanden från UI processsen
 def callback_func(interface, method, arguments, user_data):
     osso_c = user_data
     testmeddelande = method
