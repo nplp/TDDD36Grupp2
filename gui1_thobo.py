@@ -1,7 +1,7 @@
+# -*- coding: utf-8 -*-
 #Ar det inte battre om detta sparas i en databas som man kan anvanda sig av?
 #Jag kan inte se min progressbar, vad hander egentligen?
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import pygtk
 pygtk.require('2.0')
 import gtk, gobject
@@ -46,6 +46,7 @@ class MenuExample:
         print "Hello again - %s was pressed" % data
 	
     def send_rpc(self, widget, osso_c):
+        print "nu trock jag pa en knapp"
     	rpc = osso.Rpc(osso_c)
     	rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "thor")
 	
@@ -238,7 +239,7 @@ class MenuExample:
 	self.vbox2.set_size_request(198, 95)
         self.vbox2.show()
 	
-	osso_c = osso.Context("text_sender", "0.0.1", False)
+	osso_c = osso.Context("osso_test_sender", "0.0.1", False)
 	
 	# Textmeddelande
 	self.text = gtk.Button("Textmeddelande")
