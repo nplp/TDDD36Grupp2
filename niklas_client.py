@@ -23,6 +23,8 @@ ADDR = ('127.0.0.1', 2100)	#Vi connectar till oss själva på porten som är angive
 
 #SSH anrop, startar ssh tunnel mot primärservern
 subprocess.call('ssh -f nikpe890@'+HOST+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4 -o ConnectTimeout=5', shell=True)
+print "bananas"
+'''
 if(True):
 	pass
 else:
@@ -30,6 +32,7 @@ else:
 	subprocess.call('ssh -f nikpe890@'+HOST2+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
+'''
 '''
 #Checkar servern
 def checkServer():
