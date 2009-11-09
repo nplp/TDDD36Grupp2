@@ -7,13 +7,13 @@ import sys
 from socket import *
 from threading import *
 import os
-from message import *
+#from message import *
 from time import time
 import subprocess
 #import dbus
 
 #Variabler
-HOST = '130.236.218.114' #Primärserver
+HOST = '130.236.218.124' #Primärserver
 HOST2 = '130.236.189.14' #Sekundärserver
 PORT = 2150		#Porten hos servern
 if(len(sys.argv) > 1):
@@ -22,9 +22,11 @@ BUFF = 1024
 ADDR = ('127.0.0.1', 2100)	#Vi connectar till oss själva på porten som är angiven här
 
 #SSH anrop, startar ssh tunnel mot primärservern
-if(subprocess.call('ssh -f nikpe890@'+HOST+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True)):
+subprocess.call('ssh -f nikpe890@'+HOST+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4 -o ConnectTimeout=5', shell=True)
+if(True):
 	pass
 else:
+	print 'bananas'
 	subprocess.call('ssh -f nikpe890@'+HOST2+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
