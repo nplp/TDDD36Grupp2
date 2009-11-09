@@ -29,13 +29,15 @@ def progress_timeout(pbobj):
 def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 	
-def send_rpc(self, widget, osso_c):
-        rpc = osso.Rpc(osso_c)
-        rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "do_something", ("hej", "bajs"))
-osso_c = osso.Context("osso_test_sender", "0.0.1", False)
+
 
 	
 class MenuExample:
+
+    def send_rpc(self, widget, osso_c):
+        rpc = osso.Rpc(osso_c)
+        rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "do_something", ("hej", "bajs"))
+    osso_c = osso.Context("osso_test_sender", "0.0.1", False)
 	
     # Callback that toggles the activity mode of the progress
     # bar	
@@ -245,7 +247,7 @@ class MenuExample:
 	
 	# Textmeddelande
 	self.text = gtk.Button("Textmeddelande")
-        self.text.connect("clicked", send_rpc, osso_c)
+        self.text.connect("clicked", self.send_rpc, self.osso_c)
 	self.vbox2.pack_start(self.text, True, True, 0)
 	
 	# Samtal
