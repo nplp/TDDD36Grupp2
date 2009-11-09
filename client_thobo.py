@@ -24,7 +24,7 @@ ADDR = (HOST, PORT)
 
 def callback_func(interface, method, arguments, user_data):
         print "RPC received"
-    osso_c = user_data
+        osso_c = user_data
  
 osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
 rpc = osso.Rpc(osso_c)
