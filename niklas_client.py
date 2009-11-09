@@ -7,7 +7,7 @@ import sys
 from socket import *
 from threading import *
 import os
-from message import *
+#from message import *
 from time import time
 import subprocess
 #import dbus
@@ -23,7 +23,7 @@ ADDR = ('127.0.0.1', 2100)	#Vi connectar till oss själva på porten som är angive
 
 #SSH anrop, startar ssh tunnel mot primärservern
 try:
-	subprocess.call('ssh -f nikpe890@'+HOST+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
+	print str(subprocess.call('ssh -f nikpe890@'+HOST+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True))
 except error:
 	print 'no server baby'
 	subprocess.call('ssh -f nikpe890@'+HOST2+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
