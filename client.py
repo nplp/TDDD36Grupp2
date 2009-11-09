@@ -13,7 +13,7 @@ import subprocess
 #import dbus
 
 #Variabler
-HOST = '130.236.189.14'
+HOST = '127.0.0.1'
 PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
