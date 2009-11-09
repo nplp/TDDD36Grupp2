@@ -29,10 +29,10 @@ def progress_timeout(pbobj):
 def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 	
-    def send_rpc(self, widget, osso_c):
-            rpc = osso.Rpc(osso_c)
-            rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "do_something", ("hej", "bajs"))
-    osso_c = osso.Context("osso_test_sender", "0.0.1", False)
+def send_rpc(self, widget, osso_c):
+        rpc = osso.Rpc(osso_c)
+        rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "do_something", ("hej", "bajs"))
+osso_c = osso.Context("osso_test_sender", "0.0.1", False)
 
 	
 class MenuExample:
