@@ -16,7 +16,7 @@ import osso
 #Variabler
 testmeddelande = "tjabba"
 HOST = '127.0.0.1'
-PORT = 2000
+PORT = 2151
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
