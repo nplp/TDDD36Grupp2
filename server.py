@@ -20,6 +20,84 @@ from groups import *
 
 ClientMutex = BoundedSemaphore(1)
 
+# DB-test --------------------------------------------------------
+
+# coding:utf-8
+from sqlalchemy import *
+from sqlalchemy.orm import *
+
+engine = create_engine('sqlite:///data.db', echo=False)
+metadata = MetaData()
+
+users_table = Table('users_table', metadata,
+	Column('id', Integer, primary_key=True),
+	Column('name', String(40)),
+	Column('clearance', String(40)),
+	Column('group', String(20)),
+	Column('password', String(20))
+	)
+items_table = Table('items_table', metadata,
+	Column('id', Integer, primary_key=True),
+	Column('name', String(40)),
+	Column('count', Integer),
+	Column('location', String(40))
+	)
+Session = sessionmaker()
+Session.configure(bind=engine)
+session = Session()
+class User(object):
+	def __init__(self, name=None, clearance=None, group=None, password=None):
+		self.name=name
+		self.clearance=clearance
+		self.group=group
+		self.password=password
+	def __repr__(self):
+		return "<User('%s','%s','%s', '%s')>" % (self.name, self.clearance, self.group, self.password)
+class Item(object):
+	def __init__(self, name=None, count=None, location=None):
+		self.name=name
+		self.count=count
+		self.location=location
+	def __repr__(self):
+		return "<Item('%s','%s', '%s')>" % (self.name, self.count, self.location)
+
+metadata.create_all(engine)
+mapper(User, users_table)
+mapper(Item, items_table)
+
+USERS = session.query(User)
+
+
+"""
+from sqlalchemy import *
+
+# Let's re-use the same database as before
+db = create_engine('sqlite:///data.db')
+
+db.echo = False  # We don't want to see the SQL we're creating
+
+metadata = MetaData(db)
+
+# The users table already exists, so no need to redefine it. Just
+# load it from the database using the "autoload" feature.
+USERS = Table('users', metadata, autoload=True)
+"""
+
+"""
+def run(stmt):
+    rs = stmt.execute()
+    for row in rs:
+        print row
+
+# Most WHERE clauses can be constructed via normal comparisons
+s = USERS.select(users.c.name == 'kj')
+run(s)
+"""
+
+#### --------------------------------------------------------
+
+
+
 # ATOMISKA FUNKTIONER --------------------------------------------------------
 
 # Broadcast. Atomisk.
@@ -68,7 +146,6 @@ def atomic_reGroupClients():
 	ClientMutex.acquire()
 	delete = list()
 	for i in range(len(socketArray)):
-		print "Delete " + str(i)
 		if(not socketArray[i].isAlive()):
 			delete.append(i)
 
@@ -119,9 +196,9 @@ def statusList():
 		String += "\n"
 	return String
 
-#HOST = '130.236.216.83'
+#HOST = '130.236.218.114'
 HOST = '127.0.0.1'
-PORT = 2147
+PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
@@ -135,15 +212,16 @@ serverSocket.listen(5)
 
 connectionQueue = list() # Låter endast en användare per IP ansluta åt gången
 socketArray = list() # Innehåller alla sockets vi kör
-openfile = open('users')
-USERS = openfile.readlines()
 USERLOGIN = dict()
 USERNAMES = list()
 
-for s in USERS:
-	temp = (s.split(' ',1))
-	USERLOGIN[temp[0]] = temp[1]
-	USERNAMES.append(temp[0])
+USERS_EXECUTE = USERS.select()
+
+for s in USERS_EXECUTE:
+	#s.execute()
+	USERLOGIN[s.name] = s.password
+	USERNAMES.append(s.name)
+	print s.name
 
 print USERNAMES
 
@@ -182,7 +260,7 @@ class sessionClass(Thread):
 					return "/ERROR"
 				if(CLIENTNAME in USERNAMES):
 					self.socket.send("Type your password " + CLIENTNAME)
-					login = self.socket.recv(BUFF) + "\n"
+					login = self.socket.recv(BUFF)
 					# Atomisk ------
 					ClientMutex.acquire()
 					if(search(CLIENTNAME) == -1):
