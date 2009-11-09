@@ -7,25 +7,29 @@ import sys
 from socket import *
 from threading import *
 import os
-from message import *
+#from message import *
 from time import time
 import subprocess
 #import dbus
 
 #Variabler
-HOST = '127.0.0.1'
+HOST = '130.236.189.14'
+HOST2 = '130.236.189.14'
 PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
-ADDR = (HOST, PORT)
+MYPORT = 2000
+ADDR = ('127.0.0.1', MYPORT)
 
 
 #SSH anrop, startar ssh tunnel mot servern
 try:
-	subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2150:127.0.0.1:2000 sleep 4', shell=True)
+	subprocess.call('ssh -f nikpe890@'+HOST+' -L'+MYPORT+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 except error:
 	print 'no server baby'
+
+#Sekundärserver byte är uppskjutet, lite mer information finns i niklas_client.py där jag testar lite connection timeouts med mera.
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
