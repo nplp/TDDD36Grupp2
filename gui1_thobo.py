@@ -1,7 +1,7 @@
+# -*- coding: utf-8 -*-
 #Ar det inte battre om detta sparas i en databas som man kan anvanda sig av?
 #Jag kan inte se min progressbar, vad hander egentligen?
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import pygtk
 pygtk.require('2.0')
 import gtk, gobject
@@ -25,8 +25,19 @@ def progress_timeout(pbobj):
         # Set the new value
        	pbobj.pbar.set_fraction(new_val)
 	return True
+
+def callback(self, widget, data=None):
+        print "Hello again - %s was pressed" % data
+	
+
+
 	
 class MenuExample:
+
+    def send_rpc(self, widget, osso_c):
+        rpc = osso.Rpc(osso_c)
+        rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "do_something", ("hej", "bajs"))
+    osso_c = osso.Context("osso_test_sender", "0.0.1", False)
 	
     # Callback that toggles the activity mode of the progress
     # bar	
@@ -42,12 +53,7 @@ class MenuExample:
         elif self.pbar.get_orientation() == gtk.PROGRESS_RIGHT_TO_LEFT:
             self.pbar.set_orientation(gtk.PROGRESS_LEFT_TO_RIGHT)
 	
-    def callback(self, widget, data=None):
-        print "Hello again - %s was pressed" % data
-	
-    def send_rpc(self, widget, osso_c):
-    	rpc = osso.Rpc(osso_c)
-    	rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "thor")
+    
 	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
@@ -238,11 +244,10 @@ class MenuExample:
 	self.vbox2.set_size_request(198, 95)
         self.vbox2.show()
 	
-	osso_c = osso.Context("text_sender", "0.0.1", False)
 	
 	# Textmeddelande
 	self.text = gtk.Button("Textmeddelande")
-        self.text.connect("clicked", self.send_rpc, osso_c)
+        self.text.connect("clicked", self.send_rpc, self.osso_c)
 	self.vbox2.pack_start(self.text, True, True, 0)
 	
 	# Samtal

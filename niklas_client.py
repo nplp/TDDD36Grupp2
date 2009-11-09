@@ -1,52 +1,41 @@
 # client
 # coding:utf-8
-# Ovanstï¿¯ï¾¿ï¾¥ende rad ï¿¯ï¾¿ï¾¤r ISO-kodning fï¿¯ï¾¿ï¾¶r att ï¿¯ï¾¿ï¾¥ï¿¯ï¾¿ï¾¤ï¿¯ï¾¿ï¾¶ ska funka.
+# Ovanst￯﾿ﾥende rad ￯﾿ﾤr ISO-kodning f￯﾿ﾶr att ￯﾿ﾥ￯﾿ﾤ￯﾿ﾶ ska funka.
 
 import re
 import sys
 from socket import *
 from threading import *
 import os
-from message import *
+#from message import *
 from time import time
 import subprocess
 #import dbus
-import osso
 
 #Variabler
-HOST = '127.0.0.1'
-PORT = 2150
+HOST = '130.236.218.124' #Prim�rserver
+HOST2 = '130.236.189.14' #Sekund�rserver
+PORT = 2150		#Porten hos servern
 if(len(sys.argv) > 1):
-	PORT = int(sys.argv[1])
+	PORT = int(sys.argv[1])		#Tar in en port ifr�n terminalen
 BUFF = 1024
-ADDR = (HOST, PORT)
- 
+ADDR = ('127.0.0.1', 2100)	#Vi connectar till oss sj�lva p� porten som �r angiven h�r
+connectionzor = "-o'ConnectTimeout 5'"
 
-
-#callback som tar emot meddelanden från UI processsen
-def callback_func(interface, method, arguments, user_data):
-    osso_c = user_data
-    print "hejsan"
- 
-osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
-rpc = osso.Rpc(osso_c)
-rpc.set_rpc_callback("spam.eggs.osso_test_receiver",
-                            "/spam/eggs/osso_test_receiver",
-                            "spam.eggs.osso_test_receiver", callback_func,
-                            osso_c)
-
-#SSH anrop, startar ssh tunnel mot servern
+#SSH anrop, startar ssh tunnel mot prim�rservern
+subprocess.call('ssh -f nikpe890@'+HOST+' -L 2100:127.0.0.1:'+str(PORT)+connectionzor+' sleep 4', shell=True)
+print "bananas"
 '''
-try:
-	subprocess.check_call()
-except error:
-	print "boobytrap"
+if(True):
+	pass
+else:
+	print 'bananas'
+	subprocess.call('ssh -f nikpe890@'+HOST2+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 '''
-subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2150:127.0.0.1:2151 sleep 4', shell=True)
-
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
 
+'''
 #Checkar servern
 def checkServer():
     serverSocket = socket()
@@ -58,7 +47,7 @@ def checkServer():
         return 0
     except error:
         return 1
- 
+''' 
 def connect():
     clientSocket.connect(ADDR)
     recThread = recieverClass(clientSocket, ADDR)
@@ -100,7 +89,7 @@ class recieverClass(Thread):
     def reciever(self):
         try:
             while 1:
-                data = unicode(self.clientSocket.recv(BUFF), 'utf-8')
+		data = str(self.clientSocket.recv(BUFF))
                 if(data != ""):
                     if(data.startswith('/ping')):
                         s = data.split(' ', 1)
@@ -118,9 +107,6 @@ class recieverClass(Thread):
         self.reciever()
 
 connect()
-
-
-
 
 # Skickar meddelanden samt har hand om kommandon
 while 1:
