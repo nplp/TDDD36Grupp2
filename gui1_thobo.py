@@ -15,6 +15,11 @@ import gui
 
 import osso #osso transmitter
 
+def send_rpc(widget, osso_c):
+        rpc = osso.Rpc(osso_c)
+        rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "do_something", ("hej", "bajs"))
+osso_c = osso.Context("osso_test_sender", "0.0.1", False)
+
 def progress_timeout(pbobj):
     	if pbobj.activity_check.get_active():
 		pbobj.pbar.pulse()
@@ -166,10 +171,7 @@ class MenuExample:
 
     def __init__(self):
 
-        def send_rpc(widget, osso_c):
-                rpc = osso.Rpc(osso_c)
-                rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "do_something", ("hej", "bajs"))
-        osso_c = osso.Context("osso_test_sender", "0.0.1", False)
+
         
         #Skapa fonster
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
@@ -250,7 +252,7 @@ class MenuExample:
 	
 	# Textmeddelande
 	self.text = gtk.Button("Textmeddelande")
-        self.text.connect("clicked", send_rpc, osso_c)
+        #self.text.connect("clicked", send_rpc, osso_c)
 	self.vbox2.pack_start(self.text, True, True, 0)
 	
 	# Samtal
@@ -348,6 +350,7 @@ class MenuExample:
 	
  
 def main():
+    send_rpc()
     gtk.main()
 
 if __name__ == "__main__":
