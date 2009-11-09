@@ -250,7 +250,7 @@ class MenuExample:
 	
 	# Samtal
 	self.samtal = gtk.Button("Samtal")
-        self.samtal.connect("clicked", self.callback, "Samtal")
+        self.samtal.connect("clicked", callback, "Samtal")
 	self.vbox2.pack_start(self.samtal, True, True, 0)
 	
 	# Video
