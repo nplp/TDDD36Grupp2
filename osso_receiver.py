@@ -4,6 +4,7 @@ import gtk
  
 def callback_func(interface, method, arguments, user_data, tupel):
     osso_c = user_data
+    print "hej"
     print interface
     print method
     print arguments
