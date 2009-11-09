@@ -15,7 +15,7 @@ import osso
 
 #Variabler
 HOST = '127.0.0.1'
-PORT = 2151
+PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
@@ -42,7 +42,7 @@ try:
 except error:
 	print "boobytrap"
 '''
-subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2151:127.0.0.1:2150 sleep 4', shell=True)
+subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2150:127.0.0.1:2151 sleep 4', shell=True)
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
