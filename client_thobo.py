@@ -39,7 +39,7 @@ try:
 except error:
 	print "boobytrap"
 '''
-subprocess.call('ssh -f kj@130.236.216.163 -L 2151:127.0.0.1:2148 sleep 4', shell=True)
+subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2151:127.0.0.1:2148 sleep 4', shell=True)
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
