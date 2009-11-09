@@ -2,7 +2,7 @@ import socket
 
 class BTReader:
 
-def connect(self):
+def connect():
 	self.sock=socket.socket(socket.AF_BT,socket.SOCK_STREAM)
 	address,services=socket.bt_discover()
 	print "Discovered: %s, %s"%(address,services)
