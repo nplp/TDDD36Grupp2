@@ -49,6 +49,9 @@ class MenuExample:
         print "nu trock jag pa en knapp"
     	rpc = osso.Rpc(osso_c)
     	rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "thor")
+
+    osso_c = osso.Context("osso_test_sender", "0.0.1", False)
+
 	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
@@ -239,7 +242,6 @@ class MenuExample:
 	self.vbox2.set_size_request(198, 95)
         self.vbox2.show()
 	
-	osso_c = osso.Context("osso_test_sender", "0.0.1", False)
 	
 	# Textmeddelande
 	self.text = gtk.Button("Textmeddelande")
