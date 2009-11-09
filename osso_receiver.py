@@ -2,13 +2,14 @@
 import osso
 import gtk
  
-def callback_func(interface, method, arguments, user_data):
+def callback_func(interface, method, arguments, user_data, arg):
     osso_c = user_data
     print "hej"
     print interface
     print method
     print arguments
     print user_data
+    print arg
  
 osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
 rpc = osso.Rpc(osso_c)
