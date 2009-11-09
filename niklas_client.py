@@ -13,7 +13,7 @@ import subprocess
 #import dbus
 
 #Variabler
-HOST = '130.236.189.140' #Primärserver
+HOST = '130.236.217.192' #Primärserver
 HOST2 = '130.236.189.14' #Sekundärserver
 PORT = 2150		#Porten hos servern
 if(len(sys.argv) > 1):
