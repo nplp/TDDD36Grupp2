@@ -16,13 +16,14 @@ import osso
 #Variabler
 testmeddelande = "tjabba"
 HOST = '127.0.0.1'
-PORT = 2151
+PORT = 2000
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
 ADDR = (HOST, PORT)
 
 def callback_func(interface, method, arguments, user_data):
+        print "RPC received"
     osso_c = user_data
  
 osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
@@ -39,7 +40,7 @@ try:
 except error:
 	print "boobytrap"
 '''
-subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2151:127.0.0.1:2148 sleep 4', shell=True)
+subprocess.call('ssh -f kj@130.236.216.163 -L 2151:127.0.0.1:2148 sleep 4', shell=True)
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
