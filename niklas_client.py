@@ -13,20 +13,20 @@ import subprocess
 #import dbus
 
 #Variabler
-HOST = '130.236.189.14'
-HOST2 = '130.236.189.14'
-PORT = 2150
+HOST = '130.236.189.14' #Primärserver
+HOST2 = '130.236.189.14' #Sekundärserver
+PORT = 2150		#Porten hos servern
 if(len(sys.argv) > 1):
-	PORT = int(sys.argv[1])
+	PORT = int(sys.argv[1])		#Tar in en port ifrån terminalen
 BUFF = 1024
-ADDR = ('127.0.0.1', 2150)
+ADDR = ('127.0.0.1', 2100)	#Vi connectar till oss själva på porten som är angiven här
 
-
-#SSH anrop, startar ssh tunnel mot servern
+#SSH anrop, startar ssh tunnel mot primärservern
 try:
-	subprocess.call('ssh -f nikpe890@'+HOST+' -L 2150:127.0.0.1:'+PORT+' sleep 4', shell=True)
+	subprocess.call('ssh -f nikpe890@'+HOST+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 except error:
 	print 'no server baby'
+	subprocess.call('ssh -f nikpe890@'+HOST2+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
