@@ -7,7 +7,7 @@ import sys
 from socket import *
 from threading import *
 import os
-#from message import *
+from message import *
 from time import time
 import subprocess
 #import dbus
