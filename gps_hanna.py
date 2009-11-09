@@ -1,5 +1,7 @@
-import socket
-import btsocket
+try:
+    from btsocket import *
+except:
+    from socket import *
 
 class BTReader:
 
