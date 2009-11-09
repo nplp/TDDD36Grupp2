@@ -25,7 +25,7 @@ ADDR = ('127.0.0.1', 2100)	#Vi connectar till oss själva på porten som är angive
 try:
 	subprocess.call('ssh -f nikpe890@'+HOST+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 except error:
-#	print 'no server baby'
+	print 'no server baby'
 	subprocess.call('ssh -f nikpe890@'+HOST2+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 
 #Aktivera clientsocket
