@@ -34,10 +34,7 @@ def callback(self, widget, data=None):
 	
 class MenuExample:
 
-    def send_rpc(widget, osso_c):
-        rpc = osso.Rpc(osso_c)
-        rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "do_something", ("hej", "bajs"))
-    osso_c = osso.Context("osso_test_sender", "0.0.1", False)
+
 	
     # Callback that toggles the activity mode of the progress
     # bar	
@@ -168,6 +165,12 @@ class MenuExample:
         gtk.main_quit()
 
     def __init__(self):
+
+        def send_rpc(widget, osso_c):
+                rpc = osso.Rpc(osso_c)
+                rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "do_something", ("hej", "bajs"))
+        osso_c = osso.Context("osso_test_sender", "0.0.1", False)
+        
         #Skapa fonster
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.set_size_request(200, 100)
