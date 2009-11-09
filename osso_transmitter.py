@@ -21,4 +21,5 @@ hbox.add(send_button)
 send_button.connect("clicked",
                     send_rpc, osso_c)
 window.show_all()
+
 gtk.main() 

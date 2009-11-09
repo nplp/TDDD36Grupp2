@@ -14,9 +14,8 @@ import subprocess
 import osso
 
 #Variabler
-testmeddelande = "tjabba"
 HOST = '127.0.0.1'
-PORT = 2151
+PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
@@ -27,8 +26,7 @@ ADDR = (HOST, PORT)
 #callback som tar emot meddelanden från UI processsen
 def callback_func(interface, method, arguments, user_data):
     osso_c = user_data
-    testmeddelande = method
-    print testmeddelande
+    print "hejsan"
  
 osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
 rpc = osso.Rpc(osso_c)
@@ -44,7 +42,7 @@ try:
 except error:
 	print "boobytrap"
 '''
-subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2151:127.0.0.1:2150 sleep 4', shell=True)
+subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2150:127.0.0.1:2151 sleep 4', shell=True)
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
@@ -127,7 +125,6 @@ connect()
 # Skickar meddelanden samt har hand om kommandon
 while 1:
     data = raw_input()
-    data = testmeddelande
     msg = Message(data)
     data = finishCMD(msg)
         

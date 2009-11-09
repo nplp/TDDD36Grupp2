@@ -25,6 +25,15 @@ def progress_timeout(pbobj):
         # Set the new value
        	pbobj.pbar.set_fraction(new_val)
 	return True
+
+def callback(self, widget, data=None):
+        print "Hello again - %s was pressed" % data
+	
+def send_rpc(self, widget, osso_c):
+        rpc = osso.Rpc(osso_c)
+        rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "do_something", ("hej", "bajs"))
+osso_c = osso.Context("osso_test_sender", "0.0.1", False)
+
 	
 class MenuExample:
 	
@@ -42,16 +51,7 @@ class MenuExample:
         elif self.pbar.get_orientation() == gtk.PROGRESS_RIGHT_TO_LEFT:
             self.pbar.set_orientation(gtk.PROGRESS_LEFT_TO_RIGHT)
 	
-    def callback(self, widget, data=None):
-        print "Hello again - %s was pressed" % data
-	
-    def send_rpc(self, widget, osso_c):
-        print "nu trock jag pa en knapp"
-    	rpc = osso.Rpc(osso_c)
-    	rpc.rpc_run("spam.eggs.osso_test_receiver", "/spam/eggs/osso_test_receiver", "spam.eggs.osso_test_receiver", "thor")
-
-    osso_c = osso.Context("osso_test_sender", "0.0.1", False)
-
+    
 	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
@@ -245,7 +245,7 @@ class MenuExample:
 	
 	# Textmeddelande
 	self.text = gtk.Button("Textmeddelande")
-        self.text.connect("clicked", self.send_rpc, osso_c)
+        self.text.connect("clicked", self.send_rpc, self.osso_c)
 	self.vbox2.pack_start(self.text, True, True, 0)
 	
 	# Samtal
