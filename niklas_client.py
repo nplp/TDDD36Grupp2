@@ -20,7 +20,7 @@ if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])		#Tar in en port ifrån terminalen
 BUFF = 1024
 ADDR = ('127.0.0.1', 2100)	#Vi connectar till oss själva på porten som är angiven här
-connectionzor = '-o'ConnectTimeout 5''
+connectionzor = "-o'ConnectTimeout 5'"
 
 #SSH anrop, startar ssh tunnel mot primärservern
 subprocess.call('ssh -f nikpe890@'+HOST+' -L 2100:127.0.0.1:'+str(PORT)+connectionzor+' sleep 4', shell=True)
