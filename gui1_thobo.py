@@ -243,7 +243,7 @@ class MenuExample:
 	
 	# Textmeddelande
 	self.text = gtk.Button("Textmeddelande")
-        self.text.connect("clicked", self.send_rpc, osso_c)
+        self.text.connect("clicked", self.send_rpc, self.osso_c)
 	self.vbox2.pack_start(self.text, True, True, 0)
 	
 	# Samtal
