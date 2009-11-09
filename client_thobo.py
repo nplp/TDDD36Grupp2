@@ -14,7 +14,6 @@ import subprocess
 import osso
 
 #Variabler
-testmeddelande = "tjabba"
 HOST = '127.0.0.1'
 PORT = 2151
 if(len(sys.argv) > 1):
@@ -126,7 +125,6 @@ connect()
 # Skickar meddelanden samt har hand om kommandon
 while 1:
     data = raw_input()
-    data = testmeddelande
     msg = Message(data)
     data = finishCMD(msg)
         
