@@ -31,9 +31,10 @@ if(True):
 else:
 	print 'bananas'
 	subprocess.call('ssh -f nikpe890@'+HOST2+' -L 2100:127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
+'''
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
-'''
+
 '''
 #Checkar servern
 def checkServer():
