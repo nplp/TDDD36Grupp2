@@ -27,8 +27,7 @@ ADDR = (HOST, PORT)
 #callback som tar emot meddelanden från UI processsen
 def callback_func(interface, method, arguments, user_data):
     osso_c = user_data
-    testmeddelande = method
-    print testmeddelande
+    print "hejsan"
  
 osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
 rpc = osso.Rpc(osso_c)
