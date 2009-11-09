@@ -2,7 +2,7 @@
 import osso
 import gtk
  
-def callback_func(interface, method, arguments, user_data:
+def callback_func(interface, method, arguments, user_data):
     osso_c = user_data
     print "hej"
     print interface
