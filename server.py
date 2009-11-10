@@ -67,33 +67,6 @@ mapper(Item, items_table)
 
 USERS = session.query(User)
 
-
-"""
-from sqlalchemy import *
-
-# Let's re-use the same database as before
-db = create_engine('sqlite:///data.db')
-
-db.echo = False  # We don't want to see the SQL we're creating
-
-metadata = MetaData(db)
-
-# The users table already exists, so no need to redefine it. Just
-# load it from the database using the "autoload" feature.
-USERS = Table('users', metadata, autoload=True)
-"""
-
-"""
-def run(stmt):
-    rs = stmt.execute()
-    for row in rs:
-        print row
-
-# Most WHERE clauses can be constructed via normal comparisons
-s = USERS.select(users.c.name == 'kj')
-run(s)
-"""
-
 #### --------------------------------------------------------
 
 
@@ -128,9 +101,11 @@ def atomic_disconnect(client):
 	ClientMutex.acquire()
 
 	index = search(client)
-	socketArray[index].status = 0
-	sendAll("Server message: " + str(socketArray[index].name) + " disconnected.")
-	socketArray[index].socket.close()
+	if(index != -1):
+		socketArray[index].socket.send(message)
+		socketArray[index].status = 0
+		sendAll("Server message: " + str(socketArray[index].name) + " disconnected.")
+		socketArray[index].socket.close()
 	ClientMutex.release()
 
 
@@ -306,8 +281,22 @@ class sessionClass(Thread):
 						self.sendBack("You whispered to " + self.lastWhisper)
 				elif(data.startswith('/ping')):
 					msg = data.split(' ', 1)
-					i =  time()-float(msg[1])
-					self.sendBack("Ping: " + str(i))
+					if(msg[0] == '/ping/'):
+						#i =  time()-float(msg[1])
+						self.sendBack("/ping " + msg[1])
+					else:
+						# Atomisk ------
+						ClientMutex.acquire()
+						temp = search(msg[1])
+						ClientMutex.release()
+						# --------------
+						if(temp != -1):	self.sendBack("/online " + msg[1])
+						else:	self.sendBack("/online/ " + msg[1])
+				elif(data.startswith('/kick')):
+					msg = data.split(' ', 1)
+					if(len(msg) > 1):
+						atomic_disconnect(msg[1])
+
 				else:
 					atomic_sendAll(self.name + ": " + data)
 		except Exception, e:

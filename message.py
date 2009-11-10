@@ -2,7 +2,8 @@
 # coding:utf-8
 # Ovanstående rad är ISO-kodning för att åäö ska funka.
 
-cmdArray = ("/cleanup", "/exit", "/list", "/ping", "/quit", "/reply","/status", "/whisper")
+# Borde kanske hasha cmdArray för optimering egentligen.
+cmdArray = ("/addcontact", "/cleanup", "/deletecontact", "/exit", "/kick", "/list", "/ping", "/quit", "/reply", "/showcontactlist", "/whisper")
 
 class Message:
 	text = ""
