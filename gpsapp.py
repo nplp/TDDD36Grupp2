@@ -18,7 +18,7 @@ con = gpsbt.start()
 time.sleep(2.0) # wait for gps to come up
 #Getting GPS coordinats
 gps = gpsbt.gps()
-#Vantar på en gps koordinat
+#Vantar pa en gps koordinat
 waiting_for_a_fix()
 # Turning of GPS
 gpsbt.stop(con)
