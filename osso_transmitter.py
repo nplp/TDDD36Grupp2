@@ -5,10 +5,11 @@ import gtk
  
 def send_rpc(widget, osso_c):
     rpc = osso.Rpc(osso_c)
+    x=("hej", "kj")
     rpc.rpc_run("spam.eggs.osso_test_receiver",
                    "/spam/eggs/osso_test_receiver",
                    "spam.eggs.osso_test_receiver",
-                   "do_something", ("h3j","s4n"))
+                   "do_something", x)
  
 osso_c = osso.Context("osso_test_sender", "0.0.1", False)
  

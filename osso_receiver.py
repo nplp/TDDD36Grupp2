@@ -2,7 +2,7 @@
 import osso
 import gtk
  
-def callback_func(interface, method, arguments, user_data, tupel):
+def callback_func(interface, method, arguments, user_data, rpc_args):
     osso_c = user_data
     print user_data
     print tupel
