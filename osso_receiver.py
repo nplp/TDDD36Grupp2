@@ -4,6 +4,9 @@ import gtk
  
 def callback_func(interface, method, arguments, user_data):
     print user_data
+    print interface
+    print medthod
+    print arguments
  
 osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
 rpc = osso.Rpc(osso_c)
