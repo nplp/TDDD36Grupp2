@@ -8,7 +8,7 @@ oldcoordx,oldcoordy = (0,0)
 i = 0
 def waiting_for_a_fix():
 	print "Vi vantar pa en koordinat"
-	while coordx,coordy = ((0,0) || oldcoordx,oldcoordy):
+	while ((coordx,coordy) == ((0,0) || (oldcoordx,oldcoordy))):
 		(coordx,coordy) =gps.get_position()
     		print "Wai-ting."+i
 		i+=1
