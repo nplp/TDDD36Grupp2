@@ -19,6 +19,10 @@ class MenuExample:
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 	
+    def send(self, widget, data=None):
+        print "Hello again - %s was pressed" % data
+	
+	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
 	 self.verktyg.set_active(False)
@@ -146,6 +150,7 @@ class MenuExample:
 	 self.entry.show()
 	 self.meddelande.show()
 	 self.entry1.show()
+	 self.skicka.show()
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
@@ -322,6 +327,10 @@ class MenuExample:
 	self.entry1.set_size_request(50,200)
 	#self.entry1.modify_font(PangoFontDiscription,get_size[12])
 	self.vbox3.pack_start(self.entry1, True, True, 0)
+	
+	self.skicka = gtk.Button("Skicka")
+        self.skicka.connect("clicked", self.send, "Skicka")
+	self.vbox3.pack_start(self.skicka, True, True, 0)
 	
 	#Packa karta
 	self.vbox3.pack_start(self.startakarta,True,True,0)
