@@ -7,7 +7,7 @@ def has_a_fix(gps):
 
 # metod som ligger och vantar på en koordinat
 def waiting_for_a_fix()
-	print "Vi väntar på en koordinat"
+	print "Vi vantar på en koordinat"
 	while not has_a_fix(gps):
     		print "Wai-ting..."
     		time.sleep(5)
