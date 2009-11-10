@@ -8,7 +8,7 @@ def send_rpc(widget, osso_c):
     rpc.rpc_run("spam.eggs.osso_test_receiver",
                    "/spam/eggs/osso_test_receiver",
                    "spam.eggs.osso_test_receiver",
-                   "do_something")
+                   "do_something", ("h3j","s4n"))
  
 osso_c = osso.Context("osso_test_sender", "0.0.1", False)
  
