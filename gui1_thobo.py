@@ -12,6 +12,8 @@ import data_storage
 import map_xml_reader
 import gui_map
 import gui
+import sys
+import subprocess
 
 	
 class MenuExample:
