@@ -4,13 +4,15 @@ import gpsbt
 # metod som ligger och vantar pa en koordinat
 
 def waiting_for_a_fix():
-	coordx,coordy= (0,0)
-	oldcoordx,oldcoordy = (0,0)
+	#coordx,coordy= (0,0)
+	coord = (0,0)
+	oldcoord = (0,0)
+	#oldcoordx,oldcoordy = (0,0)
 	i = 0
 	print "Vi vantar pa en koordinat"
-	while ((coordx == 0 and coordy == 0) or (coordx == oldcoordx and coordy == oldcoordy)):
-		coordx,coordy =gps.get_position()
-    		print "Wai-ting."+ str(i)
+	while (coord == (0,0)): #or (coordx == oldcoordx and coordy == oldcoordy)):
+		coord = gps.get_position()
+    		print "Wai-ting: "+ str(i)
 		i+=1
     		time.sleep(2)
 	oldcoordx,oldcoordy = gps.get_position()
