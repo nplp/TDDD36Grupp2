@@ -23,7 +23,7 @@ class MenuExample:
 
     def send(self, widget, data=None):
         print "Hello again - %s was pressed" % data
-        process = subprocess.Popen(['python', 'client.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(['python', 'test.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         x = process.communicate('tjaba')
 	
 	
