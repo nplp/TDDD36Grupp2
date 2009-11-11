@@ -2,6 +2,45 @@
 import data_storage
 import map_xml_reader
 import gui
+import time
+import gpsbt
+
+latitude,longitude = (0,0)
+hej = True
+
+def draw():	
+	while(hej):
+		print "uppdaterar"
+		map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
+                                                 "latitude":latitude},
+                                                "arc(x - 7, y - 7, 14, 0, 2 * math.pi)",
+                                                "set_source_rgb(255, 255, 0)"))	
+		laitude, longitude = gps.get_position()
+		time.sleep(2)
+
+
+def waiting_for_a_fix():
+	#oldcoord = (0,0)
+	i = 0
+	print "Vi vantar pa en koordinat"
+	while (coord == (0,0)):
+		latitude, longitude = gps.get_position()
+    		print "Waiting: "+ str(i)
+		i+=1
+    		time.sleep(2)
+	#oldcoord = gps.get_position()
+	#print gps.get_position()
+
+# Startar GPSEN
+con = gpsbt.start()
+time.sleep(2.0) # wait for gps to come up
+#Getting GPS coordinats
+gps = gpsbt.gps()
+#Vantar pa en gps koordinat
+waiting_for_a_fix()
+# Turning of GPS
+#gpsbt.stop(con)
+
 
 # Kartan
 print "Läser in kartinformation från kartdata/map.xml"
@@ -24,6 +63,11 @@ map.add_object("Brandbil1", data_storage.MapObject({"longitude":15.5729,
 map.add_object("Sjukhus1", data_storage.MapObject({"longitude":15.5629,
                                                    "latitude":58.4093},
                                                   "ikoner/sjukhus.png"))
+
+draw()
+
+
+
 # Ritar ut en svart cirkel
 #
 # Nedan används två kommandon för utritningen.
@@ -44,11 +88,6 @@ map.add_object("Sjukhus1", data_storage.MapObject({"longitude":15.5629,
 map.add_object("Shape1", data_storage.MapObject({"longitude":15.5829,
                                                  "latitude":58.4093},
                                                 "arc(x - 5, y - 5, 10, 0, 2 * math.pi)",
-                                                "set_source_rgb(0, 0, 0)"))
-
-map.add_object("Shape2", data_storage.MapObject({"longitude":15.5763,
-                                                 "latitude":58.3978},
-                                                "arc(x - 6, y - 6, 12, 0, 2 * math.pi)",
                                                 "set_source_rgb(0, 0, 0)"))
 
 
