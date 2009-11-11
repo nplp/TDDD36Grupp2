@@ -17,7 +17,8 @@ import subprocess
 
 	
 class MenuExample:
-	
+
+    data = ""
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 
@@ -27,7 +28,7 @@ class MenuExample:
         x = process.communicate('tjaba')
         print x[0]
         print x[1]
-        process = subprocess.Popen(['python', 'gui1.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(['xterm', '-e python gui1.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 	
 	
@@ -335,6 +336,7 @@ class MenuExample:
 	self.entry1.set_size_request(50,200)
 	#self.entry1.modify_font(PangoFontDiscription,get_size[12])
 	self.vbox3.pack_start(self.entry1, True, True, 0)
+	self.data=entry1.get_text()
 	
 	self.skicka = gtk.Button("Skicka")
         self.skicka.connect("clicked", self.send, "Skicka")
