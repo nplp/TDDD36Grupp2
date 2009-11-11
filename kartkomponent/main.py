@@ -4,11 +4,13 @@ import map_xml_reader
 import gui
 import time
 import gpsbt
+import thread
 
 latitude,longitude = (0,0)
 hej = True
 
-def draw():	
+def draw():
+	global latitude, longitude	
 	while(hej):
 		print "uppdaterar"
 		latitude,longitude = gps.get_position()
@@ -20,7 +22,6 @@ def draw():
 
 
 def waiting_for_a_fix():
-	#oldcoord = (0,0)
 	i = 0
 	print "Vi vantar pa en koordinat"
 	coord = (0,0)
@@ -30,7 +31,6 @@ def waiting_for_a_fix():
     		print "Waiting: "+ str(i)
 		i+=1
     		time.sleep(2)
-	#oldcoord = gps.get_position()
 	print coord
 
 # Startar GPSEN
@@ -100,4 +100,6 @@ app = gui.Gui(map)
 print "Kör programmet."
 app.run()
 
-draw()
+thread.start_new_thread(draw, ())
+
+
