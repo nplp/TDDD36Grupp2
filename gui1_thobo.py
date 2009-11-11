@@ -12,12 +12,20 @@ import data_storage
 import map_xml_reader
 import gui_map
 import gui
+import sys
+import subprocess
 
 	
 class MenuExample:
 	
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
+
+    def send(self, widget, data=None):
+        print "Hello again - %s was pressed" % data
+        process = subprocess.Popen(['python', 'client.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        x = process.communicate('tjaba')
+	
 	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
@@ -146,6 +154,7 @@ class MenuExample:
 	 self.entry.show()
 	 self.meddelande.show()
 	 self.entry1.show()
+	 self.skicka.show()
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
@@ -323,6 +332,11 @@ class MenuExample:
 	#self.entry1.modify_font(PangoFontDiscription,get_size[12])
 	self.vbox3.pack_start(self.entry1, True, True, 0)
 	
+	self.skicka = gtk.Button("Skicka")
+        self.skicka.connect("clicked", self.send, "Skicka")
+        print self.entry1
+	self.vbox3.pack_start(self.skicka, True, True, 0)
+	
 	#Packa karta
 	self.vbox3.pack_start(self.startakarta,True,True,0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
@@ -332,14 +346,6 @@ class MenuExample:
 
 def main():
     gtk.main()
-    osso_c = osso.Context("osso_test_sender", "0.0.1", False)
-    rpc = osso.Rpc(osso_c)
-    rpc.rpc_run("spam.eggs.osso_test_receiver",
-                   "/spam/eggs/osso_test_receiver",
-                   "spam.eggs.osso_test_receiver",
-                   "do_something", ("hej", "bajs"))
- 
-    
 
 if __name__ == "__main__":
     MenuExample()
