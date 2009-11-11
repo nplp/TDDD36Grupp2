@@ -11,11 +11,11 @@ hej = True
 def draw():	
 	while(hej):
 		print "uppdaterar"
+		laitude,longitude = gps.get_position()
 		map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
                                                  "latitude":latitude},
                                                 "arc(x - 7, y - 7, 14, 0, 2 * math.pi)",
                                                 "set_source_rgb(255, 255, 0)"))	
-		laitude, longitude = gps.get_position()
 		time.sleep(2)
 
 
@@ -23,8 +23,8 @@ def waiting_for_a_fix():
 	#oldcoord = (0,0)
 	i = 0
 	print "Vi vantar pa en koordinat"
-	while (latitude, longitude == (0,0)):
-		latitude, longitude = gps.get_position()
+	while (latitude,longitude == (0,0)):
+		latitude,longitude = gps.get_position()
     		print "Waiting: "+ str(i)
 		i+=1
     		time.sleep(2)
