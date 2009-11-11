@@ -336,7 +336,7 @@ class MenuExample:
 	self.entry1.set_size_request(50,200)
 	#self.entry1.modify_font(PangoFontDiscription,get_size[12])
 	self.vbox3.pack_start(self.entry1, True, True, 0)
-	self.data=entry1.get_text()
+	self.data=self.entry1.get_text()
 	
 	self.skicka = gtk.Button("Skicka")
         self.skicka.connect("clicked", self.send, "Skicka")
