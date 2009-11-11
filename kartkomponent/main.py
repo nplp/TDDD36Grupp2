@@ -6,7 +6,6 @@ import time
 import gpsbt
 
 latitude,longitude = (0,0)
-coord = (0,0)
 hej = True
 
 def draw():	
@@ -24,13 +23,15 @@ def waiting_for_a_fix():
 	#oldcoord = (0,0)
 	i = 0
 	print "Vi vantar pa en koordinat"
+	coord = (0,0)
 	while (coord == (0,0)):
 		latitude,longitude = gps.get_position()
+		coord = gps.get_position()
     		print "Waiting: "+ str(i)
 		i+=1
     		time.sleep(2)
 	#oldcoord = gps.get_position()
-	#print gps.get_position()
+	print coord
 
 # Startar GPSEN
 con = gpsbt.start()
