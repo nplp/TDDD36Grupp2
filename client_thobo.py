@@ -26,7 +26,7 @@ contactList = list()
 
 #SSH anrop, startar ssh tunnel mot servern
 try:
-	subprocess.call('ssh -f kj@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
+	subprocess.call('ssh -f matak825@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 except error:
 	print 'no server baby'
 
