@@ -1,12 +1,12 @@
-import time, gpsbt
-
+import time
+import gpsbt
 
 # metod som ligger och vantar pa en koordinat
 
-coordx,coordy= (0,0)
-oldcoordx,oldcoordy = (0,0)
-i = 0
 def waiting_for_a_fix():
+	coordx,coordy= (0,0)
+	oldcoordx,oldcoordy = (0,0)
+	i = 0
 	print "Vi vantar pa en koordinat"
 	while ((coordx == 0 and coordy == 0) or (coordx == oldcoordx and coordy == oldcoordy)):
 		coordx,coordy =gps.get_position()
