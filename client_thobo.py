@@ -11,42 +11,30 @@ from message import *
 from time import time
 import subprocess
 #import dbus
-import osso
 
 #Variabler
-HOST = '127.0.0.1'
+HOST = '130.236.189.22'
+HOST2 = '130.236.189.14'
 PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
-ADDR = (HOST, PORT)
- 
+MYPORT = 2000
+ADDR = ('127.0.0.1', MYPORT)
+contactList = list()
 
-
-#callback som tar emot meddelanden från UI processsen
-def callback_func(interface, method, arguments, user_data):
-    osso_c = user_data
-    print "hejsan"
- 
-osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
-rpc = osso.Rpc(osso_c)
-rpc.set_rpc_callback("spam.eggs.osso_test_receiver",
-                            "/spam/eggs/osso_test_receiver",
-                            "spam.eggs.osso_test_receiver", callback_func,
-                            osso_c)
 
 #SSH anrop, startar ssh tunnel mot servern
-'''
 try:
-	subprocess.check_call()
+	subprocess.call('ssh -f matak825@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 except error:
-	print "boobytrap"
-'''
-subprocess.call('ssh -f nikpe890@130.236.189.14 -L 2150:127.0.0.1:2151 sleep 4', shell=True)
+	print 'no server baby'
+
+#Sekundärserver byte är uppskjutet, lite mer information finns i niklas_client.py där jag testar lite connection timeouts med mera.
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
-
+'''
 #Checkar servern
 def checkServer():
     serverSocket = socket()
@@ -58,7 +46,7 @@ def checkServer():
         return 0
     except error:
         return 1
- 
+''' 
 def connect():
     clientSocket.connect(ADDR)
     recThread = recieverClass(clientSocket, ADDR)
@@ -91,51 +79,74 @@ def checkBattery():
             print "Du sitter pa en loser dator och har inget batteri"       
 
 class recieverClass(Thread):
-    def __init__(self, _clientSocket, _ADDR):
-        self.clientSocket = _clientSocket
-        self.ADDR = _ADDR
-        Thread.__init__(self)
+	def __init__(self, _clientSocket, _ADDR):
+		self.clientSocket = _clientSocket
+		self.ADDR = _ADDR
+		Thread.__init__(self)
     
     # Tar emot meddelanden
-    def reciever(self):
-        try:
-            while 1:
-                data = unicode(self.clientSocket.recv(BUFF), 'utf-8')
-                if(data != ""):
-                    if(data.startswith('/ping')):
-                        s = data.split(' ', 1)
-                        print s[0] + " " + str(time() - float(s[1]))
-                    else:
-                        print data
-                else:
-                    print "rerouting"
-                    connect()
-        except Exception, e:
-            print e
-            #print "Connection lost"
-
-    def run(self):
-        self.reciever()
+	def reciever(self):
+		try:
+			while 1:
+				data = str(self.clientSocket.recv(BUFF))
+				if(data != "" and data != "/x"):
+					if(data.startswith('/ping')):
+						s = data.split(' ', 1)
+						print "Ping: " + str(time() - float(s[1]))
+					elif(data.startswith('/online')):
+						s = data.split(' ', 1)
+						if(data[7] == '/'):
+							print s[1] + " is not online."
+							if(s[1] in contactList):
+								contactList.remove(s[1])
+						else:
+							print s[1] + " is online."
+							contactList.append(s[1])
+					else:
+						print data
+				else:
+					print "rerouting"
+					connect()
+		except Exception, e:
+			print e
+	def run(self):
+		self.reciever()
 
 connect()
 
-
-
-
 # Skickar meddelanden samt har hand om kommandon
 while 1:
-    data = raw_input()
-    msg = Message(data)
-    data = finishCMD(msg)
+	data = raw_input()
+	msg = Message(data)
+	data = finishCMD(msg)
         
-    if(data.startswith('/quit') or data.startswith('/exit')):
-        try:    
-            clientSocket.send('/quit')
-        except Exception, e:
-            print "Server has gone down."
-        break
-    if(data.startswith('/ping')):
-        data = '/ping' + " " + str(time())
-    clientSocket.send(data)
+	if(data.startswith('/quit') or data.startswith('/exit')):
+	 	try:
+			clientSocket.send('/quit')
+		except Exception, e:
+			print "Server has gone down."
+		break
+	if(data.startswith('/ping')):
+		temp = data.split(' ',1)
+		if(len(temp) == 1):
+			data = '/ping' + '/ ' + str(time())
+	elif(data.startswith('/addcontact')):
+		temp = data.split(' ',1)
+		data = ""
+		if(len(temp) > 1 and temp[1] not in contactList):
+			contactList.append(temp[1])
+	elif(data.startswith('/deletecontact')):
+		temp = data.split(' ',1)
+		data = ""
+		if(len(temp) > 1 and temp[1] in contactList):
+			contactList.remove(temp[1])
+	elif(data.startswith('/showcontactlist')):
+		data = ""
+		print "Online contacts: "
+		for n in contactList:
+			print n
+
+	if(data != ""):
+		clientSocket.send(data)
 
 clientSocket.close()
