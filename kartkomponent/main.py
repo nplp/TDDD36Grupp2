@@ -46,6 +46,12 @@ map.add_object("Shape1", data_storage.MapObject({"longitude":15.5829,
                                                 "arc(x - 5, y - 5, 10, 0, 2 * math.pi)",
                                                 "set_source_rgb(0, 0, 0)"))
 
+map.add_object("Shape2", data_storage.MapObject({"longitude":15.5763,
+                                                 "latitude":58.3978},
+                                                "arc(x - 6, y - 6, 12, 0, 2 * math.pi)",
+                                                "set_source_rgb(0, 0, 0)"))
+
+
 # Skapar grafiska interfacet.
 print "Skapar programmets GUI."
 app = gui.Gui(map)
