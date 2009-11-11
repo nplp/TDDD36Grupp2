@@ -334,7 +334,6 @@ class MenuExample:
 	
 	self.skicka = gtk.Button("Skicka")
         self.skicka.connect("clicked", self.send, "Skicka")
-        print self.entry1
 	self.vbox3.pack_start(self.skicka, True, True, 0)
 	
 	#Packa karta
