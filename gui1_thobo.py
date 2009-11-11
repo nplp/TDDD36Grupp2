@@ -25,6 +25,8 @@ class MenuExample:
         print "Hello again - %s was pressed" % data
         process = subprocess.Popen(['python', 'test.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         x = process.communicate('tjaba')
+        print x[0]
+        print x[1]
 	
 	
 	#Tillbaka
