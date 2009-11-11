@@ -23,7 +23,7 @@ def waiting_for_a_fix():
 	#oldcoord = (0,0)
 	i = 0
 	print "Vi vantar pa en koordinat"
-	while (coord == (0,0)):
+	while (latitude, longitude == (0,0)):
 		latitude, longitude = gps.get_position()
     		print "Waiting: "+ str(i)
 		i+=1
@@ -64,8 +64,6 @@ map.add_object("Sjukhus1", data_storage.MapObject({"longitude":15.5629,
                                                    "latitude":58.4093},
                                                   "ikoner/sjukhus.png"))
 
-draw()
-
 
 
 # Ritar ut en svart cirkel
@@ -98,3 +96,5 @@ app = gui.Gui(map)
 # Kör programmet
 print "Kör programmet."
 app.run()
+
+draw()
