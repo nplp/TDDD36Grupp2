@@ -27,6 +27,8 @@ class MenuExample:
         x = process.communicate('tjaba')
         print x[0]
         print x[1]
+        process = subprocess.Popen(['python', 'gui1.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
 	
 	
 	#Tillbaka
