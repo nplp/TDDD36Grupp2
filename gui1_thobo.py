@@ -18,11 +18,9 @@ class MenuExample:
 	
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
-
+	
     def send(self, widget, data=None):
         print "Hello again - %s was pressed" % data
-        process = subprocess.Popen(['python', 'client.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        x = process.communicate('tjaba')
 	
 	
 	#Tillbaka
@@ -332,7 +330,6 @@ class MenuExample:
 	
 	self.skicka = gtk.Button("Skicka")
         self.skicka.connect("clicked", self.send, "Skicka")
-        print self.entry1
 	self.vbox3.pack_start(self.skicka, True, True, 0)
 	
 	#Packa karta
