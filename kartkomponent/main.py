@@ -44,7 +44,7 @@ def updatemap():
 		time.sleep(10.0)
 		
 		print "redraw"
-		map.queue_draw()
+		gui_map.queue_draw()
 
 		# Uppdaterar dina kordinater
 		print "going to trixy"
