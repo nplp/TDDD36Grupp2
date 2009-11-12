@@ -36,41 +36,35 @@ class Mall (object):
         return False
 	
     def __init__(self):
-        #Skapa fonster
-        #self.window = gtk.Window()
-        #self.window.set_size_request(200, 100)
-        #self.window.set_title("GUI")
-        #self.window.connect("delete_event", lambda w,e: gtk.main_quit())
-	
-	
-	#skapa skrollwindow
-	#self.scrolled_window=gtk.ScrolledWindow()
-	#self.scrolled_window.set_border_width(10)
-	#self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)	
 
 	#Vbox for innehall
-	self.vbox4 = gtk.VBox(True, 20)
+	self.vbox4 = gtk.VBox(True,10)
 	self.vbox4.set_border_width(50)
+	self.vbox4.set_size_request(450,450)
 	
 	#Anvsandare
         self.avsandare = gtk.Label("Avsandare")
         self.avsandare.set_alignment(0, 0)
+	self.avsandare.set_size_request(20,50)
         self.vbox4.pack_start(self.avsandare, False, False, 0)
         self.avsandare.show()
 	
 	self.entry = gtk.Entry()
         self.entry.set_max_length(250)
+	self.entry.set_size_request(20,50)
 	self.entry.show()
         self.vbox4.pack_start(self.entry, True, True, 0)
 	
 	#Datum
         self.datum = gtk.Label("Datum")
         self.datum.set_alignment(0, 0)
+	self.datum.set_size_request(20,50)
         self.vbox4.pack_start(self.datum, False, False, 0)
         self.datum.show()
 	
 	self.dat = gtk.Entry()
         self.dat.set_max_length(250)
+	self.dat.set_size_request(20,50)	
 #        entry.connect("activate", self.enter_callback, entry)
 	self.dat.show()
 	self.vbox4.pack_start(self.dat, True, True,0)
@@ -78,11 +72,13 @@ class Mall (object):
 	#Plats
         self.plats = gtk.Label("Platsbeskrivning")
         self.plats.set_alignment(0, 0)
+	self.plats.set_size_request(20,50)
         self.vbox4.pack_start(self.plats, False, False, 0)
         self.plats.show()
 	
 	self.pla = gtk.Entry()
         self.pla.set_max_length(250)
+	self.pla.set_size_request(20,50)
         #entry.connect("activate", self.enter_callback, entry)
 	self.pla.show()
         self.vbox4.pack_start(self.pla, True, True, 0)
@@ -90,11 +86,13 @@ class Mall (object):
 	#Beskrivning
         self.beskrivning = gtk.Label("Beskrivning")
         self.beskrivning.set_alignment(0, 0)
+	self.beskrivning.set_size_request(20,50)
         self.vbox4.pack_start(self.beskrivning, False, False, 0)
         self.beskrivning.show()
 	
 	self.besk = gtk.Entry()
         self.besk.set_max_length(250)
+	self.besk.set_size_request(20,50)	
   #      entry.connect("activate", self.enter_callback, entry)
 	self.besk.show()
         self.vbox4.pack_start(self.besk, True, True, 0)
@@ -102,11 +100,13 @@ class Mall (object):
 	#Tidsatgang
         self.tidatgang = gtk.Label("Tidsatgang")
         self.tidatgang.set_alignment(0, 0)
+	self.tidatgang.set_size_request(20,50)
         self.vbox4.pack_start(self.tidatgang, False, False, 0)
         self.tidatgang.show()
 	
 	self.tid = gtk.Entry()
         self.tid.set_max_length(50)
+	self.tid.set_size_request(20,50)
    #     entry2.connect("activate", self.enter_callback, entry)
 	self.tid.show()
         self.vbox4.pack_start(self.tid, True, True, 0)
@@ -114,11 +114,13 @@ class Mall (object):
 	#Kontaktuppgifter
         self.kontakt = gtk.Label("Kontaktuppgifter")
         self.kontakt.set_alignment(0, 0)
+	self.kontakt.set_size_request(20,50)	
         self.vbox4.pack_start(self.kontakt, False, False, 0)
         self.kontakt.show()
 	
 	self.kont = gtk.Entry()
         self.kont.set_max_length(50)
+	self.kont.set_size_request(20,50)	
         #entry3.connect("activate", self.enter_callback, entry)
 	self.kont.show()
         self.vbox4.pack_start(self.kont, True, True, 0)
@@ -160,16 +162,8 @@ class Mall (object):
 	
 	self.vbox4.pack_start(self.hbox3,True,True,0)
 
-	#self.scrolled_window.add_with_viewport(self.vbox4)
 	self.vbox4.show()
-	#self.window.add(self.scrolled_window)
-	#self.scrolled_window.show()
-        #self.window.show()
-	
-	
-	
-	
-	
+		
 def main():
 	gtk.main()
 	return 0
