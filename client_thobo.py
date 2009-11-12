@@ -14,7 +14,7 @@ import subprocess
 import osso
 
 #Variabler
-HOST = '130.236.218.160'
+HOST = '130.236.216.128'
 HOST2 = '130.236.189.14'
 PORT = 2150
 if(len(sys.argv) > 1):
