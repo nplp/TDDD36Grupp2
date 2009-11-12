@@ -5,6 +5,7 @@ import gui
 import time
 import gpsbt
 import thread
+import Map
 
 latitude,longitude = (58.4120,15.5762)
 hej = True
@@ -44,7 +45,7 @@ def updatemap():
 		time.sleep(10.0)
 		
 		print "redraw"
-		gui_map.queue_draw()
+		Map.draw()
 
 		# Uppdaterar dina kordinater
 		print "going to trixy"
