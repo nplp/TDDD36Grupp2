@@ -22,7 +22,7 @@ class ShowMe:
 		hbox.set_border_width(10)
 		hbox.pack_start(gtk.Label())
                 self.takePicture = 0
-		self.button0 = gtk.Button("Snap")
+		self.button0 = gtk.Button(" Oh Snap!")
 		self.button0.connect("clicked", self.onTakePicture)
 		hbox.pack_start(self.button0, False)
 		self.button = gtk.Button("Start")
