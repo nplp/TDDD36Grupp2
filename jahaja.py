@@ -36,7 +36,7 @@ class GTK_Main:
                         #'video/x-raw-rgb,width=%d,height=%d,\
                         #framerate=15/1'%(self.width,self.height)))
 		#self.player.add(caps)
-		self.player = gst.parse_launch ("v4l2src ! video/x-raw-yuv,width=640,height=480,framerate=(fraction)15/1 autovideosink")
+		self.player = gst.parse_launch ("v4l2src ! video/x-raw-yuv,width=640,height=480,framerate=(fraction)15/1 ! autovideosink")
 
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
