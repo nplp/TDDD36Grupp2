@@ -31,7 +31,7 @@ class GTK_Main:
 		window.show_all()
 
 		# Set up the gstreamer pipeline
-		self.player = gst.parse_launch ("v4l2src ! autovideosink ! width=640,height=480")
+		self.player = gst.parse_launch ("v4l2src width=640,height=480 ! autovideosink ")
 
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
