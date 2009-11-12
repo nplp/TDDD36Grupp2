@@ -10,6 +10,7 @@ latitude,longitude = (58.4120,15.5762)
 hej = True
 
 def trixy():
+	print "inside da trixy one"
 	latitude,longitude = (58.4021,15.5731)
 
 def updatecoord():	
@@ -102,9 +103,13 @@ while(hej == True):
 	# Kör programmet
 	print "Kör programmet."
 	app.run()
-	time.sleep(20.0)
+
+	print "Sov din javel"
+	time.sleep(10.0)
 	# Stänger ner kartan så vi kan rita om den
+	print "Trying to close"
 	app.close()
 
 	# Uppdaterar dina kordinater
-	updatecoord()
+	print "going to trixy"
+	trixy()
