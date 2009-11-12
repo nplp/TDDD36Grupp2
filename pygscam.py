@@ -82,32 +82,19 @@ class ShowMe:
                     self.player.add(screenCaps)
                     filt = gst.element_factory_make("videoscale", "filt")
                     self.player.add(filt)
-                    #tee = gst.element_factory_make("tee", "tee")
-                    #self.player.add(tee)
-                    #screenQueue = gst.element_factory_make("queue", "screenQueue")
-                    #self.player.add(screenQueue)
                     sink = gst.element_factory_make("xvimagesink", "sink")
-                    #sink = gst.element_factory_make("autovideosink", "sink")
                     self.player.add(sink)
-                    #pad = src.get_pad('src')
-                    #pad.add_buffer_probe(self.doBuffer)
-                    #src.link_filtered(filt,caps)
                     src.link(caps)
                     caps.link(tee)
                     tee.link(screenQueue)
                     screenQueue.link(filt)
                     filt.link(screenCaps)
                     screenCaps.link(sink)
-                    #screenQueue.link(sink)
-                    #caps.link(filt)
-                    #filt.link(caps2)
-                    #caps2.link(sink)
                     imageQueue = gst.element_factory_make("queue", "imageQueue")
                     self.player.add(imageQueue)
                     imageFilter = gst.element_factory_make("ffmpegcolorspace",\
                         "imageFilter")
                     pad = imageFilter.get_pad('sink')
-                    #pad.add_buffer_probe(self.doQueueBuffer)
                     self.player.add(imageFilter)
                     imageCaps = gst.element_factory_make("capsfilter", "imageCaps")
                     iCaps = gst.caps_from_string(\
@@ -115,14 +102,10 @@ class ShowMe:
                         framerate=15/1'%(self.width,self.height))
                     self.player.add(imageCaps)
                     self.imageSink = gst.element_factory_make("fakesink", "imageSink")
-                    #pad = self.imageSink.get_pad('sink')
-                    #pad.add_buffer_probe(self.doImageBuffer)
                     self.player.add(self.imageSink)
                     tee.link(imageQueue)
                     imageQueue.link(imageFilter)
                     imageFilter.link_filtered(self.imageSink,iCaps)
-                    #imageFilter.link(imageCaps)
-                    #imageCaps.link(self.imageSink)
                 else:
                     self.player = gst.Pipeline('ThePipe')
                     src = gst.element_factory_make("v4l2src","src")
@@ -133,13 +116,6 @@ class ShowMe:
                     pad = src.get_pad('src')
                     pad.add_buffer_probe(self.doBuffer)
                     src.link(sink)
-
-		# Set up the gstreamer pipeline
-		#self.player = gst.parse_launch ('gconfv4l2src ! video/x-raw-yuv,width=352,height=288,framerate=(fraction)15/1 ! autovideosink')
-		#self.player = gst.parse_launch ('gconfv4l2src ! video/x-raw-yuv,width=352,height=288,framerate=(fraction)15/1 ! tee name=qole qole. ! ffmpegcolorspace ! queue ! filesink location=qole.raw qole. ! queue ! autovideosink')
-		#self.player = gst.parse_launch ('gconfv4l2src ! video/x-raw-rgb,width=352,height=288,framerate=(fraction)15/1 ! tee name=qole qole. ! ffmpegcolorspace ! jpegenc ! filesink location=qole.raw qole. ! queue ! autovideosink')
-		#self.player = gst.parse_launch ('v4l2src ! autovideosink')
-
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
 		bus.enable_sync_message_emission()
@@ -161,7 +137,6 @@ class ShowMe:
 	    print 'doImageBuffer',len(buffer)
             if self.takePicture:
                 self.takePicture = 0
-	        #print 'doImageBuffer',len(buffer)
                 pad = self.imageSink.get_pad('sink')
                 pad.remove_buffer_probe(self.probeHandlerID)
                 caps = buffer.get_caps()
@@ -174,7 +149,6 @@ class ShowMe:
                 print 'start',time.localtime()
                 pb = gtk.gdk.pixbuf_new_from_data(buffer,gtk.gdk.COLORSPACE_RGB,                        False,8,self.width,self.height,self.width*3)
                 pb.save('/home/user/MyDocs/.images/daperl01.png','png')
-                #pb.save('/tmp/daperl00.png','png')
                 print 'stop ',time.localtime()
 	    return True
 
@@ -186,14 +160,11 @@ class ShowMe:
                 self.start_stop(pad)
                 print 'buffer length =',len(buffer)
                 caps = buffer.get_caps()
-                #struct = caps.get_structure(0)
                 struct = caps[0]
                 print 'caps',caps
                 for i in range(0,struct.n_fields()):
                     fn = struct.nth_field_name(i)
                     print '  ',fn,'=',struct[fn]
-                # 63488 2016 31
-                # 0xf8  0x07,0xe0  0x1f
                 if self.machine != 'armv6l':
                     return True
                 da = array.array('H')
@@ -205,11 +176,6 @@ class ShowMe:
                 print 'zo len',len(zo)
                 print 'zos len',len(zos)
                 print 'start',time.localtime()
-#                for i in range(0,8):
-#                    for j in range(0,8):
-#                        print "%04X %02x%02x" % (da[i*8+j],\
-#                            ord(buffer[i*16+j*2]),ord(buffer[i*16+j*2+1])),
-#                    print ''
                 i = 0
                 for v in da:
                     zo[i] = (0xf800 & v) >> 8
@@ -217,7 +183,6 @@ class ShowMe:
                     zo[i+2] = (0x001f & v) << 3
                     i += 3
                 pb = gtk.gdk.pixbuf_new_from_data(zo,gtk.gdk.COLORSPACE_RGB,                        False,8,self.width,self.height,self.width*3)
-                #pb.save('/home/user/MyDocs/.images/daperl00.png','png')
                 pb.save('/tmp/daperl00.png','png')
                 print 'stop ',time.localtime()
                 print pb.get_width(),pb.get_height()
@@ -261,7 +226,6 @@ class ShowMe:
 			return
 		message_name = message.structure.get_name()
 		if message_name == "prepare-xwindow-id":
-			# Assign the viewport
 			imagesink = message.src
 			imagesink.set_property("force-aspect-ratio", True)
 			imagesink.set_xwindow_id(self.movie_window.window.xid)
