@@ -1,12 +1,9 @@
-#Hur implementerar men detta sa att det gar att titta pa den i gui?
-# Set size request
 #!/usr/bin/env python
-# example table.py
 # -*- coding: utf-8 -*-
 import pygtk
 pygtk.require('2.0')
 import gtk
-class Mall:
+class Mall (object):
 		
     def entry_toggle_editable(self, checkbutton, entry):
 	entry.set_editable(checkbutton.get_active())
@@ -40,19 +37,19 @@ class Mall:
 	
     def __init__(self):
         #Skapa fonster
-        self.window = gtk.Window()
-        self.window.set_size_request(200, 100)
-        self.window.set_title("GUI")
-        self.window.connect("delete_event", lambda w,e: gtk.main_quit())
+        #self.window = gtk.Window()
+        #self.window.set_size_request(200, 100)
+        #self.window.set_title("GUI")
+        #self.window.connect("delete_event", lambda w,e: gtk.main_quit())
 	
 	
 	#skapa skrollwindow
-	self.scrolled_window=gtk.ScrolledWindow()
-	self.scrolled_window.set_border_width(10)
-	self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)	
+	#self.scrolled_window=gtk.ScrolledWindow()
+	#self.scrolled_window.set_border_width(10)
+	#self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)	
 
 	#Vbox for innehall
-	self.vbox4 = gtk.VBox(False, 0)
+	self.vbox4 = gtk.VBox(True, 20)
 	self.vbox4.set_border_width(50)
 	
 	#Anvsandare
@@ -63,7 +60,6 @@ class Mall:
 	
 	self.entry = gtk.Entry()
         self.entry.set_max_length(250)
- #       entry.connect("activate", self.enter_callback, entry)
 	self.entry.show()
         self.vbox4.pack_start(self.entry, True, True, 0)
 	
@@ -164,11 +160,11 @@ class Mall:
 	
 	self.vbox4.pack_start(self.hbox3,True,True,0)
 
-	self.scrolled_window.add_with_viewport(self.vbox4)
+	#self.scrolled_window.add_with_viewport(self.vbox4)
 	self.vbox4.show()
-	self.window.add(self.scrolled_window)
-	self.scrolled_window.show()
-        self.window.show()
+	#self.window.add(self.scrolled_window)
+	#self.scrolled_window.show()
+        #self.window.show()
 	
 	
 	
