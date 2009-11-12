@@ -89,7 +89,7 @@ def updatemap()
 		print "going to trixy"
 		trixy()
 
-		gui_map.queue_draw(map)
+		map.gui_draw()
 
 # Skapar grafiska interfacet.
 print "Skapar programmets GUI."
