@@ -11,6 +11,7 @@ from message import *
 from time import time
 import subprocess
 #import dbus
+import osso
 
 #Variabler
 HOST = '130.236.218.160'
@@ -46,7 +47,18 @@ def checkServer():
         return 0
     except error:
         return 1
-''' 
+'''
+
+data1 = "Hej"
+def callback_func(interface, method, arguments, user_data):
+    self.data1=method
+osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
+rpc = osso.Rpc(osso_c)
+rpc.set_rpc_callback("spam.eggs.osso_test_receiver",
+                            "/spam/eggs/osso_test_receiver",
+                            "spam.eggs.osso_test_receiver", callback_func,
+                            osso_c)
+
 def connect():
     clientSocket.connect(ADDR)
     recThread = recieverClass(clientSocket, ADDR)
@@ -117,6 +129,7 @@ connect()
 # Skickar meddelanden samt har hand om kommandon
 while 1:
 	data = raw_input()
+	data = self.data1
 	msg = Message(data)
 	data = finishCMD(msg)
         
