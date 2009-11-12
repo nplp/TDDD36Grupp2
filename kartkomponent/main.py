@@ -124,7 +124,7 @@ app = gui.Gui(map)
 
 # Kör programmet
 print "Kör programmet."
-thread.start_new_thread(app.run, ())
+app.run()
 
 thread.start_new_thread(updatemap, ())
 
