@@ -13,7 +13,7 @@ import subprocess
 #import dbus
 
 #Variabler
-HOST = '130.236.189.22'
+HOST = '130.236.218.160'
 HOST2 = '130.236.189.14'
 PORT = 2150
 if(len(sys.argv) > 1):
@@ -26,7 +26,7 @@ contactList = list()
 
 #SSH anrop, startar ssh tunnel mot servern
 try:
-	subprocess.call('ssh -f matak825@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
+	subprocess.call('ssh -f kj@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 except error:
 	print 'no server baby'
 

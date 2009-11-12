@@ -12,24 +12,25 @@ import data_storage
 import map_xml_reader
 import gui_map
 import gui
-import sys
-import subprocess
+import osso
 
 	
 class MenuExample:
 
-    data = ""
+    osso_c = osso.Context("osso_test_sender", "0.0.1", False)
+    
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 
+    def send_rpc(self,widget,osso_c):
+    rpc = osso.Rpc(osso_c)
+    rpc.rpc_run("spam.eggs.osso_test_receiver",
+                   "/spam/eggs/osso_test_receiver",
+                   "spam.eggs.osso_test_receiver", "hej_kj") 
+	
     def send(self, widget, data=None):
         print "Hello again - %s was pressed" % data
-        process = subprocess.Popen(['python', 'test.py'], shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        x = process.communicate('tjaba')
-        print x[0]
-        print x[1]
-        process = subprocess.Popen("python gui1.py", shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
+        send_rpc(widget,osso_c)
 	
 	
 	#Tillbaka
@@ -336,7 +337,6 @@ class MenuExample:
 	self.entry1.set_size_request(50,200)
 	#self.entry1.modify_font(PangoFontDiscription,get_size[12])
 	self.vbox3.pack_start(self.entry1, True, True, 0)
-	self.data=self.entry1.get_text()
 	
 	self.skicka = gtk.Button("Skicka")
         self.skicka.connect("clicked", self.send, "Skicka")
