@@ -19,7 +19,7 @@ def updatecoord():
 	print "uppdaterar"
 	latitude,longitude = gps.get_position()
 
-# Väntar på att gps'en ska hitta en kordinat
+# Väntar på att gpsen ska hitta en kordinat
 def waiting_for_a_fix():
 	i = 0
 	print "Vi vantar pa en koordinat"
@@ -78,7 +78,7 @@ def updatemap():
 		print "going to trixy"
 		trixy()
 
-		map.gui_queue_draw()
+		map.queue_draw()
 
 
 
@@ -124,7 +124,7 @@ app = gui.Gui(map)
 
 # Kör programmet
 print "Kör programmet."
-thread.start_new_thread(app.run, ())
+app.run()
 
 thread.start_new_thread(updatemap, ())
 

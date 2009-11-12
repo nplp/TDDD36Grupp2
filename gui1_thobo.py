@@ -24,9 +24,10 @@ class MenuExample:
 
     def send_rpc(self,widget,osso_c):
         rpc = osso.Rpc(osso_c)
+        stringen = "hej detta er ett meddelande fran en process till en annan, det kan va ett jattelangt meddelande om man vill"
         rpc.rpc_run("spam.eggs.osso_test_receiver",
                    "/spam/eggs/osso_test_receiver",
-                   "spam.eggs.osso_test_receiver", "hej_kj") 
+                   "spam.eggs.osso_test_receiver", stringen.replace(' ', '_')) 
 	
     def send(self, widget, data=None):
         print "Hello again - %s was pressed" % data
