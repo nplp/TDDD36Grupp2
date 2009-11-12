@@ -129,7 +129,7 @@ connect()
 # Skickar meddelanden samt har hand om kommandon
 while 1:
 	data = raw_input()
-	data = self.data1
+	data = data1
 	msg = Message(data)
 	data = finishCMD(msg)
         
