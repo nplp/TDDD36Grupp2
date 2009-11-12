@@ -31,7 +31,12 @@ class GTK_Main:
 		window.show_all()
 
 		# Set up the gstreamer pipeline
-		self.player = gst.parse_launch ("v4l2src width=640,height=480 ! autovideosink ")
+		#caps = gst.element.factory_make("capsfilter","caps")
+		#caps.set_property('caps', gst.caps_from_string(\
+                        #'video/x-raw-rgb,width=%d,height=%d,\
+                        #framerate=15/1'%(self.width,self.height)))
+		#self.player.add(caps)
+		self.player = gst.parse_launch ("v4l2src ! video/x-raw-yuv,width=640,height=480,framerate=(fraction)15/1 autovideosink")
 
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
