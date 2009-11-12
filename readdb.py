@@ -31,7 +31,17 @@ user_group = Table('user_group', metadata,
 	Column('user_id', None, ForeignKey('users.id'), primary_key=True),
 	Column('group_id', None, ForeignKey('group.id'), primary_key=True)
 	)
-	
+mission_table =Table('missions', metadata,
+	Column('id', Integer, primary_key=True),
+	Column('title', String(30)),
+	Column('body', String(500)),
+	Column('time', String(40)),
+	Column('location', String(50))
+	)
+mission_group = Table('mission_group', metadata,
+	Column('mission_id', None, ForeignKey('missions.id'), primary_key=True),
+	Column('group_id', None, ForeignKey('group.id'), primary_key=True)
+	)
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
@@ -56,12 +66,20 @@ class Group(object):
 		self.name=name
 	def __repr__(self):
 		return self.name
-
+class Mission(object):
+	def __init__(self, title=None, body=None, time=None, location=None):
+		self.title=title
+		self.body=body
+		self.time=time
+		self.location=location
+	
 metadata.create_all(engine)
 mapper(Group, group_table)
 
+mapper(Mission, mission_table, properties=dict(
+	groups=relation(Group, secondary= mission_group, backref='missions'))
+	)
 mapper(User, user_table, properties=dict(
-	_password=user_table.c.password,
 	groups=relation(Group, secondary= user_group, backref='users'))
 	)
 
@@ -86,7 +104,24 @@ def getTotal(namn):
 		temp = item.count + temp
 	return temp
 #user2.groups.append(group2)
+m= Mission()
+m.title = 'Bombdad'
+m.body= 'en cyckel parkering ar sprangd bygg en ny cyckel parkering'
+m.time='kl 15:00 den 11 november 2009'
+m.location ='Linkoping'
 
+g=get_group('team2')
+
+print get_group_users('team2')
+m.groups.append(g)
+
+#print get_group_users(m.groups[0])
+print m.groups[0]
+
+print m.title
+print m.body
+print m.time
+print m.location
 
 print "skriver ut användare som är i: team2 "
 print get_group_users('team2')
