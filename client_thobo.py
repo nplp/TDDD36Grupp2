@@ -14,7 +14,7 @@ import subprocess
 import osso
 
 #Variabler
-HOST = '130.236.218.160'
+HOST = '130.236.216.128'
 HOST2 = '130.236.189.14'
 PORT = 2150
 if(len(sys.argv) > 1):
@@ -129,7 +129,7 @@ connect()
 # Skickar meddelanden samt har hand om kommandon
 while 1:
 	data = raw_input()
-	data = self.data1
+	data = data1
 	msg = Message(data)
 	data = finishCMD(msg)
         
