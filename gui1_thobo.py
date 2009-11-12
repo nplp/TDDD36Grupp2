@@ -30,7 +30,7 @@ class MenuExample:
 	
     def send(self, widget, data=None):
         print "Hello again - %s was pressed" % data
-        send_rpc(widget,osso_c)
+        self.send_rpc(widget,osso_c)
 	
 	
 	#Tillbaka
