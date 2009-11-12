@@ -7,7 +7,7 @@ import gpsbt
 import thread
 
 latitude,longitude = (58.4120,15.5762)
-hej == True
+hej = True
 
 # Spec enbart för testing
 def trixy():
