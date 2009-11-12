@@ -1,6 +1,6 @@
 # client
 # coding:utf-8
-# Ovanst￯﾿ﾥende rad ￯﾿ﾤr ISO-kodning f￯﾿ﾶr att ￯﾿ﾥ￯﾿ﾤ￯﾿ﾶ ska funka.
+# Ovanstï¿¯ï¾¿ï¾¥ende rad ï¿¯ï¾¿ï¾¤r ISO-kodning fï¿¯ï¾¿ï¾¶r att ï¿¯ï¾¿ï¾¥ï¿¯ï¾¿ï¾¤ï¿¯ï¾¿ï¾¶ ska funka.
 
 import re
 import sys
@@ -13,7 +13,7 @@ import subprocess
 #import dbus
 
 #Variabler
-HOST = '130.236.218.160'
+HOST = '130.236.189.14'
 HOST2 = '130.236.189.14'
 PORT = 2150
 if(len(sys.argv) > 1):
@@ -26,11 +26,11 @@ contactList = list()
 
 #SSH anrop, startar ssh tunnel mot servern
 try:
-	subprocess.call('ssh -f kj@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
+	subprocess.call('ssh -f nikpe890@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 except error:
 	print 'no server baby'
 
-#Sekund�rserver byte �r uppskjutet, lite mer information finns i niklas_client.py d�r jag testar lite connection timeouts med mera.
+#Sekundärserver byte är uppskjutet, lite mer information finns i niklas_client.py där jag testar lite connection timeouts med mera.
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
