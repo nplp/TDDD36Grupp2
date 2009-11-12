@@ -5,6 +5,7 @@ import gui
 import time
 import gpsbt
 import thread
+import gui_map
 
 latitude,longitude = (58.4120,15.5762)
 hej = True
