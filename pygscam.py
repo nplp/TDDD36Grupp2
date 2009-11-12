@@ -63,44 +63,44 @@ class ShowMe:
                     #'video/x-raw-rgb,width=%d,height=%d,bpp=16,depth=16,\
                     #framerate=15/1'%(self.width,self.height)))
                 #self.player.add(caps2)
-                swidth = self.width
-                sheight = self.height
-                swidth = 320
-                sheight = 240
-                swidth = self.width/2
-                sheight = self.height/2
-                screenCaps = gst.element_factory_make("capsfilter", "screenCaps")
-                screenCaps.set_property('caps', gst.caps_from_string(\
-                    'video/x-raw-rgb,width=%d,height=%d\
-                    '%(swidth,sheight)))
-                    #,framerate=15/1'%(swidth,sheight)))
-                self.player.add(screenCaps)
-                filt = gst.element_factory_make("videoscale", "filt")
-                self.player.add(filt)
-                sink = gst.element_factory_make("xvimagesink", "sink")
-                self.player.add(sink)
-                src.link(caps)
-                caps.link(tee)
-                tee.link(screenQueue)
-                screenQueue.link(filt)
-                filt.link(screenCaps)
-                screenCaps.link(sink)
-                imageQueue = gst.element_factory_make("queue", "imageQueue")
-                self.player.add(imageQueue)
-                imageFilter = gst.element_factory_make("ffmpegcolorspace",\
-                    "imageFilter")
-                pad = imageFilter.get_pad('sink')
-                self.player.add(imageFilter)
-                imageCaps = gst.element_factory_make("capsfilter", "imageCaps")
-                iCaps = gst.caps_from_string(\
-                    'video/x-raw-rgb,width=%d,height=%d,bpp=24,depth=24,\
-                    framerate=15/1'%(self.width,self.height))
-                self.player.add(imageCaps)
-                self.imageSink = gst.element_factory_make("fakesink", "imageSink")
-                self.player.add(self.imageSink)
-                tee.link(imageQueue)
-                imageQueue.link(imageFilter)
-                imageFilter.link_filtered(self.imageSink,iCaps)
+                #swidth = self.width
+                #sheight = self.height
+                #swidth = 320
+                #sheight = 240
+                #swidth = self.width/2
+                #sheight = self.height/2
+                #screenCaps = gst.element_factory_make("capsfilter", "screenCaps")
+                #screenCaps.set_property('caps', gst.caps_from_string(\
+                    #'video/x-raw-rgb,width=%d,height=%d\
+                    #'%(swidth,sheight)))
+                    ##,framerate=15/1'%(swidth,sheight)))
+                #self.player.add(screenCaps)
+                #filt = gst.element_factory_make("videoscale", "filt")
+                #self.player.add(filt)
+                #sink = gst.element_factory_make("xvimagesink", "sink")
+                #self.player.add(sink)
+                #src.link(caps)
+                #caps.link(tee)
+                #tee.link(screenQueue)
+                #screenQueue.link(filt)
+                #filt.link(screenCaps)
+                #screenCaps.link(sink)
+                #imageQueue = gst.element_factory_make("queue", "imageQueue")
+                #self.player.add(imageQueue)
+                #imageFilter = gst.element_factory_make("ffmpegcolorspace",\
+                    #"imageFilter")
+                #pad = imageFilter.get_pad('sink')
+                #self.player.add(imageFilter)
+                #imageCaps = gst.element_factory_make("capsfilter", "imageCaps")
+                #iCaps = gst.caps_from_string(\
+                    #'video/x-raw-rgb,width=%d,height=%d,bpp=24,depth=24,\
+                    #framerate=15/1'%(self.width,self.height))
+                #self.player.add(imageCaps)
+                #self.imageSink = gst.element_factory_make("fakesink", "imageSink")
+                #self.player.add(self.imageSink)
+                #tee.link(imageQueue)
+                #imageQueue.link(imageFilter)
+                #imageFilter.link_filtered(self.imageSink,iCaps)
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
 		bus.enable_sync_message_emission()
