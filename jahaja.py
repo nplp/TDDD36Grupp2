@@ -31,7 +31,7 @@ class GTK_Main:
 		window.show_all()
 
 		# Set up the gstreamer pipeline
-		self.player = gst.parse_launch ("v4l2src ! autovideosink")
+		self.player = gst.parse_launch ("v4l2src ! autovideosink width=640,height=480")
 
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
@@ -68,7 +68,7 @@ class GTK_Main:
 		if message_name == "prepare-xwindow-id":
 			# Assign the viewport
 			imagesink = message.src
-			imagesink.set_property("force-aspect-ratio", False)
+			imagesink.set_property("force-aspect-ratio", True)
 			imagesink.set_xwindow_id(self.movie_window.window.xid)
 
 GTK_Main()
