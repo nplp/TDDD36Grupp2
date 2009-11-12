@@ -78,7 +78,7 @@ def updatemap():
 		print "going to trixy"
 		trixy()
 
-		map.gui_draw()
+		map.gui_queue_draw()
 
 
 
