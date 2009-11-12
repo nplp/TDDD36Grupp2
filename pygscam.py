@@ -42,6 +42,7 @@ class ShowMe:
                 self.probeHandlerID = None
 
                 if self.machine == 'armv6l':
+			print "test"
                     #self.player = gst.Pipeline('ThePipe')
                     #src = gst.element_factory_make("gconfv4l2src","camSrc")
                     #self.player.add(src)
