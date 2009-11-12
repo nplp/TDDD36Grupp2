@@ -102,13 +102,12 @@ while(hej == True):
 
 	# Kör programmet
 	print "Kör programmet."
-	app.run()
+	thread.start_new_thread(app.run, ())
 
 	print "Sov din javel"
 	time.sleep(10.0)
 	# Stänger ner kartan så vi kan rita om den
 	print "Trying to close"
-	app.close()
 
 	# Uppdaterar dina kordinater
 	print "going to trixy"
