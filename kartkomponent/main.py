@@ -44,7 +44,7 @@ waiting_for_a_fix()
 # Turning of GPS
 #gpsbt.stop(con)
 '''
-def updatemap()
+def updatemap():
 	while(hej == True):
 		# Kartan
 		print "Läser in kartinformation från kartdata/map.xml"
@@ -89,7 +89,7 @@ def updatemap()
 		print "going to trixy"
 		trixy()
 
-		gui_map.queue_draw(map)
+		map.gui_draw()
 
 # Skapar grafiska interfacet.
 print "Skapar programmets GUI."
