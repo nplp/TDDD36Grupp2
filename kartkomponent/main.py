@@ -24,7 +24,8 @@ def trixy():
 			                             "set_source_rgb(0, 0, 0)"))	
 '''
 # Uppdaterar din kordinat
-def updatecoord():	
+def updatecoord():
+        global coord
 	print "uppdaterar"
 	coord = gps.get_position()
 
