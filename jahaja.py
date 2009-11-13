@@ -10,7 +10,7 @@ class GTK_Main:
 
 	def __init__(self):
 		window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		window.set_title("Webcam-Viewer")
+		window.set_title("Awesome AP")
 		window.set_default_size(500, 400)
 		window.connect("destroy", gtk.main_quit, "WM destroy")
 		vbox = gtk.VBox()
@@ -29,15 +29,7 @@ class GTK_Main:
 		hbox.pack_start(self.button2, False)
 		hbox.add(gtk.Label())
 		window.show_all()
-
-		# Set up the gstreamer pipeline
-		#caps = gst.element.factory_make("capsfilter","caps")
-		#caps.set_property('caps', gst.caps_from_string(\
-                        #'video/x-raw-rgb,width=%d,height=%d,\
-                        #framerate=15/1'%(self.width,self.height)))
-		#self.player.add(caps)
-		self.player = gst.parse_launch ("v4l2src ! video/x-raw-yuv,width=320,height=240,framerate=8/1 ! autovideosink")
-
+		self.player = gst.parse_launch ("v4l2src ! video/x-raw-yuv,width=320,height=240,framerate=8/1 ! udpsink host=192.168.1.112 port=5000")
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
 		bus.enable_sync_message_emission()
@@ -73,7 +65,7 @@ class GTK_Main:
 		if message_name == "prepare-xwindow-id":
 			# Assign the viewport
 			imagesink = message.src
-			imagesink.set_property("force-aspect-ratio", True)
+			imagesink.set_property("force-aspect-ratio", False)
 			imagesink.set_xwindow_id(self.movie_window.window.xid)
 
 GTK_Main()
