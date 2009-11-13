@@ -45,9 +45,10 @@ def waiting_for_a_fix():
 def updatemap():
 	while(hej == True):
 		print "lägg till objekt"
-
+                updatecoord()
 		print longitude
-		print latitude		
+		print latitude
+		time.sleep(5.0)
 		map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
 				                             "latitude":latitude},
 				                             "arc(x - 6, y - 6, 12, 0, 2 * math.pi)",
