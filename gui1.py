@@ -5,14 +5,13 @@ pygtk.require('2.0')
 import gtk, gobject
 import gtk
 import sys
-import rapport
-import pango
-sys.path.append('/kartkomponent')
+sys.path.append('.kartkomponent')
 import data_storage
 import map_xml_reader
 import gui_map
 import gui
-
+import rapport
+import pango
 
 	
 class MenuExample:
@@ -252,8 +251,7 @@ class MenuExample:
 	map = data_storage.MapData(mapxml.get_name(),
 			mapxml.get_levels())
 	map.set_focus(15.5726, 58.4035)
-	map.add_object("Ambulans1",textview = gtk.TextView()
- data_storage.MapObject({"longitude":15.57796,
+	map.add_object("Ambulans1", data_storage.MapObject({"longitude":15.57796,
 						"latitude":58.40479},
 						"ikoner/ambulans.png"))
 	map.add_object("Brandbil1", data_storage.MapObject({"longitude":15.5729,
