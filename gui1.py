@@ -139,7 +139,7 @@ class MenuExample:
     def __init__(self):
         #Skapa fonster
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        self.window.set_size_request(200, 100)
+        #self.window.set_size_request(200, 100)
         self.window.set_title("GUI")
         self.window.connect("delete_event", lambda w,e: gtk.main_quit())
 	

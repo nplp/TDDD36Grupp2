@@ -11,7 +11,7 @@ import gst
 class ShowMe:
 	def __init__(self):
 		window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		window.set_title("Webcam-Viewer")
+		window.set_title("Awesome video program")
 		window.connect("destroy", gtk.main_quit, "WM destroy")
 		vbox = gtk.VBox()
 		window.add(vbox)
@@ -40,82 +40,67 @@ class ShowMe:
                 self.machine = platform.uname()[4]
                 self.imageSink = None
                 self.probeHandlerID = None
-
-                if self.machine == 'armv6l':
-                    self.player = gst.Pipeline('ThePipe')
-                    src = gst.element_factory_make("gconfv4l2src","camSrc")
-                    self.player.add(src)
-                    for p in src.pads():
-                        #print p.get_caps().to_string()
-                        print p.get_name()
-                    caps = gst.element_factory_make("capsfilter", "caps")
-                    caps.set_property('caps', gst.caps_from_string(\
-                        'video/x-raw-rgb,width=%d,height=%d,\
-                        framerate=15/1'%(self.width,self.height)))
-                        #'video/x-raw-rgb,width=%d,height=%d,bpp=16,depth=16,\
-                    self.player.add(caps)
-                    #filt = gst.element_factory_make("ffmpegcolorspace", "filt")
-                    #self.player.add(filt)
-                    tee = gst.element_factory_make("tee", "tee")
-                    self.player.add(tee)
-                    screenQueue = gst.element_factory_make("queue", "screenQueue")
-                    self.player.add(screenQueue)
-                    screenCaps = gst.caps_from_string('video/x-raw-rgb,width=352,height=288,framerate=15/1')
-                    caps2 = gst.element_factory_make("capsfilter", "caps2")
-                    caps2.set_property('caps', gst.caps_from_string(
-                        'video/x-raw-rgb,width=%d,height=%d,bpp=16,depth=16,\
-                        framerate=15/1'%(self.width,self.height)))
-                    self.player.add(caps2)
-                    swidth = self.width
-                    sheight = self.height
-                    swidth = 352
-                    sheight = 288
-                    swidth = 320
-                    sheight = 240
-                    swidth = self.width/2
-                    sheight = self.height/2
-                    screenCaps = gst.element_factory_make("capsfilter", "screenCaps")
-                    screenCaps.set_property('caps', gst.caps_from_string(\
-                        'video/x-raw-rgb,width=%d,height=%d\
-                        '%(swidth,sheight)))
-                        #,framerate=15/1'%(swidth,sheight)))
-                    self.player.add(screenCaps)
-                    filt = gst.element_factory_make("videoscale", "filt")
-                    self.player.add(filt)
-                    sink = gst.element_factory_make("xvimagesink", "sink")
-                    self.player.add(sink)
-                    src.link(caps)
-                    caps.link(tee)
-                    tee.link(screenQueue)
-                    screenQueue.link(filt)
-                    filt.link(screenCaps)
-                    screenCaps.link(sink)
-                    imageQueue = gst.element_factory_make("queue", "imageQueue")
-                    self.player.add(imageQueue)
-                    imageFilter = gst.element_factory_make("ffmpegcolorspace",\
-                        "imageFilter")
-                    pad = imageFilter.get_pad('sink')
-                    self.player.add(imageFilter)
-                    imageCaps = gst.element_factory_make("capsfilter", "imageCaps")
-                    iCaps = gst.caps_from_string(\
-                        'video/x-raw-rgb,width=%d,height=%d,bpp=24,depth=24,\
-                        framerate=15/1'%(self.width,self.height))
-                    self.player.add(imageCaps)
-                    self.imageSink = gst.element_factory_make("fakesink", "imageSink")
-                    self.player.add(self.imageSink)
-                    tee.link(imageQueue)
-                    imageQueue.link(imageFilter)
-                    imageFilter.link_filtered(self.imageSink,iCaps)
-                else:
-                    self.player = gst.Pipeline('ThePipe')
-                    src = gst.element_factory_make("v4l2src","src")
-                    src.set_property('device','/dev/video0')
-                    self.player.add(src)
-                    sink = gst.element_factory_make("autovideosink", "sink")
-                    self.player.add(sink)
-                    pad = src.get_pad('src')
-                    pad.add_buffer_probe(self.doBuffer)
-                    src.link(sink)
+		
+		
+                self.player = gst.Pipeline('ThePipe')
+                src = gst.element_factory_make("gconfv4l2src","camSrc")
+                self.player.add(src)
+                caps = gst.element_factory_make("capsfilter", "caps")
+                caps.set_property('caps', gst.caps_from_string(\
+                    'video/x-raw-rgb,width=%d,height=%d,\
+                    framerate=15/1'%(self.width,self.height)))
+                    #'video/x-raw-rgb,width=%d,height=%d,bpp=16,depth=16,\
+                self.player.add(caps)
+                #filt = gst.element_factory_make("ffmpegcolorspace", "filt")
+                #self.player.add(filt)
+                #tee = gst.element_factory_make("tee", "tee")
+                #self.player.add(tee)
+                #screenQueue = gst.element_factory_make("queue", "screenQueue")
+                #self.player.add(screenQueue)
+                #screenCaps = gst.caps_from_string('video/x-raw-rgb,width=352,height=288,framerate=15/1')
+                #caps2 = gst.element_factory_make("capsfilter", "caps2")
+                #caps2.set_property('caps', gst.caps_from_string(
+                    #'video/x-raw-rgb,width=%d,height=%d,bpp=16,depth=16,\
+                    #framerate=15/1'%(self.width,self.height)))
+                #self.player.add(caps2)
+                #swidth = self.width
+                #sheight = self.height
+                #swidth = 320
+                #sheight = 240
+                #swidth = self.width/2
+                #sheight = self.height/2
+                #screenCaps = gst.element_factory_make("capsfilter", "screenCaps")
+                #screenCaps.set_property('caps', gst.caps_from_string(\
+                    #'video/x-raw-rgb,width=%d,height=%d\
+                    #'%(swidth,sheight)))
+                    ##,framerate=15/1'%(swidth,sheight)))
+                #self.player.add(screenCaps)
+                #filt = gst.element_factory_make("videoscale", "filt")
+                #self.player.add(filt)
+                #sink = gst.element_factory_make("xvimagesink", "sink")
+                #self.player.add(sink)
+                #src.link(caps)
+                #caps.link(tee)
+                #tee.link(screenQueue)
+                #screenQueue.link(filt)
+                #filt.link(screenCaps)
+                #screenCaps.link(sink)
+                #imageQueue = gst.element_factory_make("queue", "imageQueue")
+                #self.player.add(imageQueue)
+                #imageFilter = gst.element_factory_make("ffmpegcolorspace",\
+                    #"imageFilter")
+                #pad = imageFilter.get_pad('sink')
+                #self.player.add(imageFilter)
+                #imageCaps = gst.element_factory_make("capsfilter", "imageCaps")
+                #iCaps = gst.caps_from_string(\
+                    #'video/x-raw-rgb,width=%d,height=%d,bpp=24,depth=24,\
+                    #framerate=15/1'%(self.width,self.height))
+                #self.player.add(imageCaps)
+                #self.imageSink = gst.element_factory_make("fakesink", "imageSink")
+                #self.player.add(self.imageSink)
+                #tee.link(imageQueue)
+                #imageQueue.link(imageFilter)
+                #imageFilter.link_filtered(self.imageSink,iCaps)
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
 		bus.enable_sync_message_emission()
