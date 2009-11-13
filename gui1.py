@@ -5,7 +5,7 @@ pygtk.require('2.0')
 import gtk, gobject
 import gtk
 import sys
-sys.path.append('./kartkomponent')
+sys.path.append('/kartkomponent')
 import data_storage
 import map_xml_reader
 import gui_map
