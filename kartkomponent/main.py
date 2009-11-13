@@ -26,30 +26,32 @@ def trixy():
 # Uppdaterar din kordinat
 def updatecoord():	
 	print "uppdaterar"
-	self.coord = gps.get_position()
+	coord = gps.get_position()
 
 # Väntar på att gpsen ska hitta en kordinat
 def waiting_for_a_fix():
 	i = 0
 	print "Vi vantar pa en koordinat"
-	while (self.coord == (0,0)):
+	global coord
+	while (coord == (0,0)):
 		#latitude,longitude = gps.get_position()
-		self.coord = gps.get_position()
+		coord = gps.get_position()
     		print "Waiting: "+ str(i)
 		i+=1
     		time.sleep(3)
-	print self.coord
+	print coord
 
 # En loop som uppdaterar kartan med jämna mellanrum
 def updatemap():
+        global coord
 	while(hej == True):
 		print "lägg till objekt"
                 updatecoord()
-		print self.coord[0]
-		print self.coord[1]
+		print coord[0]
+		print coord[1]
 		time.sleep(5.0)
-		map.add_object("Shape2", data_storage.MapObject({"longitude":self.coord[1],
-				                             "latitude":self.coord[0]},
+		map.add_object("Shape2", data_storage.MapObject({"longitude":coord[1],
+				                             "latitude":coord[0]},
 				                             "arc(x - 6, y - 6, 12, 0, 2 * math.pi)",
 				                             "set_source_rgb(0, 0, 0)"))	
 		print "Sov din javel"
@@ -85,7 +87,7 @@ map = data_storage.MapData(mapxml.get_name(),mapxml.get_levels())
 
 # Ställer in vad kartkomponenten ska fokusera på (visa)
 # (blir mittenpunkten på skärmen, dvs 50% x-led, 50% y-lyd.
-map.set_focus(self.coord[1], self.coord[0])
+map.set_focus(coord[1], coord[0])
 
 # Ritar ut tre objekt
 map.add_object("Ambulans1", data_storage.MapObject({"longitude":15.57796,
