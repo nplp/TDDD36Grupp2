@@ -35,7 +35,10 @@ def waiting_for_a_fix():
 # En loop som uppdaterar kartan med jämna mellanrum
 def updatemap():
 	while(hej == True):
-		print "lägg till objekt"		
+		print "lägg till objekt"
+
+		print longitude
+		print latitude		
 		map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
 				                             "latitude":latitude},
 				                             "arc(x - 6, y - 6, 12, 0, 2 * math.pi)",
@@ -44,7 +47,7 @@ def updatemap():
 		time.sleep(10.0)
 		
 		print "redraw"
-		map.redraw()
+		app = gui.Gui(map)
 
 		# Uppdaterar dina kordinater
 		print "going to trixy"
