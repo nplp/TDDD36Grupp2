@@ -30,7 +30,8 @@ class GTK_Main:
 		hbox.add(gtk.Label())
 		window.show_all()
 		#self.player = gst.parse_launch ("v4l2src ! video/x-raw-yuv,width=320,height=240,framerate=8/1 ! udpsink host=192.168.1.112 port=5000")
-		self.player = gst.parse_launch ("udpport 5000 ! video/x-raw-yuv,width=320,height=240,framerate=8/1 ! autovideosink")
+		self.player = gst.parse_launch ("udpsrc port=5000 ! video/x-raw-yuv,width=320,height=240,framerate=8/1 ! autovideosink")
+		#host= host=130.236.216.184
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
 		bus.enable_sync_message_emission()
