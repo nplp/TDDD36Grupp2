@@ -12,6 +12,7 @@ hej = True
 # Spec enbart för testing
 def trixy():
 	print "inside da trixy one"
+	latitude,longitude = (58.4120,15.5762)
 	map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
 				                             "latitude":latitude},
 				                             "arc(x - 10, y - 10, 20, 0, 2 * math.pi)",
