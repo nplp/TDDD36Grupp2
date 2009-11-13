@@ -5,13 +5,14 @@ pygtk.require('2.0')
 import gtk, gobject
 import gtk
 import sys
-sys.path.append('/kartkomponent')
+sys.path.append('./kartkomponent')
 import data_storage
 import map_xml_reader
 import gui_map
 import gui
 import rapport
 import pango
+import meddelande
 
 	
 class MenuExample:
@@ -33,18 +34,15 @@ class MenuExample:
 	
 	#Rapport
     def rapp(self, widget, event, data=None):
-	 self.kommunikation.set_active(False)
-	 self.filer.set_active(False)
-	 self.verktyg.set_active(False)
-	 self.vbox2.hide()
-	 self.label.hide()
-	 self.startakarta.hide()
-	 self.amne.hide()
-	 self.entry.hide()
-	 self.meddelande.hide()
-	 self.entry1.hide()
-	 self.skicka.hide()
-         self.scrolled_window.show()	
+	self.kommunikation.set_active(False)
+	self.filer.set_active(False)
+	self.verktyg.set_active(False)
+	self.vbox2.hide()
+	self.label.hide()
+	self.startakarta.hide()
+	self.meddela.vbox.hide()
+        self.scrolled_window.show()	
+	
 	
 	#Kommunikation
     def komm(self, widget, event, data=None):
@@ -108,13 +106,10 @@ class MenuExample:
 	 self.verktyg.set_active(False)
 	 self.vbox2.hide()
 	 self.label.hide()
-	 self.amne.hide()
-	 self.entry.hide()
-	 self.meddelande.hide()
-	 self.entry1.hide()
-	 self.skicka.hide()
 	 self.scrolled_window.hide()
+	 self.meddela.vbox.hide()
 	 self.startakarta.show()
+
 	 
     def textmedd(self, widget, event, data=None):
 	 self.kommunikation.set_active(False)
@@ -123,11 +118,9 @@ class MenuExample:
 	 self.vbox2.hide()
 	 self.label.hide()
 	 self.startakarta.hide()
-	 self.amne.show()
-	 self.entry.show()
-	 self.meddelande.show()
-	 self.entry1.show()
-	 self.skicka.show()
+	 self.scrolled_window.hide()	
+	 self.meddela.vbox.show()
+	 
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
@@ -266,6 +259,7 @@ class MenuExample:
 						"set_source_rgb(0, 0, 0)"))
 	self.startakarta = gui_map.Map(map)
 	self.rapportera = rapport.Mall()
+	self.meddela = meddelande.Meddelande()
 	self.vbox3 = gtk.VBox(False, 0)
         self.vbox3.show()
 	
@@ -277,37 +271,39 @@ class MenuExample:
 	#create a new label.
         self.label = gtk.Label("Anvandare	symbol	datum tid")
         self.label.set_alignment(0, 0)
+        self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
-        self.label.show()
-	
+
 	#Skriv ett amne
-        self.amne = gtk.Label("Amne")
-        self.amne.set_alignment(0, 0)
-	self.vbox3.pack_start(self.amne, False, False, 0)
+        #self.amne = gtk.Label("Amne")
+        #self.amne.set_alignment(0, 0)
+	#self.vbox3.pack_start(self.amne, False, False, 0)
 	
-	self.entry = gtk.Entry()
-        self.entry.set_max_length(250)
-	self.vbox3.pack_start(self.entry, True, True, 0)
+	#self.entry = gtk.Entry()
+        #self.entry.set_max_length(250)
+	#self.vbox3.pack_start(self.entry, True, True, 0)
 	
 	#Skriv ett meddelande
-        self.meddelande = gtk.Label("Meddelande")
-        self.meddelande.set_alignment(0, 0)
-        self.vbox3.pack_start(self.meddelande, False, False, 0)
+        #self.meddelande = gtk.Label("Meddelande")
+        #self.meddelande.set_alignment(0, 0)
+        #self.vbox3.pack_start(self.meddelande, False, False, 0)
 	
-	self.entry1 = gtk.TextView()
+	#self.entry1 = gtk.TextView()
         #self.entry1.set_max_length(250)
-	self.entry1.set_size_request(50,200)
+	#self.entry1.set_size_request(50,200)
 	#self.entry1.modify_font(pango.FontDescription("Sans 12"))	
-	self.vbox3.pack_start(self.entry1, True, True, 0)
+	#self.vbox3.pack_start(self.entry1, True, True, 0)
 	
-	self.skicka = gtk.Button("Skicka")
-        self.skicka.connect("clicked", self.send, "Skicka")
-	self.vbox3.pack_start(self.skicka,True,True,0)
+	#self.skicka = gtk.Button("Skicka")
+        #self.skicka.connect("clicked", self.send, "Skicka")
+	#self.vbox3.pack_start(self.skicka,True,True,0)
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)
 	
 	#Packa karta
+
 	self.vbox3.pack_start(self.startakarta,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
+	self.vbox3.pack_start(self.meddela.vbox,True,True,0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
     	self.hbox.show()
 	self.window.add(self.hbox)
