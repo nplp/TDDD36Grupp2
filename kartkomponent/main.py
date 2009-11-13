@@ -12,7 +12,15 @@ hej = True
 # Spec enbart för testing
 def trixy():
 	print "inside da trixy one"
-	latitude,longitude = (58.4021,15.5731)
+	map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
+				                             "latitude":latitude},
+				                             "arc(x - 10, y - 10, 20, 0, 2 * math.pi)",
+				                             "set_source_rgb(0, 0, 0)"))	
+	latitude,longitude = (58.3021,15.5531)
+	map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
+			                             "latitude":latitude},
+			                             "arc(x - 8, y - 8, 16, 0, 2 * math.pi)",
+			                             "set_source_rgb(0, 0, 0)"))	
 
 # Uppdaterar din kordinat
 def updatecoord():	
@@ -47,7 +55,10 @@ def updatemap():
 		time.sleep(10.0)
 		
 		print "redraw"
-		app = gui.Gui(map)
+		map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
+				                             "latitude":latitude},
+				                             "arc(x - 9, y - 9, 18, 0, 2 * math.pi)",
+				                             "set_source_rgb(0, 0, 0)"))
 
 		# Uppdaterar dina kordinater
 		print "going to trixy"
