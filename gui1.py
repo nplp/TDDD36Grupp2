@@ -5,12 +5,13 @@ pygtk.require('2.0')
 import gtk, gobject
 import gtk
 import sys
-sys.path.append('.kartkomponent/kartdata')
+sys.path.append('/kartkomponent')
 import data_storage
 import map_xml_reader
 import gui_map
 import gui
 import rapport
+import pango
 
 	
 class MenuExample:
@@ -48,6 +49,7 @@ class MenuExample:
 	#Kommunikation
     def komm(self, widget, event, data=None):
 	if widget.get_active():
+		self.kommunikation.set_active(True)
 		self.verktyg.set_active(False)
 		self.filer.set_active(False)
 		self.vbox2.show()
@@ -66,6 +68,7 @@ class MenuExample:
 	#Vektyg	
     def verk(self, widget, event, data=None):
 	if widget.get_active():
+		self.verktyg.set_active(True)
 		self.kommunikation.set_active(False)
 		self.filer.set_active(False)
 		self.vbox2.show()
@@ -84,6 +87,7 @@ class MenuExample:
 	#Filer
     def fil(self,widget,event,data=None):
 	 if widget.get_active():
+		self.filer.set_active(True)
 		self.kommunikation.set_active(False)
 		self.verktyg.set_active(False)
 		self.vbox2.show()
@@ -279,7 +283,7 @@ class MenuExample:
 	#Skriv ett amne
         self.amne = gtk.Label("Amne")
         self.amne.set_alignment(0, 0)
-        self.vbox3.pack_start(self.amne, False, False, 0)
+	self.vbox3.pack_start(self.amne, False, False, 0)
 	
 	self.entry = gtk.Entry()
         self.entry.set_max_length(250)
@@ -290,15 +294,16 @@ class MenuExample:
         self.meddelande.set_alignment(0, 0)
         self.vbox3.pack_start(self.meddelande, False, False, 0)
 	
-	self.entry1 = gtk.Entry()
-        self.entry1.set_max_length(250)
+	self.entry1 = gtk.TextView()
+        #self.entry1.set_max_length(250)
 	self.entry1.set_size_request(50,200)
+	#self.entry1.modify_font(pango.FontDescription("Sans 12"))	
 	self.vbox3.pack_start(self.entry1, True, True, 0)
 	
 	self.skicka = gtk.Button("Skicka")
         self.skicka.connect("clicked", self.send, "Skicka")
 	self.vbox3.pack_start(self.skicka,True,True,0)
-	self.scrolled_window.add(self.rapportera.vbox4)
+	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)
 	
 	#Packa karta
 	self.vbox3.pack_start(self.startakarta,True,True,0)

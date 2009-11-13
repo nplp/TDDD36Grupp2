@@ -6,14 +6,23 @@ import time
 import gpsbt
 import thread
 
-latitude,longitude = (58.4120,15.5762)
+latitude,longitude = (0,0)
 hej = True
-
+'''
 # Spec enbart för testing
 def trixy():
 	print "inside da trixy one"
-	latitude,longitude = (58.4021,15.5731)
-
+	latitude,longitude = (58.4120,15.5762)
+	map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
+				                             "latitude":latitude},
+				                             "arc(x - 10, y - 10, 20, 0, 2 * math.pi)",
+				                             "set_source_rgb(0, 0, 0)"))	
+	latitude,longitude = (58.3021,15.5531)
+	map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
+			                             "latitude":latitude},
+			                             "arc(x - 8, y - 8, 16, 0, 2 * math.pi)",
+			                             "set_source_rgb(0, 0, 0)"))	
+'''
 # Uppdaterar din kordinat
 def updatecoord():	
 	print "uppdaterar"
@@ -35,7 +44,10 @@ def waiting_for_a_fix():
 # En loop som uppdaterar kartan med jämna mellanrum
 def updatemap():
 	while(hej == True):
-		print "lägg till objekt"		
+		print "lägg till objekt"
+
+		print longitude
+		print latitude		
 		map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
 				                             "latitude":latitude},
 				                             "arc(x - 6, y - 6, 12, 0, 2 * math.pi)",
@@ -43,20 +55,17 @@ def updatemap():
 		print "Sov din javel"
 		time.sleep(10.0)
 		
-		print "redraw"
-		map.redraw()
-
 		# Uppdaterar dina kordinater
-		print "going to trixy"
-		trixy()
+		print "going to update"
+		updatecoord()
 
 
 
 
-'''
+
 # Startar GPSEN
 con = gpsbt.start()
-time.sleep(5.0) # wait for gps to come up
+time.sleep(2.0) # wait for gps to come up
 
 #Getting GPS coordinats
 gps = gpsbt.gps()
@@ -67,7 +76,7 @@ waiting_for_a_fix()
 
 # Turning of GPS
 #gpsbt.stop(con)
-'''
+
 
 # Kartan
 print "Läser in kartinformation från kartdata/map.xml"
