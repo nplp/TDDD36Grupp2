@@ -8,21 +8,7 @@ import thread
 
 coord = (0,0)
 hej = True
-'''
-# Spec enbart för testing
-def trixy():
-	print "inside da trixy one"
-	latitude,longitude = (58.4120,15.5762)
-	map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
-				                             "latitude":latitude},
-				                             "arc(x - 10, y - 10, 20, 0, 2 * math.pi)",
-				                             "set_source_rgb(0, 0, 0)"))	
-	latitude,longitude = (58.3021,15.5531)
-	map.add_object("Shape2", data_storage.MapObject({"longitude":longitude,
-			                             "latitude":latitude},
-			                             "arc(x - 8, y - 8, 16, 0, 2 * math.pi)",
-			                             "set_source_rgb(0, 0, 0)"))	
-'''
+
 # Uppdaterar din kordinat
 def updatecoord():
         global coord
@@ -47,8 +33,8 @@ def updatemap():
         global coord
 	while(hej == True):
 		print "lägg till objekt"
-		map.add_object("Tank", data_storage.MapObject({"longitude":coord[1],
-				                             "latitude":coord[0]},
+		map.add_object("Tank", data_storage.MapObject({"longitude":coord[1]-0.001,
+				                             "latitude":coord[0]-0.001},
 				                             "ikoner/tank.png"))	
 		print "Sov din javel"
 		time.sleep(10.0)
