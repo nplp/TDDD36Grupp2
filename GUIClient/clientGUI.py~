@@ -162,7 +162,6 @@ class GUIClass(Thread):
 	
 		#Avsluta programmet
 	def delete_event(self, widget, event, data=None):
-		S.send('/quit')
 		gtk.main_quit()
 		return False
 	

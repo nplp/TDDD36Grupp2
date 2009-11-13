@@ -108,7 +108,6 @@ class Sender(Thread):
 					print "Online contacts: "
 					for n in contactList:
 						print n
-				else:
 					if(data != ""):
 						clientSocket.send(data)
 		except Exception, e:
