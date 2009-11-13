@@ -1,0 +1,36 @@
+# clientReciever
+# coding:utf-8
+# Ovanstående rad är Utf8-kodning för att åäö ska funka.
+
+from clientCommons import *
+import client
+
+
+# Tar emot meddelanden
+try:
+	while 1:
+		data = str(client.clientSocket.recv(BUFF))
+		if(data == '/x'):
+			client.clientSocket.close()
+		elif(data != ""):
+			if(data.startswith('/ping')):
+					s = data.split(' ', 1)
+					print "Ping: " + str(time() - float(s[1]))
+			elif(data.startswith('/online')):
+				s = data.split(' ', 1)
+				if(data[7] == '/'):
+					print s[1] + " is not online."
+					if(s[1] in contactList):
+							contactList.remove(s[1])
+				else:
+					print s[1] + " is online."
+				contactList.append(s[1])
+			else:
+				print data
+		else:
+			print "rerouting"
+			connect()
+except Exception, e:
+	print e
+
+

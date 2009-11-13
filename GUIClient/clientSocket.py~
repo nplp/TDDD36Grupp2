@@ -5,6 +5,7 @@
 import sys
 from threading import *
 import subprocess
+import signal
 from socket import *
 '''
 clientSocket = socket(AF_INET, SOCK_STREAM)
@@ -13,12 +14,12 @@ contactList = list()
 '''
 
 #Variabler
-HOST = '130.236.216.128'
+HOST = '130.236.216.234'
 HOST2 = '130.236.189.14'
 PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
-MYPORT = 2014
+MYPORT = 2016
 if(len(sys.argv) > 2):
 	MYPORT = int(sys.argv[2])
 ADDR = ('127.0.0.1', MYPORT)
@@ -64,8 +65,8 @@ class Reciever(Thread):
 						contactList.append(s[1])
 					else:
 						print data
-				else:
-					print "rerouting"
+				#else:
+				#	print "rerouting"
 		except Exception, e:
 			print e
 		END = True
@@ -78,40 +79,40 @@ class Sender(Thread):
 		Thread.__init__(self)
 
 	def run(self):
-		try:
-			while 1:
-				data = raw_input()
+		data = ""
+		while(data != "/exit" and self.END == False):
+			data = raw_input()
+			self.send(data)
+		#signal.pause()
+		print "dsfkl"
 
-				if(data.startswith('/quit') or data.startswith('/exit')):
-				 	try:
-						clientSocket.send('/quit')
-					except Exception, e:
-						print "Server has gone down."
-					clientSocket.close()
-					break
-				if(data.startswith('/ping')):
-					temp = data.split(' ',1)
-					if(len(temp) == 1):
-						data = '/ping' + '/ ' + str(time())
-				elif(data.startswith('/addcontact')):
-					temp = data.split(' ',1)
-					data = ""
-					if(len(temp) > 1 and temp[1] not in contactList):
-						contactList.append(temp[1])
-				elif(data.startswith('/deletecontact')):
-					temp = data.split(' ',1)
-					data = ""
-					if(len(temp) > 1 and temp[1] in contactList):
-						contactList.remove(temp[1])
-				elif(data.startswith('/showcontactlist')):
-					data = ""
-					print "Online contacts: "
-					for n in contactList:
-						print n
-				else:
-					if(data != ""):
-						clientSocket.send(data)
+	def send(self, data):
+		try:
+			if(data.startswith('/quit') or data.startswith('/exit')):
+				clientSocket.send('/quit')
+				self.END = True
+				#signal.signal(self.run, 1)
+			if(data.startswith('/ping')):
+				temp = data.split(' ',1)
+				if(len(temp) == 1):
+					data = '/ping' + '/ ' + str(time())
+			elif(data.startswith('/addcontact')):
+				temp = data.split(' ',1)
+				data = ""
+				if(len(temp) > 1 and temp[1] not in contactList):
+					contactList.append(temp[1])
+			elif(data.startswith('/deletecontact')):
+				temp = data.split(' ',1)
+				data = ""
+				if(len(temp) > 1 and temp[1] in contactList):
+					contactList.remove(temp[1])
+			elif(data.startswith('/showcontactlist')):
+				data = ""
+				print "Online contacts: "
+				for n in contactList:
+					print n
+			else:
+				if(data != ""):
+					clientSocket.send(data)
 		except Exception, e:
 			print e
-		clientSocket.close()
-		self.END = True
