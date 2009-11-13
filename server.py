@@ -100,7 +100,7 @@ mission_group = Table('mission_group', metadata,
 	)
 Session = sessionmaker()
 Session.configure(bind=engine)
-session = Session()
+
 	
 class User(object):
 	def __init__(self, name=None, clearance=None,  password=None):
@@ -188,13 +188,19 @@ mapper(User, user_table, properties=dict(
 
 mapper(Item, items_table)
 
-
+session = Session()
 USERS = session.query(User).all()
-
+session.close()
 def get_password(namn):
+	
 	p=session.query(User).filter_by(name=namn).first()
 	return p.password
-
+def is_user(clientname):
+	user=session.query(User).filter_by(name=clientname).first().name
+	if (clientname == user):
+		return True
+	else:
+		return False
 
 #### --------------------------------------------------------
 
@@ -303,7 +309,7 @@ def statusList():
 #HOST = '130.236.218.114'
 HOST = '127.0.0.1'
 #HOST = '130.236.189.22'
-PORT = 2153
+PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
@@ -317,21 +323,10 @@ serverSocket.listen(5)
 
 connectionQueue = list() # Låter endast en användare per IP ansluta åt gången
 socketArray = list() # Innehåller alla sockets vi kör
-USERLOGIN = dict()
-USERNAMES = list()
 
-USERS_EXECUTE = session.query(User).all()
-
-for s in USERS_EXECUTE:
-	##s.execute()
-	USERLOGIN[s.name] = s.password
-	USERNAMES.append(s.name)
-	print s.name
-
-print USERNAMES
-print get_password('mathias')
+session=Session()
 print session.query(User).all()
-session.commit()
+session.close()
 # Sessionsklassen
 class sessionClass(Thread):
 		
@@ -368,10 +363,11 @@ class sessionClass(Thread):
 				# Kicka om man inte skriver något efter 20 försök.
 				if(CLIENTNAME == ""):
 					return "/ERROR"
-				if(CLIENTNAME in USERLOGIN):
+				session=Session()
+				if(is_user(CLIENTNAME)):
 					self.socket.send("Type your password " + CLIENTNAME)
 					login = self.socket.recv(BUFF)
-					session= Session()
+					session2= Session()
 					# Atomisk ------
 					
 					ClientMutex.acquire()
@@ -383,10 +379,10 @@ class sessionClass(Thread):
 					ClientMutex.release()
 					
 					# --------------
-					session.commit()
+					session2.close()
 					if(self.name == CLIENTNAME):
 						return CLIENTNAME
-			
+				session.close()
 		except Exception, e:
 			print "Client lost: " + CLIENTNAME + " exception: " + str(e)	
 		return "/ERROR"
