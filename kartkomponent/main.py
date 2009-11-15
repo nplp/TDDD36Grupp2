@@ -34,7 +34,7 @@ def updatemap():
 	while(hej == True):
 		print "lägg till objekt"
 		map.add_object("Tank", data_storage.MapObject({"longitude":coord[1]-0.001,
-				                             "latitude":coord[0]-0.001},
+				                             "latitude":coord[0]+0.001},
 				                             "ikoner/tank.png"))	
 		print "Sov din javel"
 		time.sleep(10.0)
@@ -44,10 +44,6 @@ def updatemap():
 		updatecoord()
 		# Tar bort ditt objekt
 		map.delete_object("Tank")
-
-
-
-
 
 # Startar GPSEN
 con = gpsbt.start()
@@ -93,5 +89,4 @@ print "Kör programmet."
 thread.start_new_thread(app.run, ())
 print "Innan updatemap"
 updatemap()
-
 
