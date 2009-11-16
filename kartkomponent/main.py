@@ -5,6 +5,7 @@ import gui
 import time
 import gpsbt
 import thread
+import gui_map
  
 coord = (0,0)
 hej = True
@@ -38,6 +39,7 @@ def updatemap():
 		
 		# Kanske redraw
 		print "Kanske redraw"		
+		map.set_redraw_function(gui_map.queue_draw)
 		map.redraw()
 
 		print "Sov din javel"
