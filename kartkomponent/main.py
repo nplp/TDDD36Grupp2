@@ -26,7 +26,7 @@ def waiting_for_a_fix():
 	     	print "Waiting: "+ str(i)
 		i+=1
      		time.sleep(2)
-		print coord
+		#print coord
  
 # En loop som uppdaterar kartan med jämna mellanrum
 def updatemap():
