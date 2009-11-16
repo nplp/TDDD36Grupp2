@@ -3,7 +3,7 @@ pygst.require("0.10")
 import gst
 pipeline = gst.Pipeline("client")
 src = gst.element_factory_make("filesrc", "source")
-src.set_property("location", "/home/you/song.ogg")
+src.set_property("location", "/home/TDDD36Grupp2/Bach.ogg")
 pipeline.add(src)
 client = gst.element_factory_make("tcpclientsink", "client")
 pipeline.add(client)
