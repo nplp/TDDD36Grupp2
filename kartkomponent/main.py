@@ -36,12 +36,11 @@ def updatemap():
 		map.add_object("Tank", data_storage.MapObject({"longitude":(coord[1]-0.0016),
 								"latitude":(coord[0]+0.00075)},
 								"ikoner/tank.png"))
-		
+		'''
 		# Kanske redraw
 		print "Kanske redraw"		
-		map.set_redraw_function(gui_map.queue_draw)
 		map.redraw()
-
+		'''
 		print "Sov din javel"
 		time.sleep(7.0)
  
