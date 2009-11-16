@@ -13,7 +13,7 @@ import gui
 import rapport
 import pango
 import meddelande
-
+import uppdrag
 	
 class MenuExample:
 	
@@ -26,11 +26,23 @@ class MenuExample:
 	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
-	 self.verktyg.set_active(False)
-	 self.filer.set_active(False)
-	 self.kommunikation.set_active(False)
-	 self.vbox2.hide()
+	self.verktyg.set_active(False)
+	self.filer.set_active(False)
+	self.kommunikation.set_active(False)
+	self.vbox2.hide()
 
+	
+	#Uppdrag
+    def upp(self, widget, event, data=None):
+	self.kommunikation.set_active(False)
+	self.filer.set_active(False)
+	self.verktyg.set_active(False)
+	self.vbox2.hide()
+	self.label.hide()
+	self.startakarta.hide()
+	self.meddela.vbox.hide()
+        self.scrolled_window.hide()
+        self.scroll_window.show()
 	
 	#Rapport
     def rapp(self, widget, event, data=None):
@@ -41,6 +53,7 @@ class MenuExample:
 	self.label.hide()
 	self.startakarta.hide()
 	self.meddela.vbox.hide()
+	self.scroll_window.hide()
         self.scrolled_window.show()	
 	
 	
@@ -103,24 +116,23 @@ class MenuExample:
 	
 	#Visa kartan
     def kartan(self, widget, event, data=None):
-	 self.verktyg.set_active(False)
-	 self.vbox2.hide()
-	 self.label.hide()
-	 self.scrolled_window.hide()
-	 self.meddela.vbox.hide()
-	 self.startakarta.show()
+	self.verktyg.set_active(False)
+	self.vbox2.hide()
+	self.label.hide()
+	self.scrolled_window.hide()
+	self.meddela.vbox.hide()
+	self.startakarta.show()
 
 	 
     def textmedd(self, widget, event, data=None):
-	 self.kommunikation.set_active(False)
-	 self.filer.set_active(False)
-	 self.verktyg.set_active(False)
-	 self.vbox2.hide()
-	 self.label.hide()
-	 self.startakarta.hide()
-	 self.scrolled_window.hide()	
-	 self.meddela.vbox.show()
-	 
+	self.kommunikation.set_active(False)
+	self.filer.set_active(False)
+	self.verktyg.set_active(False)
+	self.vbox2.hide()
+	self.label.hide()
+	self.startakarta.hide()
+	self.scrolled_window.hide()	
+	self.meddela.vbox.show()
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
@@ -220,7 +232,7 @@ class MenuExample:
 	#Knappar i filmenyn
 	#Uppdrag
 	self.uppdrag = gtk.Button("       Uppdrag      ")
-	self.uppdrag.connect("clicked", self.callback, "Uppdrag")
+	self.uppdrag.connect("clicked", self.upp, "Uppdrag")
 	self.vbox2.pack_start(self.uppdrag, True, True,0)
 	
 	#Rapport
@@ -260,49 +272,30 @@ class MenuExample:
 	self.startakarta = gui_map.Map(map)
 	self.rapportera = rapport.Mall()
 	self.meddela = meddelande.Meddelande()
+	self.uppdraget = uppdrag.Uppdrag()
+	
 	self.vbox3 = gtk.VBox(False, 0)
         self.vbox3.show()
-	
-	
 	self.scrolled_window=gtk.ScrolledWindow()
 	self.scrolled_window.set_border_width(10)
 	self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
+	self.scroll_window=gtk.ScrolledWindow()
+	self.scroll_window.set_border_width(10)
+	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)	
+		
 		
 	#create a new label.
         self.label = gtk.Label("Anvandare	symbol	datum tid")
         self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
-
-	#Skriv ett amne
-        #self.amne = gtk.Label("Amne")
-        #self.amne.set_alignment(0, 0)
-	#self.vbox3.pack_start(self.amne, False, False, 0)
 	
-	#self.entry = gtk.Entry()
-        #self.entry.set_max_length(250)
-	#self.vbox3.pack_start(self.entry, True, True, 0)
-	
-	#Skriv ett meddelande
-        #self.meddelande = gtk.Label("Meddelande")
-        #self.meddelande.set_alignment(0, 0)
-        #self.vbox3.pack_start(self.meddelande, False, False, 0)
-	
-	#self.entry1 = gtk.TextView()
-        #self.entry1.set_max_length(250)
-	#self.entry1.set_size_request(50,200)
-	#self.entry1.modify_font(pango.FontDescription("Sans 12"))	
-	#self.vbox3.pack_start(self.entry1, True, True, 0)
-	
-	#self.skicka = gtk.Button("Skicka")
-        #self.skicka.connect("clicked", self.send, "Skicka")
-	#self.vbox3.pack_start(self.skicka,True,True,0)
-	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)
-	
-	#Packa karta
-
+	#Packning
+	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
+	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)	
 	self.vbox3.pack_start(self.startakarta,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
+	self.vbox3.pack_start(self.scroll_window,True,True,0)
 	self.vbox3.pack_start(self.meddela.vbox,True,True,0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
     	self.hbox.show()
