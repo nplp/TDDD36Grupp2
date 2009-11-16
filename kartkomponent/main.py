@@ -37,10 +37,6 @@ def updatemap():
 								"latitude":(coord[0]+0.00075)},
 								"ikoner/tank.png"))
 
-		app.__map.add_object("Tank2", data_storage.MapObject({"longitude":(coord[1]-0.006),
-								"latitude":(coord[0]+0.0005)},
-								"ikoner/tank.png"))
-
 		'''
 		# Kanske redraw
 		print "Kanske redraw"		
