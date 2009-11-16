@@ -21,20 +21,20 @@ def waiting_for_a_fix():
 	print "Vi vantar pa en koordinat"
 	global coord
 	while (coord == (0,0)):
-	coord = gps.get_position()
-     	print "Waiting: "+ str(i)
-	i+=1
-     	time.sleep(2)
-	print coord
+		coord = gps.get_position()
+	     	print "Waiting: "+ str(i)
+		i+=1
+     		time.sleep(2)
+		print coord
  
 # En loop som uppdaterar kartan med jämna mellanrum
 def updatemap():
 	global coord
 	while(hej == True):
 		print "lägg till objekt"
-		map.add_object("Tank", data_storage.MapObject({"longitude":coord[1]-0.001,
-		"latitude":coord[0]-0.001},
-		"ikoner/tank.png"))
+		map.add_object("Tank", data_storage.MapObject({"longitude":(coord[1]-0.0016),
+								"latitude":(coord[0]+0.00075)},
+								"ikoner/tank.png"))
 		print "Sov din javel"
 		time.sleep(10.0)
  
