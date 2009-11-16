@@ -37,10 +37,6 @@ def updatemap():
 								"latitude":(coord[0]+0.00075)},
 								"ikoner/tank.png"))
 
-		app.__map.add_object("Tank", data_storage.MapObject({"longitude":(coord[1]-0.006),
-								"latitude":(coord[0]+0.0005)},
-								"ikoner/tank.png"))
-
 		'''
 		# Kanske redraw
 		print "Kanske redraw"		
@@ -99,6 +95,7 @@ app = gui.Gui(map)
 print "Kör programmet."
 thread.start_new_thread(app.run, ())
 print "Innan updatemap"
+time.sleep(5.0)
 updatemap()
  
  

@@ -320,6 +320,7 @@ class MapData(Bounds, Name):
         for item in self.__objects:
             if item["id"] == object_id:
                 self.__objects.remove(item)
+	self.redraw()
 
     def get_object(self, object_id):
         for item in self.__objects:
