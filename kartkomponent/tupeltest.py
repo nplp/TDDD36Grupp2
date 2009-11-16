@@ -6,7 +6,7 @@ import time
 import gpsbt
 import thread
 
-coord = (0,0)
+coord = (58.46479,15.58796)
 hej = True
 
 # Uppdaterar din kordinat
