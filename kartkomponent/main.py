@@ -5,6 +5,7 @@ import gui
 import time
 import gpsbt
 import thread
+import gui_map
  
 coord = (0,0)
 hej = True
@@ -25,7 +26,7 @@ def waiting_for_a_fix():
 	     	print "Waiting: "+ str(i)
 		i+=1
      		time.sleep(2)
-		print coord
+		#print coord
  
 # En loop som uppdaterar kartan med jämna mellanrum
 def updatemap():
@@ -35,11 +36,11 @@ def updatemap():
 		map.add_object("Tank", data_storage.MapObject({"longitude":(coord[1]-0.0016),
 								"latitude":(coord[0]+0.00075)},
 								"ikoner/tank.png"))
-		
+		'''
 		# Kanske redraw
 		print "Kanske redraw"		
 		map.redraw()
-
+		'''
 		print "Sov din javel"
 		time.sleep(7.0)
  

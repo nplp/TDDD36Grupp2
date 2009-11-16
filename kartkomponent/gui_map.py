@@ -136,6 +136,7 @@ class Map(gtk.DrawingArea):
 
             if x != 0 and y != 0:
                 item["object"].draw(self.context, x, y)
+	self.queue_draw()	###### Test #######
    
     def gps_to_pixel(self, lon, lat):
         cols = self.__cols

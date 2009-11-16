@@ -314,6 +314,7 @@ class MapData(Bounds, Name):
     def add_object(self, object_id, map_object):
         self.__objects.append({"id":object_id,
                                "object":map_object})
+	self.redraw()
 
     def delete_object(self, object_id):
         for item in self.__objects:
