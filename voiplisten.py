@@ -30,10 +30,10 @@ class GTK_Main:
 		hbox.add(gtk.Label())
 		window.show_all()
 		#HOSTAR
-		self.player1= gst.parse_launch("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink host=130.236.219.251 port=5434")
+		self.player= gst.parse_launch("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink host=130.236.219.251 port=5434")
 		print "skickar video"
 		#Connectar
-		self.player = gst.parse_launch("udpsrc port=5435 caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
+		self.player1 = gst.parse_launch("udpsrc port=5435 caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
 		print "lyssnar video"
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
@@ -52,8 +52,10 @@ class GTK_Main:
 		if self.button.get_label() == "Start":
 			self.button.set_label("Stop")
 			self.player.set_state(gst.STATE_PLAYING)
+			self.player1.set_state(gst.STATE_PLAYING)
 		else:
 			self.player.set_state(gst.STATE_NULL)
+			self.player1.set_state(gst.STATE_NULL)
 			self.button.set_label("Start")
 
 	def exit(self, widget, data=None):
@@ -63,11 +65,13 @@ class GTK_Main:
 		t = message.type
 		if t == gst.MESSAGE_EOS:
 			self.player.set_state(gst.STATE_NULL)
+			self.player1.set_state(gst.STATE_NULL)
 			self.button.set_label("Start")
 		elif t == gst.MESSAGE_ERROR:
 			err, debug = message.parse_error()
 			print "Error: %s" % err, debug
 			self.player.set_state(gst.STATE_NULL)
+			self.player1.set_state(gst.STATE_NULL)
 			self.button.set_label("Start")
 
 	def on_sync_message(self, bus, message):
