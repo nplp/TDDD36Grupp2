@@ -1,5 +1,10 @@
 
-import e32
+#!/usr/bin/env python
+
+import sys, os
+import pygtk, gtk, gobject
+import pygst
+pygst.require("0.10")
 import audio
 
 audiofile= "e:\\audio.wav"
