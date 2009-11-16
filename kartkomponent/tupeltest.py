@@ -50,7 +50,7 @@ map.add_object("Shape1", data_storage.MapObject({"longitude":coord[0],
                                                 "arc(x - 5, y - 5, 10, 0, 2 * math.pi)",
                                                 "set_source_rgb(0, 0, 0)"))
 map.add_object("Tank", data_storage.MapObject({"longitude":coord[0]-0.015,
-						"latitude":coord[1]+0.0007},
+						"latitude":coord[1]+0.015},
 				                "ikoner/tank.png"))
 
 
