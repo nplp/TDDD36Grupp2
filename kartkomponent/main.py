@@ -36,7 +36,7 @@ def updatemap():
 								"latitude":(coord[0]+0.00075)},
 								"ikoner/tank.png"))
 		print "Sov din javel"
-		time.sleep(10.0)
+		time.sleep(7.0)
  
 		# Uppdaterar dina kordinater
 		print "going to update"
