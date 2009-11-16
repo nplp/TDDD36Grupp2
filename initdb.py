@@ -4,10 +4,12 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 import os
+from datetime import *
 os.system('rm data.db')
 os.system('rm data.db-journal')
 engine = create_engine('sqlite:///data.db', echo=False)
 metadata = MetaData()
+
 
 
 group_table = Table('group', metadata,
@@ -22,7 +24,6 @@ user_table = Table('users', metadata,
 	Column('password', String(40))
 	)
 	
-	
 items_table = Table('items_table', metadata,
 	Column('item_id', Integer, primary_key=True),
 	Column('name', String(40)),
@@ -35,26 +36,60 @@ user_group = Table('user_group', metadata,
 	Column('group_id', None, ForeignKey('group.id'), primary_key=True)
 	)
 	
+mission_table =Table('missions', metadata,
+	Column('id', Integer, primary_key=True),
+	Column('poi_id', Integer),
+	Column('name', String(50)),
+	Column('timestamp', Integer),
+	Column('contact_person', String(50)),
+	Column('contact_number', String(50)),
+	Column('type', String(50)),
+	Column('subtype', String(50)),
+	Column('description', String(200)),
+	Column('status', String(50)),
+	Column('finishtime', String(50))
+	)
+poi_table =Table('pois', metadata,
+	Column('id', Integer, primary_key=True),
+	Column('coordx', Float),
+	Column('coordy', Float),
+	Column('name', Float),
+	Column('timestamp', Float),
+	Column('type', String(50)),
+	Column('subtype', String(50))
+	)
+alarm_table =Table('alarms', metadata,
+	Column('id', Integer, primary_key=True),
+	Column('name', String(50)),
+	Column('timestamp', Float),
+	Column('type', String(50)),
+	Column('subtype', String(50)),
+	Column('contact_number', String(50)),
+	Column('contact_person', String(50)),
+	Column('extra_info', String(200)),
+	)
+unit_table = Table('units',metadata,
+	Column('id', Integer, primary_key=True),
+	Column('coordx', Float),
+	Column('coordy', Float),
+	Column('name', String(50)),
+	Column('timestamp', Float),
+	Column('type', String(50))
+	)
+	
+mission_group = Table('mission_group', metadata,
+	Column('mission_id', None, ForeignKey('missions.id'), primary_key=True),
+	Column('group_id', None, ForeignKey('group.id'), primary_key=True)
+	)
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
 	
 class User(object):
-	
-	#def _get_password(self):
-		#return self.password
-	#def _set_password(self, value):
-		#self.password= sha.new(value).hexdigest()
-		#password=property(_get_password, _set_password)
-	#def password_matches(self, password):
-		#return sha.new(password).hexdigest()==self.password
-
-
 	def __init__(self, name=None, clearance=None,  password=None):
 		self.name=name
 		self.clearance=clearance
-		self.password=password
-	
+		self.password=password	
 	def __repr__(self):
 		return (self.name)
 class Item(object):
@@ -70,16 +105,75 @@ class Group(object):
 		self.name=name
 	def __repr__(self):
 		return self.name
+#class Mission(object):
+	#def __init__(self, title=None, body=None, time=None, location=None):
+		#self.title=title
+		#self.body=body
+		#self.time=time
+		#self.location=location
+class mission(object):
+	def __init__(self, poi_id = None, id=None, name= None, timestamp=None, type= None, sub_type= None, description = None, contact_person = None, contact_number = None, status = None, finishtime = None):
+		#self.id = generate_id()
+		self.poi_id = poi_id
+		self.id=id
+		self.name = name
+		self.timestamp = timestamp
+		self.type = type
+		self.contact_person = contact_person
+		self.contact_number = contact_number
+		self.sub_type = sub_type
+		self.description = description
+		self.status = status
+		self.finishtime = finishtime
+class poi(object):
+	def __init__(self, coordx= None, coordy= None, id=None, name= None, timestamp=None, type=None, sub_type= None):
+		self.coordx = coordx
+		self.coordy = coordy
+		self.id = id
+		self.name = name
+		self.timestamp = timestamp
+		self.type = type
+		self.sub_type = sub_type
+	
+		
+class alarm(object):
+	def __init__(self, id=None, name= None, timestamp=None, type= None, poi_id=None, contact_person= None, contact_number= None, extrainfo = None):
+		self.id=id
+		self.name = name
+		self.timestamp = timestamp
+		self.type = type
+		self.poi_id=poi_id
+		self.contact_person = contact_person
+		self.contact_number = contact_number
+		self.extrainfo = extrainfo
 
+class unit(object):
+	def __init__(self, coordx= None, coordy= None, id=None, name= None, timestamp=None, type= None):
+		self.coordx = coordx
+		self.coordy = coordy
+		self.id = id
+		self.name = name
+		self.timestamp = timestamp
+		self.type = type
+		
 metadata.create_all(engine)
 mapper(Group, group_table)
+mapper(poi, poi_table)
+mapper(alarm, alarm_table)
+mapper(unit, unit_table)
 
+mapper(mission, mission_table, properties=dict(
+	groups=relation(Group, secondary= mission_group, backref='missions'))
+	)
 mapper(User, user_table, properties=dict(
-	_password=user_table.c.password,
 	groups=relation(Group, secondary= user_group, backref='users'))
 	)
 
 mapper(Item, items_table)
+
+def generate_id():
+	id+=1
+	return id
 
 def get_user_groups(namn):
 	snubbe=session.query(User).filter_by(name=namn).first()
@@ -95,7 +189,7 @@ def get_group(namn):
 
 #skapar niklas
 user_niklas=User()
-user_niklas.name='Niklas'
+user_niklas.name='niklas'
 user_niklas.clearance='normal'
 user_niklas.password='123'
 session.save(user_niklas)
@@ -119,33 +213,38 @@ user_niklas.groups.append(g2)
 #print session.query(Group).filter_by(name='team2').first()
 #print session.query(Group).filter_by(name='team2').all()
 
-user_mathias= User(name='Mathias', clearance='normal', password='123')
+user_mathias= User(name='mathias', clearance='normal', password='123')
 user_mathias.groups.append(pro)
 user_mathias.groups.append(go)
 
 
-user_thor= User('Thor', 'normal', 'gobject')
+user_thor= User('thor', 'normal', 'gobject')
 user_thor.groups.append(g)
 user_thor.groups.append(go)
 
 
-user_christopher=User('Christopher', 'normal', '123')
+user_christopher=User('christopher', 'normal', '123')
 user_christopher.groups.append(g)
 
 
-user_hanna= User('Hanna', 'normal', '123')
+user_hanna= User('hanna', 'normal', '123')
 user_hanna.groups.append(g)
 
 
-user_manuela=User('Manuela', 'normal', '123')
+user_manuela=User('manuela', 'normal', '123')
 user_manuela.groups.append(g)
 
 
-user_kj=User('KJ', 'normal', '123')
+user_kj=User('kj', 'normal', '123')
 user_kj.groups.append(g)
 user_kj.groups.append(pro)
 
 
+mission_1= mission(name="Save the cat", timestamp=datetime.now(), type="Rescue", description="Go and save a cat from a burning tree.", contact_person="Moma Cat", contact_number="123457678", status="Ongoing", finishtime= "4 hours")
+mission_2= mission(name="Save the chearleader", timestamp=datetime.now(), type="Assasinate", description="Go and save the chearleader, and assasinate Sylar.", status="Ongoing", finishtime= "30 min")
+
+session.save(mission_1)
+session.save(mission_2)
 session.save(Item('Pansarvagn', 10, 'Linkoping'))
 session.save(Item('Pansarvagn', 70, 'Linkoping'))
 session.save(Item('EMP', 1, 'Linkoping'))
@@ -164,8 +263,8 @@ session.commit()
 #print "skriver ut användare som är i: teamgobject"
 #print get_group_users('teamgobject')
 #print "skriver ut grupper som niklas är med i"
-#print get_user_groups('Niklas')
+#print get_user_groups('niklas')
 #print "skriver ut grupper som Mathias är med i"
-#print get_user_groups('Mathias')
+#print get_user_groups('mathias')
 #print "skriver ut grupp som inte finns"
 #print get_group('finns inte')
