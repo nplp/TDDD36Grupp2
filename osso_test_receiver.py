@@ -17,4 +17,3 @@ gtk.main()
 
 
     
-wget http://repository.maemo.org/stable/diablo/maemo-scratchbox-install_4.1.2.sh
