@@ -14,11 +14,11 @@ def recording():
 def playing():
 	global S
 	try:
-	S=audio.Sound.open(audiofile)
-	S.play()
-	print "playing"
+		S=audio.Sound.open(audiofile)
+		S.play()
+		print "playing"
 	except:
-	print "record first"
+		print "record first"
 	
 def closing():
 	global S
