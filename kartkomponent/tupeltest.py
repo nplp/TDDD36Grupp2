@@ -45,8 +45,8 @@ map.add_object("Sjukhus1", data_storage.MapObject({"longitude":15.5629,
 #   position som figurens GPS-koordinater, men i pixlar.
 #   Förutom x och y finns hela Pythons math-bibliotek tillgängligt för
 #   användning i uttrycken nedan.
-map.add_object("Shape1", data_storage.MapObject({"longitude":15.5829,
-                                                 "latitude":58.4093},
+map.add_object("Shape1", data_storage.MapObject({"longitude":coord[0],
+                                                 "latitude":coord[1]},
                                                 "arc(x - 5, y - 5, 10, 0, 2 * math.pi)",
                                                 "set_source_rgb(0, 0, 0)"))
 map.add_object("Tank", data_storage.MapObject({"longitude":coord[0]-0.001,
