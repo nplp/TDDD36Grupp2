@@ -33,11 +33,12 @@ def updatemap():
         global coord
 	while(hej == True):
 		print "lägg till objekt"
-		map.add_object("Tank", data_storage.MapObject({"longitude":coord[1]-0.001,
-				                             "latitude":coord[0]+0.001},
-				                             "ikoner/tank.png"))	
+		map.add_object("Tank", data_storage.MapObject({"longitude":(coord[1]-0.0016),
+				                             "latitude":(coord[0]+0.00075)},
+				                             "ikoner/tank.png"))
+
 		print "Sov din javel"
-		time.sleep(10.0)
+		time.sleep(7.0)
 		
 		# Uppdaterar dina kordinater
 		print "going to update"
