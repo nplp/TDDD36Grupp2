@@ -29,16 +29,15 @@ class GTK_Main:
 		hbox.pack_start(self.button2, False)
 		hbox.add(gtk.Label())
 		window.show_all()
-		#self.player = gst.parse_launch ("v4l2src ! video/x-raw-yuv,width=320,height=240,framerate=8/1 ! udpsink host=192.168.1.112 port=5000")
 		#Connectar
 		self.player = gst.parse_launch ("udpsrc port=5435 caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
+		#HOSTAR
+		self.player1= gst.parse_launch ("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink host=130.236.219.251 port=5434")
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
 		bus.enable_sync_message_emission()
 		bus.connect("message", self.on_message)
 		bus.connect("sync-message::element", self.on_sync_message)
-		#HOSTAR
-		self.player1= gst.parse_launch ("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink host=130.236.219.251 port=5434")
 		bus1= self.player1.get_bus()
 		bus1.add_signal_watch()
 		bus1.enable_sync_message_emission()
