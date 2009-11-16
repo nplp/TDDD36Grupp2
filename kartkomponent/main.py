@@ -37,6 +37,8 @@ def updatemap():
 								"ikoner/tank.png"))
 		print "Sov din javel"
 		time.sleep(7.0)
+		# Kanske redraw		
+		app.queue_draw()
  
 		# Uppdaterar dina kordinater
 		print "going to update"
