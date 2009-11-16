@@ -15,7 +15,7 @@ pipeline = gst.Pipeline("client")
 #
 src = gst.element_factory_make("filesrc", "source")
 #
-src.set_property("location", "/home/TDDD36Grupp2/Bach.ogg")
+src.set_property("location", "/home/user/TDDD36Grupp2/Bach.ogg")
 #
 pipeline.add(src)
 #
