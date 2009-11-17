@@ -2,7 +2,7 @@ import osso
 import gtk
 
 def method1():
-	print "här händer det grejer!"
+	print "har hander det grejer!"
 	
 
 osso_c = osso.Context("receiver", "0.0.1", False)
