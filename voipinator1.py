@@ -30,9 +30,9 @@ class GTK_Main:
 		hbox.add(gtk.Label())
 		window.show_all()
 		#Ljudlyssna!
-		self.player = gst.parse_launch("udpsrc port=5000 caps=audio/x-iLBCmode=20 ! rtpilbcdepay ! dspilbcsink")
+		self.player = gst.parse_launch("udpsrc port=5000 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
 		#Ljudskicka!
-		self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,mode=20 ! rtpilbcpay ! udpsink host=130.236.218.249 port=4999")
+		self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20  ! udpsink host=130.236.218.249 port=4999")
 		
 		
 		##Ljudlyssna!
@@ -44,7 +44,7 @@ class GTK_Main:
 		self.player2= gst.parse_launch("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink host=130.236.218.249 port=5002")
 		print "skickar video"
 		#Videolyssna
-		self.player3 = gst.parse_launch("udpsrc port=5001 caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
+		self.player3 = gst.parse_launch("udpsrc port=5001 ! application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
 		print "lyssnar video"
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
