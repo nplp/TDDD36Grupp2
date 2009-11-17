@@ -60,7 +60,7 @@ class Gui(hildon.Program):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
 	self.label.hide()
-	self.startakarta.hide()
+	self.kartfonster.hide()
 	self.meddela.vbox.hide()
         self.scrolled_window.hide()
         self.scroll_window.show()
@@ -72,7 +72,7 @@ class Gui(hildon.Program):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
 	self.label.hide()
-	self.startakarta.hide()
+	self.kartfonster.hide()
 	self.meddela.vbox.hide()
 	self.scroll_window.hide()
 	self.ringa.vbox.hide()
@@ -143,7 +143,7 @@ class Gui(hildon.Program):
 	self.label.hide()
 	self.scrolled_window.hide()
 	self.meddela.vbox.hide()
-	self.startakarta.show()
+	self.kartfonster.show()
 	self.ringa.vbox.hide()
 
 	 
@@ -153,7 +153,7 @@ class Gui(hildon.Program):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
 	self.label.hide()
-	self.startakarta.hide()
+	self.kartfonster.hide()
 	self.scrolled_window.hide()	
 	self.meddela.vbox.show()
 	self.ringa.vbox.hide()	
@@ -299,7 +299,7 @@ class Gui(hildon.Program):
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
 	self.vbox3.pack_start(self.ringa.vbox,False,False,0)
-	#self.vbox3.pack_start(self.startakarta,True,True,0)
+	self.vbox3.pack_start(self.kartfonster,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
 	self.vbox3.pack_start(self.scroll_window,True,True,0)
 	self.vbox3.pack_start(self.meddela.vbox,True,True,0)
@@ -312,8 +312,8 @@ class Gui(hildon.Program):
     def __init__(self, map):
         # Initierar hildon (GUI-biblioteket för N810)
         hildon.Program.__init__(self)
-	self.oldbuttonsandwindows()
 	self.create_map_view()
+	self.oldbuttonsandwindows()
         # Sparar handdatorns karta.
         self.__map = map
  		
@@ -346,12 +346,12 @@ class Gui(hildon.Program):
 
     # Skapar vyn för kartan
     def create_map_view(self):
-        frame = gtk.Frame(self.__map.get_name() + " <longitude, latitude>")
-        frame.set_border_width(5)
+        self.kartfonster = gtk.Frame(self.__map.get_name() + " <longitude, latitude>")
+        self.kartfonster.set_border_width(5)
         map = gui_map.Map(self.__map)
-        frame.add(map)
-	self.vbox3.pack_start(frame,True,True,0)
-
+        self.kartfonster.add(map)
+	self.kartfonster.hide()
+	
         # Sparar undan funktionen som möjliggör zoomning
         self.__map_change_zoom = map.change_zoom
 
