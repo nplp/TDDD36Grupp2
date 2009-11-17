@@ -2,7 +2,7 @@
 import osso
 import hildon
 import gtk
- 
+ #men
 hest = ("hejsan kj", "buhu")
 def send_rpc(widget, osso_c):
     rpc = osso.Rpc(osso_c)
