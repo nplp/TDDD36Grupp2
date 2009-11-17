@@ -1,3 +1,0 @@
-[D-BUS Service] 
-Name=spam.eggs.osso_test_receiver
-Exec=python ~TDDD36/osso_test_receiver.py
