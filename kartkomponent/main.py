@@ -5,9 +5,10 @@ import gui
 import time
 import gpsbt
 import thread
-import gui_map
- 
+
+# Tupel där dina kordinater sparas 
 coord = (0,0)
+# Ful haxx
 hej = True
  
 # Uppdaterar din kordinat
@@ -26,27 +27,21 @@ def waiting_for_a_fix():
 	     	print "Waiting: "+ str(i)
 		i+=1
      		time.sleep(2)
-		#print coord
  
 # En loop som uppdaterar kartan med jämna mellanrum
 def updatemap():
 	global coord
 	while(hej == True):
-		print "lägg till objekt"
+		#print "lägg till objekt"
 		map.add_object("Tank", data_storage.MapObject({"longitude":(coord[1]-0.0016),
 								"latitude":(coord[0]+0.00075)},
 								"ikoner/tank.png"))
-		'''
-		# Kanske redraw
-		print "Kanske redraw"		
-		map.redraw()
-		'''
-		print "Sov din javel"
+
 		time.sleep(7.0)
  
 		# Uppdaterar dina kordinater
-		print "going to update"
 		updatecoord()
+		
 		# Tar bort ditt objekt
 		map.delete_object("Tank")
 
@@ -91,9 +86,10 @@ print "Skapar programmets GUI."
 app = gui.Gui(map)
  
 # Kör programmet
-print "Kör programmet."
 thread.start_new_thread(app.run, ())
-print "Innan updatemap"
+# Väntar en snabbis för att vara säker på att alla bindningar har gjorts
+time.sleep(5.0)
+# Går in i en loop som hela tiden uppdaterar kartan med dina nya kondinater
 updatemap()
  
  
