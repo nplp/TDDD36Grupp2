@@ -1,4 +1,5 @@
 import osso
+import osso_rec
 
 osso_rpc = None
 name = None
@@ -14,4 +15,4 @@ def send_rpc(receiver, method, message):
 	osso_rpc.rpc_run("thor."+receiver, "/thor/"+receiver, "thor."+receiver, method, (message,))
 	
 def receive():
-	osso_rpc.set_rpc_callback("thor."+name,"/thor/"+name,"thor."+name, metoden)
+	osso_rpc.set_rpc_callback("thor."+name,"/thor/"+name,"thor."+name, osso_rec.metoden)
