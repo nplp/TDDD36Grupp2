@@ -11,7 +11,7 @@ print "osso_test_receiver started"
 
 osso_rpc = osso.Rpc(osso_c)
 
-osso_rpc.set_rpc_callback("thor.receiver","/thor/receiver","thor.receiver",metoden, osso_c)
+osso_rpc.set_rpc_callback("thor.receiver","/thor/receiver","thor.receiver",metoden)
 
 gtk.main()
 
