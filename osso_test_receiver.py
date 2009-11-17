@@ -14,7 +14,7 @@ rpc = osso.Rpc(osso_c)
 rpc.set_rpc_callback("spam.eggs.osso_test_receiver",
                             "/spam/eggs/osso_test_receiver",
                             "spam.eggs.osso_test_receiver", callback_func,
-                            osso_c, rpc_args)
+                            osso_c)
 			
 
 gtk.main()
