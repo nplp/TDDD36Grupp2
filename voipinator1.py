@@ -34,10 +34,10 @@ class GTK_Main:
 		#Ljudskicka!
 		self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! udpsink host=130.236.218.186 port=4999")
 		#videoskicka
-		self.player2= gst.parse_launch("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink host=130.236.218.186 port=5002")
+		self.player2= gst.parse_launch("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! udpsink host=130.236.218.186 port=5002")
 		print "skickar video"
 		#Videolyssna
-		self.player3 = gst.parse_launch("udpsrc port=5001 caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
+		self.player3 = gst.parse_launch("udpsrc port=5001 caps=application/x-rtp,clock-rate=90000 ! hantro4100dec ! xvimagesink")
 		print "lyssnar video"
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
@@ -56,13 +56,13 @@ class GTK_Main:
 		bus2.enable_sync_message_emission()
 		bus2.connect("message", self.on_message)
 		bus2.connect("sync-message::element", self.on_sync_message)
-		print "startar bus1"
+		print "startar bus2"
 		bus3 = self.player3.get_bus()
 		bus3.add_signal_watch()
 		bus3.enable_sync_message_emission()
 		bus3.connect("message", self.on_message)
 		bus3.connect("sync-message::element", self.on_sync_message)
-		print "startar bus1"
+		print "startar bus3"
 	def start_stop(self, w):
 		if self.button.get_label() == "Start":
 			self.button.set_label("Stop")
