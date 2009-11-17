@@ -14,6 +14,7 @@ import rapport
 import pango
 import meddelande
 import uppdrag
+import detringer
 	
 class MenuExample:
 	
@@ -30,7 +31,9 @@ class MenuExample:
 	self.filer.set_active(False)
 	self.kommunikation.set_active(False)
 	self.vbox2.hide()
-
+	
+    def ring(self, widget, event, data=None):
+	self.ringa.vbox.show()
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
@@ -54,6 +57,7 @@ class MenuExample:
 	self.startakarta.hide()
 	self.meddela.vbox.hide()
 	self.scroll_window.hide()
+	self.ringa.vbox.hide()
         self.scrolled_window.show()	
 	
 	
@@ -122,6 +126,7 @@ class MenuExample:
 	self.scrolled_window.hide()
 	self.meddela.vbox.hide()
 	self.startakarta.show()
+	self.ringa.vbox.hide()
 
 	 
     def textmedd(self, widget, event, data=None):
@@ -133,6 +138,7 @@ class MenuExample:
 	self.startakarta.hide()
 	self.scrolled_window.hide()	
 	self.meddela.vbox.show()
+	self.ringa.vbox.hide()	
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
@@ -200,7 +206,7 @@ class MenuExample:
 	
 	# Samtal
 	self.samtal = gtk.Button("Samtal")
-        self.samtal.connect("clicked", self.callback, "Samtal")
+        self.samtal.connect("clicked", self.ring, "Samtal")
 	self.vbox2.pack_start(self.samtal, True, True, 0)
 	
 	# Video
@@ -252,7 +258,7 @@ class MenuExample:
 	self.hbox.pack_start(self.vbox2, False, False, 0)
 	self.tbaka("clicked", "hej")
 		
-	mapxml = map_xml_reader.MapXML("kartdata/map.xml")
+	mapxml = map_xml_reader.MapXML("kartkomponent/kartdata/map.xml")
 	map = data_storage.MapData(mapxml.get_name(),
 			mapxml.get_levels())
 	map.set_focus(15.5726, 58.4035)
@@ -273,12 +279,15 @@ class MenuExample:
 	self.rapportera = rapport.Mall()
 	self.meddela = meddelande.Meddelande()
 	self.uppdraget = uppdrag.Uppdrag()
+	self.ringa = detringer.Ring()
 	
 	self.vbox3 = gtk.VBox(False, 0)
         self.vbox3.show()
+	
 	self.scrolled_window=gtk.ScrolledWindow()
 	self.scrolled_window.set_border_width(10)
 	self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
+	
 	self.scroll_window=gtk.ScrolledWindow()
 	self.scroll_window.set_border_width(10)
 	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)	
@@ -292,7 +301,8 @@ class MenuExample:
 	
 	#Packning
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
-	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)	
+	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
+	self.vbox3.pack_start(self.ringa.vbox,False,False,0)
 	self.vbox3.pack_start(self.startakarta,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
 	self.vbox3.pack_start(self.scroll_window,True,True,0)
