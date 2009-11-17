@@ -3,7 +3,7 @@ import gtk
 import rpc
 
 rpc.register_name("receiver")
-rpc.receive(receiver)
+rpc.receive()
 gtk.main()
 
 
