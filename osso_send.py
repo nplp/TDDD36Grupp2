@@ -1,46 +1,9 @@
-#!/usr/bin/python2.5
 import osso
 import gtk
+import rpc
 
-args = ("le tupel!",)
-osso_c = osso.Context("sender", "0.0.1", False)
-osso_rpc = osso.Rpc(osso_c)
-osso_rpc.rpc_run("thor.receiver", "/thor/receiver", "thor.receiver", "metod", args)
-print "RPC sent"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+rpc.register_name("sender")
+rpc.send("receiver", "metod33", "le message!!")
 
 
 
@@ -69,13 +32,13 @@ print "RPC sent"
 
 
 '''
-#!/usr/bin/python2.5  import osso import hildon import gtk
+#!/usr/bin/python2.5
 import osso
+import gtk
 
+args = ("le tupel!",)
 osso_c = osso.Context("sender", "0.0.1", False)
 osso_rpc = osso.Rpc(osso_c)
-
-osso_rpc.rpc_run("thor.receiver","/thor/receiver","thor.receiver", "callback_func")
-print "RPC sent.."
-print ".sup with that?"
+osso_rpc.rpc_run("thor.receiver", "/thor/receiver", "thor.receiver", "metod", args)
+print "RPC sent"
 '''
