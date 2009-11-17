@@ -4,6 +4,7 @@ import gtk
  
 def metoden(interface, method, arguments, user_data):
     print "RPC received"
+    print arguments[0]
 
 
 osso_c = osso.Context("receiver", "0.0.1", False)
