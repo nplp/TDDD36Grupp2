@@ -5,7 +5,7 @@ name = None
 
 def register_name(newname):
 	global osso_rpc, name
-	osso_c = osso.Context(name, "0.0.1", False)
+	osso_c = osso.Context(newname, "0.0.1", False)
 	osso_rpc = osso.Rpc(osso_c)
 	
 	name = newname
