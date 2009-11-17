@@ -7,6 +7,7 @@ import gtk
 import sys
 sys.path.append('./kartkomponent')
 import main
+import tupeltest
 '''
 import data_storage
 import map_xml_reader
@@ -280,7 +281,7 @@ class MenuExample:
 						"set_source_rgb(0, 0, 0)"))
 	self.startakarta = gui_map.Map(map)
 	'''
-	self.startakarta = main.StartMap()
+	self.startakarta = tupeltest.StartMap()
 	self.rapportera = rapport.Mall()
 	self.meddela = meddelande.Meddelande()
 	self.uppdraget = uppdrag.Uppdrag()
