@@ -2,14 +2,16 @@
 import data_storage
 import map_xml_reader
 import gui_map
+import guitest
+import gui1
 
 class StartMap:
 
 	coord = (15.5726,58.4035)
 
 	# Kartan
-	print "Läser in kartinformation från kartdata/map.xml"
-	mapxml = map_xml_reader.MapXML("kartdata/map.xml")
+	#print "Läser in kartinformation från kartdata/map.xml"
+	mapxml = map_xml_reader.MapXML("./kartdata/map.xml")
 
 	map = data_storage.MapData(mapxml.get_name(),
 		                   mapxml.get_levels())
@@ -28,7 +30,6 @@ class StartMap:
 	map.add_object("Sjukhus1", data_storage.MapObject({"longitude":15.5629,
 		                                           "latitude":58.4093},
 		                                          "ikoner/sjukhus.png"))
-
 	map.add_object("Shape1", data_storage.MapObject({"longitude":coord[0],
 		                                         "latitude":coord[1]},
 		                                        "arc(x - 5, y - 5, 10, 0, 2 * math.pi)",
@@ -37,10 +38,8 @@ class StartMap:
 							"latitude":(coord[1]+0.00075)},
 						        "ikoner/tank.png"))
 
-
-	# Skapar grafiska interfacet.
-	print "Skapar programmets GUI."
-	app = gui_map.Map(map)
-
+	app = guitest.Gui(map)
+ 	app.run()
+	
 	
 
