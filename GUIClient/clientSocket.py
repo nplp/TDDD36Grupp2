@@ -4,9 +4,12 @@
 
 import sys
 from threading import *
+import thread
 import subprocess
 import signal
 from socket import *
+from message import *
+
 '''
 clientSocket = socket(AF_INET, SOCK_STREAM)
 BUFF = 1024
@@ -14,41 +17,47 @@ contactList = list()
 '''
 
 #Variabler
-HOST = '130.236.217.36'
+HOST = '127.0.0.1'
 HOST2 = '130.236.189.14'
 PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
-MYPORT = 2016
+MYPORT = 2020
 if(len(sys.argv) > 2):
 	MYPORT = int(sys.argv[2])
-ADDR = ('127.0.0.1', MYPORT)
+ADDR = ('127.0.0.1', PORT)
 BUFF = 1024
 contactList = list()
 
 #SSH anrop, startar ssh tunnel mot servern
-subprocess.call('ssh -f kj@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
+#subprocess.call('ssh -f kj@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
 
 #Sekundärserverbyte är uppskjutet, lite mer information finns i niklas_client.py där jag testar lite connection timeouts med mera.
 
 #Aktivera clientsocket
+
 clientSocket = socket(AF_INET, SOCK_STREAM)
-clientSocket.connect(ADDR)
+
+def connect():
+	c = clientSocket.connect_ex(ADDR)
+	if(c!=0):
+		print "Connection problem\n" + str(c)
+	else:
+		print "Connected to " + str(ADDR)
 
 
 # Tar emot meddelanden
 class Reciever(Thread):
-	END = False
 	def __init__(self):
 		Thread.__init__(self)
+		self.END = False
 
 	def run(self):
 		try:
-			while 1:
+			while(self.END == False):
 				data = str(clientSocket.recv(BUFF))
 				if(data == '/x'):
-					END = True
-					clientSocket.close()
+					self.END = True
 					break
 				elif(data != ""):
 					if(data.startswith('/ping')):
@@ -65,34 +74,27 @@ class Reciever(Thread):
 						contactList.append(s[1])
 					else:
 						print data
-				#else:
-				#	print "rerouting"
+				else:
+					self.END = True
+					print "Empty strings"
 		except Exception, e:
 			print e
-		END = True
-		clientSocket.close()
 
-# Skickar meddelanden
-class Sender(Thread):
-	END = False
-	def __init__(self):
-		Thread.__init__(self)
+S_END = False
 
-	def run(self):
-		data = ""
-		while(data != "/exit" and self.END == False):
-			data = raw_input()
-			self.send(data)
-		#signal.pause()
-		print "dsfkl"
-
-	def send(self, data):
+def send(data):
+	global S_END
+	if(S_END):
+		data = finishCMD(Message(data))
 		try:
+			print data
+			#print data
 			if(data.startswith('/quit') or data.startswith('/exit')):
 				clientSocket.send('/quit')
-				self.END = True
+				S_END = True
 				#signal.signal(self.run, 1)
-			if(data.startswith('/ping')):
+
+			elif(data.startswith('/ping')):
 				temp = data.split(' ',1)
 				if(len(temp) == 1):
 					data = '/ping' + '/ ' + str(time())
@@ -111,8 +113,22 @@ class Sender(Thread):
 				print "Online contacts: "
 				for n in contactList:
 					print n
-			else:
-				if(data != ""):
-					clientSocket.send(data)
+			elif(data != ""):
+				clientSocket.send(data)
+
 		except Exception, e:
 			print e
+
+# Skickar meddelanden
+class Sender(Thread):
+	
+	def __init__(self):
+		Thread.__init__(self)
+
+	def run(self):
+		data = ""
+		while(data != "/exit" and S_END == False):
+			data = raw_input()
+			thread.start_new_thread(send,(data,))
+		print "dsfkl"
+

@@ -192,15 +192,17 @@ session = Session()
 USERS = session.query(User).all()
 session.close()
 def get_password(namn):
-	
 	p=session.query(User).filter_by(name=namn).first()
 	return p.password
+
 def is_user(clientname):
-	user=session.query(User).filter_by(name=clientname).first().name
-	if (clientname == user):
-		return True
-	else:
-		return False
+	#user=session.query(User).filter_by(name=clientname).first().name ## <----- NoneType
+	#if (clientname == user):
+	for i in range(len(USERS)):
+		if(clientname == (str(USERS[i]))):
+			return True
+			print "dsjlök"
+	return False
 
 #### --------------------------------------------------------
 
@@ -210,8 +212,8 @@ def is_user(clientname):
 
 # Broadcast. Atomisk.
 def atomic_sendAll(message):
-	print "To all: " + message
-
+	if message:
+		print "To all: " + message
 	ClientMutex.acquire()
 	for i in range(len(socketArray)):
 		if(socketArray[i].status > 0 and i != 0): # Skillnad mellan active och inactive
@@ -224,7 +226,8 @@ def atomic_sendTo(message,client):
 
 	ClientMutex.acquire()
 	index = search(client)
-	print "To " + socketArray[index].name + ": " + message
+	if message:
+		print "To " + socketArray[index].name + ": " + message
 	if(socketArray[index].status > 0):  # Skillnad mellan active och inactive
 		socketArray[index].socket.send(message)
 	ClientMutex.release()
@@ -275,7 +278,8 @@ def atomic_reGroupClients():
 # Broadcast.
 # OBS! Ej atomisk! Får endast köras i atomiska läs-funktioner.
 def sendAll(message):
-	print "To all: " + message
+	if message:
+		print "To all: " + message
 	for i in range(len(socketArray)):
 		if(socketArray[i].status > 0): # Skillnad mellan active och inactive
 			print "Send all: " + str(i)
@@ -291,7 +295,24 @@ def search(client):
 				return i
 	return -1
 
+# Söker efter användarnamn och returnerar användare, oavsett om dene är aktiv eller inte.
+# OBS! Ej atomisk! Får endast köras i atomiska läs-funktioner.
+### FUNKAR EJ ÄN!!! ###
+def getClient(client):
+	for i in range(len(socketArray)):
+		if(socketArray[i].name == client):
+			return socketArray[i]
+	return -1
+
 # ----------------------------------------------------------------------------
+
+def toEnglish(string):
+	for c in string:
+		if(c=='å' or c=='ä'):
+			c = 'a'
+		elif(c=='ö'):
+			c = 'o'
+	return string
 
 def statusList():
 	String = ""
@@ -325,8 +346,10 @@ connectionQueue = list() # Låter endast en användare per IP ansluta åt gånge
 socketArray = list() # Innehåller alla sockets vi kör
 
 session=Session()
-print session.query(User).all()
+#print session.query(User).all()
+print USERS
 session.close()
+
 # Sessionsklassen
 class sessionClass(Thread):
 		
@@ -358,33 +381,33 @@ class sessionClass(Thread):
 				# Av någon anledning skickar dessa klienter en stadig ström av tomma strängar.
 				while(CLIENTNAME == "" and i<20):
 					CLIENTNAME = self.socket.recv(BUFF)
-					print "Login try: " + CLIENTNAME
+					print "Login try: #" + CLIENTNAME + "#"
 					i = i+1
 				# Kicka om man inte skriver något efter 20 försök.
 				if(CLIENTNAME == ""):
 					return "/ERROR"
-				session=Session()
+				session = Session()
 				if(is_user(CLIENTNAME)):
 					self.socket.send("Type your password " + CLIENTNAME)
-					login = self.socket.recv(BUFF)
-					session2= Session()
+					# Läser in login och gör om åäö.
+					login = toEnglish(self.socket.recv(BUFF))
+					#session2 = Session()
+
 					# Atomisk ------
-					
 					ClientMutex.acquire()
-					
 					if(search(CLIENTNAME) == -1):
 						if(login == get_password(CLIENTNAME)):
 							self.name = CLIENTNAME
 					
 					ClientMutex.release()
-					
 					# --------------
-					session2.close()
+
+					#session2.close()
 					if(self.name == CLIENTNAME):
 						return CLIENTNAME
 				session.close()
 		except Exception, e:
-			print "Client lost: " + CLIENTNAME + " exception: " + str(e)	
+			print "Client lost: " + CLIENTNAME + "\nException: " + str(e)	
 		return "/ERROR"
 
 
@@ -434,8 +457,17 @@ class sessionClass(Thread):
 					msg = data.split(' ', 1)
 					if(len(msg) > 1):
 						atomic_disconnect(msg[1])
+				elif(data.startswith('/ip')):
+					msg = data.split(' ', 1)
+					if(len(msg) > 1):
+						# Atomisk ------
+						ClientMutex.acquire()
+						ip = socketArray[search(msg[1])].ADDR
+						ClientMutex.release()
+						# --------------
+						self.sendBack(msg[1] + " " + str(ip))
 
-				else:
+				elif(data != ""):
 					atomic_sendAll(self.name + ": " + data)
 		except Exception, e:
 			print "client lost (handler): " + str(e)
@@ -445,7 +477,7 @@ class sessionClass(Thread):
 		self.name = ""
 		while(self.name == ""):
 			self.name = self.authentication()
-			print "Number: " + self.name
+			print "Logged in: " + self.name
 		if(self.name != "/ERROR"):
 			self.handler(0)
 		atomic_disconnect(self.name)
@@ -458,7 +490,7 @@ def listenToClients():
 	while 1:
 		socket, ADDR = copy(serverSocket.accept())
 		print statusList()
-
+		
 		# Atomisk ------ (reGroup kan råka ta bort socketen om de körs samtidigt)
 		ClientMutex.acquire()
 		socketArray.append(sessionClass(socket, ADDR))
@@ -478,5 +510,7 @@ while SERVERRUN:
 		SERVERRUN = 0
 	elif(String.startswith("r")):
 		thread.start_new_thread(atomic_reGroupClients, ())
+	elif(String.startswith("l")):
+		print statusList()
 
 serverSocket.close()
