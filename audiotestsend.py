@@ -29,8 +29,8 @@ class GTK_Main:
 		hbox.pack_start(self.button2, False)
 		hbox.add(gtk.Label())
 		window.show_all()
-		#HOSTAR!
-		self.player = gst.parse_launch("dsppcmsrc ! audio/x-raw-int,rate=8000,channels=1,depth=8 ! udpsink host=130.236.218.184 port=5435")
+		#HOSTAR! gnomevfssrc location=$1 ! oggdemux ! vorbisdec ! audioconvert ! dsppcmsink 
+		self.player = gst.parse_launch("dsppcmsrc ! audio/x-raw-int,rate=8000,channels=1,depth=8 ! oggdemux ! vorbisdec ! audioconvert ! dsppcmsink")
 		print "skickar ljud"
 		#CONNECTOR
 		#self.player1 = gst.parse_launch("udpsrc port=5434 caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
