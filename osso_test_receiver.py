@@ -2,7 +2,7 @@
 import osso
 import gtk
  
-rpc_args = (,)
+rpc_args = ()
 def callback_func(interface, method, arguments, user_data, rpc_args):
 	try:
 		print user_data
