@@ -39,7 +39,7 @@ class GTK_Main:
 		
 		
 		
-		self.player = gst.parse_launch("filesrc location='$1' ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
+		self.player = gst.parse_launch("filesrc location=$1 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
 		print "skickar ljud"
 		#CONNECTOR
 		#self.player1 = gst.parse_launch("udpsrc port=5434 caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
