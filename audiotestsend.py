@@ -47,12 +47,12 @@ class GTK_Main:
 		bus.enable_sync_message_emission()
 		bus.connect("message", self.on_message)
 		bus.connect("sync-message::element", self.on_sync_message)
-		print "startar bus"
-		bus1 = self.player1.get_bus()
-		bus1.add_signal_watch()
-		bus1.enable_sync_message_emission()
-		bus1.connect("message", self.on_message)
-		bus1.connect("sync-message::element", self.on_sync_message)
+		#print "startar bus"
+		#bus1 = self.player1.get_bus()
+		#bus1.add_signal_watch()
+		#bus1.enable_sync_message_emission()
+		#bus1.connect("message", self.on_message)
+		#bus1.connect("sync-message::element", self.on_sync_message)
 		print "startar bus1"
 	def start_stop(self, w):
 		if self.button.get_label() == "Start":
