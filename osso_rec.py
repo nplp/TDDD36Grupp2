@@ -2,6 +2,11 @@ import osso
 import gtk
 import rpc
 
+
+def metoden(interface, method, arguments, user_data):
+    print "RPC received"
+    print arguments[0]
+
 rpc.register_name("receiver")
 rpc.receive()
 gtk.main()
