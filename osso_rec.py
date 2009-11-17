@@ -1,6 +1,6 @@
 import osso
 import gtk
-import rpc.py
+import rpc
 
 rpc.register_name("receiver")
 rpc.receive(receiver)
