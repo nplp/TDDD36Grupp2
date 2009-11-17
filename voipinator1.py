@@ -30,9 +30,9 @@ class GTK_Main:
 		hbox.add(gtk.Label())
 		window.show_all()
 		#Ljudlyssna!
-		self.player = gst.parse_launch("udpsrc port=5000 ! audio/x-ac3 ! rtpilbcdepay ! dspilbcsink")
+		self.player = gst.parse_launch("udpsrc port=5000 ! audio/x-ac3 ! dspilbcsink")
 		#Ljudskicka!
-		self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-ac3 ! rtpilbcpay ! udpsink host=130.236.218.186 port=4999")
+		self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-ac3 ! udpsink host=130.236.218.186 port=4999")
 		
 		
 		##Ljudlyssna!
