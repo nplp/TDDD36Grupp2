@@ -2,7 +2,7 @@
 import osso
 import gtk
  
-def callback_func(interface, method, arguments, user_data):
+def callback_func(user_data):
     print "RPC received"
     osso_c = user_data
 
