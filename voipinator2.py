@@ -46,7 +46,7 @@ class GTK_Main:
 		self.player2= gst.parse_launch("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink host=130.236.218.184 port=5001")
 		print "skickar video"
 		#Videolyssna
-		self.player3 = gst.parse_launch("udpsrc port=5002 ! decodebin name=decoder decoder. ! queue ! audioconvert ! audioresample ! osssink decoder. ! ffmpegcolorspace ! xvimagesink")
+		self.player3 = gst.parse_launch("udpsrc port=5002 ! decodebin name=decoder decoder. ! queue ! audioconvert ! audioresample ! dspilbcsink decoder. ! ffmpegcolorspace ! xvimagesink")
 		print "lyssnar video"
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
