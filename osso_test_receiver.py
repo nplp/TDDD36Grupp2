@@ -2,6 +2,7 @@
 import osso
 import gtk
  
+rpc_args = (,)
 def callback_func(interface, method, arguments, user_data, rpc_args):
 	try:
 		print user_data
@@ -13,7 +14,8 @@ rpc = osso.Rpc(osso_c)
 rpc.set_rpc_callback("spam.eggs.osso_test_receiver",
                             "/spam/eggs/osso_test_receiver",
                             "spam.eggs.osso_test_receiver", callback_func,
-                            osso_c)
+                            osso_c, rpc_args)
+			
 
 gtk.main()
 
