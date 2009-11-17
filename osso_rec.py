@@ -2,7 +2,7 @@
 import osso
 import gtk
  
-def callback_func(user_data):
+def metoden(interface, method, arguments, user_data):
     print "RPC received"
     osso_c = user_data
 
@@ -12,7 +12,7 @@ print "osso_test_receiver started"
 
 osso_rpc = osso.Rpc(osso_c)
 
-osso_rpc.set_rpc_callback("thor.receiver","/thor/receiver","thor.receiver",callback_func, osso_c)
+osso_rpc.set_rpc_callback("thor.receiver","/thor/receiver","thor.receiver",metoden, osso_c)
 
 gtk.main()
 
