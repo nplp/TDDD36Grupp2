@@ -91,7 +91,7 @@ class User(object):
 		self.clearance=clearance
 		self.password=password	
 	def __repr__(self):
-		return (self.name)
+		return self.name
 class Item(object):
 	def __init__(self, name=None, count=None, location=None):
 		self.name=name
@@ -189,10 +189,26 @@ def getTotal(namn):
 	for item in session.query(Item).filter_by(name=namn):
 		temp = item.count + temp
 	return temp
+	
+def get_mission_by_name(namn):
+	m=session.query(mission).filter_by(name=namn).first()
+	return m
+def get_mission_by_id(id_nr):
+	m=session.query(mission).filter_by(id=id_nr).first()
+	return m
+def get_password(namn):
+	p=session.query(User).filter_by(name=namn).first()
+	return p.password
+def is_user(clientname):
+	user=session.query(User).filter_by(name=clientname).first().name
+	if (clientname == user):
+		return True
+	else:
+		return False
 #user2.groups.append(group2)
 m= mission()
 m.title = 'Bombdad'
-m.body= 'en cyckel parkering ar sprangd bygg en ny cyckel parkering'
+m.body= 'en cyckelparkering ar sprangd bygg en ny cyckelparkering'
 m.time='kl 15:00 den 11 november 2009'
 m.location ='Linkoping'
 
@@ -214,14 +230,27 @@ print get_group_users('team2')
 print "skriver ut användare som är i: teamgobject"
 print get_group_users('teamgobject')
 print "skriver ut grupper som niklas är med i"
-print get_user_groups('Niklas')
+print get_user_groups('niklas')
 print "skriver ut grupper som Mathias är med i"
-print get_user_groups('Mathias')
+print get_user_groups('mathias')
 print "skriver ut grupp som inte finns"
 print get_group('finns inte')
 
+print get_password('mathias')
 
+m = get_mission_by_name("Save the cat")
+print m.name
+print m.description
+print m.id
+print m.type
+print is_user('mathias')
+m = get_mission_by_id(2)
+print m.name
+print m.description
+print m.id
+print m.type
 
+print session.query(User).all()
 
 print getCount('EMP')
 print getTotal('EMP')

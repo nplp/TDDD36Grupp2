@@ -54,7 +54,7 @@ class GTK_Main:
 			self.player1.set_state(gst.STATE_PLAYING)
 		else:
 			self.player.set_state(gst.STATE_NULL)
-			self.player1.set_state(gst.STATE_NULL)
+			self.player1.set_stte(gst.STATE_NULL)
 			self.button.set_label("Start")
 
 	def exit(self, widget, data=None):
