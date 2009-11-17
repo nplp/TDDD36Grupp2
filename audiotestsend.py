@@ -37,22 +37,22 @@ class GTK_Main:
 		#
 		#
 		#
-		self.player = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! udpsink host=130.236.218.184 port=4999")
+		self.player = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! udpsink host=130.236.218.186 port=4999")
 		print "skickar ljud"
 		#CONNECTOR
-		#self.player1 = gst.parse_launch("udpsrc port=5434 caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
+		self.player1 = gst.parse_launch("udpsrc port=5000 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
 		#print "lyssnar video"
 		bus = self.player.get_bus()
 		bus.add_signal_watch()
 		bus.enable_sync_message_emission()
 		bus.connect("message", self.on_message)
 		bus.connect("sync-message::element", self.on_sync_message)
-		#print "startar bus"
-		#bus1 = self.player1.get_bus()
-		#bus1.add_signal_watch()
-		#bus1.enable_sync_message_emission()
-		#bus1.connect("message", self.on_message)
-		#bus1.connect("sync-message::element", self.on_sync_message)
+		print "startar bus"
+		bus1 = self.player1.get_bus()
+		bus1.add_signal_watch()
+		bus1.enable_sync_message_emission()
+		bus1.connect("message", self.on_message)
+		bus1.connect("sync-message::element", self.on_sync_message)
 		print "startar bus1"
 	def start_stop(self, w):
 		if self.button.get_label() == "Start":
