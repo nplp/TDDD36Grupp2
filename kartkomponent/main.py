@@ -5,7 +5,7 @@ import gui
 import time
 import gpsbt
 import thread
-class StartMap:
+
 	# Tupel dar dina kordinater sparas 
 	coord = (0,0)
 	# Ful haxx
@@ -45,7 +45,7 @@ class StartMap:
 			# Tar bort ditt objekt
 			map.delete_object("Tank")
 	
-	
+class StartMap:	
 	# Startar GPSEN
 	con = gpsbt.start()
 	time.sleep(2.0) # wait for gps to come up
