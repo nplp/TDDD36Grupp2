@@ -4,15 +4,13 @@ import gtk
 
 osso_c = osso.Context("sender", "0.0.1", False)
 
-def send_rpc(widget, osso_c):
-    osso_rpc = osso.Rpc(osso_c)
-    osso_rpc.rpc_run("thor.receiver",
-        "/thor/receiver",
-        "thor.receiver", "do_something")
-    print "RPC sent"
+
+osso_rpc = osso.Rpc(osso_c)
+osso_rpc.rpc_run("thor.receiver", "/thor/receiver", "thor.receiver", "do_something")
+print "RPC sent"
 
 
-send_rpc()
+
 
 gtk.main()
 
