@@ -37,7 +37,7 @@ class GTK_Main:
 		#self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! udpsink host=130.236.218.184 port=5000")
 		#videoskicka
 		
-		self.player = gst.parse_launch("udpsrc port=4999 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
+		self.player = gst.parse_launch("udpsrc port=4999 caps=audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
 		#Ljudskicka!
 		#ta bort caps
 		#
