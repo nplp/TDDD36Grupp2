@@ -30,7 +30,16 @@ class GTK_Main:
 		hbox.add(gtk.Label())
 		window.show_all()
 		#HOSTAR!
-		self.player = gst.parse_launch("udpsrc port=5435 ! caps=application/x-raw-int,rate=8000,channels=1,depth=8 ! rtph263depay ! audioconvert ! decodebin ! dsppcmsink")
+		
+		#filesrc location="$1" ! \
+    #audio/x-iLBC,rate=8000,channels=1,mode=20 ! \
+    #dspilbcsink
+
+		
+		
+		
+		
+		self.player = gst.parse_launch("filesrc location='$1' ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
 		print "skickar ljud"
 		#CONNECTOR
 		#self.player1 = gst.parse_launch("udpsrc port=5434 caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
@@ -40,12 +49,12 @@ class GTK_Main:
 		bus.enable_sync_message_emission()
 		bus.connect("message", self.on_message)
 		bus.connect("sync-message::element", self.on_sync_message)
-		print "startar bus"
-		bus1 = self.player1.get_bus()
-		bus1.add_signal_watch()
-		bus1.enable_sync_message_emission()
-		bus1.connect("message", self.on_message)
-		bus1.connect("sync-message::element", self.on_sync_message)
+		#print "startar bus"
+		#bus1 = self.player1.get_bus()
+		#bus1.add_signal_watch()
+		#bus1.enable_sync_message_emission()
+		#bus1.connect("message", self.on_message)
+		#bus1.connect("sync-message::element", self.on_sync_message)
 		print "startar bus1"
 	def start_stop(self, w):
 		if self.button.get_label() == "Start":
