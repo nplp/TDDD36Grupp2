@@ -2,11 +2,13 @@
 import osso
 import hildon
 import gtk
+
+kjtest = ('hej', 'san')
 def send_rpc(widget, osso_c):
     rpc = osso.Rpc(osso_c)
     rpc.rpc_run("spam.eggs.osso_test_receiver",
                    "/spam/eggs/osso_test_receiver",
-                   "spam.eggs.osso_test_receiver", "do_something",('hej','kj'),wait_reply = False, system_bus = False)
+                   "spam.eggs.osso_test_receiver", "do_something",kjtest,wait_reply = False, system_bus = False)
  
 osso_c = osso.Context("osso_test_sender", "0.0.1", False)
  

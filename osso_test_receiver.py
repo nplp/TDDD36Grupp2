@@ -2,8 +2,8 @@
 import osso
 import gtk
  
-rpc_args = ()
 def callback_func(interface, method, arguments, user_data, rpc_args):
+	print "nu kom jag in i callback"
 	try:
 		print user_data
 		print rpc_args[0]
