@@ -5,12 +5,12 @@ import gtk
 
 def send_rpc(widget, osso_c):
     osso_rpc = osso.Rpc(osso_c)
-    osso_rpc.rpc_run("spam.eggs.osso_test_receiver",
-        "/spam/eggs/osso_test_receiver",
-        "spam.eggs.osso_test_receiver", "do_something")
+    osso_rpc.rpc_run("thor.receiver",
+        "/thor/receiver",
+        "thor.receiver", "do_something")
     print "RPC sent"
 
-osso_c = osso.Context("osso_test_sender", "0.0.1", False)
+osso_c = osso.Context("sender", "0.0.1", False)
 window = hildon.Window()
 window.connect("destroy", gtk.main_quit)
 send_button = gtk.Button("Send RPC")
