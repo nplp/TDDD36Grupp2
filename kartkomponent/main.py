@@ -6,44 +6,44 @@ import time
 import gpsbt
 import thread
 
-	# Tupel dar dina kordinater sparas 
-	coord = (0,0)
-	# Ful haxx
-	hej = True
+# Tupel dar dina kordinater sparas 
+coord = (0,0)
+# Ful haxx
+hej = True
 	
-	# Uppdaterar din kordinat
-	def updatecoord():
-		global coord
-		#print "uppdaterar"
+# Uppdaterar din kordinat
+def updatecoord():
+	global coord
+	#print "uppdaterar"
+	coord = gps.get_position()
+
+# Vantar pa att gpsen ska hitta en kordinat
+def waiting_for_a_fix():
+	i = 0
+	#print "Vi vantar pa en koordinat"
+	global coord
+	while (coord == (0,0)):
 		coord = gps.get_position()
-	
-	# Vantar pa att gpsen ska hitta en kordinat
-	def waiting_for_a_fix():
-		i = 0
-		#print "Vi vantar pa en koordinat"
-		global coord
-		while (coord == (0,0)):
-			coord = gps.get_position()
-			print "Waiting: "+ str(i)
-			i+=1
-			time.sleep(2)
-	
-	# En loop som uppdaterar kartan med jamna mellanrum
-	def updatemap():
-		global coord
-		while(hej == True):
-			#print "lagg till objekt"
-			map.add_object("Tank", data_storage.MapObject({"longitude":(coord[1]-0.0016),
-									"latitude":(coord[0]+0.00075)},
-									"ikoner/tank.png"))
-	
-			time.sleep(7.0)
-	
-			# Uppdaterar dina kordinater
-			updatecoord()
-			
-			# Tar bort ditt objekt
-			map.delete_object("Tank")
+		print "Waiting: "+ str(i)
+		i+=1
+		time.sleep(2)
+
+# En loop som uppdaterar kartan med jamna mellanrum
+def updatemap():
+	global coord
+	while(hej == True):
+		#print "lagg till objekt"
+		map.add_object("Tank", data_storage.MapObject({"longitude":(coord[1]-0.0016),
+								"latitude":(coord[0]+0.00075)},
+								"ikoner/tank.png"))
+
+		time.sleep(7.0)
+
+		# Uppdaterar dina kordinater
+		updatecoord()
+		
+		# Tar bort ditt objekt
+		map.delete_object("Tank")
 	
 class StartMap:	
 	# Startar GPSEN
