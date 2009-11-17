@@ -30,9 +30,11 @@ class GTK_Main:
 		hbox.add(gtk.Label())
 		window.show_all()
 		#Ljudlyssna!
-		self.player = gst.parse_launch("udpsrc port=4999 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
+		self.player = gst.parse_launch("udpsrc port=4999 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! rtpilbcdepay ! dspilbcsink")
 		#Ljudskicka!
-		self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! udpsink host=130.236.218.184 port=5000")
+		#ta bort caps
+		#
+		self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! rtpilbcpay ! udpsink host=130.236.218.184 port=5000")
 		#videoskicka
 		self.player2= gst.parse_launch("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink host=130.236.218.184 port=5001")
 		print "skickar video"
