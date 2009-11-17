@@ -30,9 +30,9 @@ class GTK_Main:
 		hbox.add(gtk.Label())
 		window.show_all()
 		#Ljudlyssna!
-		self.player = gst.parse_launch("udpsrc port=5000 ! audio/x-iLBC-sh ! dspilbcsink")
+		self.player = gst.parse_launch("udpsrc port=5000 ! rate=8000,channels=1,mode=20 ! dspilbcsink")
 		#Ljudskicka!
-		self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC-sh ! udpsink host=130.236.249. port=4999")
+		self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! rate=8000,channels=1,mode=20 ! udpsink host=130.236.249. port=4999")
 		
 		
 		##Ljudlyssna!
