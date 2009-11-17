@@ -240,7 +240,6 @@ def atomic_disconnect(client):
 
 	index = search(client)
 	if(index != -1):
-		socketArray[index].socket.send('/x')
 		socketArray[index].status = 0
 		sendAll("Server message: " + str(socketArray[index].name) + " disconnected.")
 		socketArray[index].socket.close()
