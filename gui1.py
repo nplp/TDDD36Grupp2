@@ -6,10 +6,13 @@ import gtk, gobject
 import gtk
 import sys
 sys.path.append('./kartkomponent')
+import main
+'''
 import data_storage
 import map_xml_reader
 import gui_map
 import gui
+'''
 import rapport
 import pango
 import meddelande
@@ -257,7 +260,7 @@ class MenuExample:
 	self.vbox2.pack_start(self.tillbaka, True, True, 0)
 	self.hbox.pack_start(self.vbox2, False, False, 0)
 	self.tbaka("clicked", "hej")
-		
+	'''	
 	mapxml = map_xml_reader.MapXML("kartkomponent/kartdata/map.xml")
 	map = data_storage.MapData(mapxml.get_name(),
 			mapxml.get_levels())
@@ -276,6 +279,8 @@ class MenuExample:
 						"arc(x - 5, y - 5, 10, 0, 2 * math.pi)",
 						"set_source_rgb(0, 0, 0)"))
 	self.startakarta = gui_map.Map(map)
+	'''
+	self.startakarta = main.StartMap()
 	self.rapportera = rapport.Mall()
 	self.meddela = meddelande.Meddelande()
 	self.uppdraget = uppdrag.Uppdrag()
