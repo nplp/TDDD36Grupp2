@@ -1,6 +1,7 @@
 #!/usr/bin/python2.5
 import osso
 import gtk
+from rpc import *
  
 def metoden(interface, method, arguments, user_data):
     print "RPC received"
@@ -10,7 +11,7 @@ def metoden(interface, method, arguments, user_data):
 rpc.register_name("receiver")
 
 
-osso_rpc.set_rpc_callback("thor.receiver","/thor/receiver","thor.receiver",metoden)
+rpc.osso_rpc.set_rpc_callback("thor.receiver","/thor/receiver","thor.receiver",metoden)
 
 gtk.main()
 
