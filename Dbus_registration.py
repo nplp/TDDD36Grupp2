@@ -4,7 +4,7 @@ osso_rpc = None
 name = None
 
 class Dbus_registration():
-	__init__(self, name):
+	def __init__(self, name):
 		self.name = name
 		register_name(name)
 
