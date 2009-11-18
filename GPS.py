@@ -34,7 +34,7 @@ class GPS(object):
 			try:
 				self.updatecoord()
 			except:
-				gpsbt.stop(__con)
+				gpsbt.stop(con)
 	
 	def run(self):
 		# Startar GPSEN
@@ -42,7 +42,7 @@ class GPS(object):
 		time.sleep(2.0) # wait for gps to come up
 		 
 		# Getting GPS coordinats
-		gps = gpsbt.gps()
+		self.gps = gpsbt.gps()
 		 
 		# Vantar pa en gps koordinat
 		print "Waiting baby"
