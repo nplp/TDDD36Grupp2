@@ -10,6 +10,8 @@ print "ja"
 rpc = Dbus_registration("receiver")
 print "visst"
 rpc.oss_rpc = None
+if(rpc.oss_rpc == None)
+	print "blsjvbfdjbf"
 print rpc.osso_rpc
 osso_c = osso.Context("receiver", "0.0.1", False)
 osso_rpc = osso.Rpc(osso_c)
