@@ -312,15 +312,8 @@ class Gui(hildon.Program):
 	self.scroll_window=gtk.ScrolledWindow()
 	self.scroll_window.set_border_width(10)
 	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)	
-		
-		
-	#create a new label.
-	# Read a file
-	#in_file = open("battery.py", "r")
-	#text = in_file.read()
-	#in_file.close()
-	print battery.batteryprint
-        self.label = gtk.Label(battery.batteryprint)
+
+        self.label = gtk.Label(int('Anvandare'+battery.batteryprint+'datum'))
         self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
