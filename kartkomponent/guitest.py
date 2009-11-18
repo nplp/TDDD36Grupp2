@@ -320,7 +320,7 @@ class Gui(hildon.Program):
 	#text = in_file.read()
 	#in_file.close()
 	print battery.batteryprint
-        self.label = gtk.Label('Anvandare' battery.batteryprint 'Datum och Tid')
+        self.label = gtk.Label('Anvandare', battery.batteryprint ,'Datum och Tid')
         self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
