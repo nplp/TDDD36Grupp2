@@ -3,7 +3,7 @@ import osso
 osso_rpc = None
 name = None
 
-class Dbus_registration():
+class Dbus_registration:
 	def __init__(self, name):
 		self.name = name
 		register_name(name)
