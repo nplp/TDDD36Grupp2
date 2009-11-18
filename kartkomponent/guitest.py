@@ -325,7 +325,7 @@ class Gui(hildon.Program):
         # Någon storlek så att PyGTK inte klagar
         self.window.set_size_request(800, 400)
         # Funktion som körs när prorammet ska stängas av
-        #self.window.connect("destroy", self.menu_exit)
+        self.window.connect("destroy", self.menu_exit)
         self.add_window(self.window)
 	self.create_map_view()
 	self.oldbuttonsandwindows()
@@ -350,7 +350,7 @@ class Gui(hildon.Program):
 
     # Skapar vyn för kartan
     def create_map_view(self):
-        self.kartfonster = gtk.Frame(self.__map.get_name() + " <longitude, latitude>")
+        self.kartfonster = gtk.DrawingArea(self.__map.get_name() + " <longitude, latitude>")
         self.kartfonster.set_border_width(5)
         map = gui_map.Map(self.__map)
         self.kartfonster.add(map)
