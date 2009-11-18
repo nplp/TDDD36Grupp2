@@ -3,6 +3,11 @@ import gtk
 import hildon
 import gobject
 import gui_map
+import rapport
+import pango
+import meddelande
+import uppdrag
+import detringer
 
 class Gui(hildon.Program):
     __map = None
@@ -30,7 +35,7 @@ class Gui(hildon.Program):
             #if (self.view.get_current_page() != 1):
                 #self.view.next_page()
         # Zoom -
-        elif event.keyval == 65361:#65477:
+        if event.keyval == 65361:#65477:
             self.__map_change_zoom("-")
         # Zoom +
         elif event.keyval == 65476:
@@ -165,12 +170,13 @@ class Gui(hildon.Program):
 ##############################Har skapat alla funktioner####################################
 
     def oldbuttonsandwindows(self):
-        #Skapa fonster
+	'''        
+	#Skapa fonster
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         #self.window.set_size_request(200, 100)
         self.window.set_title("GUI")
         self.window.connect("delete_event", lambda w,e: gtk.main_quit())
-	
+	'''
 	#Skapa en Vbox som sedan ska in i Hboxen och innehallar huvudknapparna i menyn
         self.vbox = gtk.VBox(False, 0)
 	self.vbox.set_size_request(198, 95)
@@ -312,19 +318,17 @@ class Gui(hildon.Program):
     def __init__(self, map):
         # Initierar hildon (GUI-biblioteket för N810)
         hildon.Program.__init__(self)
-	self.create_map_view()
-	self.oldbuttonsandwindows()
         # Sparar handdatorns karta.
         self.__map = map
- 		
 	# Skapar programmets fönster
-        #self.window = hildon.Window()
+        self.window = hildon.Window()
         # Någon storlek så att PyGTK inte klagar
-        #self.window.set_size_request(200, 200)
+        self.window.set_size_request(800, 400)
         # Funktion som körs när prorammet ska stängas av
         #self.window.connect("destroy", self.menu_exit)
-        #self.add_window(self.window)
-
+        self.add_window(self.window)
+	self.create_map_view()
+	self.oldbuttonsandwindows()
         # Möjliggör fullscreen-läge
         #self.window.connect("key-press-event", self.on_key_press)
         #self.window.connect("window-state-event", self.on_window_state_change)
