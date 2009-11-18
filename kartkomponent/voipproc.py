@@ -176,7 +176,7 @@ if __name__ == "__main__":
 	
 osso_c = osso.Context("voipproc", "0.0.1", False)
 osso_rpc = osso.Rpc(osso_c)
-osso_rpc.set_rpc_callback("thor.voipproc","/thor/voipproc","thor.voipproc",callback_func)
+osso_rpc.set_rpc_callback("thor.voipproc","/thor/voipproc","thor.voipproc",onlyone)
 
 def onlyone(interface, method, arguments, user_data):
 	print "nu er vi inne i onlyone"
