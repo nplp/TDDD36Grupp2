@@ -1,24 +1,18 @@
+#!/usr/bin/python2.5
 import osso
 import gtk
-from Dbus_registration import *
-
+ 
 def metoden(interface, method, arguments, user_data):
     print "RPC received"
     print arguments[0]
 
-print "ja"
-rpc = Dbus_registration("receiver")
-print "visst"
-if(rpc.osso_rpc == None):
-	print "det stod None har ojsan"
-rpc.receive(metoden)
+
+rpc.register_name("receiver")
+
+
+osso_rpc.set_rpc_callback("thor.receiver","/thor/receiver","thor.receiver",metoden)
+
 gtk.main()
-
-
-
-
-
-
 
 
 
