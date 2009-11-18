@@ -16,5 +16,5 @@ class Dbus_registration():
 	def send_rpc(receiver, method, message):
 		osso_rpc.rpc_run("thor."+receiver, "/thor/"+receiver, "thor."+receiver, method, (message,))
 	
-	def receive(self.metoden):
+	def receive(self,metoden):
 		self.osso_rpc.set_rpc_callback("thor."+name,"/thor/"+name,"thor."+name, metoden)
