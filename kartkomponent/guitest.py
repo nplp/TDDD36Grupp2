@@ -43,7 +43,7 @@ class Gui(hildon.Program):
     def ring(self, widget, event, data=None):
 	osso_c = osso.Context("ring", "0.0.1", False)
 	osso_rpc = osso.Rpc(osso_c)
-	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (1, 127.0.0.1, 4000, 4001)
+	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (1, 127.0.0.1, 4000, 4001))
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
