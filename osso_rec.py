@@ -6,7 +6,9 @@ def metoden(interface, method, arguments, user_data):
     print "RPC received"
     print arguments[0]
 
+print "ja"
 rpc = Dbus_registration("receiver")
+print "visst"
 rpc.receive(metoden)
 gtk.main()
 

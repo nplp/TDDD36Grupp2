@@ -5,6 +5,7 @@ name = None
 
 class Dbus_registration():
 	def __init__(self, name):
+		print "hejsan"
 		self.name = name
 		self.register_name(name)
 
