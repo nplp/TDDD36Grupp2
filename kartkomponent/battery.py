@@ -17,3 +17,4 @@ batteryprint = int((x/y)*100),'%'
 #x2 = float(dev_obj.GetProperty('battery.voltage.current'))
 #y2 = float(dev_obj.GetProperty('battery.voltage.design'))
 #print 'usage level', int((x2/y2)*100),'%'
+
