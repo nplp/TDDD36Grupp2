@@ -21,9 +21,7 @@ class GPS(object):
 		print "Vi vantar pa en koordinat"
 		while (self.coord == (0,0)):
 			self.coord = self.gps.get_position()
-			print "Waiting: "+ str(i)
-			i+=1
-			time.sleep(2)
+		
 
 	def send_coordinates(self):
 		self.update = True
@@ -39,7 +37,7 @@ class GPS(object):
 	def run(self):
 		# Startar GPSEN
 		self.con = gpsbt.start()
-		time.sleep(2.0) # wait for gps to come up
+		time.sleep(3.0) # wait for gps to come up
 		 
 		# Getting GPS coordinats
 		self.gps = gpsbt.gps()

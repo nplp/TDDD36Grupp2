@@ -3,13 +3,14 @@ import data_storage
 import map_xml_reader
 import gui_map
 import guitest
+import Tufftuff
 
 class Start(object):
 
 	def __init__(self):
 		self.hej = 5		
 
-	def runmap(self):
+	def createmap(self):
 		self.mapxml = map_xml_reader.MapXML("./kartdata/map.xml")
 		self.map = data_storage.MapData(self.mapxml.get_name(),
 		                   self.mapxml.get_levels())
@@ -28,13 +29,13 @@ class Start(object):
 								"latitude":(58.4035)},
 							        "ikoner/tank.png"))
 	
-
+	def startgui(self):
 		self.app = guitest.Gui(self.map)
 		self.app.run()
 
 	def run(self):
-		print 'hej'
-		self.runmap()
+		self.createmap()
+		self.startgui()
 
 def main():
     gtk.main()
