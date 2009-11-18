@@ -6,7 +6,7 @@ name = None
 class Dbus_registration():
 	def __init__(self, name):
 		self.name = name
-		register_name(name)
+		self.register_name(name)
 
 	def register_name(newname):
 		self.name = newname
