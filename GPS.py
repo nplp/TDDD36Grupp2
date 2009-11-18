@@ -3,7 +3,7 @@ import time
 import gpsbt
 import thread
 
-class GPS(object):
+class GPS:
 	
 	coord = (0,0)
 	update = False
@@ -27,9 +27,9 @@ class GPS(object):
 		self.update = True
 		while (self.update == True):
 			print self.coord[0]
-			print self.coord[1]			
+			print self.coord[1]
 			time.sleep(5)
-			try:			
+			try:
 				updatecoord()
 			except:
 				gpsbt.stop(__con)
