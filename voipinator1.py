@@ -7,11 +7,11 @@ pygst.require("0.10")
 import gst
 
 class Mainstream:
-	def __init__(self):
-		choose = 1
-		HOSTIP = '127.0.0.1'
-		MYPORT = '5000'
-		HOSTPORT = '5000'
+	#def __init__(self):
+		#choose = 1
+		#HOSTIP = '127.0.0.1'
+		#MYPORT = '5000'
+		#HOSTPORT = '5000'
 	def run(self, choose, HOSTIP, MYPORT, HOSTPORT):
 		window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 		window.set_title("Awesome AP")
