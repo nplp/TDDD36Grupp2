@@ -3,7 +3,7 @@ import time
 import gpsbt
 import thread
 
-class GPS:
+class GPS(object):
 	
 	coord = (0,0)
 	update = False
@@ -47,4 +47,6 @@ class GPS:
 	self.waiting_for_a_fix()
 
 	self.send_coordinates()
+
+GPS()
 
