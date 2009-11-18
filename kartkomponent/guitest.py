@@ -8,6 +8,7 @@ import pango
 import meddelande
 import uppdrag
 import detringer
+import battery
 
 class Gui(hildon.Program):
     __map = None
@@ -314,7 +315,12 @@ class Gui(hildon.Program):
 		
 		
 	#create a new label.
-        self.label = gtk.Label("Anvandare	symbol	   datum tid")
+	# Read a file
+	#in_file = open("battery.py", "r")
+	#text = in_file.read()
+	#in_file.close()
+	print battery.batteryprint
+        self.label = gtk.Label(battery.batteryprint)
         self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
