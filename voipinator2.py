@@ -6,9 +6,13 @@ import pygst
 pygst.require("0.10")
 import gst
 
-class GTK_Main:
-
+class Mainstream:
 	def __init__(self):
+		choose = 1
+		HOSTIP = '127.0.0.1'
+		MYPORT = '5000'
+		HOSTPORT = '5000'
+	def run(self, choose, HOSTIP, MYPORT, HOSTPORT):
 		window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 		window.set_title("Awesome AP")
 		window.set_default_size(500, 400)
@@ -29,80 +33,119 @@ class GTK_Main:
 		hbox.pack_start(self.button2, False)
 		hbox.add(gtk.Label())
 		window.show_all()
-		#Ljudlyssna!
-		#self.player = gst.parse_launch("udpsrc port=4999 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
-		##Ljudskicka!
-		##ta bort caps
-		##
-		#self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! udpsink host=130.236.218.184 port=5000")
-		#videoskicka
-		
-		self.player = gst.parse_launch("udpsrc port=4999 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
-		#Ljudskicka!
-		
-		self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! udpsink host=130.236.218.184 port=5000")
-		
-		self.player2= gst.parse_launch("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink host=130.236.218.184 port=5001")
-		print "skickar video"
-		#Videolyssna
-		self.player3 = gst.parse_launch("udpsrc port=5002 caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
-		print "lyssnar video"
-		bus = self.player.get_bus()
-		bus.add_signal_watch()
-		bus.enable_sync_message_emission()
-		bus.connect("message", self.on_message)
-		bus.connect("sync-message::element", self.on_sync_message)
-		print "startar bus"
-		bus1 = self.player1.get_bus()
-		bus1.add_signal_watch()
-		bus1.enable_sync_message_emission()
-		bus1.connect("message", self.on_message)
-		bus1.connect("sync-message::element", self.on_sync_message)
-		print "startar bus1"
-		bus2 = self.player2.get_bus()
-		bus2.add_signal_watch()
-		bus2.enable_sync_message_emission()
-		bus2.connect("message", self.on_message)
-		bus2.connect("sync-message::element", self.on_sync_message)
-		print "startar bus2"
-		bus3 = self.player3.get_bus()
-		bus3.add_signal_watch()
-		bus3.enable_sync_message_emission()
-		bus3.connect("message", self.on_message)
-		bus3.connect("sync-message::element", self.on_sync_message)
-		print "startar bus3"
+		#Rostsamtal = 1
+		if(choose == 1):
+			self.player = gst.parse_launch("udpsrc "+MYPORT+" ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
+			self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20  ! udpsink "+HOSTIP+" "+HOSTPORT)
+			bus = self.player.get_bus()
+			bus.add_signal_watch()
+			bus.enable_sync_message_emission()
+			bus.connect("message", self.on_message)
+			bus.connect("sync-message::element", self.on_sync_message)
+			bus1 = self.player1.get_bus()
+			bus1.add_signal_watch()
+			bus1.enable_sync_message_emission()
+			bus1.connect("message", self.on_message)
+			bus1.connect("sync-message::element", self.on_sync_message)
+		#Videosamtal = 2
+		elif (choose == 2):
+			self.player2 = gst.parse_launch("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink "+HOSTIP+" "+HOSTPORT)
+			self.player3 = gst.parse_launch("udpsrc "+MYPORT+" caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
+			bus2 = self.player2.get_bus()
+			bus2.add_signal_watch()
+			bus2.enable_sync_message_emission()
+			bus2.connect("message", self.on_message)
+			bus2.connect("sync-message::element", self.on_sync_message)
+			bus3 = self.player3.get_bus()
+			bus3.add_signal_watch()
+			bus3.enable_sync_message_emission()
+			bus3.connect("message", self.on_message)
+			bus3.connect("sync-message::element", self.on_sync_message)
+		#Videorostsamtal = 3
+		elif (choose == 3):
+			self.player = gst.parse_launch("udpsrc "+MYPORT+" ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
+			self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20  ! udpsink "+HOSTIP+" "+HOSTPORT)
+			self.player2 = gst.parse_launch("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink "+HOSTIP+" "+HOSTPORT)
+			self.player3 = gst.parse_launch("udpsrc "+MYPORT+" caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
+			bus = self.player.get_bus()
+			bus.add_signal_watch()
+			bus.enable_sync_message_emission()
+			bus.connect("message", self.on_message)
+			bus.connect("sync-message::element", self.on_sync_message)
+			bus1 = self.player1.get_bus()
+			bus1.add_signal_watch()
+			bus1.enable_sync_message_emission()
+			bus1.connect("message", self.on_message)
+			bus1.connect("sync-message::element", self.on_sync_message)
+			bus2 = self.player2.get_bus()
+			bus2.add_signal_watch()
+			bus2.enable_sync_message_emission()
+			bus2.connect("message", self.on_message)
+			bus2.connect("sync-message::element", self.on_sync_message)
+			bus3 = self.player3.get_bus()
+			bus3.add_signal_watch()
+			bus3.enable_sync_message_emission()
+			bus3.connect("message", self.on_message)
+			bus3.connect("sync-message::element", self.on_sync_message)
 	def start_stop(self, w):
 		if self.button.get_label() == "Start":
+			if (choose==1):
+				self.player.set_state(gst.STATE_PLAYING)
+				self.player1.set_state(gst.STATE_PLAYING)
+			elif (choose==2):
+				self.player2.set_state(gst.STATE_PLAYING)
+				self.player3.set_state(gst.STATE_PLAYING)
+				
+			elif (choose==3):
+				self.player.set_state(gst.STATE_PLAYING)
+				self.player1.set_state(gst.STATE_PLAYING)
+				self.player2.set_state(gst.STATE_PLAYING)
+				self.player3.set_state(gst.STATE_PLAYING)
 			self.button.set_label("Stop")
-			self.player.set_state(gst.STATE_PLAYING)
-			self.player1.set_state(gst.STATE_PLAYING)
-			self.player2.set_state(gst.STATE_PLAYING)
-			self.player3.set_state(gst.STATE_PLAYING)
 		else:
-			self.player.set_state(gst.STATE_NULL)
-			self.player1.set_state(gst.STATE_NULL)
-			self.player2.set_state(gst.STATE_NULL)
-			self.player3.set_state(gst.STATE_NULL)
+			if (choose==1):
+				self.player.set_state(gst.STATE_NULL)
+				self.player1.set_state(gst.STATE_NULL)
+			elif (choose==2):
+				self.player2.set_state(gst.STATE_NULL)
+				self.player3.set_state(gst.STATE_NULL)
+			elif (choose==3):
+				self.player.set_state(gst.STATE_NULL)
+				self.player1.set_state(gst.STATE_NULL)
+				self.player2.set_state(gst.STATE_NULL)
+				self.player3.set_state(gst.STATE_NULL)
 			self.button.set_label("Start")
-
+				
 	def exit(self, widget, data=None):
 		gtk.main_quit()
-
+		
 	def on_message(self, bus, message):
 		t = message.type
 		if t == gst.MESSAGE_EOS:
-			self.player.set_state(gst.STATE_NULL)
-			self.player1.set_state(gst.STATE_NULL)
-			self.player2.set_state(gst.STATE_NULL)
-			self.player3.set_state(gst.STATE_NULL)
+			if (choose==1):
+				self.player.set_state(gst.STATE_NULL)
+				self.player1.set_state(gst.STATE_NULL)
+			elif (choose==2):
+				self.player2.set_state(gst.STATE_NULL)
+				self.player3.set_state(gst.STATE_NULL)
+			elif (choose==3):
+				self.player.set_state(gst.STATE_NULL)
+				self.player1.set_state(gst.STATE_NULL)
+				self.player2.set_state(gst.STATE_NULL)
+				self.player3.set_state(gst.STATE_NULL)
 			self.button.set_label("Start")
 		elif t == gst.MESSAGE_ERROR:
-			err, debug = message.parse_error()
-			print "Error: %s" % err, debug
-			self.player.set_state(gst.STATE_NULL)
-			self.player1.set_state(gst.STATE_NULL)
-			self.player2.set_state(gst.STATE_NULL)
-			self.player3.set_state(gst.STATE_NULL)
+			if (choose==1):
+				self.player.set_state(gst.STATE_NULL)
+				self.player1.set_state(gst.STATE_NULL)
+			elif (choose==2):
+				self.player2.set_state(gst.STATE_NULL)
+				self.player3.set_state(gst.STATE_NULL)
+			elif (choose==3):
+				self.player.set_state(gst.STATE_NULL)
+				self.player1.set_state(gst.STATE_NULL)
+				self.player2.set_state(gst.STATE_NULL)
+				self.player3.set_state(gst.STATE_NULL)
 			self.button.set_label("Start")
 
 	def on_sync_message(self, bus, message):
@@ -114,8 +157,7 @@ class GTK_Main:
 			imagesink = message.src
 			imagesink.set_property("force-aspect-ratio", False)
 			imagesink.set_xwindow_id(self.movie_window.window.xid)
-
-GTK_Main()
+Mainstream.run(1,'130.236.218.184', '5001','5000')
 gtk.gdk.threads_init()
 gtk.main()
 
