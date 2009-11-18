@@ -170,13 +170,14 @@ def main():
 	gtk.main()
 
 if __name__ == "__main__":
+	osso_c = osso.Context("voipproc", "0.0.1", False)
+	osso_rpc = osso.Rpc(osso_c)
+	osso_rpc.set_rpc_callback("thor.voipproc","/thor/voipproc","thor.voipproc",onlyone)
 	#Mainstream().run(1,'130.236.219.132', '5000','5001')
 	gtk.gdk.threads_init()
 	main()
 	
-osso_c = osso.Context("voipproc", "0.0.1", False)
-osso_rpc = osso.Rpc(osso_c)
-osso_rpc.set_rpc_callback("thor.voipproc","/thor/voipproc","thor.voipproc",onlyone)
+
 
 def onlyone(interface, method, arguments, user_data):
 	print "nu er vi inne i onlyone"
