@@ -36,8 +36,8 @@ class Gui(hildon.Program):
 	self.vbox2.hide()
 	
     def ring(self, widget, event, data=None):
-	self.ringa.vbox.show()
 	self.label.hide()
+	self.ringa.vbox.show()
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
@@ -59,7 +59,6 @@ class Gui(hildon.Program):
 	self.map.hide()
 	self.meddela.vbox.hide()
 	self.scroll_window.hide()
-	self.ringa.vbox.hide()
         self.scrolled_window.show()	
 	
 	
@@ -79,6 +78,9 @@ class Gui(hildon.Program):
 		self.uppdrag.hide()
 		self.rapport.hide()
 		self.lager.hide()
+		self.energi.hide()
+		self.natverk.hide()
+		self.anvanda.hide()
 		self.tillbaka.show()
       	else:
           	self.tbaka(widget, data)		
@@ -99,6 +101,9 @@ class Gui(hildon.Program):
 		self.uppdrag.hide()
 		self.rapport.hide()
 		self.lager.hide()
+		self.energi.hide()
+		self.natverk.hide()
+		self.anvanda.hide()
 		self.tillbaka.show()
 	else:
           	self.tbaka(widget, data)
@@ -119,6 +124,9 @@ class Gui(hildon.Program):
 		self.uppdrag.show()
 		self.rapport.show()
 		self.lager.show()
+		self.energi.hide()
+		self.natverk.hide()
+		self.anvanda.hide()
 		self.tillbaka.show()
 	 else:
           	self.tbaka(widget, data)
@@ -306,7 +314,7 @@ class Gui(hildon.Program):
 		
 		
 	#create a new label.
-        self.label = gtk.Label("Anvandare	symbol	datum tid")
+        self.label = gtk.Label("Anvandare	symbol	   datum tid")
         self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
