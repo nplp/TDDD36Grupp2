@@ -20,7 +20,7 @@ class GPS(object):
 		i = 0
 		print "Vi vantar pa en koordinat"
 		while (self.coord == (0,0)):
-			self.coord = gps.get_position()
+			self.coord = self.gps.get_position()
 			print "Waiting: "+ str(i)
 			i+=1
 			time.sleep(2)
