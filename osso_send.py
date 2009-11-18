@@ -2,8 +2,8 @@ import osso
 import gtk
 import rpc
 
-register_name("sender")
-send("receiver", "metod33", "le message!!")
+rpc.register_name("sender")
+rpc.send("receiver", "metod33", "le message!!")
 
 
 
