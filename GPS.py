@@ -31,10 +31,10 @@ class GPS(object):
 			print self.coord[0]
 			print self.coord[1]
 			time.sleep(5)
-			try:
-				self.updatecoord()
-			except:
-				gpsbt.stop(self.con)
+			#try:
+			self.updatecoord()
+			#except:
+			#	gpsbt.stop(self.con)
 	
 	def run(self):
 		# Startar GPSEN
