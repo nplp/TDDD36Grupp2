@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import gtk
 import hildon
 import gobject
@@ -6,12 +7,14 @@ import gui_map
 import rapport
 import pango
 import meddelande
-import osso
 import uppdrag
 import detringer
 import battery
+import thread
+import time
+import osso
 
-class Gui(hildon.Program):
+class Gui(hildon.Program):	
     __map = None
     __map_change_zoom = None
 
@@ -23,6 +26,12 @@ class Gui(hildon.Program):
         elif event.keyval == 65476:
             self.__map_change_zoom("+")
     #########################TESTING123 skapar alla funktioner############################
+    
+    def listenBattery(self):
+	while(1):
+		self.label = gtk.Label(battery.batteryprint)
+		time.sleep(5)
+    
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 	
@@ -45,7 +54,7 @@ class Gui(hildon.Program):
 	osso_c = osso.Context("ring", "0.0.1", False)
 	osso_rpc = osso.Rpc(osso_c)
 	print "vi sparar!"
-	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (1, "127.0.0.1", "4000", "4001"))
+	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (1, "127.0.0.1", "4000", "4001"))	
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
@@ -322,11 +331,16 @@ class Gui(hildon.Program):
 	self.scroll_window.set_border_width(10)
 	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)	
 
-
-        self.label = gtk.Label(battery.batteryprint)
+        #self.label = gtk.Label(battery.batteryprint)
+	#self.label.set_alignment(0, 0)
+        #self.label.show()	
+        #self.vbox3.pack_start(self.label, False, False, 0)
+	
+	self.label = gtk.Label(battery.batteryprint)
 	self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
+
 	
 	#Packning
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
@@ -356,6 +370,8 @@ class Gui(hildon.Program):
         self.add_window(self.window)
 	self.create_map_view()
 	self.oldbuttonsandwindows()
+	
+	thread.start_new_thread(self.listenBattery,())
         # Möjliggör fullscreen-läge
         #self.window.connect("key-press-event", self.on_key_press)
         #self.window.connect("window-state-event", self.on_window_state_change)
