@@ -7,8 +7,8 @@ hal = dbus.Interface (hal_obj, 'org.freedesktop.Hal.Manager')
 uids = hal.FindDeviceByCapability('battery')
 dev_obj = bus.get_object ('org.freedesktop.Hal', uids[0])
 
-#x = float(dev_obj.GetProperty('battery.reporting.current'))
-#y = float(dev_obj.GetProperty('battery.reporting.design'))
+x = float(dev_obj.GetProperty('battery.reporting.current'))
+y = float(dev_obj.GetProperty('battery.reporting.design'))
 
 batteryprint = int((x/y)*100),'%'
 #x2 = float(dev_obj.GetProperty('battery.voltage.current'))
