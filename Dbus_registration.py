@@ -1,5 +1,5 @@
 import osso
-osso_c = None
+
 osso_rpc = None
 name = None
 
@@ -11,7 +11,7 @@ class Dbus_registration():
 
 	def register_name(self,newname):
 		self.name = newname
-		self.osso_c = osso.Context(newname, "0.0.1", False)
+		osso_c = osso.Context(newname, "0.0.1", False)
 		self.osso_rpc = osso.Rpc(osso_c)
 	
 	def send_rpc(receiver, method, message):
@@ -19,5 +19,5 @@ class Dbus_registration():
 	
 	def receive(self,metoden):
 		print "bajs"
-		self.osso_rpc.set_rpc_callback("thor.%s" % name,"/thor/%s" % name,"thor.%s" % name, metoden)
+		self.osso_rpc.set_rpc_callback("thor.receiver" ,"/thor/receiver" ,"thor.receiver", metoden)
 		print "pa dig"
