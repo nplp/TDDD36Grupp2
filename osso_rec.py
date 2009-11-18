@@ -9,7 +9,7 @@ def metoden(interface, method, arguments, user_data):
 print "ja"
 rpc = Dbus_registration("receiver")
 print "visst"
-rpc.receive(metoden)
+rpc.osso_rpc.set_rpc_callback("thor.receiver" ,"/thor/receiver" ,"thor.receiver", metoden)
 gtk.main()
 
 
