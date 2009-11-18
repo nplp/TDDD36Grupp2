@@ -36,9 +36,14 @@ class Gui(hildon.Program):
 	self.kommunikation.set_active(False)
 	self.vbox2.hide()
 	
+    #def ring(self, widget, event, data=None):
+	#self.label.hide()
+	#self.ringa.vbox.show()
+	
     def ring(self, widget, event, data=None):
-	self.label.hide()
-	self.ringa.vbox.show()
+	osso_c = osso.Context("ring", "0.0.1", False)
+	osso_rpc = osso.Rpc(osso_c)
+	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (1, 127.0.0.1, 4000, 4001)
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
