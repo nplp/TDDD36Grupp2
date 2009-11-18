@@ -1,6 +1,6 @@
 import osso
 import gtk
-import Dbus_registration
+from Dbus_registration import *
 
 rpc = Dbus_registration("sender")
 
