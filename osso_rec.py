@@ -7,8 +7,11 @@ def metoden(interface, method, arguments, user_data):
     print "RPC received"
     print arguments[0]
 
+name = "receiver"
 rpc.register_name("receiver")
-rpc.receive()
+	
+osso_rpc.set_rpc_callback("thor."+name,"/thor/"+name,"thor."+name, metoden)
+#rpc.receive()
 gtk.main()
 
 
