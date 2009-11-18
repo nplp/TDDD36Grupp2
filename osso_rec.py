@@ -1,14 +1,14 @@
 import osso
 import gtk
-import rpc
+import Dbus_registration
 
 
 def metoden(interface, method, arguments, user_data):
     print "RPC received"
     print arguments[0]
 
-rpc.register_name("receiver")
-rpc.receive()
+rpc = Dus_registration("receiver")
+rpc.receive(metoden)
 gtk.main()
 
 
