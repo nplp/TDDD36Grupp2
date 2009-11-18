@@ -3,7 +3,7 @@ import data_storage
 import map_xml_reader
 import gui_map
 import guitest
-import gui1
+#import gui1
 
 class StartMap:
 
