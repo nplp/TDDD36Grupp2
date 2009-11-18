@@ -17,11 +17,11 @@ gtk.main()
 
 
 def method1(arg):
-	print "här printas det saker fran metod 1"
+	print "har printas det saker fran metod 1"
 	print arg
 	
 def method2(arg):
-	print "här printas det saker fran metod 2"
+	print "har printas det saker fran metod 2"
 	print arg
 
 
