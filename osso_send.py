@@ -1,9 +1,10 @@
 import osso
 import gtk
-import rpc
+import Dbus_registration
 
-rpc.register_name("sender")
-rpc.send("receiver", "metod33", "le message!!")
+rpc = Dbus_registration("sender")
+
+rpc.send_rpc("receiver", "metod33", "le message!!")
 
 
 
