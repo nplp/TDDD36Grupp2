@@ -8,7 +8,7 @@ class Dbus_registration():
 		self.name = name
 		self.register_name(name)
 
-	def register_name(newname):
+	def register_name(self,newname):
 		self.name = newname
 		osso_c = osso.Context(newname, "0.0.1", False)
 		self.osso_rpc = osso.Rpc(osso_c)
