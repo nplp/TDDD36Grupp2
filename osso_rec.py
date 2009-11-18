@@ -1,7 +1,6 @@
 import osso
 import gtk
-import Dbus_registration
-
+from Dbus_registration import *
 
 def metoden(interface, method, arguments, user_data):
     print "RPC received"
