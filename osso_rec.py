@@ -9,7 +9,7 @@ def metoden(interface, method, arguments, user_data):
 print "ja"
 rpc = Dbus_registration("receiver")
 print "visst"
-if(rpc.osso_rpc == None)
+if(rpc.osso_rpc == None):
 	print "det stod None har ojsan"
 rpc.receive(metoden)
 gtk.main()
