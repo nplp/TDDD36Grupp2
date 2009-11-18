@@ -69,6 +69,7 @@ class Gui(hildon.Program):
 		self.kommunikation.set_active(True)
 		self.verktyg.set_active(False)
 		self.filer.set_active(False)
+		self.installningar.set_active(False)
 		self.vbox2.show()
           	self.text.show()
 		self.samtal.show()
@@ -88,6 +89,7 @@ class Gui(hildon.Program):
 		self.verktyg.set_active(True)
 		self.kommunikation.set_active(False)
 		self.filer.set_active(False)
+		self.installningar.set_active(False)
 		self.vbox2.show()
 		self.text.hide()
 		self.samtal.hide()
@@ -107,6 +109,7 @@ class Gui(hildon.Program):
 		self.filer.set_active(True)
 		self.kommunikation.set_active(False)
 		self.verktyg.set_active(False)
+		self.installningar.set_active(False)
 		self.vbox2.show()
 		self.text.hide()
 		self.samtal.hide()
@@ -119,6 +122,28 @@ class Gui(hildon.Program):
 		self.tillbaka.show()
 	 else:
           	self.tbaka(widget, data)
+		
+    def install(self,widget,event,data=None):
+	 if widget.get_active():
+		self.filer.set_active(True)
+		self.kommunikation.set_active(False)
+		self.verktyg.set_active(False)
+		self.installningar.set_active(False)
+		self.vbox2.show()
+		self.text.hide()
+		self.samtal.hide()
+		self.video.hide()
+		self.uppdragsmall.hide()
+		self.karta.hide()
+		self.uppdrag.hide()
+		self.rapport.hide()
+		self.lager.hide()
+		self.tillbaka.show()		
+		self.energi.show()
+		self.natverk.show()
+		self.anvanda.show()
+	 else:
+          	self.tbaka(widget, data)		
 	
 	#Visa kartan
     def kartan(self, widget, event, data=None):
@@ -176,12 +201,11 @@ class Gui(hildon.Program):
 	self.filer.show()
         self.vbox.pack_start(self.filer, True, True, 0)
 
-        # Avslutaknapp
-        self.avsluta= gtk.Button("Avsluta")
-        self.avsluta.connect("clicked", self.delete_event, "Avsluta")
-	#self.avsluta.connect("clicked", lambda w: gtk.main_quit())
-	self.avsluta.show()
-	self.vbox.pack_start(self.avsluta, True, True,0)
+        # Inställningar
+        self.installningar= gtk.ToggleButton("Installningar")
+        self.installningar.connect("toggled", self.install, "Installningar")
+	self.installningar.show()
+	self.vbox.pack_start(self.installningar, True, True,0)
 
 	#Knappar i undermenyer
 	#Knappar under kommunikation
@@ -240,6 +264,21 @@ class Gui(hildon.Program):
 	self.lager = gtk.Button("Lager")
 	self.lager.connect("clicked", self.callback, "Lager")
 	self.vbox2.pack_start(self.lager, True, True,0)
+	
+	#Enerigisparläge
+	self.energi = gtk.Button("Energi")
+	self.energi.connect("clicked", self.callback, "Energi")
+	self.vbox2.pack_start(self.energi, True, True,0)
+	
+	#Natverksinstallningar
+	self.natverk = gtk.Button("Natverk")
+	self.natverk.connect("clicked", self.callback, "Natverk")
+	self.vbox2.pack_start(self.natverk, True, True,0)
+	
+	#Anvandarinstallningar
+	self.anvanda = gtk.Button("Anvanda")
+	self.anvanda.connect("clicked", self.callback, "Använda")
+	self.vbox2.pack_start(self.anvanda, True, True,0)
 	
 	# Tillbaka
 	self.tillbaka = gtk.Button("Tillbaka")
