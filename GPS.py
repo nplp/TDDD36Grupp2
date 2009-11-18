@@ -6,7 +6,6 @@ import thread
 
 class GPS:
 	
-	# Tupel där dina kordinater sparas
 	self.__coord = (0,0)
 	self.__update == False
 	self.__con
@@ -36,7 +35,7 @@ class GPS:
 			try:			
 				updatecoord()
 			except:
-				gpsbt.stop(con)
+				gpsbt.stop(__con)
 		
 
 	# Startar GPSEN
