@@ -10,11 +10,10 @@ def register_name(newname):
 	osso_rpc = osso.Rpc(osso_c)
 	
 	name = newname
-	return osso_rpc
 	
 def send_rpc(receiver, method, message):
 	osso_rpc.rpc_run("thor."+receiver, "/thor/"+receiver, "thor."+receiver, method, (message,))
 	
 	
-#def receive():
-
+def receive():
+	osso_rpc.set_rpc_callback("thor."+name,"/thor/"+name,"thor."+name, metoden)
