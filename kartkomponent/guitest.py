@@ -354,17 +354,14 @@ class Gui(hildon.Program):
         self.kartfonster.set_border_width(5)
         map = gui_map.Map(self.__map)
         self.kartfonster.add(map)
-	self.kartfonster.hide()
-	
+	#self.kartfonster.hide()
         # Sparar undan funktionen som möjliggör zoomning
         self.__map_change_zoom = map.change_zoom
-
         #return frame
     # Skapar vyn för inställningar
     #def create_settings_view(self):
         #frame = gtk.Frame("Inställningar")
         #frame.set_border_width(5)
-
         ## Skicka GPS-koordinater till basen?
         #hbox2 = gtk.HBox(homogeneous=False, spacing=0)
         #lblSkickaGPSKoordinater = gtk.Label("Skicka GPS koordinater till basen")
@@ -373,19 +370,15 @@ class Gui(hildon.Program):
         ##chkSkickaGPSKoordinater.connect("toggled", self.chkSkickaGPSKoordinater_callback)
         #hbox2.pack_start(lblSkickaGPSKoordinater, True, True, 5)
         #hbox2.pack_start(chkSkickaGPSKoordinater, False, False, 5)
-
         ## Skapar knappen som sparar inställningarna
         #btnSpara = gtk.Button("Spara!")
         #btnSpara.connect("clicked", self.handle_menu_items, 0)
-
         #vbox = gtk.VBox(homogeneous=False, spacing=0)
         ##vbox.pack_start(hbox1, False, False, 0)
         #vbox.pack_start(hbox2, False, False, 5)
         #vbox.pack_start(btnSpara, False, False, 5)
-
         #frame.add(vbox)
         #return frame
-
     # Skapar en meny som kommer ligga längst upp i vårt program.
     #def create_menu(self):
         ## Skapar tre stycken meny-inlägg.
