@@ -6,6 +6,7 @@ import gui_map
 import rapport
 import pango
 import meddelande
+import osso
 import uppdrag
 import detringer
 import battery

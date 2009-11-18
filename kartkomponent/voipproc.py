@@ -3,6 +3,7 @@
 import sys, os
 import pygtk, gtk, gobject
 import pygst
+import osso
 pygst.require("0.10")
 import gst
 
