@@ -4,21 +4,23 @@ import gpsbt
 import thread
 
 class GPS(object):
-	
-	coord = (0,0)
-	update = False
+
+	def __init__(self):
+		self.coord = (0,0)
+		self.update = False
 
 	# Uppdaterar din kordinat
 	def updatecoord(self):
 		print "uppdaterar"
 		self.coord = gps.get_position()
+		return self.coord
 	 
 	# Väntar på att gpsen ska hitta en kordinat
 	def waiting_for_a_fix(self):
 		i = 0
 		print "Vi vantar pa en koordinat"
 		while (self.coord == (0,0)):
-			self.coord = gps.get_position()
+			self.coord = self.gps.get_position()
 			print "Waiting: "+ str(i)
 			i+=1
 			time.sleep(2)
@@ -33,27 +35,27 @@ class GPS(object):
 				self.updatecoord()
 			except:
 				gpsbt.stop(__con)
-		
+	
+	def run(self):
+		# Startar GPSEN
+		con = gpsbt.start()
+		time.sleep(2.0) # wait for gps to come up
+		 
+		# Getting GPS coordinats
+		gps = gpsbt.gps()
+		 
+		# Vantar pa en gps koordinat
+		print "Waiting baby"
+		self.waiting_for_a_fix()
 
-	# Startar GPSEN
-	con = gpsbt.start()
-	time.sleep(2.0) # wait for gps to come up
-	 
-	#Getting GPS coordinats
-	gps = gpsbt.gps()
-	 
-	#Vantar pa en gps koordinat
-	print "Waiting baby"
-	self.waiting_for_a_fix()
-
-	self.send_coordinates()
+		self.send_coordinates()
 
 
 def main():
     gtk.main()
 
 if __name__ == "__main__":
-    GPS()
+    GPS().run()
     main()
 
 
