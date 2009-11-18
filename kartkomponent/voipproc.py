@@ -178,6 +178,7 @@ osso_rpc = osso.Rpc(osso_c)
 osso_rpc.set_rpc_callback("thor.voipproc","/thor/voipproc","thor.voipproc",callback_func)
 
 def onlyone(interface, method, arguments, user_data):
+	print "nu er vi inne i onlyone"
 	Mainstream().run(arguments[0],arguments[1],arguments[2],arguments[3])
 
 #CONNECTAR
