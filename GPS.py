@@ -48,5 +48,12 @@ class GPS(object):
 
 	self.send_coordinates()
 
-GPS()
+
+def main():
+    gtk.main()
+
+if __name__ == "__main__":
+    GPS()
+    main()
+
 
