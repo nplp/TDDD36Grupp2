@@ -22,5 +22,5 @@ class Dbus_registration():
 	
 	def receive(self,metoden):
 		print "bajs"
-		self.osso_rpc.set_rpc_callback("thor.receiver" ,"/thor/receiver" ,"thor.receiver", metoden2)
+		self.osso_rpc.set_rpc_callback("thor.receiver" ,"/thor/receiver" ,"thor.receiver", self.metoden2)
 		print "pa dig"
