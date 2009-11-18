@@ -30,7 +30,7 @@ class GPS:
 			print self.coord[1]
 			time.sleep(5)
 			try:
-				updatecoord()
+				self.updatecoord()
 			except:
 				gpsbt.stop(__con)
 		
