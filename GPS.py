@@ -13,7 +13,7 @@ class GPS(object):
 	def updatecoord(self):
 		print "uppdaterar"
 		self.coord = gps.get_position()
-		return self.coord
+		# return self.coord
 	 
 	# Väntar på att gpsen ska hitta en kordinat
 	def waiting_for_a_fix(self):
@@ -34,11 +34,11 @@ class GPS(object):
 			try:
 				self.updatecoord()
 			except:
-				gpsbt.stop(con)
+				gpsbt.stop(self.con)
 	
 	def run(self):
 		# Startar GPSEN
-		con = gpsbt.start()
+		self.con = gpsbt.start()
 		time.sleep(2.0) # wait for gps to come up
 		 
 		# Getting GPS coordinats
