@@ -5,6 +5,7 @@ name = None
 
 class Dbus_registration():
 	def __init__(self, name):
+		print "hejsan"
 		self.name = name
 		self.register_name(name)
 
@@ -17,4 +18,6 @@ class Dbus_registration():
 		osso_rpc.rpc_run("thor.%s" % receiver, "/thor/%s" % receiver, "thor.%s" % receiver, method, (message,))
 	
 	def receive(self,metoden):
-		self.osso_rpc.set_rpc_callback("thor.%s" % name,"/thor/%s" % name,"thor.%s" % name, metoden)
+		print "bajs"
+		self.osso_rpc.set_rpc_callback("thor.receiver" ,"/thor/receiver" ,"thor.receiver", metoden)
+		print "pa dig"

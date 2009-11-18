@@ -13,27 +13,7 @@ class Gui(hildon.Program):
     __map = None
     __map_change_zoom = None
 
-    #def on_window_state_change(self, widget, event, *args):
-        #if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
-            #self.window_in_fullscreen = True
-        #else:
-            #self.window_in_fullscreen = False
-
     def on_key_press(self, widget, event, *args):
-        # Ifall "fullscreen"-knappen på handdatorn har aktiverats.
-        #if event.keyval == gtk.keysyms.F6:
-            #if self.window_in_fullscreen:
-                #self.window.unfullscreen()
-            #else:
-                #self.window.fullscreen()
-        # Pil vänster, byter vy
-        #elif event.keyval == 65361:
-            #if (self.view.get_current_page() != 0):
-                #self.view.prev_page()
-        ## Pil höger, byter vy
-        #elif event.keyval == 65363:
-            #if (self.view.get_current_page() != 1):
-                #self.view.next_page()
         # Zoom -
         if event.keyval == 65361:#65477:
             self.__map_change_zoom("-")
@@ -57,6 +37,7 @@ class Gui(hildon.Program):
 	
     def ring(self, widget, event, data=None):
 	self.ringa.vbox.show()
+	self.label.hide()
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
@@ -64,8 +45,7 @@ class Gui(hildon.Program):
 	self.filer.set_active(False)
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
-	self.label.hide()
-	self.kartfonster.hide()
+	self.map.hide()
 	self.meddela.vbox.hide()
         self.scrolled_window.hide()
         self.scroll_window.show()
@@ -76,8 +56,7 @@ class Gui(hildon.Program):
 	self.filer.set_active(False)
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
-	self.label.hide()
-	self.kartfonster.hide()
+	self.map.hide()
 	self.meddela.vbox.hide()
 	self.scroll_window.hide()
 	self.ringa.vbox.hide()
@@ -145,20 +124,18 @@ class Gui(hildon.Program):
     def kartan(self, widget, event, data=None):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
-	self.label.hide()
 	self.scrolled_window.hide()
 	self.meddela.vbox.hide()
-	self.kartfonster.show()
 	self.ringa.vbox.hide()
-
+        self.scroll_window.hide()
+	self.map.show()
 	 
     def textmedd(self, widget, event, data=None):
 	self.kommunikation.set_active(False)
 	self.filer.set_active(False)
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
-	self.label.hide()
-	self.kartfonster.hide()
+	self.map.hide()
 	self.scrolled_window.hide()	
 	self.meddela.vbox.show()
 	self.ringa.vbox.hide()	
@@ -170,13 +147,6 @@ class Gui(hildon.Program):
 ##############################Har skapat alla funktioner####################################
 
     def oldbuttonsandwindows(self):
-	'''        
-	#Skapa fonster
-        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        #self.window.set_size_request(200, 100)
-        self.window.set_title("GUI")
-        self.window.connect("delete_event", lambda w,e: gtk.main_quit())
-	'''
 	#Skapa en Vbox som sedan ska in i Hboxen och innehallar huvudknapparna i menyn
         self.vbox = gtk.VBox(False, 0)
 	self.vbox.set_size_request(198, 95)
@@ -208,7 +178,8 @@ class Gui(hildon.Program):
 
         # Avslutaknapp
         self.avsluta= gtk.Button("Avsluta")
-        self.avsluta.connect("clicked", lambda w: gtk.main_quit())
+        self.avsluta.connect("clicked", self.delete_event, "Avsluta")
+	#self.avsluta.connect("clicked", lambda w: gtk.main_quit())
 	self.avsluta.show()
 	self.vbox.pack_start(self.avsluta, True, True,0)
 
@@ -305,7 +276,7 @@ class Gui(hildon.Program):
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
 	self.vbox3.pack_start(self.ringa.vbox,False,False,0)
-	self.vbox3.pack_start(self.kartfonster,True,True,0)
+	self.vbox3.pack_start(self.map,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
 	self.vbox3.pack_start(self.scroll_window,True,True,0)
 	self.vbox3.pack_start(self.meddela.vbox,True,True,0)
@@ -350,55 +321,8 @@ class Gui(hildon.Program):
 
     # Skapar vyn för kartan
     def create_map_view(self):
-        self.kartfonster = gtk.DrawingArea()  #self.__map.get_name() + " <longitude, latitude>") Om vi vill ha detta st�ende l�ngst upp
-        #self.kartfonster.set_border_width(5)
-        map = gui_map.Map(self.__map)
-        self.kartfonster.add(map)
-	#self.kartfonster.hide()
-        # Sparar undan funktionen som möjliggör zoomning
-        self.__map_change_zoom = map.change_zoom
-        #return frame
-    # Skapar vyn för inställningar
-    #def create_settings_view(self):
-        #frame = gtk.Frame("Inställningar")
-        #frame.set_border_width(5)
-        ## Skicka GPS-koordinater till basen?
-        #hbox2 = gtk.HBox(homogeneous=False, spacing=0)
-        #lblSkickaGPSKoordinater = gtk.Label("Skicka GPS koordinater till basen")
-        #lblSkickaGPSKoordinater.set_justify(gtk.JUSTIFY_LEFT)
-        #chkSkickaGPSKoordinater = gtk.CheckButton("Ja")
-        ##chkSkickaGPSKoordinater.connect("toggled", self.chkSkickaGPSKoordinater_callback)
-        #hbox2.pack_start(lblSkickaGPSKoordinater, True, True, 5)
-        #hbox2.pack_start(chkSkickaGPSKoordinater, False, False, 5)
-        ## Skapar knappen som sparar inställningarna
-        #btnSpara = gtk.Button("Spara!")
-        #btnSpara.connect("clicked", self.handle_menu_items, 0)
-        #vbox = gtk.VBox(homogeneous=False, spacing=0)
-        ##vbox.pack_start(hbox1, False, False, 0)
-        #vbox.pack_start(hbox2, False, False, 5)
-        #vbox.pack_start(btnSpara, False, False, 5)
-        #frame.add(vbox)
-        #return frame
-    # Skapar en meny som kommer ligga längst upp i vårt program.
-    #def create_menu(self):
-        ## Skapar tre stycken meny-inlägg.
-        #menuItemKarta = gtk.MenuItem("Karta")
-        #menuItemInstallningar = gtk.MenuItem("Inställningar")
-        #menuItemSeparator = gtk.SeparatorMenuItem()
-        #menuItemExit = gtk.MenuItem("Exit")
-
-        #menuItemKarta.connect("activate", self.handle_menu_items, 0)
-        #menuItemInstallningar.connect("activate", self.handle_menu_items, 1)
-        #menuItemExit.connect("activate", self.menu_exit)
-
-        ## Skapar en meny som vi lägger in dessa inlägg i.
-        #menu = gtk.Menu()
-        #menu.append(menuItemKarta)
-        #menu.append(menuItemInstallningar)
-        #menu.append(menuItemSeparator)
-        #menu.append(menuItemExit)
-
-        #return menu
+        self.map = gui_map.Map(self.__map)
+        self.__map_change_zoom = self.map.change_zoom
 
     def get_treeview(self, args):
         if len(args) == 1:
@@ -434,12 +358,6 @@ class Gui(hildon.Program):
         else:
             return None
 
-    #def handle_menu_items(self, widget, num):
-        #self.view.set_current_page(num)
-
-    #def menu_exit(self, widget, data=None):
-        ## Stänger net GUI:t.
-        #gtk.main_quit()
 
     def run(self):
         #self.window.show_all()

@@ -198,11 +198,21 @@ def get_password(namn):
 def is_user(clientname):
 	#user=session.query(User).filter_by(name=clientname).first().name ## <----- NoneType
 	#if (clientname == user):
-	for i in range(len(USERS)):
-		if(clientname == (str(USERS[i]))):
-			return True
-			print "dsjlök"
-	return False
+	#for i in range(len(USERS)):
+	user= session.query(User).filter_by(name =clientname).first()
+	def get_name(user):
+		try:
+			return user.name
+		except Exception,e :
+			return user
+	
+	user= get_name(user)
+	if (user == clientname):
+	#	if(clientname == (str(USERS[i]))):
+		return True
+	#		print "dsjlök"
+	else: 
+		return False
 
 #### --------------------------------------------------------
 
@@ -344,10 +354,10 @@ serverSocket.listen(5)
 connectionQueue = list() # Låter endast en användare per IP ansluta åt gången
 socketArray = list() # Innehåller alla sockets vi kör
 
-session=Session()
+#session=Session()
 #print session.query(User).all()
 print USERS
-session.close()
+#session.close()
 
 # Sessionsklassen
 class sessionClass(Thread):
@@ -390,7 +400,7 @@ class sessionClass(Thread):
 					self.socket.send("Type your password " + CLIENTNAME)
 					# Läser in login och gör om åäö.
 					login = toEnglish(self.socket.recv(BUFF))
-					#session2 = Session()
+					
 
 					# Atomisk ------
 					ClientMutex.acquire()
@@ -401,7 +411,7 @@ class sessionClass(Thread):
 					ClientMutex.release()
 					# --------------
 
-					#session2.close()
+					
 					if(self.name == CLIENTNAME):
 						return CLIENTNAME
 				session.close()
