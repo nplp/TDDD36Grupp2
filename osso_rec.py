@@ -13,9 +13,6 @@ osso_rpc = osso.Rpc(osso_c)
 osso_rpc.set_rpc_callback("thor.receiver","/thor/receiver","thor.receiver",callback_func)
 ########################
 
-gtk.main()
-
-
 def method1(arg):
 	print "har printas det saker fran metod 1"
 	print arg
@@ -23,5 +20,10 @@ def method1(arg):
 def method2(arg):
 	print "har printas det saker fran metod 2"
 	print arg
+
+gtk.main()
+
+
+
 
 
