@@ -19,7 +19,5 @@ class Dbus_registration():
 	
 	def receive(self,metoden):
 		print "bajs"
-		if(self.osso_rpc == None):
-			print "det stod None har ojsan2"
-		self.osso_rpc.set_rpc_callback("thor.receiver" ,"/thor/receiver" ,"thor.receiver", metoden)
+		self.osso_rpc.set_rpc_callback("thor.receiver" ,"/thor/receiver" ,"thor.receiver", self.metoden)
 		print "pa dig"
