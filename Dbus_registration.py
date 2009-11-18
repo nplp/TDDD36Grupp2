@@ -4,6 +4,9 @@ osso_rpc = None
 name = None
 
 class Dbus_registration():
+	def metoden2(self, interface, method, arguments, user_data):
+		metoden(interface, method, arguments, user_data)
+	
 	def __init__(self, name):
 		print "hejsan"
 		self.name = name
@@ -19,5 +22,5 @@ class Dbus_registration():
 	
 	def receive(self,metoden):
 		print "bajs"
-		self.osso_rpc.set_rpc_callback("thor.receiver" ,"/thor/receiver" ,"thor.receiver", metoden)
+		self.osso_rpc.set_rpc_callback("thor.receiver" ,"/thor/receiver" ,"thor.receiver", metoden2)
 		print "pa dig"
