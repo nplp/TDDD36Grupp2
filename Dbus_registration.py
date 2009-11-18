@@ -5,6 +5,7 @@ name = None
 
 class Dbus_registration():
 	def metoden2(self, interface, method, arguments, user_data):
+		print "ere na fel eller?"
 		metoden(interface, method, arguments, user_data)
 	
 	def __init__(self, name):
