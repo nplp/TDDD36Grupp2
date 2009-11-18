@@ -15,7 +15,7 @@ class StartMap:
 
 	map = data_storage.MapData(mapxml.get_name(),
 		                   mapxml.get_levels())
-
+	'''
 	# Ställer in vad kartkomponenten ska fokusera på (visa)
 	# (blir mittenpunkten på skärmen, dvs 50% x-led, 50% y-lyd.
 	map.set_focus(15.5726, 58.4035)
@@ -37,7 +37,7 @@ class StartMap:
 	map.add_object("Tank", data_storage.MapObject({"longitude":((coord[0]-0.0016)),
 							"latitude":(coord[1]+0.00075)},
 						        "ikoner/tank.png"))
-
+	'''
 	app = guitest.Gui(map)
  	app.run()
 	
