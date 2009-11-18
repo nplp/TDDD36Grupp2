@@ -359,7 +359,7 @@ class Gui(hildon.Program):
         # Sparar undan funktionen som möjliggör zoomning
         self.__map_change_zoom = map.change_zoom
 
-        return frame
+        #return frame
     # Skapar vyn för inställningar
     #def create_settings_view(self):
         #frame = gtk.Frame("Inställningar")
