@@ -3,6 +3,7 @@ import gtk
  
 def callback_func(interface, method, arguments, user_data):
 	print "hej"
+	print method
 	if(method == "method1"):
 		print "buhu"
     		method1(arguments[0])
