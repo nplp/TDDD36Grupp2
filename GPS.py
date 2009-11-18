@@ -44,7 +44,7 @@ class GPS:
 	 
 	#Vantar pa en gps koordinat
 	print "Waiting baby"
-	waiting_for_a_fix()
+	self.waiting_for_a_fix()
 
-	send_coordinates()
+	self.send_coordinates()
 
