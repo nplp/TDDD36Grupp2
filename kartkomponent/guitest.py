@@ -65,7 +65,7 @@ class Gui(hildon.Program):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
 	self.label.hide()
-	self.kartfonster.hide()
+	self.map.hide()
 	self.meddela.vbox.hide()
         self.scrolled_window.hide()
         self.scroll_window.show()
@@ -77,7 +77,7 @@ class Gui(hildon.Program):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
 	self.label.hide()
-	self.kartfonster.hide()
+	self.map.hide()
 	self.meddela.vbox.hide()
 	self.scroll_window.hide()
 	self.ringa.vbox.hide()
@@ -148,9 +148,9 @@ class Gui(hildon.Program):
 	self.label.hide()
 	self.scrolled_window.hide()
 	self.meddela.vbox.hide()
-	self.kartfonster.show()
 	self.ringa.vbox.hide()
-
+        self.scroll_window.hide()
+	self.map.show()
 	 
     def textmedd(self, widget, event, data=None):
 	self.kommunikation.set_active(False)
@@ -158,7 +158,7 @@ class Gui(hildon.Program):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
 	self.label.hide()
-	self.kartfonster.hide()
+	self.map.hide()
 	self.scrolled_window.hide()	
 	self.meddela.vbox.show()
 	self.ringa.vbox.hide()	
@@ -305,7 +305,7 @@ class Gui(hildon.Program):
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
 	self.vbox3.pack_start(self.ringa.vbox,False,False,0)
-	self.vbox3.pack_start(self.kartfonster,True,True,0)
+	self.vbox3.pack_start(self.map,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
 	self.vbox3.pack_start(self.scroll_window,True,True,0)
 	self.vbox3.pack_start(self.meddela.vbox,True,True,0)
@@ -350,14 +350,14 @@ class Gui(hildon.Program):
 
     # Skapar vyn f√∂r kartan
     def create_map_view(self):
-        self.kartfonster = gtk.DrawingArea()  #self.__map.get_name() + " <longitude, latitude>") Om vi vill ha detta stÂende l‰ngst upp
+        #self.kartfonster = gtk.VBox(False,0)  #self.__map.get_name() + " <longitude, latitude>") Om vi vill ha detta stÂende l‰ngst upp
         #self.kartfonster.set_border_width(5)
-        map = gui_map.Map(self.__map)
-        self.kartfonster.add(map)
+        self.map = gui_map.Map(self.__map)
+        #self.kartfonster.pack_start(map,True, True,0)
 	#self.kartfonster.hide()
         # Sparar undan funktionen som m√∂jligg√∂r zoomning
-        self.__map_change_zoom = map.change_zoom
-        #return frame
+        self.__map_change_zoom = self.map.change_zoom
+        #return self.kartfonster
     # Skapar vyn f√∂r inst√§llningar
     #def create_settings_view(self):
         #frame = gtk.Frame("Inst√§llningar")
