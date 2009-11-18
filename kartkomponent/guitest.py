@@ -178,7 +178,8 @@ class Gui(hildon.Program):
 
         # Avslutaknapp
         self.avsluta= gtk.Button("Avsluta")
-        self.avsluta.connect("clicked", lambda w: gtk.main_quit())
+        self.avsluta.connect("clicked", self.delete_event, "Avsluta")
+	#self.avsluta.connect("clicked", lambda w: gtk.main_quit())
 	self.avsluta.show()
 	self.vbox.pack_start(self.avsluta, True, True,0)
 
