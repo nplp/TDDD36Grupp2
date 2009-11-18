@@ -39,6 +39,10 @@ class Mainstream:
 		window.show_all()
 		#Rostsamtal = 1
 		if(self.choose == 1):
+			print "kor jag ettan?"
+			print self.HOSTIP
+			print self.MYPORT
+			print self.HOSTPORT
 			self.player = gst.parse_launch("udpsrc "+self.MYPORT+" ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! dspilbcsink")
 			self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20  ! udpsink "+self.HOSTIP+" "+self.HOSTPORT)
 			bus = self.player.get_bus()
