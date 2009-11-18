@@ -178,6 +178,8 @@ class Gui(hildon.Program):
     def delete_event(self, widget, event, data=None):
         gtk.main_quit()
         return False
+    
+    #def batteriniva(self
 ##############################Har skapat alla funktioner####################################
 
     def oldbuttonsandwindows(self):
@@ -313,8 +315,9 @@ class Gui(hildon.Program):
 	self.scroll_window.set_border_width(10)
 	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)	
 
-        self.label = gtk.Label(int('Anvandare'+battery.batteryprint+'datum'))
-        self.label.set_alignment(0, 0)
+
+        self.label = gtk.Label(battery.batteryprint)
+	self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
 	
