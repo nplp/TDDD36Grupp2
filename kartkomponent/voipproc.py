@@ -169,6 +169,10 @@ class Mainstream:
 def main():
 	gtk.main()
 
+def onlyone(interface, method, arguments, user_data):
+	print "nu er vi inne i onlyone"
+	Mainstream().run(arguments[0],arguments[1],arguments[2],arguments[3])
+	
 if __name__ == "__main__":
 	osso_c = osso.Context("voipproc", "0.0.1", False)
 	osso_rpc = osso.Rpc(osso_c)
@@ -179,9 +183,7 @@ if __name__ == "__main__":
 	
 
 
-def onlyone(interface, method, arguments, user_data):
-	print "nu er vi inne i onlyone"
-	Mainstream().run(arguments[0],arguments[1],arguments[2],arguments[3])
+
 
 #CONNECTAR
 		
