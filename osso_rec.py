@@ -2,10 +2,8 @@ import osso
 import gtk
  
 def callback_func(interface, method, arguments, user_data):
-	print "hej"
 	print method
 	if(method == "method1"):
-		print "buhu"
     		method1(arguments[0])
 	elif(method == "method2"):
 		method2(arguments[0])
@@ -13,7 +11,7 @@ def callback_func(interface, method, arguments, user_data):
 ########################
 osso_c = osso.Context("receiver", "0.0.1", False)
 osso_rpc = osso.Rpc(osso_c)
-osso_rpc.set_rpc_callback("thor.receiver","/thor/receiver","thor.receiver",callback_func)
+osso_rpc.set_rpc_callback(".receiver","/receiver",".receiver",callback_func)
 ########################
 
 def method1(arg):
