@@ -5,8 +5,8 @@ pygtk.require('2.0')
 import gtk, gobject
 import gtk
 import sys
-sys.path.append('./kartkomponent')
-import main
+#sys.path.append('./kartkomponent')
+#import main
 import tupeltest
 '''
 import data_storage
@@ -20,14 +20,13 @@ import meddelande
 import uppdrag
 import detringer
 	
-class MenuExample:
+class GUIClient:
 	
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 	
     def send(self, widget, data=None):
         print "Hello again - %s was pressed" % data
-	
 	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
@@ -122,7 +121,7 @@ class MenuExample:
 	 else:
           	self.tbaka(widget, data)
 	
-	#Visa kartan
+	#Visa kartan(Vid knapptryck)
     def kartan(self, widget, event, data=None):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
@@ -229,17 +228,17 @@ class MenuExample:
 	self.uppdragsmall.connect("clicked", self.callback, "Uppdragsmall")
 	self.vbox2.pack_start(self.uppdragsmall, True, True,0)
 	
-	#Karta
+	#Kartknapp
 	self.karta = gtk.Button("Karta")
 	self.karta.connect("clicked", self.kartan, "Karta")
 	self.vbox2.pack_start(self.karta, True, True,0)
 	
-	# Tillbaka
+	# Tillbakaknapp
 	self.tillbaka = gtk.Button("Tillbaka")
         self.tillbaka.connect("clicked", self.tbaka, "Tillbaka")
 	self.vbox2.pack_start(self.tillbaka, True, True, 0)
 	
-	#Knappar i filmenyn
+	######## Knappar i filmenyn
 	#Uppdrag
 	self.uppdrag = gtk.Button("       Uppdrag      ")
 	self.uppdrag.connect("clicked", self.upp, "Uppdrag")
@@ -281,7 +280,7 @@ class MenuExample:
 						"set_source_rgb(0, 0, 0)"))
 	self.startakarta = gui_map.Map(map)
 	'''
-	self.startakarta = tupeltest.StartMap()
+	#self.startakarta = tupeltest.StartMap()
 	self.rapportera = rapport.Mall()
 	self.meddela = meddelande.Meddelande()
 	self.uppdraget = uppdrag.Uppdrag()
@@ -322,5 +321,5 @@ def main():
     gtk.main()
 
 if __name__ == "__main__":
-    MenuExample()
+    GUIClient()
     main()

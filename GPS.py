@@ -20,9 +20,9 @@ class GPS:
 	def waiting_for_a_fix():
 		i = 0
 		print "Vi vantar pa en koordinat"
-		global coord
-		while (coord == (0,0)):
-			coord = gps.get_position()
+		#global coord
+		while (__coord == (0,0)):
+			__coord = gps.get_position()
 			print "Waiting: "+ str(i)
 			i+=1
 			time.sleep(2)
@@ -40,7 +40,7 @@ class GPS:
 		
 
 	# Startar GPSEN
-	con = gpsbt.start()
+	__con = gpsbt.start()
 	time.sleep(2.0) # wait for gps to come up
 	 
 	#Getting GPS coordinats
