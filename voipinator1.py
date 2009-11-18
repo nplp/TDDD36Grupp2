@@ -41,12 +41,12 @@ class GTK_Main:
 		#self.player1 = gst.parse_launch("dspilbcsrc dtx=0 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! rtpilbcpay ! udpsink host=130.236.218.186 port=4999")
 		
 		#videoskicka
+		#v4lsrc ! video/x-raw-rgb,width=320,height=240 ! queue ! videorate ! video/x-raw-rgb,rate=15/1 ! ffmpegcolorspace ! theoraenc ! oggmux name=mux ! filesink location=foo.ogg alsasrc ! audio/x-raw-int,channels=1,rate=22025,depth=16 ! queue ! audioconvert ! vorbisenc ! mux.
 		self.player2= gst.parse_launch("v4l2src ! video/x-raw-yuv,width=352,height=288,framerate=8/1 ! hantro4200enc ! rtph263pay ! udpsink host=130.236.218.249 port=5002")
+		#self.player2= gst.parse_launch("v4lsrc ! video/x-raw-rgb,width=320,height=240 ! queue ! videorate ! video/x-raw-rgb,rate=15/1 ! ffmpegcolorspace ! theoraenc ! oggmux name=mux ! updsrc port=5010 host=236.218...... ! audio/x-raw-int,channels=1,rate=8000,depth=16 ! queue")
 		print "skickar video"
 		#Videolyssna
-		self.player3 = gst.parse_launch("udpsrc port=5001 ! audio/x-iLBC,rate=8000,channels=1,mode=20 ! oggmux name=muxer muxer. ! udpsrc port=5002  ! qtdemux ! caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
-		
-		#gst-launch filesrc location=audiodump.wav ! wavparse ! audioconvert ! vorbisenc ! oggmux name=muxer muxer. ! filesink location=video.ogv filesrc location=video.mov ! qtdemux ! ffdec_h264 ! theoraenc ! muxer.
+		self.player3 = gst.parse_launch("udpsrc port=5001 caps=application/x-rtp,clock-rate=90000 ! rtph263depay ! hantro4100dec ! xvimagesink")
 		print "lyssnar video"
 		bus = self.player.get_bus()
 		bus.add_signal_watch()

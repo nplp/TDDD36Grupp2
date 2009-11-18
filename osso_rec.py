@@ -2,8 +2,14 @@ import osso
 import gtk
 import rpc
 
-rpc.register_name("receiver")
-rpc.receive(receiver)
+
+def metoden(interface, method, arguments, user_data):
+    print "RPC received"
+    print arguments[0]
+
+name = "receiver"
+rpc.register_name("receiver").set_rpc_callback("thor."+name,"/thor/"+name,"thor."+name, metoden)
+#rpc.receive()
 gtk.main()
 
 
