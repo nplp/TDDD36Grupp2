@@ -2,12 +2,9 @@ import osso
 import gtk
  
 def callback_func(interface, method, arguments, user_data):
-	print "rpc received"
-	print method
-	print user_data
-	if(user_data == "method1"):
+	if(method == "method1"):
     		method1(arguments[0])
-	elif(user_data == "method2"):
+	elif(method == "method2"):
 		method2(arguments[0])
 	
 ########################
