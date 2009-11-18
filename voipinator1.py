@@ -157,9 +157,13 @@ class Mainstream:
 			imagesink = message.src
 			imagesink.set_property("force-aspect-ratio", False)
 			imagesink.set_xwindow_id(self.movie_window.window.xid)
-Mainstream.run(1,'130.236.219.132', '5000','5001')
-gtk.gdk.threads_init()
-gtk.main()
+def main():
+	gtk.main()
+
+if __name__ == "__main__":
+	Mainstream.run(1,'130.236.219.132', '5000','5001')
+	gtk.gdk.threads_init()
+	main()
 
 #CONNECTAR
 		
