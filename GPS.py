@@ -8,7 +8,6 @@ class GPS(object):
 	
 	coord = (0,0)
 	update = False
-	con
 
 	# Uppdaterar din kordinat
 	def updatecoord():
