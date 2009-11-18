@@ -325,7 +325,7 @@ class Gui(hildon.Program):
         # Någon storlek så att PyGTK inte klagar
         self.window.set_size_request(800, 400)
         # Funktion som körs när prorammet ska stängas av
-        self.window.connect("destroy", self.menu_exit)
+        #self.window.connect("destroy", self.menu_exit)
         self.add_window(self.window)
 	self.create_map_view()
 	self.oldbuttonsandwindows()
