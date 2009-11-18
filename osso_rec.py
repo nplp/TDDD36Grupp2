@@ -10,7 +10,7 @@ def metoden(interface, method, arguments, user_data):
 name = "receiver"
 rpc.register_name("receiver")
 	
-osso_rpc.set_rpc_callback("thor."+name,"/thor/"+name,"thor."+name, metoden)
+rpc.osso_rpc.set_rpc_callback("thor."+name,"/thor/"+name,"thor."+name, metoden)
 #rpc.receive()
 gtk.main()
 
