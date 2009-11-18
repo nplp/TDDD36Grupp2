@@ -1,5 +1,5 @@
 import osso
-
+osso_c = None
 osso_rpc = None
 name = None
 
@@ -11,7 +11,7 @@ class Dbus_registration():
 
 	def register_name(self,newname):
 		self.name = newname
-		osso_c = osso.Context(newname, "0.0.1", False)
+		self.osso_c = osso.Context(newname, "0.0.1", False)
 		self.osso_rpc = osso.Rpc(osso_c)
 	
 	def send_rpc(receiver, method, message):
