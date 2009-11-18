@@ -351,7 +351,7 @@ class Gui(hildon.Program):
     # Skapar vyn fÃ¶r kartan
     def create_map_view(self):
         self.kartfonster = gtk.DrawingArea()  #self.__map.get_name() + " <longitude, latitude>") Om vi vill ha detta stående längst upp
-        self.kartfonster.set_border_width(5)
+        #self.kartfonster.set_border_width(5)
         map = gui_map.Map(self.__map)
         self.kartfonster.add(map)
 	#self.kartfonster.hide()
