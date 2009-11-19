@@ -36,7 +36,11 @@ class Start(object):
 							        "ikoner/tank.png"))
 
 	def getcoords(self):
-		subprocess.call('python Tufftuff.py', shell=True)
+		try:
+			subprocess.call('python Tufftuff.py', shell=True)
+		except Error, e:
+			subprocess.call('/scratchbox/login | python Tufftuff.py', shell=True)
+
 		print "Efter subprocess"		
 		#os.system('python Tufftuff.py')		
 		#self.instans = Tufftuff.GPS()
