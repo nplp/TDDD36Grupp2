@@ -10,22 +10,21 @@ class Samtal():
 	osso_rpc = osso.Rpc(osso_c)
 	print "vi sparar!"
 	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (self.choose, "127.0.0.1", 4000, 4001))
-    
-    def rost(self, widget, event, data=None):
-    	self.rovknapp.set_active(False)
-	self.videoknapp.set_active(False)
-    	self.rostknapp.set_active(True)
-	self.choose = 1
 	
+    def rost(self, widget, event, data=None):
+	self.rovknapp.set_active(False)
+	self.videoknapp.set_active(False)
+	self.rostknapp.set_active(True)
+	self.choose = 1
     def video(self, widget, event, data=None):
-    	self.rovknapp.set_active(False)
+	self.rovknapp.set_active(False)
 	self.rostknapp.set_active(False)
 	self.videoknapp.set_active(True)
 	self.choose = 2
     def rov(self, widget, event, data=None):
-    	self.rostknapp.set_active(False)
-    	self.videoknapp.set_active(False)
-    	self.rovknapp.set_active(True)
+	self.rostknapp.set_active(False)
+	self.videoknapp.set_active(False)
+	self.rovknapp.set_active(True)
 	self.choose = 3
 	
     def __init__(self):	
@@ -40,22 +39,22 @@ class Samtal():
 
     	# Rost
         self.rostknapp= gtk.ToggleButton("Rost")
-        self.rostknapp.connect("toggled", self.rost, "Filer")
+        self.rostknapp.connect("toggled", self.rost, "Rost")
 	self.rostknapp.show()
         self.vbox.pack_start(self.rostknapp, True, True, 0)
     	# Video
         self.videoknapp = gtk.ToggleButton("Video")
-        self.videoknapp.connect("toggled", self.video, "Filer")
+        self.videoknapp.connect("toggled", self.video, "Video")
 	self.videoknapp.show()
         self.vbox.pack_start(self.videoknapp, True, True, 0)
     	# Rost och video
         self.rovknapp = gtk.ToggleButton("Rost och video")
-        self.rovknapp.connect("toggled", self.rov, "Filer")
+        self.rovknapp.connect("toggled", self.rov, "Rost och video")
 	self.rovknapp.show()
         self.vbox.pack_start(self.rovknapp, True, True, 0)
     	# Ring
         self.ringknapp = gtk.Button("Ring")
-        self.ringknapp.connect("clicked", self.ringa, "Filer")
+        self.ringknapp.connect("clicked", self.ringa, "Ring")
 	self.ringknapp.show()
         self.vbox.pack_start(self.ringknapp, True, True, 0)
 	
