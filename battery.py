@@ -23,4 +23,4 @@ batteryprint = int((x/y)*100),'%'
 #y2 = float(dev_obj.GetProperty('battery.voltage.design'))
 #print 'usage level', int((x2/y2)*100),'%'
 	
-thread.start_new_thread(self.listenBattery,())
+thread.start_new_thread(listenBattery,())
