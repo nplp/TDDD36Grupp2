@@ -8,7 +8,7 @@ import pango
 import meddelande
 import uppdrag
 import detringer
-#import battery
+import battery
 import thread
 import time
 import osso
@@ -27,11 +27,12 @@ class Gui(hildon.Program):
             self.__map_change_zoom("+")
     #########################TESTING123 skapar alla funktioner############################
     
-    #def listenBattery(self):
-	#self.batt = battery.Batteri()
-	#while(1):
+    def listenBattery(self):
+	while(1):
+		print "bajs" + self.batt.getbattery()
+		self.label.set_text(str)
 		#self.label = gtk.Label(self.batt.getbattery())
-		#time.sleep(60)
+		time.sleep(5)
     
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
@@ -343,10 +344,11 @@ class Gui(hildon.Program):
 	
 	self.scroll_window=gtk.ScrolledWindow()
 	self.scroll_window.set_border_width(10)
-	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)	
-
-	self.label = gtk.Label("Batteri")
-	self.label.set_alignment(0, 0)
+	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
+	
+	self.batt = battery.Batteri()
+	self.label = gtk.Label(self.batt.getbattery())
+	#self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
 	
