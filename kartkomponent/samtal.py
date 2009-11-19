@@ -11,22 +11,36 @@ class Samtal():
 	print "vi sparar!"
 	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (self.choose, "127.0.0.1", 4000, 4001))
 	
+	
+	
+    def samma(self,widget,event,data=None):
+	self.rostknapp.set_active(False)
+	self.rovknapp.set_active(False)
+	self.videoknapp.set_active(False)
     def rost(self, widget, event, data=None):
-	self.rostknapp.set_active(True)
-	self.rovknapp.set_active(False)
-	self.videoknapp.set_active(False)
-
-	self.choose = 1
+	if widget.get_active():
+		self.rostknapp.set_active(True)
+		self.rovknapp.set_active(False)
+		self.videoknapp.set_active(False)
+		self.choose = 1
+	else:
+          	self.samma(widget, data)
     def video(self, widget, event, data=None):
-	self.videoknapp.set_active(True)
-	self.rovknapp.set_active(False)
-	self.rostknapp.set_active(False)
-	self.choose = 2
+	if widget.get_active():
+		self.videoknapp.set_active(True)
+		self.rovknapp.set_active(False)
+		self.rostknapp.set_active(False)
+		self.choose = 2
+	else:
+          	self.samma(widget, data)
     def rov(self, widget, event, data=None):
-	self.rovknapp.set_active(True)
-	self.rostknapp.set_active(False)
-	self.videoknapp.set_active(False)
-	self.choose = 3
+	if widget.get_active():
+		self.rovknapp.set_active(True)
+		self.rostknapp.set_active(False)
+		self.videoknapp.set_active(False)
+		self.choose = 3
+	else:
+          	self.samma(widget, data)
 	
     def __init__(self):	
 	#self.window=gtk.Window()
