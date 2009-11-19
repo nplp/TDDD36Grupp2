@@ -12,6 +12,7 @@ import detringer
 import thread
 import time
 import osso
+import samtal
 
 class Gui(hildon.Program):	
     __map = None
@@ -46,11 +47,22 @@ class Gui(hildon.Program):
 	self.kommunikation.set_active(False)
 	self.vbox2.hide()
 	
-    def ring(self, widget, event, data=None):
-	osso_c = osso.Context("ring", "0.0.1", False)
-	osso_rpc = osso.Rpc(osso_c)
-	print "vi sparar!"
-	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (1, "127.0.0.1", 4000, 4001))	
+    #def ring(self, widget, event, data=None):
+	#osso_c = osso.Context("ring", "0.0.1", False)
+	#osso_rpc = osso.Rpc(osso_c)
+	#print "vi sparar!"
+	#osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (1, "127.0.0.1", 4000, 4001))	
+	
+    def ringa(self,widget,event,data=None):
+	self.verktyg.set_active(False)
+	self.filer.set_active(False)
+	self.kommunikation.set_active(False)
+	self.vbox2.hide()	
+	self.map.hide()
+	self.meddela.vbox.hide()
+	self.scroll_window.hide()
+        self.scrolled_window.hide()	
+	self.samtala.hbox.show()
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
@@ -241,9 +253,14 @@ class Gui(hildon.Program):
         self.text.connect("clicked", self.textmedd, "Textmeddelande")
 	self.vbox2.pack_start(self.text, True, True, 0)
 	
+	## Samtal
+	#self.samtal = gtk.Button("Samtal")
+        #self.samtal.connect("clicked", self.ring, "Samtal")
+	#self.vbox2.pack_start(self.samtal, True, True, 0)
+	
 	# Samtal
 	self.samtal = gtk.Button("Samtal")
-        self.samtal.connect("clicked", self.ring, "Samtal")
+        self.samtal.connect("clicked", self.ringa, "Samtal")
 	self.vbox2.pack_start(self.samtal, True, True, 0)
 	
 	# Video
@@ -315,6 +332,7 @@ class Gui(hildon.Program):
 	self.meddela = meddelande.Meddelande()
 	self.uppdraget = uppdrag.Uppdrag()
 	self.ringa = detringer.Ring()
+	self.samtala = samtal.Samtal()
 	
 	self.vbox3 = gtk.VBox(False, 0)
         self.vbox3.show()
@@ -335,6 +353,7 @@ class Gui(hildon.Program):
 	#Packning
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
+	self.vbox3.pack_start(self.samtala.hbox,False,False,0)
 	self.vbox3.pack_start(self.ringa.vbox,False,False,0)
 	self.vbox3.pack_start(self.map,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)

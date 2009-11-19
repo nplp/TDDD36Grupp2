@@ -2,45 +2,47 @@ import gtk
 
 	
 class Samtal():	
-	scrolled_window=gtk.ScrolledWindow()
-	scrolled_window.set_border_width(10)
-	scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
+	
+    def fil():
+	print hej
+	
+    def __init__(self):	
+	#self.window=gtk.Window()
+	#self.window.set_border_width(10)
 
-        hbox = gtk.HBox(False, 0)
-	hbox.show()
-        vbox = gtk.VBox(False, 0)
-	vbox.set_size_request(198, 95)
-        vbox.show()
-
+        self.hbox = gtk.HBox(True, 0)
+	self.hbox.set_size_request(198, 100)
+        self.vbox = gtk.VBox(True, 0)
+	#self.vbox.set_size_request(198, 95)
+        self.vbox.show()
 
     	# Rost
-        rost= gtk.ToggleButton("Rost")
-        rost.connect("toggled", fil, "Filer")
-	rost.show()
-        vbox.pack_start(rost, True, True, 0)
+        self.rost= gtk.ToggleButton("Rost")
+        self.rost.connect("toggled", self.fil, "Filer")
+	self.rost.show()
+        self.vbox.pack_start(self.rost, True, True, 0)
     	# Video
-        video= gtk.ToggleButton("Video")
-        video.connect("toggled", fil, "Filer")
-	video.show()
-        vbox.pack_start(video, True, True, 0)
+        self.video= gtk.ToggleButton("Video")
+        self.video.connect("toggled", self.fil, "Filer")
+	self.video.show()
+        self.vbox.pack_start(self.video, True, True, 0)
     	# Rost och video
-        rov= gtk.ToggleButton("Rost och video")
-        rov.connect("toggled", fil, "Filer")
-	rov.show()
-        vbox.pack_start(rov, True, True, 0)
+        self.rov= gtk.ToggleButton("Rost och video")
+        self.rov.connect("toggled", self.fil, "Filer")
+	self.rov.show()
+        self.vbox.pack_start(self.rov, True, True, 0)
     	# Ring
-        ring= gtk.Button("Filer")
-        ring.connect("clicked", fil, "Filer")
-	ring.show()
-        vbox.pack_start(ring, True, True, 0)
+        self.ring= gtk.Button("Ring")
+        self.ring.connect("clicked", self.fil, "Filer")
+	self.ring.show()
+        self.vbox.pack_start(self.ring, True, True, 0)
 	
-	lista = gtk.TextView()	
-	lista.show()
-	hbox.pack_start(lista,True,True,0)
-
-	hbox.pack_start(vbox,True,True,0)
-	scrolled_window.add(hbox)
-	scrolled_window.show()
+	self.hbox.pack_start(self.vbox,True,True,0)	
+	self.lista = gtk.TextView()	
+	self.lista.show()
+	self.hbox.pack_start(self.lista,True,True,0)
+	#self.window.add(self.hbox)
+	#self.window.show()
 
 def main():
 	gtk.main()
