@@ -29,8 +29,9 @@ class Gui(hildon.Program):
     
     def listenBattery(self):
 	while(1):
-		self.label = gtk.Label(battery.batteryprint)
-		time.sleep(5)
+		self.batt = battery.Batteri()
+		self.label = gtk.Label(self.batt.getbattery())
+		time.sleep(60)
     
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
@@ -46,15 +47,11 @@ class Gui(hildon.Program):
 	self.kommunikation.set_active(False)
 	self.vbox2.hide()
 	
-    #def ring(self, widget, event, data=None):
-	#self.label.hide()
-	#self.ringa.vbox.show()
-	
     def ring(self, widget, event, data=None):
 	osso_c = osso.Context("ring", "0.0.1", False)
 	osso_rpc = osso.Rpc(osso_c)
 	print "vi sparar!"
-	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (1, "127.0.0.1", "4000", "4001"))	
+	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (1, "127.0.0.1", 4000, 4001))	
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
@@ -340,7 +337,6 @@ class Gui(hildon.Program):
 	self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
-
 	
 	#Packning
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
