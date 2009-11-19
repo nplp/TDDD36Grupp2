@@ -28,8 +28,8 @@ class Gui(hildon.Program):
     #########################TESTING123 skapar alla funktioner############################
     
     def listenBattery(self):
+	self.batt = battery.Batteri()
 	while(1):
-		self.batt = battery.Batteri()
 		self.label = gtk.Label(self.batt.getbattery())
 		time.sleep(60)
     
@@ -365,9 +365,10 @@ class Gui(hildon.Program):
         #self.window.connect("destroy", self.menu_exit)
         self.add_window(self.window)
 	self.create_map_view()
+	thread.start_new_thread(self.listenBattery,())	
 	self.oldbuttonsandwindows()
 	
-	thread.start_new_thread(self.listenBattery,())
+
         # Möjliggör fullscreen-läge
         #self.window.connect("key-press-event", self.on_key_press)
         #self.window.connect("window-state-event", self.on_window_state_change)
