@@ -4,8 +4,6 @@ import osso
 	
 class Samtal():	
     choose = 1	
-    def fil():
-	print hej
 	
     def ringa(self, widget, event, data=None):
 	osso_c = osso.Context("ring", "0.0.1", False)
@@ -42,17 +40,17 @@ class Samtal():
 
     	# Rost
         self.rostknapp= gtk.ToggleButton("Rost")
-        self.rostknapp.connect("toggled", self.fil, "Filer")
+        self.rostknapp.connect("toggled", self.rost, "Filer")
 	self.rostknapp.show()
         self.vbox.pack_start(self.rostknapp, True, True, 0)
     	# Video
         self.videoknapp = gtk.ToggleButton("Video")
-        self.videoknapp.connect("toggled", self.fil, "Filer")
+        self.videoknapp.connect("toggled", self.video, "Filer")
 	self.videoknapp.show()
         self.vbox.pack_start(self.videoknapp, True, True, 0)
     	# Rost och video
         self.rovknapp = gtk.ToggleButton("Rost och video")
-        self.rovknapp.connect("toggled", self.fil, "Filer")
+        self.rovknapp.connect("toggled", self.rov, "Filer")
 	self.rovknapp.show()
         self.vbox.pack_start(self.rovknapp, True, True, 0)
     	# Ring
