@@ -2,7 +2,7 @@ import dbus
 import thread
 import time
 
-def listenBattery(self):
+def listenBattery():
 	while(1):
 		x = float(dev_obj.GetProperty('battery.reporting.current'))
 		y = float(dev_obj.GetProperty('battery.reporting.design'))
@@ -23,4 +23,4 @@ batteryprint = int((x/y)*100),'%'
 #y2 = float(dev_obj.GetProperty('battery.voltage.design'))
 #print 'usage level', int((x2/y2)*100),'%'
 	
-thread.start_new_thread(self.listenBattery,())
+thread.start_new_thread(listenBattery,())
