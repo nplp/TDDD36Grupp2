@@ -333,7 +333,7 @@ class Gui(hildon.Program):
         #self.label.show()	
         #self.vbox3.pack_start(self.label, False, False, 0)
 	
-	self.label = gtk.Label(battery.batteryprint)
+	#self.label = gtk.Label(battery.batteryprint)
 	self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
