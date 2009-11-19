@@ -169,7 +169,7 @@ def main():
 	gtk.main()
 
 if __name__ == "__main__":
-	Mainstream().run(1,'130.236.219.132', '5000','5001')
+	Mainstream().run(1,'130.236.216.222', '5000','5001')
 	gtk.gdk.threads_init()
 	main()
 
