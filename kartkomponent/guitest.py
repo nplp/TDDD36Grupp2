@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import gtk
 import hildon
 import gobject
@@ -9,7 +8,7 @@ import pango
 import meddelande
 import uppdrag
 import detringer
-import battery
+#import battery
 import thread
 import time
 import osso
@@ -27,11 +26,11 @@ class Gui(hildon.Program):
             self.__map_change_zoom("+")
     #########################TESTING123 skapar alla funktioner############################
     
-    def listenBattery(self):
-	self.batt = battery.Batteri()
-	while(1):
-		self.label = gtk.Label(self.batt.getbattery())
-		time.sleep(60)
+    #def listenBattery(self):
+	#self.batt = battery.Batteri()
+	#while(1):
+		#self.label = gtk.Label(self.batt.getbattery())
+		#time.sleep(60)
     
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
@@ -328,12 +327,7 @@ class Gui(hildon.Program):
 	self.scroll_window.set_border_width(10)
 	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)	
 
-        #self.label = gtk.Label(battery.batteryprint)
-	#self.label.set_alignment(0, 0)
-        #self.label.show()	
-        #self.vbox3.pack_start(self.label, False, False, 0)
-	
-	#self.label = gtk.Label(battery.batteryprint)
+	self.label = gtk.Label("Batteri")
 	self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
@@ -365,7 +359,7 @@ class Gui(hildon.Program):
         #self.window.connect("destroy", self.menu_exit)
         self.add_window(self.window)
 	self.create_map_view()
-	thread.start_new_thread(self.listenBattery,())	
+	#thread.start_new_thread(self.listenBattery,())	
 	self.oldbuttonsandwindows()
 	
 
