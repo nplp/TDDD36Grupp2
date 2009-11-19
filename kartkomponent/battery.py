@@ -15,9 +15,7 @@ class Batteri():
 	#self.x = float(self.dev_obj.GetProperty('battery.reporting.current'))
 	#self.y = float(self.dev_obj.GetProperty('battery.reporting.design'))
 	
-	self.batterylevel = 0
-	self.x = 0
-	self.y = 0
+	self.batterylevel = (0,0)
 	#x2 = float(dev_obj.GetProperty('battery.voltage.current'))
 	#y2 = float(dev_obj.GetProperty('battery.voltage.design'))
 	#print 'usage level', int((x2/y2)*100),'%'
@@ -30,8 +28,8 @@ class Batteri():
 	
     def listenBattery(self):
 	while(1):
-		self.x = float(self.dev_obj.GetProperty('battery.reporting.current'))
-		self.y = float(self.dev_obj.GetProperty('battery.reporting.design'))
+		self.batterylevel[0] = float(self.dev_obj.GetProperty('battery.reporting.current'))
+		self.batterylevel[1] = float(self.dev_obj.GetProperty('battery.reporting.design'))
 		time.sleep(60)
 	
     def run(self):
