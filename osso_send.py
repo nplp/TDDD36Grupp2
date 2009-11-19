@@ -1,4 +1,5 @@
-import osso
+# -*- coding: utf-8 -*-
+mport osso
 import gtk
 
 #args = de argument som ska skickas som tupel
