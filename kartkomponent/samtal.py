@@ -11,18 +11,18 @@ class Samtal():
 	print "vi sparar!"
 	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (self.choose, "127.0.0.1", 4000, 4001))
     
-    def rost():
+    def rost(self, widget, event, data=None):
     	self.rovknapp.set.active(False)
 	self.videoknapp.set.active(False)
     	self.rostknapp.set.active(True)
 	self.choose = 1
 	
-    def video():
+    def video(self, widget, event, data=None):
     	self.rovknapp.set.active(False)
 	self.rostknapp.set.active(False)
 	self.videoknapp.set.active(True)
 	self.choose = 2
-    def rov():
+    def rov(self, widget, event, data=None):
     	self.rostknapp.set.active(False)
     	self.videoknapp.set.active(False)
     	self.rovknapp.set.active(True)
