@@ -12,19 +12,20 @@ class Samtal():
 	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (self.choose, "127.0.0.1", 4000, 4001))
 	
     def rost(self, widget, event, data=None):
+	self.rostknapp.set_active(True)
 	self.rovknapp.set_active(False)
 	self.videoknapp.set_active(False)
-	self.rostknapp.set_active(True)
+
 	self.choose = 1
     def video(self, widget, event, data=None):
+	self.videoknapp.set_active(True)
 	self.rovknapp.set_active(False)
 	self.rostknapp.set_active(False)
-	self.videoknapp.set_active(True)
 	self.choose = 2
     def rov(self, widget, event, data=None):
+	self.rovknapp.set_active(True)
 	self.rostknapp.set_active(False)
 	self.videoknapp.set_active(False)
-	self.rovknapp.set_active(True)
 	self.choose = 3
 	
     def __init__(self):	
