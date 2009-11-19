@@ -313,16 +313,8 @@ def getClient(client):
 			return socketArray[i]
 	return -1
 
-# ----------------------------------------------------------------------------
-
-def toEnglish(string):
-	for c in string:
-		if(c=='å' or c=='ä'):
-			c = 'a'
-		elif(c=='ö'):
-			c = 'o'
-	return string
-
+# Gör en lista och skriver om folk är online.
+# OBS! Ej atomisk! Får endast köras i atomiska läs-funktioner.
 def statusList():
 	String = ""
 	for i in range(len(socketArray)):
@@ -335,6 +327,19 @@ def statusList():
 			String += " isAlive"
 		String += "\n"
 	return String
+
+# ----------------------------------------------------------------------------
+
+def toEnglish(string):
+	for c in string:
+		if(c=='å' or c=='ä'):
+			c = 'a'
+		elif(c=='ö'):
+			c = 'o'
+	return string
+
+	
+
 
 #HOST = '130.236.218.114'
 HOST = '127.0.0.1'
@@ -435,7 +440,21 @@ class sessionClass(Thread):
 				elif(data.startswith('/status')): 
 					self.sendBack("You are number " + str(search(self.name)))
 				elif(data.startswith('/list')):
-					self.sendBack(statusList())
+
+					# Atomisk ------
+					ip = list()
+					ClientMutex.acquire()
+					for i in range(len(socketArray)):
+						if(socketArray[i].isAlive()):
+							ip.append(socketArray[i].name + " " + str(socketArray[i].ADDR))
+						else:
+							ip.append("/ERROR")
+					ClientMutex.release()
+					# --------------
+
+					for i in range(len(socketArray)):
+						self.sendBack(ip[i])
+
 				elif(data.startswith('/whisper')):
 					msg = data.split(' ', 2)
 					if(len(msg)>2):
