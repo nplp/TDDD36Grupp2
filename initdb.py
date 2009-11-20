@@ -1,4 +1,4 @@
-# coding:utf-8
+# -*- coding: utf-8 -*-
 #from sqlalchemy.orm import mapper
 #from sqlalchemy.orm import sessionmaker
 from sqlalchemy import *
@@ -240,11 +240,23 @@ user_kj.groups.append(g)
 user_kj.groups.append(pro)
 
 
-mission_1= mission(name="Save the cat", timestamp=datetime.now(), type="Rescue", description="Go and save a cat from a burning tree.", contact_person="Moma Cat", contact_number="123457678", status="Ongoing", finishtime= "4 hours")
-mission_2= mission(name="Save the chearleader", timestamp=datetime.now(), type="Assasinate", description="Go and save the chearleader, and assasinate Sylar.", status="Ongoing", finishtime= "30 min")
+def addMission(name1, timestamp1, type1, description1, contact_person1, contact_number1,status1,finishtime1):
+	session.save(mission(name=name1, timestamp=timestamp1, type=type1, description=description1, contact_person=contact_person1, contact_number=contact_number1, status=status1, finishtime=finishtime1))
 
-session.save(mission_1)
-session.save(mission_2)
+
+#mission_temp=mission(name=name, timestamp=datetime.now(), type="Rescue", description="Go and save a cat from a burning tree.", contact_person="Moma Cat", contact_number="123457678", status="Ongoing", finishtime= "4 hours")
+
+addMission("Save the cat",datetime.now(),"Rescue","Go and save a cat from a burning tree.", "Moma Cat", "123457678","Ongoing","4 hours")	
+	
+	
+def addMission_object(Object):
+	session.save(Object)
+
+addMission_object( mission(name="Save the chearleader", timestamp=datetime.now(), type="Assasinate", description="Go and save the chearleader, and assasinate Sylar.", status="Ongoing", finishtime= "30 min"))
+
+
+##session.save(mission_1)
+#session.save(mission_2)
 session.save(Item('Pansarvagn', 10, 'Linkoping'))
 session.save(Item('Pansarvagn', 70, 'Linkoping'))
 session.save(Item('EMP', 1, 'Linkoping'))
@@ -257,6 +269,8 @@ session.save(Item('Lastbilar', 37, 'Linkoping'))
 session.save(Item('Diselvarmare', 59, 'Linkoping'))
 session.save(Item('Sprinterbuss', 5, 'Linkoping'))
 session.commit()
+
+
 
 #print "skriver ut användare som är i: team2"
 #print get_group_users('team2')
