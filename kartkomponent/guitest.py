@@ -28,9 +28,7 @@ class Gui(hildon.Program):
     #########################TESTING123 skapar alla funktioner############################
     
     def listenBattery(self):
-	print "metod listenBattery"
 	while(1):
-		print self.batt.getbattery()
 		self.label.set_text(str(self.batt.getbattery()))
 		#self.label = gtk.Label(self.batt.getbattery())
 		time.sleep(8)
@@ -75,6 +73,7 @@ class Gui(hildon.Program):
 	self.map.hide()
 	self.meddela.vbox.hide()
         self.scrolled_window.hide()
+	self.samtala.hbox.hide()
         self.scroll_window.show()
 	
 	#Rapport
@@ -86,6 +85,7 @@ class Gui(hildon.Program):
 	self.map.hide()
 	self.meddela.vbox.hide()
 	self.scroll_window.hide()
+	self.samtala.hbox.hide()	
         self.scrolled_window.show()	
 	
 	
@@ -188,6 +188,7 @@ class Gui(hildon.Program):
 	self.meddela.vbox.hide()
 	self.ringa.vbox.hide()
         self.scroll_window.hide()
+	self.samtala.hbox.hide()	
 	self.map.show()
 	 
     def textmedd(self, widget, event, data=None):
@@ -196,9 +197,9 @@ class Gui(hildon.Program):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
 	self.map.hide()
-	self.scrolled_window.hide()	
+	self.scrolled_window.hide()
+	self.samtala.hbox.hide()	
 	self.meddela.vbox.show()
-	self.ringa.vbox.hide()	
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
@@ -349,7 +350,6 @@ class Gui(hildon.Program):
 	
 	#self.batt = battery.Batteri()
 	self.label = gtk.Label(self.batt.getbattery())
-	print "skapar label"
 	#self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
@@ -370,7 +370,6 @@ class Gui(hildon.Program):
 
 
     def __init__(self, map):
-	print "init start"
 	self.batt = battery.Batteri()
 	thread.start_new_thread(self.batt.run,())
 	thread.start_new_thread(self.listenBattery,())

@@ -27,7 +27,6 @@ class Batteri():
  
  
     def getbattery(self):
-	print "getbattery"
 	self.batterylevel -= 1
 	#self.batterylevel = int((self.x/self.y)*100)
 	return self.batterylevel
@@ -35,14 +34,12 @@ class Batteri():
  
     def listenBatt(self):
 	while(1):
-		print "Andvands denna?"
 		self.bluff()
 		#self.x = float(self.dev_obj.GetProperty('battery.reporting.current'))
 		#self.y = float(self.dev_obj.GetProperty('battery.reporting.design'))
 		time.sleep(5)
  
     def run(self):
-	print "denna?"
 	self.listenBatt()
  
 def main():
