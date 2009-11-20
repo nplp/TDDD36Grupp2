@@ -19,6 +19,7 @@ from groups import *
 # 2 = aktiv 
 
 ClientMutex = BoundedSemaphore(1)
+DatabaseMutex = BoundedSemaphore(1)
 
 # DB-test --------------------------------------------------------
 
@@ -213,6 +214,12 @@ def is_user(clientname):
 	#		print "dsjlök"
 	else: 
 		return False
+
+def copydb():
+	DatabaseMutex.acquire()
+	os.system('rsync -a data.db nikpe890@sysi-04.sysinst.ida.liu.se:TDDD36Grupp2/')
+	DatabaseMutex.release()
+
 
 #### --------------------------------------------------------
 
