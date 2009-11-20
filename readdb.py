@@ -254,8 +254,16 @@ print session.query(User).all()
 
 print getCount('EMP')
 print getTotal('EMP')
-
+#query.filter(User.name.in_(session.query(User.name).filter(User.name.like('%ed%')))) 
 print session.query(Item).filter_by(name='Pansarvagn').first()
+print session.query(User).filter_by(name ='m').first()
+user= session.query(User).filter_by(name ='matas').first()
+try:
+	print user.name
+except Exception,e :
+	pass
+session.commit()
+session2= Session()
 
 
 
