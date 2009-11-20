@@ -4,6 +4,7 @@ import thread
 import osso
 import gtk
 
+
 class GPS(object):
 
 	def __init__(self):
@@ -57,7 +58,6 @@ def main():
     gtk.main()
 
 if __name__ == "__main__":
-    GPS.___init___()
     GPS().run()
     main()
 

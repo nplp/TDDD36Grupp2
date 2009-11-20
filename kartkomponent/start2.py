@@ -37,19 +37,23 @@ class Start(object):
 
 	def getcoords(self):
 		try:
-			subprocess.call('python Tufftuff.py', shell=True)
+			print "kor den forsta try"
+			subprocess.call('/scratchbox/login | dbus-uuidgen --ensure | /usr/bin/af-sb-init.sh start | python2.5 Tufftuff2.py', shell=True)
 		except Error, e:
-			subprocess.call('/scratchbox/login | python Tufftuff.py', shell=True)
+			print "kor den andra except"
+			subprocess.call('python Tufftuff2.py', shell=True)
+
 
 		print "Efter subprocess"		
 		#os.system('python Tufftuff.py')		
 		#self.instans = Tufftuff.GPS()
 		#self.instans.run()
-		osso_c = osso.Context("start", "0.0.1", False)
-		osso_rpc = osso.Rpc(osso_c)
+		self.osso_c = osso.Context("start", "0.0.1", False)
+		self.osso_rpc = osso.Rpc(self.osso_c)
 		while(self.gpsrun == True):		
 			time.sleep(3)
-			self.coord = osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord")
+			print "powernap booya!"
+			self.coord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord")
 			#self.coord = self.instans.updatecoord()
 			print self.coord[0]
 			print self.coord[1]
