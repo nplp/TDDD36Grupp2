@@ -29,6 +29,7 @@ class Gui(hildon.Program):
     
     def listenBattery(self):
 	while(1):
+		print self.batt.getbattery()
 		self.label.set_text(str(self.batt.getbattery()))
 		#self.label = gtk.Label(self.batt.getbattery())
 		time.sleep(8)
@@ -200,6 +201,7 @@ class Gui(hildon.Program):
 	self.scrolled_window.hide()
 	self.samtala.hbox.hide()	
 	self.meddela.vbox.show()
+
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
@@ -350,6 +352,7 @@ class Gui(hildon.Program):
 	
 	#self.batt = battery.Batteri()
 	self.label = gtk.Label(self.batt.getbattery())
+	#print "skapar label"
 	#self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
