@@ -15,31 +15,35 @@ class Batteri():
 	self.x = float(self.dev_obj.GetProperty('battery.reporting.current'))
 	self.y = float(self.dev_obj.GetProperty('battery.reporting.design'))
 	'''
-	self.batterylevel = 0
-	self.x = 100
-	self.y = 100
+	self.batterylevel = 100
+	#self.x = 50
+	#self.y = 100
 	#x2 = float(dev_obj.GetProperty('battery.voltage.current'))
 	#y2 = float(dev_obj.GetProperty('battery.voltage.design'))
 	#print 'usage level', int((x2/y2)*100),'%'
  
     def bluff(self):
-    	self.x -= 1
+    	self.x += 1
  
  
     def getbattery(self):
-	self.batterylevel = int((self.x/self.y)*100),'%'
+	print "getbattery"
+	self.batterylevel -= 1
+	#self.batterylevel = int((self.x/self.y)*100)
 	return self.batterylevel
  
  
-    def listenBattery(self):
+    def listenBatt(self):
 	while(1):
+		print "Andvands denna?"
 		self.bluff()
 		#self.x = float(self.dev_obj.GetProperty('battery.reporting.current'))
 		#self.y = float(self.dev_obj.GetProperty('battery.reporting.design'))
 		time.sleep(5)
  
     def run(self):
-	thread.start_new_thread(self.listenBattery,())
+	print "denna?"
+	self.listenBatt()
  
 def main():
     gtk.main()

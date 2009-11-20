@@ -28,11 +28,12 @@ class Gui(hildon.Program):
     #########################TESTING123 skapar alla funktioner############################
     
     def listenBattery(self):
+	print "metod listenBattery"
 	while(1):
-		print "bajs" + self.batt.getbattery()
-		self.label.set_text(str)
+		print self.batt.getbattery()
+		self.label.set_text(str(self.batt.getbattery()))
 		#self.label = gtk.Label(self.batt.getbattery())
-		time.sleep(5)
+		time.sleep(8)
     
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
@@ -346,8 +347,9 @@ class Gui(hildon.Program):
 	self.scroll_window.set_border_width(10)
 	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
 	
-	self.batt = battery.Batteri()
+	#self.batt = battery.Batteri()
 	self.label = gtk.Label(self.batt.getbattery())
+	print "skapar label"
 	#self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
@@ -368,6 +370,10 @@ class Gui(hildon.Program):
 
 
     def __init__(self, map):
+	print "init start"
+	self.batt = battery.Batteri()
+	thread.start_new_thread(self.batt.run,())
+	thread.start_new_thread(self.listenBattery,())
         # Initierar hildon (GUI-biblioteket för N810)
         hildon.Program.__init__(self)
         # Sparar handdatorns karta.
@@ -379,9 +385,11 @@ class Gui(hildon.Program):
         # Funktion som körs när prorammet ska stängas av
         #self.window.connect("destroy", self.menu_exit)
         self.add_window(self.window)
-	self.create_map_view()
-	#thread.start_new_thread(self.listenBattery,())	
+	self.label = gtk.Label()
+	self.create_map_view()	
 	self.oldbuttonsandwindows()
+	#self.label = gtk.label()
+	#print "label1"
 	
 
         # Möjliggör fullscreen-läge
