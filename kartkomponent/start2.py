@@ -3,7 +3,6 @@ import data_storage
 import map_xml_reader
 import gui_map
 import guitest
-import Tufftuff
 import time
 import thread
 import osso
@@ -37,9 +36,9 @@ class Start(object):
 		self.map.add_object("Sjukhus1", data_storage.MapObject({"longitude":15.5629,
 			                                           "latitude":58.4093},
 			                                          "ikoner/sjukhus.png"))
-		self.map.add_object("Tank", data_storage.MapObject({"longitude":(15.5726),
-								"latitude":(58.4035)},
-							        "ikoner/tank.png"))
+		##self.map.add_object("Tank", data_storage.MapObject({"longitude":(15.5726),
+								##"latitude":(58.4035)},
+							        ##"ikoner/tank.png"))
 
 	def init_tufftuff(self):
 		try:
@@ -51,23 +50,19 @@ class Start(object):
 			subprocess.call('/scratchbox/login | dbus-uuidgen --ensure | /usr/bin/af-sb-init.sh start | python2.5 Tufftuff2.py &', shell=True)
 		
 
-	
 	def getcoords(self):
 		print "Efter subprocess"		
-		#os.system('python Tufftuff.py')		
-		#self.instans = Tufftuff.GPS()
-		#self.instans.run()
 		self.osso_c = osso.Context("start", "0.0.1", False)
 		self.osso_rpc = osso.Rpc(self.osso_c)
 		while(self.gpsrun == True):		
-			time.sleep(3)
-			print "powernap booya!"
+			#time.sleep(3)
 			self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
 			self.coord = self.to_tuple(self.stringcoord)
-			#self.coord = self.instans.updatecoord()
-			print self.coord[0]
-			print self.coord[1]
-	
+			self.map.add_object("Tank", data_storage.MapObject({"longitude":(coord[1]-0.0016),
+									"latitude":(coord[0]+0.00075)},
+									"ikoner/tank.png"))
+			time.sleep(5)
+			self.map.delete_object("Tank")
 	def startgui(self):
 		self.gui = guitest.Gui(self.map)
 		thread.start_new_thread(self.gui.run, ())

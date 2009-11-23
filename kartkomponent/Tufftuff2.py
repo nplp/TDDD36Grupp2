@@ -17,8 +17,8 @@ class GPS(object):
 		print "nu e jag startad vettu /tufftuff"
 		self.coord = (0,0)
 		self.update = False
-		self.x = 30
-		self.y = 40
+		self.x = 58.4035
+		self.y = 15.5726
 		self.osso_c = osso.Context("tufftuff", "0.0.1", False)
 		self.osso_rpc = osso.Rpc(self.osso_c)
 		self.osso_rpc.set_rpc_callback("thor.tufftuff","/thor/tufftuff","thor.tufftuff",self.updatecoord)
@@ -30,8 +30,8 @@ class GPS(object):
 		#print "uppdaterar"
 		print "nu e vi inne i updatecoord som e callbacken"
 		self.coord = (self.x,self.y)
-		self.x += 1
-		self.y += 1
+		self.x += 0.0001
+		self.y += 0.0001
 		return self.to_string(self.coord)
 		
 	 
