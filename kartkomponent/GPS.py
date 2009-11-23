@@ -2,6 +2,8 @@
 import time
 import gpsbt
 import thread
+import osso
+import gtk
 
 class GPS(object):
 
