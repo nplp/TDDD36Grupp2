@@ -187,6 +187,9 @@ def get_group_users(namn):
 		return s.users
 	except:
 		return None
+def get_user_all():
+	return session.query(User).all()
+
 def get_group_all():
 	return session.query(Group).all()
 
@@ -230,11 +233,11 @@ def delete_group(namn):
 	except:
 		pass
 	
-def delete_group_user(group,namn):
-	try:
-		session.delete(get_group(group).filter_by(name=namn))
-	except:
-		pass
+#def delete_group_user(group,namn):
+	#try:
+		#session.get_group(group).filter_by(name=namn))
+	#except:
+		#pass
 	
 def get_password(namn):
 	try:
@@ -274,7 +277,7 @@ session.close()
 session = Session()
 
 
-
+print get_user_all()
 #skriver ut valda delar av ett uppdrag
 m= get_mission_object_by_name('Save the cat')
 print "get_mission_by_name:"
@@ -316,10 +319,12 @@ print get_group_all()
 
 print "Skriver ut team2 ", get_group('team2')
 print "skriver ut anvandare i team2",get_group_users('team2')
-#delete_group_user('mathias')
+#delete_group_user('Pro','mathias')
+print "skriver ut anvandare i Pro",get_group_users('Pro')
 delete_group('team2')
 print "skriver ut team2 efter borttagning ",get_group('team2')
 print "skriver ut anvandare i team2",get_group_users('team2')
+print "skriver ut anvandare i team3",get_group_users('team3')
 
 session.commit()
 
