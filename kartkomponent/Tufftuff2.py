@@ -26,6 +26,9 @@ class GPS(object):
 		self.coord = (self.x,self.y)
 		self.x += 1
 		self.y += 1
+		print self.coord
+		print self.coord[0]
+		print self.coord[1]
 		return self.coord
 	 
 	# Väntar på att gpsen ska hitta en kordinat
