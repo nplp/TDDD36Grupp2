@@ -58,7 +58,7 @@ class Start(object):
 
 	def getcoords(self):
 		print "Efter subprocess"		
-		time.sleep(3)
+		#time.sleep(3)
 		while(self.gpsrun == True):		
 			#self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
 			self.stringcoord = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "updatecoord", (), wait_reply = True)
@@ -78,6 +78,7 @@ class Start(object):
 		self.init_tufftuff()
 		self.startgui()
 		print "Going to coords"
+		time.sleep(3)
 		while(self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True) == 0):
 			time.sleep(1)
 		self.getcoords()
