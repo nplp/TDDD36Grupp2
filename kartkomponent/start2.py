@@ -55,9 +55,8 @@ class Start(object):
 		while(self.gpsrun == True):		
 			time.sleep(3)
 			print "powernap booya!"
-			self.coord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord")
+			self.coord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", rpc_args = None, wait_reply = True)
 			#self.coord = self.instans.updatecoord()
-			time.sleep(2)
 			print self.coord[0]
 			print self.coord[1]
 	
