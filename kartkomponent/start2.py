@@ -64,7 +64,7 @@ class Start(object):
 			print "powernap booya!"
 			while(self.stringcoord == None):
 				self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
-				self.coord = to_tuple(self.stringcoord)
+				self.coord = self.to_tuple(self.stringcoord)
 				time.sleep(1)
 			#self.coord = self.instans.updatecoord()
 			print self.coord[0]
