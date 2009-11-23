@@ -5,10 +5,11 @@ import gtk
 
 def send_rpc(widget, osso_c):
     osso_rpc = osso.Rpc(osso_c)
-    x = osso_rpc.rpc_run("spam.eggs.osso_test_receiver",
+    x,y = osso_rpc.rpc_run("spam.eggs.osso_test_receiver",
         "/spam/eggs/osso_test_receiver",
         "spam.eggs.osso_test_receiver", "do_something", (), wait_reply=True)
-    print x[0]
+    print x
+    print y
  
 osso_c = osso.Context("osso_test_sender", "0.0.1", False)
 window = hildon.Window()

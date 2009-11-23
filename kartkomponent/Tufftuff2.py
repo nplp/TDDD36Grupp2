@@ -7,6 +7,12 @@ import gtk
 
 class GPS(object):
 
+	def to_string(self, tupel):
+		stringen = ""
+		for part in tupel:
+			stringen += str(part) + " "
+		return stringen
+		
 	def __init__(self):
 		print "nu e jag startad vettu /tufftuff"
 		self.coord = (0,0)
@@ -26,7 +32,8 @@ class GPS(object):
 		self.coord = (self.x,self.y)
 		self.x += 1
 		self.y += 1
-		return ("hej", "san")
+		return self.to_string(self.coord)
+		
 	 
 	# Väntar på att gpsen ska hitta en kordinat
 	def waiting_for_a_fix(self):
