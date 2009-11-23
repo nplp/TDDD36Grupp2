@@ -26,6 +26,7 @@ class GPS(object):
 	def callback_func(self, interface, method, arguments, user_data):
 		print "Callback: " + method
 		if(method == updatecoord):
+			print "update"
 			return self.updatecoord()
 		elif(method == hasfix):
 			print "elif"

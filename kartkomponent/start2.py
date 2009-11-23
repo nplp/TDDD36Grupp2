@@ -80,11 +80,11 @@ class Start(object):
 		self.startgui()
 		print "Going to coords"
 		time.sleep(8)
-		self.hej = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True)
-		print self.hej
-		while(self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True) == 0):
-			self.hej = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True)
-			time.sleep(1)
+		#self.hej = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True)
+		#print self.hej
+		#while(self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True) == 0):
+			#self.hej = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True)
+			#time.sleep(1)
 		self.getcoords()
 		
 
