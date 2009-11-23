@@ -20,7 +20,7 @@ class GPS(object):
 
 	
 	# Uppdaterar din kordinat
-	def updatecoord(self):
+	def updatecoord(self, interface, method, arguments, user_data):
 		#print "uppdaterar"
 		print "nu e vi inne i updatecoord som e callbacken"
 		self.coord = (self.x,self.y)
