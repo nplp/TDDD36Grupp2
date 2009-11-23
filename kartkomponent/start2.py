@@ -13,7 +13,7 @@ import subprocess
 class Start(object):
 
 	def __init__(self):
-		self.coord = (0,0)
+		self.coord = None
 		self.gpsrun = True	
 
 	def createmap(self):
@@ -35,15 +35,18 @@ class Start(object):
 								"latitude":(58.4035)},
 							        "ikoner/tank.png"))
 
-	def getcoords(self):
+	def init_tufftuff(self):
 		try:
-			print "kor den forsta try"
-			subprocess.call('/scratchbox/login | dbus-uuidgen --ensure | /usr/bin/af-sb-init.sh start | python2.5 Tufftuff2.py', shell=True)
-		except Error, e:
 			print "kor den andra except"
-			subprocess.call('python Tufftuff2.py', shell=True)
+			subprocess.call('python Tufftuff2.py &', shell=True)
 
+		except Error, e:
+			print "kor den forsta try"
+			subprocess.call('/scratchbox/login | dbus-uuidgen --ensure | /usr/bin/af-sb-init.sh start | python2.5 Tufftuff2.py &', shell=True)
+		
 
+	
+	def getcoords(self):
 		print "Efter subprocess"		
 		#os.system('python Tufftuff.py')		
 		#self.instans = Tufftuff.GPS()
@@ -53,10 +56,13 @@ class Start(object):
 		while(self.gpsrun == True):		
 			time.sleep(3)
 			print "powernap booya!"
-			self.coord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord")
+			while(self.coord == None):
+				self.coord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
+				time.sleep(1)
 			#self.coord = self.instans.updatecoord()
-			print self.coord[0]
-			print self.coord[1]
+			print self.coord
+			#print self.coord[0]
+			#print self.coord[1]
 	
 	def startgui(self):
 		self.gui = guitest.Gui(self.map)
@@ -64,6 +70,7 @@ class Start(object):
 
 	def run(self):
 		self.createmap()
+		self.init_tufftuff()
 		self.startgui()
 		print "Going to coords"
 		self.getcoords()
