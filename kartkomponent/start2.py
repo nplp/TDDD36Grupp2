@@ -39,13 +39,14 @@ class Start(object):
 		try:
 			print "kor den andra except"
 			subprocess.call('python Tufftuff2.py &', shell=True)
+			#Later processen fa tid att kicka igang
+			time.sleep(5) 
 
 		except Error, e:
 			print "kor den forsta try"
 			subprocess.call('/scratchbox/login | dbus-uuidgen --ensure | /usr/bin/af-sb-init.sh start | python2.5 Tufftuff2.py &', shell=True)
 		
-		#Later processen fa tid att kicka igang
-		time.sleep(5) 
+
 	
 	def getcoords(self):
 		print "Efter subprocess"		
