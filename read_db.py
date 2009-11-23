@@ -175,76 +175,19 @@ mapper(Item, items_table)
 
 ############################Metoder###########################
 
-def get_user_groups(namn):
-	try:
-		snubbe=session.query(User).filter_by(name=namn).first()
-		return snubbe.groups
-	except:
-		return None
-def get_group_users(namn):
-	try:	
-		s=session.query(Group).filter_by(name=namn).first()
-		return s.users
-	except:
-		return None
+#retunerar alla användare
 def get_user_all():
 	return session.query(User).all()
 
-def get_group_all():
-	return session.query(Group).all()
-
-def get_group(namn):
-	try:
-		g=session.query(Group).filter_by(name=namn).first()
-		return g
-	except:
-		return None
-def getCount(namn):
-	try:
-		return session.query(Item).filter_by(name=namn).first().count
-	except:
-		return None
-# Retunerar totala antalet av ett object
-def getTotal(namn):	
-	try:	
-		temp=0
-		for item in session.query(Item).filter_by(name=namn):
-			temp = item.count + temp
-		return temp
-	except:
-		return None
-def get_mission_object_by_name(namn):
-	try:
-		m=session.query(mission).filter_by(name=namn).first()
-		return m
-	except:
-		return None
-
-def get_mission_by_id(id_nr):
-	try:
-		m=session.query(mission).filter_by(id=id_nr).first()
-		return m
-	except:
-		return None
-
-def delete_group(namn):
-	try:
-		session.delete(get_group(namn))
-	except:
-		pass
-	
-#def delete_group_user(group,namn):
-	#try:
-		#session.get_group(group).filter_by(name=namn))
-	#except:
-		#pass
-	
+#retunerar lösenord hos en användare
 def get_password(namn):
 	try:
 		p=session.query(User).filter_by(name=namn).first()
 		return p.password
 	except:
 		return None
+
+#retunerar True eller False beroende om en användare finns i databasen eller inte
 def is_user(clientname):
 	user= session.query(User).filter_by(name =clientname).first()
 	def get_name(user):
@@ -259,74 +202,162 @@ def is_user(clientname):
 		return True
 	else:
 		return False
+
+#retunerar grupper som en användare tillhör
+def get_user_groups(namn):
+	try:
+		snubbe=session.query(User).filter_by(name=namn).first()
+		return snubbe.groups
+	except:
+		return None
+
+#retunerar retunerar användare som finns i en grupp
+def get_group_users(namn):
+	try:	
+		s=session.query(Group).filter_by(name=namn).first()
+		return s.users
+	except:
+		return None
+
+#raderar en grupp (obs! raderar inte användare)
+def delete_group(namn):
+	try:
+		session.delete(get_group(namn))
+	except:
+		pass
 	
+#raderar enskilda användare i en grupp
+def delete_group_user(groupname,username):
+	try:
+		u=session.query(User).filter_by(name=username).first()
+		g=session.query(Group).filter_by(name=groupname).first()
+		u.groups.remove(g)
+		
+	except:
+		pass
+
+#lägger in användare i en grupp	
+def add_group_user(groupname,username):
+	try:
+		u=session.query(User).filter_by(name=username).first()
+		g=session.query(Group).filter_by(name=groupname).first()
+		u.groups.append(g)
+		
+	except:
+		pass
+
+#retunerar alla grupper
+def get_group_all():
+	return session.query(Group).all()
+
+#retunerar namnet på en grupp 
+def get_group(namn):
+	try:
+		g=session.query(Group).filter_by(name=namn).first()
+		return g
+	except:
+		return None
+#retunerar antalet items som finns (obs! endast första träffen)
+def getCount(namn):
+	try:
+		return session.query(Item).filter_by(name=namn).first().count
+	except:
+		return None
+# Retunerar totala antalet av ett item (summerar)
+def getTotal(namn):	
+	try:	
+		temp=0
+		for item in session.query(Item).filter_by(name=namn):
+			temp = item.count + temp
+		return temp
+	except:
+		return None
+	
+#retunerar ett mission object (sökning med namn)
+def get_mission_object_by_name(namn):
+	try:
+		m=session.query(mission).filter_by(name=namn).first()
+		return m
+	except:
+		return None
+
+#retunerar ett mission object (sökning med id)
+def get_mission_by_id(id_nr):
+	try:
+		m=session.query(mission).filter_by(id=id_nr).first()
+		return m
+	except:
+		return None
+
+#Lägger in ett uppdrag
 def addMission(name1, timestamp1, type1, description1, contact_person1, contact_number1,status1,finishtime1):
 	session.save(mission(name=name1, timestamp=timestamp1, type=type1, description=description1, contact_person=contact_person1, contact_number=contact_number1, status=status1, finishtime=finishtime1))	
 	
+#retunerar all uppdragsdata	
 def get_mission_all(namn):
 	m= get_mission_object_by_name(namn)
 	return m.name, m.timestamp, m.type, m.description, m.contact_person, m.contact_number, m.status, m.finishtime
 #######################################################	
 session = Session()
-USERS = session.query(User).all()
+USERS = session.query(User).all() # radera kj?
 session.close()
 
 
 ###########################Spårutskrifter############################	
 
-session = Session()
+#session = Session()
 
 
-print get_user_all()
-#skriver ut valda delar av ett uppdrag
-m= get_mission_object_by_name('Save the cat')
-print "get_mission_by_name:"
-print m.name
-print m.description
-print m.id
-print m.type
-print is_user('mathias')
-m = get_mission_by_id(2)
-print m.name
-print m.description
-print m.id
-print m.type
-# skriver ut allt som finns i ett uppdrag
-print get_mission_all('Save the cat')
+#print get_user_all()
+##skriver ut valda delar av ett uppdrag
+#m= get_mission_object_by_name('Save the cat')
+#print "get_mission_by_name:"
+#print m.name
+#print m.description
+#print m.id
+#print m.type
+#print is_user('mathias')
+#m = get_mission_by_id(2)
+#print m.name
+#print m.description
+#print m.id
+#print m.type
+## skriver ut allt som finns i ett uppdrag
+#print get_mission_all('Save the cat')
 	
 
-print "användare som är i: team2 ", get_group_users('team2')
-print "användare som är i: teamgobject", get_group_users('teamgobject')
-print "grupper som niklas är med i", get_user_groups('niklas')
-print "grupper som Mathias är med i", get_user_groups('mathias')
-print "grupp som inte finns:", get_group('finns inte')
-print "mathias losen", get_password('mathias')
-print "alla anvandare", session.query(User).all()
+#print "användare som är i: team2 ", get_group_users('team2')
+#print "användare som är i: teamgobject", get_group_users('teamgobject')
+#print "grupper som niklas är med i", get_user_groups('niklas')
+#print "grupper som Mathias är med i", get_user_groups('mathias')
+#print "grupp som inte finns:", get_group('finns inte')
+#print "mathias losen", get_password('mathias')
+#print "alla anvandare", session.query(User).all()
 
-print 'antalet EMP', getCount('EMP')
-print "totalt antal EMP",getTotal('EMP')
-#query.filter(User.name.in_(session.query(User.name).filter(User.name.like('%ed%')))) 
-print "item Pansarvagn: ",session.query(Item).filter_by(name='Pansarvagn').first()
-print "en anvandare som inte finns: ", session.query(User).filter_by(name ='m').first()
-user= session.query(User).filter_by(name ='matas').first()
-try:
-	print user.name
-except Exception,e :
-	pass
-session.commit()
+#print 'antalet EMP', getCount('EMP')
+#print "totalt antal EMP",getTotal('EMP')
 
-print get_group_all()
+#print "item Pansarvagn: ",session.query(Item).filter_by(name='Pansarvagn').first()
+#print "en anvandare som inte finns: ", session.query(User).filter_by(name ='m').first()
 
-print "Skriver ut team2 ", get_group('team2')
-print "skriver ut anvandare i team2",get_group_users('team2')
+#print get_group_all()
+
+#print "Skriver ut team2 ", get_group('team2')
+#print "skriver ut anvandare i team2",get_group_users('team2')
 #delete_group_user('Pro','mathias')
-print "skriver ut anvandare i Pro",get_group_users('Pro')
-delete_group('team2')
-print "skriver ut team2 efter borttagning ",get_group('team2')
-print "skriver ut anvandare i team2",get_group_users('team2')
-print "skriver ut anvandare i team3",get_group_users('team3')
+#print "skriver ut anvandare i Pro",get_group_users('Pro')
+#delete_group('team2')
+#print "skriver ut team2 efter borttagning ",get_group('team2')
+#print "skriver ut anvandare i team2",get_group_users('team2')
+#print "skriver ut anvandare i team3",get_group_users('team3')
+#print get_user_groups('mathias')
+#add_group_user('Pro','mathias')
+#print "skriver ut anvandare i Pro",get_group_users('Pro')
 
-session.commit()
+#print get_user_groups('mathias')
+#print get_group('Pro')
+#print getTotal('Pansarvagn')
+#session.commit()
 
 #####################################################################
 

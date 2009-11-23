@@ -14,27 +14,28 @@ import subprocess
 
 #Variabler
 #HOST = '130.236.216.128'
-HOST = '130.236.189.22'
-HOST2 = '130.236.189.22'
-PORT = 2153
+HOST = '130.236.189.14'
+HOST2 = '130.236.189.14'
+PORT = 2154
+PORT2 = 2153
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
-MYPORT = 2004
-ADDR = ('127.0.0.1', MYPORT)
+MYPORT = 2012
+ADDR = ('127.0.0.1')
+ADDR2 = ('127.0.0.1')
 contactList = list()
+primary = False
 
 
-#SSH anrop, startar ssh tunnel mot servern
-try:
-	subprocess.call('ssh -f matak825@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
-except error:
-	print 'no server baby'
 
 #Sekundärserver byte är uppskjutet, lite mer information finns i niklas_client.py där jag testar lite connection timeouts med mera.
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
+clientSocket2 = socket(AF_INET, SOCK_STREAM)
+clientSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+clientSocket2.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 '''
 #Checkar servern
 def checkServer():
@@ -47,12 +48,49 @@ def checkServer():
         return 0
     except error:
         return 1
+
 ''' 
 def connect():
-    clientSocket.connect(ADDR)
-    recThread = recieverClass(clientSocket, ADDR)
+    global MYPORT
+    global primary
+    print "gor jag detta?"
+    print primary
+    primary = True
+    print primary
+    #SSH anrop, startar ssh tunnel mot servern
+    try:
+	MYPORT +=1
+	subprocess.call('ssh -f nikpe890@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
+    except error:
+	print 'no server baby i connect'
+    print "waddap"
+    clientSocket.connect((ADDR, MYPORT))
+    print "waddap2"
+    recThread = recieverClass(clientSocket, (ADDR,MYPORT))
+    print "waddap3"
     recThread.start()
+    print "waddap4"
 
+def reconnect():
+    global MYPORT
+    global primary
+    print "did i do this?"
+    primary = False
+        #SSH anrop, startar ssh tunnel mot servern
+    clientSocket.close()
+    try:
+	MYPORT +=1
+	subprocess.call('ssh -f nikpe890@'+HOST2+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT2)+' sleep 4', shell=True)
+    except error:
+	print 'no server baby i reconnect'
+    print "baddap"
+    clientSocket2.connect((ADDR2, MYPORT))
+    print "baddap2"
+    recThread2 = recieverClass(clientSocket2, (ADDR2,MYPORT))
+    print "baddap3"
+    recThread2.start()
+    print "baddap4"
+    
 '''
     down = checkServer()
     if (down):
@@ -77,10 +115,10 @@ def checkBattery():
         if(bat < 100):
             print 'Nu har du',bat,'% kvar i batteri.'
     except Exception, e :
-            print "Du sitter pa en loser dator och har inget batteri"       
+            print "Du sitter pa en loser dator och har inget batteri"
 
 class recieverClass(Thread):
-	def __init__(self, _clientSocket, _ADDR):
+	def __init__(self, _clientSocket, _ADDR,):
 		self.clientSocket = _clientSocket
 		self.ADDR = _ADDR
 		Thread.__init__(self)
@@ -107,7 +145,12 @@ class recieverClass(Thread):
 						print data
 				else:
 					print "rerouting"
-					connect()
+					if(primary):
+						self.clientSocket.close()
+						reconnect()
+					else:
+						self.clientSocket.close()
+						connect()
 		except Exception, e:
 			print e
 	def run(self):
@@ -148,6 +191,12 @@ while 1:
 			print n
 
 	if(data != ""):
-		clientSocket.send(data)
+		global primary
+		print primary
+		if(primary):
+			clientSocket.send(data)
+		else:
+			clientSocket2.send(data)
 
 clientSocket.close()
+clientSocket2.close()
