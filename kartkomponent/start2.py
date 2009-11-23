@@ -14,7 +14,13 @@ class Start(object):
 
 	def __init__(self):
 		self.coord = None
-		self.gpsrun = True	
+		self.gpsrun = True
+		self.stringcoord = None
+		
+	def to_tuple(self, stringen)
+		tupeln = tuple(stringen.split())
+		tupeln = (float(temp[0]), float(temp[1]))
+		return tupeln
 
 	def createmap(self):
 		self.mapxml = map_xml_reader.MapXML("./kartdata/map.xml")
@@ -56,13 +62,13 @@ class Start(object):
 		while(self.gpsrun == True):		
 			time.sleep(3)
 			print "powernap booya!"
-			while(self.coord == None):
-				self.coord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
+			while(self.stringcoord == None):
+				self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
+				self.coord = to_tuple(self.stringcoord)
 				time.sleep(1)
 			#self.coord = self.instans.updatecoord()
-			print self.coord
-			#print self.coord[0]
-			#print self.coord[1]
+			print self.coord[0]
+			print self.coord[1]
 	
 	def startgui(self):
 		self.gui = guitest.Gui(self.map)
