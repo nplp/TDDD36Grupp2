@@ -19,7 +19,7 @@ class Start(object):
 		
 	def to_tuple(self, stringen):
 		tupeln = tuple(stringen.split())
-		tupeln = (float(temp[0]), float(temp[1]))
+		tupeln = (float(tupeln[0]), float(tupeln[1]))
 		return tupeln
 
 	def createmap(self):
