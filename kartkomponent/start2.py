@@ -13,7 +13,7 @@ import subprocess
 class Start(object):
 
 	def __init__(self):
-		self.coord = ()
+		self.coord = None
 		self.gpsrun = True	
 
 	def createmap(self):
@@ -60,8 +60,9 @@ class Start(object):
 				self.coord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
 				time.sleep(1)
 			#self.coord = self.instans.updatecoord()
-			print self.coord[0]
-			print self.coord[1]
+			print self.coord
+			#print self.coord[0]
+			#print self.coord[1]
 	
 	def startgui(self):
 		self.gui = guitest.Gui(self.map)
