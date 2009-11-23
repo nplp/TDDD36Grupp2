@@ -39,7 +39,6 @@ class Start(object):
 		try:
 			print "kor den andra except"
 			subprocess.call('python Tufftuff2.py &', shell=True)
-			#Later processen fa tid att kicka igang
 
 		except Error, e:
 			print "kor den forsta try"
@@ -57,7 +56,7 @@ class Start(object):
 		while(self.gpsrun == True):		
 			time.sleep(3)
 			print "powernap booya!"
-			while(self.coord == () || self.coord == None):
+			while(self.coord == () or self.coord == None):
 				self.coord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
 				time.sleep(1)
 			#self.coord = self.instans.updatecoord()
