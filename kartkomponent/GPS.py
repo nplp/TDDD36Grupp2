@@ -47,6 +47,7 @@ class GPS(object):
 		i = 0
 		print "Vi vantar pa en koordinat"
 		while (self.coord == (0,0)):
+			time.sleep(2)
 			self.coord = self.gps.get_position()
 		
 
