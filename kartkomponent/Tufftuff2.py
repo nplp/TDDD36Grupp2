@@ -26,7 +26,8 @@ class GPS(object):
 		self.coord = (self.x,self.y)
 		self.x += 1
 		self.y += 1
-		return self.coord
+		#return self.coord
+		return "hej"
 	 
 	# Väntar på att gpsen ska hitta en kordinat
 	def waiting_for_a_fix(self):
