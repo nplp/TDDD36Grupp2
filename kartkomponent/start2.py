@@ -79,7 +79,7 @@ class Start(object):
 		self.init_tufftuff()
 		self.startgui()
 		print "Going to coords"
-		time.sleep(3)
+		time.sleep(8)
 		self.hej = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True)
 		print self.hej
 		while(self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True) == 0):
