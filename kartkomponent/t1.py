@@ -8,7 +8,7 @@ def send_rpc(widget, osso_c):
     x = osso_rpc.rpc_run("spam.eggs.osso_test_receiver",
         "/spam/eggs/osso_test_receiver",
         "spam.eggs.osso_test_receiver", "do_something", (), wait_reply=True)
-    print x
+    print x[0]
  
 osso_c = osso.Context("osso_test_sender", "0.0.1", False)
 window = hildon.Window()
