@@ -5,7 +5,8 @@ import gtk
 def callback_func(interface, method, arguments, user_data):
     print "RPC received"
     osso_c = user_data
-    return "hej", "san"
+    print True
+    return False
 
 osso_c = osso.Context("osso_test_receiver", "0.0.1", False)
 print "osso_test_receiver started"
