@@ -187,6 +187,9 @@ def get_group_users(namn):
 		return s.users
 	except:
 		return None
+def get_group_all():
+	return session.query(Group).all()
+
 def get_group(namn):
 	try:
 		g=session.query(Group).filter_by(name=namn).first()
@@ -309,9 +312,11 @@ except Exception,e :
 	pass
 session.commit()
 
+print get_group_all()
 
 print "Skriver ut team2 ", get_group('team2')
 print "skriver ut anvandare i team2",get_group_users('team2')
+#delete_group_user('mathias')
 delete_group('team2')
 print "skriver ut team2 efter borttagning ",get_group('team2')
 print "skriver ut anvandare i team2",get_group_users('team2')
