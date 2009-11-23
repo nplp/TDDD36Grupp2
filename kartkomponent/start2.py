@@ -11,21 +11,16 @@ import subprocess
 
 class Start(object):
 
-	# Initierar variabler
 	def __init__(self):
 		self.coord = None
 		self.gpsrun = True
 		self.stringcoord = None
-		self.hasfix = False
-		self.osso_c = osso.Context("start", "0.0.1", False)
-		self.osso_rpc = osso.Rpc(self.osso_c)
-		self.hej = None
 		
 	def to_tuple(self, stringen):
 		tupeln = tuple(stringen.split())
 		tupeln = (float(tupeln[0]), float(tupeln[1]))
 		return tupeln
-		
+
 	def createmap(self):
 		self.mapxml = map_xml_reader.MapXML("./kartdata/map.xml")
 		self.map = data_storage.MapData(self.mapxml.get_name(),
@@ -59,7 +54,9 @@ class Start(object):
 
 	def getcoords(self):
 		print "Efter subprocess"		
-		#time.sleep(3)
+		self.osso_c = osso.Context("start", "0.0.1", False)
+		self.osso_rpc = osso.Rpc(self.osso_c)
+		time.sleep(3)
 		while(self.gpsrun == True):		
 			#self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
 			self.stringcoord = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "updatecoord", (), wait_reply = True)
@@ -79,12 +76,6 @@ class Start(object):
 		self.init_tufftuff()
 		self.startgui()
 		print "Going to coords"
-		time.sleep(8)
-		#self.hej = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True)
-		#print self.hej
-		#while(self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True) == 0):
-			#self.hej = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True)
-			#time.sleep(1)
 		self.getcoords()
 		
 
