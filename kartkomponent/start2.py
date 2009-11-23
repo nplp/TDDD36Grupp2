@@ -19,6 +19,7 @@ class Start(object):
 		self.hasfix = False
 		self.osso_c = osso.Context("start", "0.0.1", False)
 		self.osso_rpc = osso.Rpc(self.osso_c)
+		self.hej = None
 		
 	def to_tuple(self, stringen):
 		tupeln = tuple(stringen.split())
@@ -79,7 +80,10 @@ class Start(object):
 		self.startgui()
 		print "Going to coords"
 		time.sleep(3)
+		self.hej = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True)
+		print self.hej
 		while(self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True) == 0):
+			self.hej = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "hasfix", (), wait_reply = True)
 			time.sleep(1)
 		self.getcoords()
 		
