@@ -55,11 +55,11 @@ class Start(object):
 		self.osso_c = osso.Context("start", "0.0.1", False)
 		self.osso_rpc = osso.Rpc(self.osso_c)
 		while(self.gpsrun == True):		
-			#time.sleep(3)
+			time.sleep(3)
 			self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
 			self.coord = self.to_tuple(self.stringcoord)
-			self.map.add_object("Tank", data_storage.MapObject({"longitude":(coord[1]-0.0016),
-									"latitude":(coord[0]+0.00075)},
+			self.map.add_object("Tank", data_storage.MapObject({"longitude":(self.coord[1]-0.0016),
+									"latitude":(self.coord[0]+0.00075)},
 									"ikoner/tank.png"))
 			time.sleep(5)
 			self.map.delete_object("Tank")
