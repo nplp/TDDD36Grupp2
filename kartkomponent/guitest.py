@@ -17,6 +17,7 @@ import samtal
 class Gui(hildon.Program):	
     __map = None
     __map_change_zoom = None
+    self.label = "error"
 
     def on_key_press(self, widget, event, *args):
         # Zoom -

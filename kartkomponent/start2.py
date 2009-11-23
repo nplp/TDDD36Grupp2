@@ -36,9 +36,9 @@ class Start(object):
 		self.map.add_object("Sjukhus1", data_storage.MapObject({"longitude":15.5629,
 			                                           "latitude":58.4093},
 			                                          "ikoner/sjukhus.png"))
-		##self.map.add_object("Tank", data_storage.MapObject({"longitude":(15.5726),
-								##"latitude":(58.4035)},
-							        ##"ikoner/tank.png"))
+		#self.map.add_object("Tank", data_storage.MapObject({"longitude":(15.5726),
+								#"latitude":(58.4035)},
+							       #"ikoner/tank.png"))
 
 	def init_tufftuff(self):
 		try:
@@ -54,8 +54,8 @@ class Start(object):
 		print "Efter subprocess"		
 		self.osso_c = osso.Context("start", "0.0.1", False)
 		self.osso_rpc = osso.Rpc(self.osso_c)
+		time.sleep(3)
 		while(self.gpsrun == True):		
-			time.sleep(3)
 			self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
 			self.coord = self.to_tuple(self.stringcoord)
 			self.map.add_object("Tank", data_storage.MapObject({"longitude":(self.coord[1]-0.0016),
@@ -63,6 +63,7 @@ class Start(object):
 									"ikoner/tank.png"))
 			time.sleep(5)
 			self.map.delete_object("Tank")
+			
 	def startgui(self):
 		self.gui = guitest.Gui(self.map)
 		thread.start_new_thread(self.gui.run, ())

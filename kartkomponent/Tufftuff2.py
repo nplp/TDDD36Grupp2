@@ -7,12 +7,6 @@ import gtk
 
 class GPS(object):
 
-	def to_string(self, tupel):
-		stringen = ""
-		for part in tupel:
-			stringen += str(part) + " "
-		return stringen
-		
 	def __init__(self):
 		print "nu e jag startad vettu /tufftuff"
 		self.coord = (0,0)
@@ -23,12 +17,15 @@ class GPS(object):
 		self.osso_rpc = osso.Rpc(self.osso_c)
 		self.osso_rpc.set_rpc_callback("thor.tufftuff","/thor/tufftuff","thor.tufftuff",self.updatecoord)
 
-
+	def to_string(self, tupel):
+		stringen = ""
+		for part in tupel:
+			stringen += str(part) + " "
+		return stringen
+		
 	
 	# Uppdaterar din kordinat
 	def updatecoord(self, interface, method, arguments, user_data):
-		#print "uppdaterar"
-		print "nu e vi inne i updatecoord som e callbacken"
 		self.coord = (self.x,self.y)
 		self.x += 0.0001
 		self.y += 0.0001
