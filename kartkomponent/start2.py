@@ -38,10 +38,10 @@ class Start(object):
 	def getcoords(self):
 		try:
 			print "kor den forsta try"
-			subprocess.call('/scratchbox/login | dbus-uuidgen --ensure | /usr/bin/af-sb-init.sh start | python2.5 Tufftuff2.py', shell=True)
+			subprocess.call('/scratchbox/login | dbus-uuidgen --ensure | /usr/bin/af-sb-init.sh start | python2.5 Tufftuff2.py &', shell=True)
 		except Error, e:
 			print "kor den andra except"
-			subprocess.call('python Tufftuff2.py', shell=True)
+			subprocess.call('python Tufftuff2.py &', shell=True)
 
 
 		print "Efter subprocess"		
