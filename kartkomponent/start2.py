@@ -56,7 +56,7 @@ class Start(object):
 		while(self.gpsrun == True):		
 			time.sleep(3)
 			print "powernap booya!"
-			while(self.coord == () or self.coord == None):
+			while(self.coord == None):
 				self.coord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
 				time.sleep(1)
 			#self.coord = self.instans.updatecoord()
@@ -70,8 +70,8 @@ class Start(object):
 
 	def run(self):
 		self.createmap()
-		self.startgui()
 		self.init_tufftuff()
+		self.startgui()
 		print "Going to coords"
 		self.getcoords()
 		
