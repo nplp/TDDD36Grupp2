@@ -263,6 +263,12 @@ def getCount(namn):
 		return session.query(Item).filter_by(name=namn).first().count
 	except:
 		return None
+
+#lägger in ett item
+def add_item(name1,count1,location1):
+	session.save(Item(name=name1,count=count1,location=location1))
+	
+	
 # Retunerar totala antalet av ett item (summerar)
 def getTotal(namn):	
 	try:	
@@ -305,59 +311,63 @@ session.close()
 
 ###########################Spårutskrifter############################	
 
-#session = Session()
+session = Session()
 
 
-#print get_user_all()
-##skriver ut valda delar av ett uppdrag
-#m= get_mission_object_by_name('Save the cat')
-#print "get_mission_by_name:"
-#print m.name
-#print m.description
-#print m.id
-#print m.type
-#print is_user('mathias')
-#m = get_mission_by_id(2)
-#print m.name
-#print m.description
-#print m.id
-#print m.type
-## skriver ut allt som finns i ett uppdrag
-#print get_mission_all('Save the cat')
+print get_user_all()
+#skriver ut valda delar av ett uppdrag
+m= get_mission_object_by_name('Save the cat')
+print "get_mission_by_name:"
+print m.name
+print m.description
+print m.id
+print m.type
+print is_user('mathias')
+m = get_mission_by_id(2)
+print m.name
+print m.description
+print m.id
+print m.type
+# skriver ut allt som finns i ett uppdrag
+print get_mission_all('Save the cat')
 	
 
-#print "användare som är i: team2 ", get_group_users('team2')
-#print "användare som är i: teamgobject", get_group_users('teamgobject')
-#print "grupper som niklas är med i", get_user_groups('niklas')
-#print "grupper som Mathias är med i", get_user_groups('mathias')
-#print "grupp som inte finns:", get_group('finns inte')
-#print "mathias losen", get_password('mathias')
-#print "alla anvandare", session.query(User).all()
+print "användare som är i: team2 ", get_group_users('team2')
+print "användare som är i: teamgobject", get_group_users('teamgobject')
+print "grupper som niklas är med i", get_user_groups('niklas')
+print "grupper som Mathias är med i", get_user_groups('mathias')
+print "grupp som inte finns:", get_group('finns inte')
+print "mathias losen", get_password('mathias')
+print "alla anvandare", session.query(User).all()
 
-#print 'antalet EMP', getCount('EMP')
-#print "totalt antal EMP",getTotal('EMP')
+print 'antalet EMP', getCount('EMP')
+print "totalt antal EMP",getTotal('EMP')
 
-#print "item Pansarvagn: ",session.query(Item).filter_by(name='Pansarvagn').first()
-#print "en anvandare som inte finns: ", session.query(User).filter_by(name ='m').first()
+print "item Pansarvagn: ",session.query(Item).filter_by(name='Pansarvagn').first()
+print "en anvandare som inte finns: ", session.query(User).filter_by(name ='m').first()
 
-#print get_group_all()
+print get_group_all()
 
-#print "Skriver ut team2 ", get_group('team2')
-#print "skriver ut anvandare i team2",get_group_users('team2')
-#delete_group_user('Pro','mathias')
-#print "skriver ut anvandare i Pro",get_group_users('Pro')
-#delete_group('team2')
-#print "skriver ut team2 efter borttagning ",get_group('team2')
-#print "skriver ut anvandare i team2",get_group_users('team2')
-#print "skriver ut anvandare i team3",get_group_users('team3')
-#print get_user_groups('mathias')
-#add_group_user('Pro','mathias')
-#print "skriver ut anvandare i Pro",get_group_users('Pro')
+print "Skriver ut team2 ", get_group('team2')
+print "skriver ut anvandare i team2",get_group_users('team2')
+delete_group_user('Pro','mathias')
+print "skriver ut anvandare i Pro",get_group_users('Pro')
+delete_group('team2')
+print "skriver ut team2 efter borttagning ",get_group('team2')
+print "skriver ut anvandare i team2",get_group_users('team2')
+print "skriver ut anvandare i team3",get_group_users('team3')
+print get_user_groups('mathias')
+add_group_user('Pro','mathias')
+print "skriver ut anvandare i Pro",get_group_users('Pro')
 
-#print get_user_groups('mathias')
-#print get_group('Pro')
-#print getTotal('Pansarvagn')
-#session.commit()
+print get_user_groups('mathias')
+print get_group('Pro')
+print getTotal('Pansarvagn')
+
+add_item('Pansarvagn', 10, 'Linkoping')
+print getTotal('Pansarvagn')
+
+session.commit()
 
 #####################################################################
 
