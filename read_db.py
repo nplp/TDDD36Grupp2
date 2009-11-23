@@ -8,6 +8,10 @@ from sqlalchemy.orm import *
 engine = create_engine('sqlite:///data.db', echo=False)
 metadata = MetaData()
 
+def generate_id():
+	id+=1
+	return id
+
 group_table = Table('group', metadata,
 	Column('id', Integer, primary_key=True),
 	Column('name', String(20))
@@ -167,17 +171,75 @@ mapper(User, user_table, properties=dict(
 
 mapper(Item, items_table)
 
-session = Session()
-USERS = session.query(User).all()
-session.close()
-def get_password(namn):
-	p=session.query(User).filter_by(name=namn).first()
-	return p.password
 
+
+############################Metoder###########################
+
+def get_user_groups(namn):
+	try:
+		snubbe=session.query(User).filter_by(name=namn).first()
+		return snubbe.groups
+	except:
+		return None
+def get_group_users(namn):
+	try:	
+		s=session.query(Group).filter_by(name=namn).first()
+		return s.users
+	except:
+		return None
+def get_group(namn):
+	try:
+		g=session.query(Group).filter_by(name=namn).first()
+		return g
+	except:
+		return None
+def getCount(namn):
+	try:
+		return session.query(Item).filter_by(name=namn).first().count
+	except:
+		return None
+# Retunerar totala antalet av ett object
+def getTotal(namn):	
+	try:	
+		temp=0
+		for item in session.query(Item).filter_by(name=namn):
+			temp = item.count + temp
+		return temp
+	except:
+		return None
+def get_mission_object_by_name(namn):
+	try:
+		m=session.query(mission).filter_by(name=namn).first()
+		return m
+	except:
+		return None
+
+def get_mission_by_id(id_nr):
+	try:
+		m=session.query(mission).filter_by(id=id_nr).first()
+		return m
+	except:
+		return None
+
+def delete_group(namn):
+	try:
+		session.delete(get_group(namn))
+	except:
+		pass
+	
+def delete_group_user(group,namn):
+	try:
+		session.delete(get_group(group).filter_by(name=namn))
+	except:
+		pass
+	
+def get_password(namn):
+	try:
+		p=session.query(User).filter_by(name=namn).first()
+		return p.password
+	except:
+		return None
 def is_user(clientname):
-	#user=session.query(User).filter_by(name=clientname).first().name ## <----- NoneType
-	#if (clientname == user):
-	#for i in range(len(USERS)):
 	user= session.query(User).filter_by(name =clientname).first()
 	def get_name(user):
 		try:
@@ -187,8 +249,95 @@ def is_user(clientname):
 	
 	user= get_name(user)
 	if (user == clientname):
-	#	if(clientname == (str(USERS[i]))):
+	
 		return True
-	#		print "dsjlÃ¶k"
-	else: 
+	else:
 		return False
+	
+def addMission(name1, timestamp1, type1, description1, contact_person1, contact_number1,status1,finishtime1):
+	session.save(mission(name=name1, timestamp=timestamp1, type=type1, description=description1, contact_person=contact_person1, contact_number=contact_number1, status=status1, finishtime=finishtime1))	
+	
+def get_mission_all(namn):
+	m= get_mission_object_by_name(namn)
+	return m.name, m.timestamp, m.type, m.description, m.contact_person, m.contact_number, m.status, m.finishtime
+#######################################################	
+session = Session()
+USERS = session.query(User).all()
+session.close()
+
+
+###########################Spårutskrifter############################	
+
+session = Session()
+
+
+
+#skriver ut valda delar av ett uppdrag
+m= get_mission_object_by_name('Save the cat')
+print "get_mission_by_name:"
+print m.name
+print m.description
+print m.id
+print m.type
+print is_user('mathias')
+m = get_mission_by_id(2)
+print m.name
+print m.description
+print m.id
+print m.type
+# skriver ut allt som finns i ett uppdrag
+print get_mission_all('Save the cat')
+	
+
+print "användare som är i: team2 ", get_group_users('team2')
+print "användare som är i: teamgobject", get_group_users('teamgobject')
+print "grupper som niklas är med i", get_user_groups('niklas')
+print "grupper som Mathias är med i", get_user_groups('mathias')
+print "grupp som inte finns:", get_group('finns inte')
+print "mathias losen", get_password('mathias')
+print "alla anvandare", session.query(User).all()
+
+print 'antalet EMP', getCount('EMP')
+print "totalt antal EMP",getTotal('EMP')
+#query.filter(User.name.in_(session.query(User.name).filter(User.name.like('%ed%')))) 
+print "item Pansarvagn: ",session.query(Item).filter_by(name='Pansarvagn').first()
+print "en anvandare som inte finns: ", session.query(User).filter_by(name ='m').first()
+user= session.query(User).filter_by(name ='matas').first()
+try:
+	print user.name
+except Exception,e :
+	pass
+session.commit()
+
+
+print "Skriver ut team2 ", get_group('team2')
+print "skriver ut anvandare i team2",get_group_users('team2')
+delete_group('team2')
+print "skriver ut team2 efter borttagning ",get_group('team2')
+print "skriver ut anvandare i team2",get_group_users('team2')
+
+session.commit()
+
+#####################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

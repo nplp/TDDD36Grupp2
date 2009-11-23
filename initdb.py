@@ -246,14 +246,19 @@ def addMission(name1, timestamp1, type1, description1, contact_person1, contact_
 
 #mission_temp=mission(name=name, timestamp=datetime.now(), type="Rescue", description="Go and save a cat from a burning tree.", contact_person="Moma Cat", contact_number="123457678", status="Ongoing", finishtime= "4 hours")
 
-addMission("Save the cat",datetime.now(),"Rescue","Go and save a cat from a burning tree.", "Moma Cat", "123457678","Ongoing","4 hours")	
+addMission("Save the cat",datetime.now(),"Rescue","Go and save a cat from a burning tree.", "Moma Cat", "123457678","Ongoing","4 hours")
 	
 	
-def addMission_object(Object):
-	session.save(Object)
+#def addMission_object(Object):
+	#session.save(Object)
 
-addMission_object( mission(name="Save the chearleader", timestamp=datetime.now(), type="Assasinate", description="Go and save the chearleader, and assasinate Sylar.", status="Ongoing", finishtime= "30 min"))
+#addMission_object( mission(name="Save the chearleader", timestamp=datetime.now(), type="Assasinate", description="Go and save the chearleader, and assasinate Sylar.", status="Ongoing", finishtime= "30 min"))
 
+addMission("Bombdad", datetime.now(),"Rescue","en cyckelparkering ar sprangd bygg en ny cyckelparkering", "Cyckelpappan", "1234534237678","Ongoing","10 hours")
+
+g=get_group('team2')
+
+#print get_group_users('team2')
 
 ##session.save(mission_1)
 #session.save(mission_2)
@@ -269,6 +274,13 @@ session.save(Item('Lastbilar', 37, 'Linkoping'))
 session.save(Item('Diselvarmare', 59, 'Linkoping'))
 session.save(Item('Sprinterbuss', 5, 'Linkoping'))
 session.commit()
+
+
+session = Session()
+#user2.groups.append(group2)
+
+
+
 
 
 
