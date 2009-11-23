@@ -10,9 +10,8 @@ from copy import copy
 from threading import *
 from time import *
 from groups import *
-
 from read_db import *
-
+import os
 # Kodkommentarer
 #
 # status har tre värden: 
@@ -23,9 +22,9 @@ from read_db import *
 ClientMutex = BoundedSemaphore(1)
 
 def copydb():
-	DatabaseMutex.acquire()
+	ClientMutex.acquire()
 	os.system('rsync -a data.db nikpe890@sysi-04.sysinst.ida.liu.se:TDDD36Grupp2/')
-	DatabaseMutex.release()
+	ClientMutex.release()
 
 
 
@@ -346,7 +345,11 @@ def listenToClients():
 thread.start_new_thread(listenToClients, ())
 
 SERVERRUN = 1
-
+while True:
+	
+	print 'Replikerar databas.db'
+	copydb()
+	sleep(60)
 while SERVERRUN:
 	String = raw_input()
 	if(String.startswith("x")):
@@ -355,5 +358,15 @@ while SERVERRUN:
 		thread.start_new_thread(atomic_reGroupClients, ())
 	elif(String.startswith("l")):
 		print statusList()
-
 serverSocket.close()
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
