@@ -17,7 +17,7 @@ class Start(object):
 		self.gpsrun = True
 		self.stringcoord = None
 		
-	def to_tuple(self, stringen)
+	def to_tuple(self, stringen):
 		tupeln = tuple(stringen.split())
 		tupeln = (float(temp[0]), float(temp[1]))
 		return tupeln
