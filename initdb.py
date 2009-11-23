@@ -125,6 +125,7 @@ class mission(object):
 		self.description = description
 		self.status = status
 		self.finishtime = finishtime
+
 class poi(object):
 	def __init__(self, coordx= None, coordy= None, id=None, name= None, timestamp=None, type=None, sub_type= None):
 		self.coordx = coordx

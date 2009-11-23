@@ -4,13 +4,9 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-
+from datetime import *
 engine = create_engine('sqlite:///data.db', echo=False)
 metadata = MetaData()
-
-def generate_id():
-	id+=1
-	return id
 
 group_table = Table('group', metadata,
 	Column('id', Integer, primary_key=True),
@@ -40,12 +36,12 @@ mission_table =Table('missions', metadata,
 	Column('id', Integer, primary_key=True),
 	Column('poi_id', Integer),
 	Column('name', String(50)),
-	Column('timestamp', Float),
+	Column('timestamp', Integer),
 	Column('contact_person', String(50)),
 	Column('contact_number', String(50)),
 	Column('type', String(50)),
 	Column('subtype', String(50)),
-	Column('description', Text()),
+	Column('description', String(200)),
 	Column('status', String(50)),
 	Column('finishtime', String(50))
 	)
@@ -105,12 +101,7 @@ class Group(object):
 		self.name=name
 	def __repr__(self):
 		return self.name
-#class Mission(object):
-	#def __init__(self, title=None, body=None, time=None, location=None):
-		#self.title=title
-		#self.body=body
-		#self.time=time
-		#self.location=location
+
 class mission(object):
 	def __init__(self, poi_id = None, id=None, name= None, timestamp=None, type= None, sub_type= None, description = None, contact_person = None, contact_number = None, status = None, finishtime = None):
 		#self.id = generate_id()
@@ -125,6 +116,7 @@ class mission(object):
 		self.description = description
 		self.status = status
 		self.finishtime = finishtime
+
 class poi(object):
 	def __init__(self, coordx= None, coordy= None, id=None, name= None, timestamp=None, type=None, sub_type= None):
 		self.coordx = coordx
@@ -156,7 +148,10 @@ class unit(object):
 		self.timestamp = timestamp
 		self.type = type
 		
+		
 metadata.create_all(engine)
+
+#länkar
 mapper(Group, group_table)
 mapper(poi, poi_table)
 mapper(alarm, alarm_table)
@@ -263,6 +258,12 @@ def getCount(namn):
 		return session.query(Item).filter_by(name=namn).first().count
 	except:
 		return None
+
+#lägger in ett item
+def add_item(name1,count1,location1):
+	session.save(Item(name=name1,count=count1,location=location1))
+	
+	
 # Retunerar totala antalet av ett item (summerar)
 def getTotal(namn):	
 	try:	
@@ -288,15 +289,24 @@ def get_mission_by_id(id_nr):
 		return m
 	except:
 		return None
-
+def get_mission_by_id_all(id_nr):
+	try:
+		m=session.query(mission).filter_by(id=id_nr).first()
+		return m.name, m.timestamp, m.type, m.description, m.contact_person, m.contact_number, m.status, m.finishtime
+	except:
+		return None
 #Lägger in ett uppdrag
+#obs! lägg inte in ett uppdrag med samma namn om du vill söka med namn!
 def addMission(name1, timestamp1, type1, description1, contact_person1, contact_number1,status1,finishtime1):
 	session.save(mission(name=name1, timestamp=timestamp1, type=type1, description=description1, contact_person=contact_person1, contact_number=contact_number1, status=status1, finishtime=finishtime1))	
 	
 #retunerar all uppdragsdata	
 def get_mission_all(namn):
-	m= get_mission_object_by_name(namn)
-	return m.name, m.timestamp, m.type, m.description, m.contact_person, m.contact_number, m.status, m.finishtime
+	try:
+		m= get_mission_object_by_name(namn)
+		return m.name, m.timestamp, m.type, m.description, m.contact_person, m.contact_number, m.status, m.finishtime
+	except:
+		return None
 #######################################################	
 session = Session()
 USERS = session.query(User).all() # radera kj?
@@ -305,59 +315,70 @@ session.close()
 
 ###########################Spårutskrifter############################	
 
-#session = Session()
+session = Session()
 
 
-#print get_user_all()
-##skriver ut valda delar av ett uppdrag
-#m= get_mission_object_by_name('Save the cat')
-#print "get_mission_by_name:"
-#print m.name
-#print m.description
-#print m.id
-#print m.type
-#print is_user('mathias')
-#m = get_mission_by_id(2)
-#print m.name
-#print m.description
-#print m.id
-#print m.type
-## skriver ut allt som finns i ett uppdrag
-#print get_mission_all('Save the cat')
+print get_user_all()
+#skriver ut valda delar av ett uppdrag
+m= get_mission_object_by_name('Save the cat')
+print "get_mission_by_name:"
+print m.name
+print m.description
+print m.id
+print m.type
+print is_user('mathias')
+m = get_mission_by_id(2)
+print m.name
+print m.description
+print m.id
+print m.type
+# skriver ut allt som finns i ett uppdrag
+print get_mission_all('Save the cat')
 	
 
-#print "användare som är i: team2 ", get_group_users('team2')
-#print "användare som är i: teamgobject", get_group_users('teamgobject')
-#print "grupper som niklas är med i", get_user_groups('niklas')
-#print "grupper som Mathias är med i", get_user_groups('mathias')
-#print "grupp som inte finns:", get_group('finns inte')
-#print "mathias losen", get_password('mathias')
-#print "alla anvandare", session.query(User).all()
+print "användare som är i: team2 ", get_group_users('team2')
+print "användare som är i: teamgobject", get_group_users('teamgobject')
+print "grupper som niklas är med i", get_user_groups('niklas')
+print "grupper som Mathias är med i", get_user_groups('mathias')
+print "grupp som inte finns:", get_group('finns inte')
+print "mathias losen", get_password('mathias')
+print "alla anvandare", session.query(User).all()
 
-#print 'antalet EMP', getCount('EMP')
-#print "totalt antal EMP",getTotal('EMP')
+print 'antalet EMP', getCount('EMP')
+print "totalt antal EMP",getTotal('EMP')
 
-#print "item Pansarvagn: ",session.query(Item).filter_by(name='Pansarvagn').first()
-#print "en anvandare som inte finns: ", session.query(User).filter_by(name ='m').first()
+print "item Pansarvagn: ",session.query(Item).filter_by(name='Pansarvagn').first()
+print "en anvandare som inte finns: ", session.query(User).filter_by(name ='m').first()
 
-#print get_group_all()
+print get_group_all()
 
-#print "Skriver ut team2 ", get_group('team2')
-#print "skriver ut anvandare i team2",get_group_users('team2')
-#delete_group_user('Pro','mathias')
-#print "skriver ut anvandare i Pro",get_group_users('Pro')
-#delete_group('team2')
-#print "skriver ut team2 efter borttagning ",get_group('team2')
-#print "skriver ut anvandare i team2",get_group_users('team2')
-#print "skriver ut anvandare i team3",get_group_users('team3')
-#print get_user_groups('mathias')
-#add_group_user('Pro','mathias')
-#print "skriver ut anvandare i Pro",get_group_users('Pro')
+print "Skriver ut team2 ", get_group('team2')
+print "skriver ut anvandare i team2",get_group_users('team2')
+delete_group_user('Pro','mathias')
+print "skriver ut anvandare i Pro",get_group_users('Pro')
+delete_group('team2')
+print "skriver ut team2 efter borttagning ",get_group('team2')
+print "skriver ut anvandare i team2",get_group_users('team2')
+print "skriver ut anvandare i team3",get_group_users('team3')
+print get_user_groups('mathias')
+add_group_user('Pro','mathias')
+print "skriver ut anvandare i Pro",get_group_users('Pro')
 
-#print get_user_groups('mathias')
-#print get_group('Pro')
-#print getTotal('Pansarvagn')
-#session.commit()
+print get_user_groups('mathias')
+print get_group('Pro')
+print getTotal('Pansarvagn')
+
+add_item('Pansarvagn', 10, 'Linkoping')
+print getTotal('Pansarvagn')
+#print get_mission_by_id(1)
+addMission("Save the cat",datetime.now(),"kill","Go and kill the cat from the burning tree.", "Daddy Cat", "1987654321","Ongoing","1 hours")
+print get_mission_all('Save the cat')
+
+try:
+	print get_mission_by_id_all(3)
+except: 
+	pass
+session.commit()
 
 #####################################################################
 
