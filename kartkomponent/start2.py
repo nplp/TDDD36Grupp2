@@ -44,7 +44,7 @@ class Start(object):
 		try:
 			print "kor den andra except"
 			#subprocess.call('python Tufftuff2.py &', shell=True)
-			subprocess.call('python GPS2.py &', shell = True)
+			subprocess.call('python Tufftuff2.py &', shell = True)
 
 		except Error, e:
 			print "kor den forsta try"
