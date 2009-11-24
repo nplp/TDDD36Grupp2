@@ -10,8 +10,10 @@ from copy import copy
 from threading import *
 from time import *
 from groups import *
+
 from read_db import *
 import os
+
 # Kodkommentarer
 #
 # status har tre värden: 
@@ -20,14 +22,6 @@ import os
 # 2 = aktiv 
 
 ClientMutex = BoundedSemaphore(1)
-
-def copydb():
-	ClientMutex.acquire()
-	os.system('rsync -a data.db nikpe890@sysi-04.sysinst.ida.liu.se:TDDD36Grupp2/')
-	ClientMutex.release()
-
-
-
 
 # ATOMISKA FUNKTIONER --------------------------------------------------------
 
@@ -90,6 +84,14 @@ def atomic_reGroupClients():
 		j = j+1
 	ClientMutex.release()
 
+# Replikeringsfunktion. Replikerar från denna server till backupen. Atomisk.
+def copydb():
+	print 'Replikerar databas.db'
+	ClientMutex.acquire()
+	os.system('rsync -a data.db nikpe890@sysi-04.sysinst.ida.liu.se:TDDD36Grupp2/')
+	ClientMutex.release()
+	sleep(60)
+
 # ----------------------------------------------------------------------------
 
 
@@ -141,6 +143,7 @@ def statusList():
 
 # ----------------------------------------------------------------------------
 
+# å,ä -> a, ö -> o
 def toEnglish(string):
 	for c in string:
 		if(c=='å' or c=='ä'):
@@ -149,8 +152,80 @@ def toEnglish(string):
 			c = 'o'
 	return string
 
-	
+# Skapar en lista med användare eller grupper
+def listCMD(arg):
+	ip = list()
 
+	# Skickar man inte med argument till /list får man alla användare som är online
+	if not arg:
+		# Atomisk ------
+		ClientMutex.acquire()
+		for s in socketArray:
+			if(s.isAlive()):
+				ip.append(s.name + " " + str(s.ADDR))
+		ClientMutex.release()
+		# --------------
+
+	# Skickar man med argumentet "all" till /list får man alla användare som varit online.
+	elif(arg[0].startswith('all')):
+		# Atomisk ------
+		ClientMutex.acquire()
+		for s in socketArray:
+			if(s.isAlive()):
+				ip.append(s.name + " " + str(s.ADDR))
+			else:
+				ip.append("/ERROR")
+		ClientMutex.release()
+		# --------------
+
+	# Skickar man med argumentet "group" till /list får man alla grupper.
+	elif(arg[0].startswith('group')):
+		# Skickar man med några gruppnamn returneras medlemmarna i dessa.
+		if(len(arg) > 1):
+			arg.pop(0)
+			# Atomisk ------
+			ClientMutex.acquire()
+			for n in arg:
+				ip.append("Group " + n + ":")
+				temp = get_group_users(n)
+				for t in temp:
+					ip.append(t.name)
+			ClientMutex.release()
+			# --------------
+
+		else:
+			# Atomisk ------
+			ClientMutex.acquire()
+			for g in get_group_all():
+				ip.append(g.name)
+			ClientMutex.release()
+			# --------------
+		
+	# Skickar man med argumentet "user" till /list får man alla användare.
+	elif(arg[0].startswith('user')):
+		# Skickar man med några användarnamn returneras de grupper de är med i.
+		if(len(arg) > 1):
+			arg.pop(0)
+			# Atomisk ------
+			ClientMutex.acquire()
+			for n in arg:
+				ip.append("User " + n + ":")
+				temp = get_user_groups(n)
+				for t in temp:
+					ip.append(t.name)
+			ClientMutex.release()
+			# --------------
+
+		else:
+			# Atomisk ------
+			ClientMutex.acquire()
+			for u in get_user_all():
+				ip.append(u.name)
+			ClientMutex.release()
+			# --------------
+		
+
+	return ip
 
 #HOST = '130.236.218.114'
 HOST = '127.0.0.1'
@@ -251,20 +326,12 @@ class sessionClass(Thread):
 				elif(data.startswith('/status')): 
 					self.sendBack("You are number " + str(search(self.name)))
 				elif(data.startswith('/list')):
+					msg = data.split()
+					msg.pop(0)
+					ip = listCMD(msg)
 
-					# Atomisk ------
-					ip = list()
-					ClientMutex.acquire()
-					for i in range(len(socketArray)):
-						if(socketArray[i].isAlive()):
-							ip.append(socketArray[i].name + " " + str(socketArray[i].ADDR))
-						else:
-							ip.append("/ERROR")
-					ClientMutex.release()
-					# --------------
-
-					for i in range(len(socketArray)):
-						self.sendBack(ip[i])
+					for i in ip:
+						self.sendBack(str(i))
 
 				elif(data.startswith('/whisper')):
 					msg = data.split(' ', 2)
@@ -305,9 +372,6 @@ class sessionClass(Thread):
 						ClientMutex.release()
 						# --------------
 						self.sendBack(msg[1] + " " + str(ip))
-				elif(data.startswith('/show')):
-					msg = data.split(' ')
-					if(len(msg) == 1): pass
 
 				elif(data != ""):
 					atomic_sendAll(self.name + ": " + data)
@@ -341,15 +405,13 @@ def listenToClients():
 		ClientMutex.release()
 		# --------------
 
-
 thread.start_new_thread(listenToClients, ())
 
+#thread.start_new_thread(copydb, ())
+
 SERVERRUN = 1
-while True:
-	
-	print 'Replikerar databas.db'
-	copydb()
-	sleep(60)
+
+
 while SERVERRUN:
 	String = raw_input()
 	if(String.startswith("x")):
@@ -358,15 +420,5 @@ while SERVERRUN:
 		thread.start_new_thread(atomic_reGroupClients, ())
 	elif(String.startswith("l")):
 		print statusList()
-serverSocket.close()
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+serverSocket.close()
