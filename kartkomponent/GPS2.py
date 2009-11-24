@@ -2,6 +2,7 @@
 import time
 import thread
 import osso
+import gpsbt
 import gtk
 
 
