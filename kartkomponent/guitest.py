@@ -13,7 +13,8 @@ import thread
 import time
 import osso
 import samtal
-from databasklient import * 
+import lager
+#from databasklient import * 
 
 class Gui(hildon.Program):	
     __map = None
@@ -42,10 +43,6 @@ class Gui(hildon.Program):
     def send(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 	
-    def lagret(self, widget,data=None):
-    	print getMessage(1)	
-	
-	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
 	self.verktyg.set_active(False)
@@ -69,6 +66,18 @@ class Gui(hildon.Program):
 	self.scroll_window.hide()
         self.scrolled_window.hide()	
 	self.samtala.hbox.show()
+	
+    def lagret(self,widget,event,data=None):
+	self.verktyg.set_active(False)
+	self.filer.set_active(False)
+	self.kommunikation.set_active(False)
+	self.vbox2.hide()	
+	self.map.hide()
+	self.meddela.vbox.hide()
+	self.scroll_window.hide()
+        self.scrolled_window.hide()	
+	self.samtala.hbox.hide()	
+        self.swindow.show()	
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
@@ -343,6 +352,7 @@ class Gui(hildon.Program):
 	self.uppdraget = uppdrag.Uppdrag()
 	self.ringa = detringer.Ring()
 	self.samtala = samtal.Samtal()
+	self.lag = lager.Lager()
 	
 	self.vbox3 = gtk.VBox(False, 0)
         self.vbox3.show()
@@ -355,6 +365,10 @@ class Gui(hildon.Program):
 	self.scroll_window.set_border_width(10)
 	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
 	
+	self.swindow=gtk.ScrolledWindow()
+	self.swindow.set_border_width(10)
+	self.swindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
+	
 	#self.batt = battery.Batteri()
 	self.label = gtk.Label(self.batt.getbattery())
 	#print "skapar label"
@@ -365,11 +379,13 @@ class Gui(hildon.Program):
 	#Packning
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
+	self.swindow.add_with_viewport(self.lag.textview)
 	self.vbox3.pack_start(self.samtala.hbox,False,False,0)
 	self.vbox3.pack_start(self.ringa.vbox,False,False,0)
 	self.vbox3.pack_start(self.map,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
 	self.vbox3.pack_start(self.scroll_window,True,True,0)
+	self.vbox3.pack_start(self.swindow,True,True,0)
 	self.vbox3.pack_start(self.meddela.vbox,True,True,0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
     	self.hbox.show()
