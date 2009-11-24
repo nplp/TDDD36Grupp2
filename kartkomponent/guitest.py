@@ -14,7 +14,7 @@ import time
 import osso
 import samtal
 import lager
-#from databasklient import * 
+from databasklient import * 
 
 class Gui(hildon.Program):	
     __map = None
@@ -68,6 +68,7 @@ class Gui(hildon.Program):
 	self.samtala.hbox.show()
 	
     def lagret(self,widget,event,data=None):
+	print 'hej'
 	self.verktyg.set_active(False)
 	self.filer.set_active(False)
 	self.kommunikation.set_active(False)

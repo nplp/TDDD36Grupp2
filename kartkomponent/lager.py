@@ -4,20 +4,17 @@ from databasklient import *
 class Lager():
 	
     def __init__(self):
-        sw = gtk.ScrolledWindow()
-        sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        textview = gtk.TextView()
-        textbuffer = textview.get_buffer()
-        sw.add(textview)
-        sw.show()
-        textview.show()
-	
-	infile = get_items_all()
+        self.textview = gtk.TextView()
+        self.textbuffer = self.textview.get_buffer()
+        self.textview.show()
+	self.infile = get_item_all()
 
-        if infile:
-            string = infile.read()
-            infile.close()
-            textbuffer.set_text(string)
+        if self.infile:
+            self.string = ('har ska det vara en strang av det lager vi har eller read-only och inte en buffer')
+            #self.infile.close()
+            self.textbuffer.set_text(self.string)
 
 
-
+    def run(self):
+        #self.window.show_all()
+        gtk.main()
