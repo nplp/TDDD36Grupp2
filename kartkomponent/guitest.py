@@ -13,6 +13,7 @@ import thread
 import time
 import osso
 import samtal
+from databasklient import * 
 
 class Gui(hildon.Program):	
     __map = None
@@ -40,6 +41,9 @@ class Gui(hildon.Program):
 	
     def send(self, widget, data=None):
         print "Hello again - %s was pressed" % data
+	
+    def lagret(self, widget,data=None):
+    	print getMessage(1)	
 	
 	
 	#Tillbaka
@@ -308,7 +312,7 @@ class Gui(hildon.Program):
 	
 	#Lager
 	self.lager = gtk.Button("Lager")
-	self.lager.connect("clicked", self.callback, "Lager")
+	self.lager.connect("clicked", self.lagret, "Lager")
 	self.vbox2.pack_start(self.lager, True, True,0)
 	
 	#Enerigisparläge
