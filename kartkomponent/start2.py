@@ -84,7 +84,7 @@ class Start(object):
 		self.init_tufftuff()
 		self.startgui()
 		print "Going to coords"
-		thread.start_new_thread(self.getcoords, ())
+		self.getcoords()
 		
 
 def main():
