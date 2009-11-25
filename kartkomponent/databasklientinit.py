@@ -5,8 +5,12 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from datetime import *
+import os
 
+os.system('rm dataClient.db')
+os.system('rm dataClient.db-journal')
 #skapar databasen
+
 engine = create_engine('sqlite:///dataClient.db', echo=False)
 metadata = MetaData()
  
