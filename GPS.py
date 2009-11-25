@@ -19,7 +19,7 @@ class GPS(object):
 
 	# Uppdaterar din kordinat
 	def updatecoord(self):
-		self.coord = gps.get_position()
+		self.coord = self.gps.get_position()
 		return self.coord
 	 
 	# Väntar på att gpsen ska hitta en kordinat
