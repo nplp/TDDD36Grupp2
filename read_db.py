@@ -175,6 +175,30 @@ class Unit(object):
 		self.type = type
 		
 		
+def dbClass(cl):
+	if(cl == "message"):
+		return Message()
+
+	if(cl == "user"):
+		return User()
+
+	if(cl == "item"):
+		return Item()
+
+	if(cl == "group"):
+		return Group()
+
+	if(cl == "mission"):
+		return Mission()
+
+	if(cl == "poi"):
+		return Poi()
+
+	if(cl == "unit"):
+		return Unit()
+
+	return None
+
 metadata.create_all(engine)
 
 #länkar classobject till datatabeller
