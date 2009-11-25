@@ -117,7 +117,7 @@ class Item(object):
 		self.count=count
 		self.location=location
 	def __repr__(self):
-		return "<Item('%s','%s', '%s')>" % (self.name, self.count, self.location)
+		return self.name, self.count, self.location
 class Group(object):
 	
 	def __init__(self, name=None):
@@ -358,7 +358,7 @@ def removeMessage(id_nr):
 
 #skapar en session för att kunna komma åt databasen
 session = Session()
-
+print get_item_all()
 session.commit()
 
 
