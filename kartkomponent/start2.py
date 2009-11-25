@@ -85,9 +85,11 @@ class Start(object):
 		self.init_tufftuff()
 		print "Going to coords"
 		thread.start_new_thread(self.getcoords, ())
-		time.sleep(3)
-		if(self.stringcoord != 0):
-			self.startgui()
+
+		while(self.stringcoord == 0): 		
+			time.sleep(3)
+
+		self.startgui()
 
 		
 
