@@ -1,14 +1,16 @@
 # client
 # coding:utf-8
 # Ovanstï¿¯ï¾¿ï¾¥ende rad ï¿¯ï¾¿ï¾¤r ISO-kodning fï¿¯ï¾¿ï¾¶r att ï¿¯ï¾¿ï¾¥ï¿¯ï¾¿ï¾¤ï¿¯ï¾¿ï¾¶ ska funka.
-
+from heapq import heappush, heappop
+from Queue import Queue
 import re
 import sys
 from socket import *
+import thread
 from threading import *
 import os
 from message import *
-from time import time
+from time import *
 import subprocess
 #import dbus
 
@@ -16,90 +18,121 @@ import subprocess
 #HOST = '130.236.216.128'
 HOST = '130.236.189.14'
 HOST2 = '130.236.189.14'
-PORT = 2154
-PORT2 = 2153
+PORT = 2018
+PORT2 = 2017
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
 BUFF = 1024
-MYPORT = 2012
+MYPORT = 2338
 ADDR = ('127.0.0.1')
 ADDR2 = ('127.0.0.1')
 contactList = list()
 primary = False
-
-
-
-#Sekundärserver byte är uppskjutet, lite mer information finns i niklas_client.py där jag testar lite connection timeouts med mera.
+online = False
 
 #Aktivera clientsocket
 clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket2 = socket(AF_INET, SOCK_STREAM)
 clientSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 clientSocket2.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-'''
-#Checkar servern
-def checkServer():
-    serverSocket = socket()
-    serverSocket.settimeout(1)
-    try:
-        serverSocket.connect(ADDR)
-        serverSocket.shutdown(2)
-        serverSocket.close()
-        return 0
-    except error:
-        return 1
 
-''' 
+### Klassen for prioritets ko
+#class PriorityQueue(Queue):
+    ## Initialize the queue representation
+    #def __init__ (self, maxsize):
+        #self.maxsize = maxsize
+        #self.queue = []
+    ## Put a new item in the queue
+    #def _put(self, item):
+        #return heappush(self.queue, item)
+    ## Get an item from the queue
+    #def _get(self):
+        #return heappop(self.queue)
+
+def sendfunction(data):
+	global primary
+	global clientSocket
+	global clientSocket2
+	#print "primary = "+str(primary)
+	if(primary):
+		#print "skickar till primary  "+data
+		clientSocket.send(data)
+	else:
+		#print "skickar till backup  "+data
+		clientSocket2.send(data)
+def deQueue():
+	print "kommer jag till dequeue?"
+	#print "online = "+str(online)
+	global mutex
+	global q
+	#mutex.acquire()
+	while online:
+		temp = ""
+		sleep(1)
+		try:
+			while not q.empty(): 
+				#print "tomat"
+				temp = q.get()
+				print "sparar undan  "+temp
+				sendfunction(temp)
+		except Exception, e:
+			#print e
+			#print "gurka"
+			q._put(temp)
+			#fixa sa att det skickar nasta gang.
+	#mutex.release()
 def connect():
     global MYPORT
     global primary
+    global online
+    #clientSocket = socket(AF_INET, SOCK_STREAM)
+    print "wassap"
     print "gor jag detta?"
-    print primary
+    #print "primary i connect= "+str(primary)
+    #print "har borde jag satta primary till true"
     primary = True
-    print primary
+    #print "primary i connect igen = "+str(primary)
     #SSH anrop, startar ssh tunnel mot servern
     try:
 	MYPORT +=1
 	subprocess.call('ssh -f nikpe890@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
     except error:
 	print 'no server baby i connect'
-    print "waddap"
+    #print "waddap"
     clientSocket.connect((ADDR, MYPORT))
-    print "waddap2"
+    online = True
+    thread.start_new_thread(deQueue, ())
+    #print "waddap2"
     recThread = recieverClass(clientSocket, (ADDR,MYPORT))
-    print "waddap3"
+    #print "waddap3"
     recThread.start()
-    print "waddap4"
+    #print "waddap4"
 
 def reconnect():
     global MYPORT
     global primary
-    print "did i do this?"
+    global online
+    #clientSocket2 = socket(AF_INET, SOCK_STREAM)
+    #print "did i do this reconnect?"
+    #print "primary i reconnect = "+str(primary)
+    #print "har borde jag satta primary till false"
     primary = False
+    #print "primary i reconnect igen = "+str(primary)
         #SSH anrop, startar ssh tunnel mot servern
-    clientSocket.close()
     try:
 	MYPORT +=1
 	subprocess.call('ssh -f nikpe890@'+HOST2+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT2)+' sleep 4', shell=True)
     except error:
 	print 'no server baby i reconnect'
-    print "baddap"
+    #print "baddap"
     clientSocket2.connect((ADDR2, MYPORT))
-    print "baddap2"
+    online = True
+    thread.start_new_thread(deQueue, ())
+    #print "baddap2"
     recThread2 = recieverClass(clientSocket2, (ADDR2,MYPORT))
-    print "baddap3"
+    #print "baddap3"
     recThread2.start()
-    print "baddap4"
-    
-'''
-    down = checkServer()
-    if (down):
-        print "poop"
-        ADDR = (HOST, PORT)
-    else:
-        print "score"
-        ADDR = (HOST, PORT)
-'''
+    #print "baddap4"
 
 def checkBattery():
     try:
@@ -145,19 +178,22 @@ class recieverClass(Thread):
 						print data
 				else:
 					print "rerouting"
+					online = False
 					if(primary):
-						self.clientSocket.close()
 						reconnect()
+						break
 					else:
-						self.clientSocket.close()
 						connect()
+						break
 		except Exception, e:
 			print e
 	def run(self):
 		self.reciever()
-
+		
+#mutex = Lock()
+#q = PriorityQueue(Queue())
+q = Queue()
 connect()
-
 # Skickar meddelanden samt har hand om kommandon
 while 1:
 	data = raw_input()
@@ -189,14 +225,14 @@ while 1:
 		print "Online contacts: "
 		for n in contactList:
 			print n
-
 	if(data != ""):
-		global primary
-		print primary
-		if(primary):
-			clientSocket.send(data)
-		else:
-			clientSocket2.send(data)
+		q.put(data)
+		#global primary
+		#print primary
+		#if(primary):
+			#clientSocket.send(data)
+		#else:
+			#clientSocket2.send(data)
 
 clientSocket.close()
 clientSocket2.close()
