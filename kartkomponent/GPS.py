@@ -25,6 +25,7 @@ class GPS(object):
 
 	# Uppdaterar din kordinat
 	def updatecoord(self, interface, method, arguments, user_data):
+		print "inne i callback"
 		if(self.has_fix):
 			print "uppdaterar din koordinat"
 			self.coord = self.gps.get_position()
