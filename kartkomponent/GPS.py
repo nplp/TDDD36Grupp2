@@ -65,7 +65,7 @@ class GPS(object):
 		 
 		# Vantar pa en gps koordinat
 		print "Waiting baby"
-		self.waiting_for_a_fix()
+		thread.start_new_thread(self.waiting_for_a_fix, ())
 
 		#self.send_coordinates()    senast bortkommenterat!!! /thor 09:12 25/11
 
