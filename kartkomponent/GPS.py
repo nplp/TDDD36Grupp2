@@ -59,7 +59,7 @@ class GPS(object):
 		print "Waiting baby"
 		self.waiting_for_a_fix()
 
-		self.send_coordinates()
+		#self.send_coordinates()    senast bortkommenterat!!! /thor 09:12 25/11
 
 
 def main():
