@@ -202,8 +202,10 @@ mapper(Item, items_table)
 
 #retunerar alla användare
 def get_user_all():
-	return session.query(User).all()
-
+	try:
+		return session.query(User).all()
+	except:
+		return None
 #retunerar lösenord hos en användare
 def get_password(namn):
 	try:
@@ -273,8 +275,10 @@ def add_group_user(groupname,username):
 
 #retunerar alla grupper
 def get_group_all():
-	return session.query(Group).all()
-
+	try:	
+		return session.query(Group).all()
+	except:
+		return None
 #retunerar namnet på en grupp 
 def get_group(namn):
 	try:
@@ -293,7 +297,11 @@ def getCount(namn):
 def add_item(name1,count1,location1):
 	session.save(Item(name=name1,count=count1,location=location1))
 	
-	
+def get_item_all():
+	try:
+		return session.query(Item).all()	
+	except:
+		return None
 # Retunerar totala antalet av ett item (summerar)
 def getTotal(namn):	
 	try:	
@@ -355,19 +363,30 @@ def getMessage(id_nr):
 def removeMessage(id_nr):
 	m=session.query(Message).filter_by(id=id_nr).first()
 	session.delete(m)
+	
+def addUnit(coordx1,coordy1,id1,name1,timestamp1,type1):
+	pass
+
+def removeUnit():
+	pass
+
+def getUnit():
+	pass
 ###########################Spårutskrifter############################	
 
 #skapar en session för att kunna komma åt databasen
 session = Session()
 
-addMessage('mathias1','hanna','hej',datetime.now(),'hej vad har du haft for dig?', '3')
-addMessage('mathias2','hanna','hej',datetime.now(),'hej vad har du haft for dig?', '3')
-addMessage('mathias3','hanna','hej',datetime.now(),'hej vad har du haft for dig?', '3')
-print getMessage(1)
-print getMessage(2)
-print getMessage(3)
-removeMessage(3)
-print getMessage(3)
+#print get_user_groups('maias')
+
+#addMessage('mathias1','hanna','hej',datetime.now(),'hej vad har du haft for dig?', '3')
+#addMessage('mathias2','hanna','hej',datetime.now(),'hej vad har du haft for dig?', '3')
+#addMessage('mathias3','hanna','hej',datetime.now(),'hej vad har du haft for dig?', '3')
+#print getMessage(1)
+#print getMessage(2)
+#print getMessage(3)
+#removeMessage(3)
+#print getMessage(3)
 #print get_user_all()
 ##skriver ut valda delar av ett uppdrag
 #m= get_mission_object_by_name('Save the cat')
