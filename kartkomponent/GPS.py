@@ -32,6 +32,7 @@ class GPS(object):
 		return self.to_string(self.coord)
 		#return False
 
+
 	def refresh(self):
 		self.coord = self.gps.get_position()
 	 
@@ -50,7 +51,7 @@ class GPS(object):
 			print self.coord[0]
 			print self.coord[1]
 			time.sleep(5)
-			self.refresh()
+			#self.refresh()
 			self.updatecoord()
 
 	
