@@ -14,7 +14,7 @@ class Start(object):
 	def __init__(self):
 		self.coord = None
 		self.gpsrun = True
-		self.stringcoord = None
+		self.stringcoord = 0
 		self.tank_added = False
 		
 	def to_tuple(self, stringen):
@@ -85,7 +85,9 @@ class Start(object):
 		self.init_tufftuff()
 		print "Going to coords"
 		thread.start_new_thread(self.getcoords, ())
-		self.startgui()
+		time.sleep(3)
+		if(self.stringcoord != 0):
+			self.startgui()
 
 		
 
