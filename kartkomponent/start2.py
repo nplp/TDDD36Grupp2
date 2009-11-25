@@ -41,16 +41,16 @@ class Start(object):
 								#"latitude":(58.4035)},
 							       #"ikoner/tank.png"))
 
-	def init_tufftuff(self):
-		try:
-			print "kor den andra except"
-			#subprocess.call('python Tufftuff2.py &', shell=True)
-			subprocess.call('python Tufftuff2.py &', shell = True)
+	#def init_tufftuff(self):
+		#try:
+			#print "kor den andra except"
+			##subprocess.call('python Tufftuff2.py &', shell=True)
+			#subprocess.call('python Tufftuff2.py &', shell = True)
 
-		except Error, e:
-			print "kor den forsta try"
-			#subprocess.call('/scratchbox/login | dbus-uuidgen --ensure | /usr/bin/af-sb-init.sh start | python2.5 Tufftuff2.py &', shell=True)
-			subprocess.call('/scratchbox/login | dbus-uuidgen --ensure | /usr/bin/af-sb-init.sh start | python2.5 GPS.py &', shell=True)
+		#except Error, e:
+			#print "kor den forsta try"
+			##subprocess.call('/scratchbox/login | dbus-uuidgen --ensure | /usr/bin/af-sb-init.sh start | python2.5 Tufftuff2.py &', shell=True)
+			#subprocess.call('/scratchbox/login | dbus-uuidgen --ensure | /usr/bin/af-sb-init.sh start | python2.5 GPS.py &', shell=True)
 		
 
 	def getcoords(self):
@@ -82,7 +82,7 @@ class Start(object):
 
 	def run(self):
 		self.createmap()
-		self.init_tufftuff()
+		#self.init_tufftuff()
 		self.startgui()
 		print "Going to coords"
 		self.getcoords()
