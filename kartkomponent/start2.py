@@ -83,11 +83,9 @@ class Start(object):
 	def run(self):
 		self.createmap()
 		self.init_tufftuff()
-		print "Going to coords"
-		thread.start_new_thread(self.getcoords, ())
-
-
 		self.startgui()
+		print "Going to coords"
+		self.getcoords()
 
 		
 
