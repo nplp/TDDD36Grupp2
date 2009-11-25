@@ -358,7 +358,7 @@ def removeMessage(id_nr):
 
 #skapar en session för att kunna komma åt databasen
 session = Session()
-print get_item_all()
+#print get_item_all()
 session.commit()
 
 
