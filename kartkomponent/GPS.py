@@ -23,6 +23,7 @@ class GPS(object):
 
 	# Uppdaterar din kordinat
 	def updatecoord(self, interface, method, arguments, user_data):
+		print "uppdaterar din koordinat"
 		self.coord = gps.get_position()
 		return self.to_string(self.coord)
 	 
