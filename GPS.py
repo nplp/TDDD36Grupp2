@@ -2,6 +2,7 @@
 import time
 import gpsbt
 import thread
+import gtk
 
 class GPS(object):
 
@@ -9,11 +10,17 @@ class GPS(object):
 		self.coord = (0,0)
 		self.update = False
 
+	def to_string(self, tupel):
+		stringen = ""
+		for part in tupel:
+			stringen += str(part) + " "
+		return stringen
+
+
 	# Uppdaterar din kordinat
 	def updatecoord(self):
-		print "uppdaterar"
 		self.coord = gps.get_position()
-		# return self.coord
+		return self.coord
 	 
 	# Väntar på att gpsen ska hitta en kordinat
 	def waiting_for_a_fix(self):
@@ -33,6 +40,8 @@ class GPS(object):
 			self.updatecoord()
 			#except:
 			#	gpsbt.stop(self.con)
+
+
 	
 	def run(self):
 		# Startar GPSEN
