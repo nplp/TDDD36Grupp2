@@ -120,7 +120,7 @@ class Item(object):
 		self.count=count
 		self.location=location
 	def __repr__(self):
-		return "<Item('%s','%s', '%s')>" % (self.name, self.count, self.location)
+		return self.name, self.count, self.location
 class Group(object):
 	
 	def __init__(self, name=None):
@@ -298,6 +298,12 @@ def add_item(name1,count1,location1):
 	session.save(Item(name=name1,count=count1,location=location1))
 	
 def get_item_all():
+	try:
+		return session.query(Item).all()	
+	except:
+		return None
+
+def get_item_all_str():
 	try:
 		return session.query(Item).all()	
 	except:
