@@ -34,7 +34,6 @@ class GPS(object):
 	 
 	# Väntar på att gpsen ska hitta en kordinat
 	def waiting_for_a_fix(self):
-		i = 0
 		print "Vi vantar pa en koordinat"
 		while (self.coord == (0,0)):
 			self.coord = self.gps.get_position()
@@ -67,7 +66,7 @@ class GPS(object):
 		print "Waiting baby"
 		thread.start_new_thread(self.waiting_for_a_fix, ())
 
-		#self.send_coordinates()    senast bortkommenterat!!! /thor 09:12 25/11
+		self.send_coordinates()
 
 
 def main():
