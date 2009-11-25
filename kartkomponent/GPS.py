@@ -14,7 +14,7 @@ class GPS(object):
 		self.has_fix = False
 		self.osso_c = osso.Context("gps", "0.0.1", False)
 		self.osso_rpc = osso.Rpc(self.osso_c)
-		self.osso_rpc.set_rpc_callback("thor.gps","/thor/gps","thor.gps",self.updatecoord)
+		self.osso_rpc.set_rpc_callback("thor.gps","/thor/gps","thor.gps", self.updatecoord)
 
 	def to_string(self, tupel):
 		stringen = ""
@@ -26,11 +26,15 @@ class GPS(object):
 	# Uppdaterar din kordinat
 	def updatecoord(self, interface, method, arguments, user_data):
 		print "inne i callback"
-		if(self.has_fix):
-			print "uppdaterar din koordinat"
-			self.coord = self.gps.get_position()
-			return self.to_string(self.coord)
-		return False
+		#if(self.has_fix):
+		#print "uppdaterar din koordinat"
+		self.coord = self.gps.get_position()
+		return self.to_string(self.coord)
+		#return False
+
+
+	def refresh(self):
+		self.coord = self.gps.get_position()
 	 
 	# Väntar på att gpsen ska hitta en kordinat
 	def waiting_for_a_fix(self):
@@ -39,7 +43,7 @@ class GPS(object):
 			self.coord = self.gps.get_position()
 		print "fix aquizired!"
 		self.has_fix = True
-		
+
 
 	def send_coordinates(self):
 		self.update = True
@@ -47,11 +51,8 @@ class GPS(object):
 			print self.coord[0]
 			print self.coord[1]
 			time.sleep(5)
-			#try:
+			self.refresh()
 			#self.updatecoord()
-			#except:
-			#	gpsbt.stop(self.con)
-
 
 	
 	def run(self):
@@ -64,8 +65,7 @@ class GPS(object):
 		 
 		# Vantar pa en gps koordinat
 		print "Waiting baby"
-		thread.start_new_thread(self.waiting_for_a_fix, ())
-
+		self.waiting_for_a_fix()
 		self.send_coordinates()
 
 

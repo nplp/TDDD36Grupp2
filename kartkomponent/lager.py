@@ -1,20 +1,38 @@
-import gtk
+#!/usr/bin/python
+
+# ZetCode PyGTK tutorial 
+#
+# This example demonstrates the ComboBox widget
+#
+# author: jan bodnar
+# website: zetcode.com 
+# last edited: February 2009
 from databasklient import *
+import gtk
 
-class Lager():
+class PyApp(gtk.Window):
+    def __init__(self):	
+	temp=get_item_all()
+	listan=""
+	for n in temp:
+        	listan+=(n.name+" "+str(n.count)+"st "+n.location+"\n")
+	self.label = gtk.Label(listan)
+
+        self.fixed = gtk.Fixed()
+        #fixed.put(cb, 50, 30)
 	
-    def __init__(self):
-        self.textview = gtk.TextView()
-        self.textbuffer = self.textview.get_buffer()
-        self.textview.show()
-	self.infile = get_item_all()
+        self.fixed.put(self.label, 10, 10)
+	#fixed.put(self.textview, 70, 150)
 
-        if self.infile:
-            self.string = ('har ska det vara en strang av det lager vi har eller read-only och inte en buffer')
-            #self.infile.close()
-            self.textbuffer.set_text(self.string)
+        self.show_all()
+	self.label.show()
+	self.fixed.show()
+        self.add(self.fixed)
 
-
-    def run(self):
-        #self.window.show_all()
-        gtk.main()
+def main():
+	gtk.main()
+	return 0
+	
+if __name__ == "__main__":
+    PyApp()
+    main()
