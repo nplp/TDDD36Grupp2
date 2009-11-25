@@ -14,7 +14,7 @@ class GPS(object):
 		self.has_fix = False
 		self.osso_c = osso.Context("gps", "0.0.1", False)
 		self.osso_rpc = osso.Rpc(self.osso_c)
-		self.osso_rpc.set_rpc_callback("thor.gps","/thor/gps","thor.gps",self.updatecoord)
+		self.osso_rpc.set_rpc_callback("thor.gps","/thor/gps","thor.gps", self.updatecoord)
 
 	def to_string(self, tupel):
 		stringen = ""
