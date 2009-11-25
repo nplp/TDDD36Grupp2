@@ -7,6 +7,8 @@ import gtk
 
 class GPS(object):
 
+	has_fix = False
+	
 	def __init__(self):
 		self.coord = (0,0)
 		self.update = False
@@ -23,9 +25,10 @@ class GPS(object):
 
 	# Uppdaterar din kordinat
 	def updatecoord(self, interface, method, arguments, user_data):
-		print "uppdaterar din koordinat"
-		self.coord = gps.get_position()
-		return self.to_string(self.coord)
+		if(has_fix):
+			print "uppdaterar din koordinat"
+			self.coord = gps.get_position()
+			return self.to_string(self.coord)
 	 
 	# Väntar på att gpsen ska hitta en kordinat
 	def waiting_for_a_fix(self):
@@ -33,6 +36,8 @@ class GPS(object):
 		print "Vi vantar pa en koordinat"
 		while (self.coord == (0,0)):
 			self.coord = self.gps.get_position()
+		print "fix aquizired!"
+		self.has_fix = True
 		
 
 	def send_coordinates(self):
