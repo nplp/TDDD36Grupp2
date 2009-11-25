@@ -7,11 +7,11 @@ import gtk
 
 class GPS(object):
 
-	has_fix = False
 	
 	def __init__(self):
 		self.coord = (0,0)
 		self.update = False
+		self.has_fix = False
 		self.osso_c = osso.Context("gps", "0.0.1", False)
 		self.osso_rpc = osso.Rpc(self.osso_c)
 		self.osso_rpc.set_rpc_callback("thor.gps","/thor/gps","thor.gps",self.updatecoord)
@@ -25,9 +25,9 @@ class GPS(object):
 
 	# Uppdaterar din kordinat
 	def updatecoord(self, interface, method, arguments, user_data):
-		if(has_fix):
+		if(self.has_fix):
 			print "uppdaterar din koordinat"
-			self.coord = gps.get_position()
+			self.coord = self.gps.get_position()
 			return self.to_string(self.coord)
 		return False
 	 
