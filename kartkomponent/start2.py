@@ -60,12 +60,14 @@ class Start(object):
 		while(self.gpsrun == True):		
 			#self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
 			self.stringcoord = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "updatecoord", (), wait_reply = True)
-			self.coord = self.to_tuple(self.stringcoord)
-			self.map.add_object("Tank", data_storage.MapObject({"longitude":(self.coord[1]-0.0016),
+			
+			if(self.stringcoord != 0):
+				self.coord = self.to_tuple(self.stringcoord)
+				self.map.add_object("Tank", data_storage.MapObject({"longitude":(self.coord[1]-0.0016),
 									"latitude":(self.coord[0]+0.00075)},
 									"ikoner/tank.png"))
-			time.sleep(5)
-			self.map.delete_object("Tank")
+				time.sleep(5)
+				self.map.delete_object("Tank")
 			
 	def startgui(self):
 		self.gui = guitest.Gui(self.map)

@@ -29,6 +29,7 @@ class GPS(object):
 			print "uppdaterar din koordinat"
 			self.coord = gps.get_position()
 			return self.to_string(self.coord)
+		return False
 	 
 	# Väntar på att gpsen ska hitta en kordinat
 	def waiting_for_a_fix(self):
