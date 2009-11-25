@@ -47,8 +47,9 @@ class GPS(object):
 			print self.coord[0]
 			print self.coord[1]
 			time.sleep(5)
+			
 			#try:
-			#self.updatecoord()
+			self.updatecoord()
 			#except:
 			#	gpsbt.stop(self.con)
 
