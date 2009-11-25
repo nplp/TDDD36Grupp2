@@ -45,7 +45,7 @@ class Start(object):
 		try:
 			print "kor den andra except"
 			#subprocess.call('python Tufftuff2.py &', shell=True)
-			subprocess.call('python GPS.py &', shell = True)
+			subprocess.call('python Tufftuff2.py &', shell = True)
 
 		except Error, e:
 			print "kor den forsta try"
@@ -61,7 +61,7 @@ class Start(object):
 		while(self.gpsrun == True):		
 			#self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
 			print "vi sparar wowowo!"
-			self.stringcoord = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "updatecoord", (), wait_reply = True)
+			self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
 			print self.stringcoord
 			time.sleep(5)
 
@@ -86,8 +86,6 @@ class Start(object):
 		print "Going to coords"
 		thread.start_new_thread(self.getcoords, ())
 
-		while(self.stringcoord == 0): 		
-			time.sleep(3)
 
 		self.startgui()
 
