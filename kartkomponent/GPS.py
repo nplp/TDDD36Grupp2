@@ -51,8 +51,8 @@ class GPS(object):
 			print self.coord[0]
 			print self.coord[1]
 			time.sleep(5)
-			#self.refresh()
-			self.updatecoord()
+			self.refresh()
+			#self.updatecoord()
 
 	
 	def run(self):
