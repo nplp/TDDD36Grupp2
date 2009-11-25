@@ -7,14 +7,14 @@ class Lager():
         self.textview = gtk.TextView()
         self.textbuffer = self.textview.get_buffer()
         self.textview.show()
-	self.infile = get_item_all()
+	self.line = ""
 
-        if self.infile:
-            self.string = ('har ska det vara en strang av det lager vi har eller read-only och inte en buffer')
-            #self.infile.close()
-            self.textbuffer.set_text(self.string)
-
-
+	L = get_item_all()
+	for item in L:
+        	self.line += item
+        self.textbuffer.set_text(self.line)
+	print self.line
+	
     def run(self):
         #self.window.show_all()
         gtk.main()
