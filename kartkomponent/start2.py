@@ -44,7 +44,7 @@ class Start(object):
 		try:
 			print "kor den andra except"
 			#subprocess.call('python Tufftuff2.py &', shell=True)
-			subprocess.call('python Tufftuff2.py &', shell = True)
+			subprocess.call('python GPS.py &', shell = True)
 
 		except Error, e:
 			print "kor den forsta try"
@@ -59,7 +59,7 @@ class Start(object):
 		time.sleep(3)
 		while(self.gpsrun == True):		
 			#self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
-			self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
+			self.stringcoord = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "updatecoord", (), wait_reply = True)
 			self.coord = self.to_tuple(self.stringcoord)
 			self.map.add_object("Tank", data_storage.MapObject({"longitude":(self.coord[1]-0.0016),
 									"latitude":(self.coord[0]+0.00075)},
