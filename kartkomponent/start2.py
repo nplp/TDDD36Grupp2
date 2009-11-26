@@ -44,12 +44,12 @@ class Start(object):
 	def init_tufftuff(self):
 		try:
 			print "kor den forsta try"
-			subprocess.call('python GPS.py', shell=True)
+			subprocess.call('python GPS.py &', shell=True)
 			
 
 		except Error, e:
 			print "kor den andra except"
-			subprocess.call('python Tufftuff.py', shell=True)
+			subprocess.call('python Tufftuff.py &', shell=True)
 
 	def getcoords(self):
 		print "Efter subprocess"		
