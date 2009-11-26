@@ -46,8 +46,6 @@ class GUIClass(Thread):
 
 	def quit(self, widget):
 		clientSocket.send("/exit")
-		clientSocket.S_END = True
-		R.END = True
 		gtk.main_quit()
 
 	#Tillbaka

@@ -83,6 +83,7 @@ class Reciever(Thread):
 S_END = False
 
 def send(data):
+	global S_END
 	if(S_END):
 		data = finishCMD(Message(data))
 		try:

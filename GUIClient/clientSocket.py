@@ -16,6 +16,8 @@ BUFF = 1024
 contactList = list()
 '''
 
+########### Conectdel - Petssons del är bättre
+
 #Variabler
 HOST = '127.0.0.1'
 HOST2 = '130.236.189.14'
@@ -45,6 +47,8 @@ def connect():
 	else:
 		print "Connected to " + str(ADDR)
 
+
+########### Reciever - Jag tror den är ganska oförändrad, jämför.
 
 # Tar emot meddelanden
 class Reciever(Thread):
@@ -79,6 +83,8 @@ class Reciever(Thread):
 					print "Empty strings"
 		except Exception, e:
 			print e
+
+########### Sender - Primitiv, kan göras bättre. Ej trådad eller processad
 
 S_END = False
 
@@ -118,17 +124,3 @@ def send(data):
 
 		except Exception, e:
 			print e
-
-# Skickar meddelanden
-class Sender(Thread):
-	
-	def __init__(self):
-		Thread.__init__(self)
-
-	def run(self):
-		data = ""
-		while(data != "/exit" and S_END == False):
-			data = raw_input()
-			thread.start_new_thread(send,(data,))
-		print "dsfkl"
-

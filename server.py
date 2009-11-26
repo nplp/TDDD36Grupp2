@@ -35,18 +35,40 @@ def atomic_sendAll(message):
 			socketArray[i].socket.send(message)
 	ClientMutex.release()
 
+# Skickar till en hel grupp. Atomisk.
+def atomic_sendToGroup(message,group):
+	ClientMutex.acquire()
+	temp = list()
+	for n in get_group_users(group):
+		temp.append(n.name)
+
+	for n in temp:
+		index = search(n)
+		print "To " + n + ": " + message
+		if(socketArray[index].status > 0):  # Skillnad mellan active och inactive
+			socketArray[index].socket.send(message)
+
+	ClientMutex.release()
 
 # Skickar till enskild användare. Atomisk.
 def atomic_sendTo(message,client):
-
-	ClientMutex.acquire()
-	index = search(client)
 	if message:
-		print "To " + socketArray[index].name + ": " + message
-	if(socketArray[index].status > 0):  # Skillnad mellan active och inactive
-		socketArray[index].socket.send(message)
-	ClientMutex.release()
-
+		sendToGrp = False
+		ClientMutex.acquire()
+		index = search(client)
+		if(index != -1):
+			print "To " + socketArray[index].name + ": " + message
+			if(socketArray[index].status > 0):  # Skillnad mellan active och inactive
+				socketArray[index].socket.send(message)
+		else:
+			temp = list()
+			for n in get_group_all():
+				temp.append(n.name) 
+			if(client in temp):
+				sendToGrp = True
+		ClientMutex.release()
+		if(sendToGrp):
+			atomic_sendToGroup(message, client)
 
 # Anropas när klient loggar ut eller tappar kontakten. Atomisk.
 def atomic_disconnect(client):
@@ -84,7 +106,7 @@ def atomic_reGroupClients():
 		j = j+1
 	ClientMutex.release()
 
-# Replikeringsfunktion. Replikerar från denna server till backupen. Atomisk.
+# Replikeringsfunktion. Replikerar från denna server till backupen varje minut. Atomisk.
 def copydb():
 	print 'Replikerar databas.db'
 	ClientMutex.acquire()
@@ -166,6 +188,7 @@ def listCMD(arg):
 		ClientMutex.release()
 		# --------------
 
+
 	# Skickar man med argumentet "all" till /list får man alla användare som varit online.
 	elif(arg[0].startswith('all')):
 		# Atomisk ------
@@ -188,16 +211,19 @@ def listCMD(arg):
 			for n in arg:
 				ip.append("Group " + n + ":")
 				temp = get_group_users(n)
-				for t in temp:
-					ip.append(t.name)
+				if temp:
+					for t in temp:
+						ip.append(t.name)
 			ClientMutex.release()
 			# --------------
 
 		else:
 			# Atomisk ------
 			ClientMutex.acquire()
-			for g in get_group_all():
-				ip.append(g.name)
+			temp = get_group_all()
+			if temp:
+				for g in temp:
+					ip.append(g.name)
 			ClientMutex.release()
 			# --------------
 		
@@ -211,25 +237,121 @@ def listCMD(arg):
 			for n in arg:
 				ip.append("User " + n + ":")
 				temp = get_user_groups(n)
-				for t in temp:
-					ip.append(t.name)
+				if temp:
+					for t in temp:
+						ip.append(t.name)
 			ClientMutex.release()
 			# --------------
 
 		else:
 			# Atomisk ------
 			ClientMutex.acquire()
-			for u in get_user_all():
-				ip.append(u.name)
+			temp = get_user_all()
+			if temp:
+				for u in temp:
+					ip.append(u.name)
 			ClientMutex.release()
 			# --------------
-		
-
 	return ip
 
-#HOST = '130.236.218.114'
+
+
+def addCMD(arg):
+	feedback = list()
+	if len(arg) < 2:
+		return
+
+	# Syntax: "add user" username group1 group2 ...
+	# Lägger till username i grupperna group1 group2 ...
+	if(arg[0] == 'user'):
+		# Lagrar alla usernames i temp. Vore bra med en färdig fkn databasen.
+		temp = list()
+		for n in get_user_all():
+			temp.append(n.name) 
+		if(arg[1] in temp):
+			arg.pop(0)
+			username = arg.pop(0)
+			for group in arg:
+				# Atomisk ------
+				ClientMutex.acquire()
+				session = Session()
+				try:
+					u=session.query(User).filter_by(name=username).first()
+					g=session.query(Group).filter_by(name=group).first()
+					u.groups.append(g)
+				except:
+					feedback.append("No group named " + group)
+				session.commit()
+				session.close()
+				ClientMutex.release()
+				# --------------
+		else:
+			feedback.append("No user named " + arg[1])
+
+	# Syntax: "add to" group username1 username2 ...
+	# Lägger till username1, username2 ... i gruppen group
+	elif(arg[0] == 'to'):
+		# Lagrar alla grupper i temp. Vore bra med en färdig fkn databasen.
+		temp = list()
+		for n in get_group_all():
+			temp.append(n.name) 
+		if(arg[1] in temp):
+			arg.pop(0)
+			group = arg.pop(0)
+			for username in arg:
+				# Atomisk ------
+				ClientMutex.acquire()
+				session = Session()
+				try:
+					u=session.query(User).filter_by(name=username).first()
+					g=session.query(Group).filter_by(name=group).first()
+					u.groups.append(g)
+				except:
+					feedback.append("No user named " + username)
+				session.commit()
+				session.close()
+				ClientMutex.release()
+				# --------------
+		else:
+			feedback.append("No group named " + arg[1])
+
+	return feedback
+
+def removeCMD(arg):
+	feedback = list()
+	if len(arg) < 2:
+		return
+
+	# Syntax: "/remove from " grupp user1 user2 ...
+	elif(arg[0] == 'from'):
+		# Lagrar alla usernames i temp. Vore bra med en färdig fkn databasen.
+		temp = list()
+		for n in get_group_all():
+			temp.append(n.name) 
+		if(arg[1] in temp):
+			arg.pop(0)
+			group = arg.pop(0)
+			for username in arg:
+				# Atomisk ------
+				ClientMutex.acquire()
+				session = Session()
+				try:
+					u=session.query(User).filter_by(name=username).first()
+					g=session.query(Group).filter_by(name=group).first()
+					u.groups.remove(g)
+				except:
+					feedback.append(username + "is not member of " + group)
+				session.commit()
+				session.close()
+				ClientMutex.release()
+				# --------------
+		else:
+			feedback.append("No group named " + arg[1])
+
+	return feedback
+
+
 HOST = '127.0.0.1'
-#HOST = '130.236.189.22'
 PORT = 2150
 if(len(sys.argv) > 1):
 	PORT = int(sys.argv[1])
@@ -244,11 +366,6 @@ serverSocket.listen(5)
 
 connectionQueue = list() # Låter endast en användare per IP ansluta åt gången
 socketArray = list() # Innehåller alla sockets vi kör
-
-#session=Session()
-#print session.query(User).all()
-print USERS
-#session.close()
 
 # Sessionsklassen
 class sessionClass(Thread):
@@ -267,7 +384,7 @@ class sessionClass(Thread):
 		print "Back to " + self.name + ": " + message
 		self.socket.send(message)
 	
-	#Sköter inloggningen.
+	# Sköter inloggningen.
 	def authentication(self):
 			
 		CLIENTNAME = "Player1"
@@ -286,7 +403,7 @@ class sessionClass(Thread):
 				# Kicka om man inte skriver något efter 20 försök.
 				if(CLIENTNAME == ""):
 					return "/ERROR"
-				session = Session()
+				loginSession = Session()
 				if(is_user(CLIENTNAME)):
 					self.socket.send("Type your password " + CLIENTNAME)
 					# Läser in login och gör om åäö.
@@ -305,13 +422,13 @@ class sessionClass(Thread):
 					
 					if(self.name == CLIENTNAME):
 						return CLIENTNAME
-				session.close()
+				loginSession.close()
 		except Exception, e:
 			print "Client lost: " + CLIENTNAME + "\nException: " + str(e)	
 		return "/ERROR"
 
 
-	#Behandlar övergripande kommunikationen med och mellan klienterna. Sköter även kommandon.
+	# Behandlar övergripande kommunikationen med och mellan klienterna. Sköter även kommandon.
 	def handler(self,zero):
 		try:
 			atomic_sendAll("Server message: " + str(self.name) + " connected.")
@@ -319,33 +436,42 @@ class sessionClass(Thread):
 
 			while 1:
 				data = self.socket.recv(BUFF)
-				if(data.startswith('/cleanup')):
+				if(data.startswith('/add')):
+					msg = data.split(' ')
+					msg.pop(0)
+					response = addCMD(msg)
+					for i in response:
+						self.sendBack(str(i) + "\n")
+				elif(data.startswith('/cleanup')):
 					thread.start_new_thread(atomic_reGroupClients, ())
-				elif(data.startswith('/quit')):
-					break
-				elif(data.startswith('/status')): 
-					self.sendBack("You are number " + str(search(self.name)))
+				elif(data.startswith('/delete')):
+					msg = data.split(' ')
+					msg.pop(0)
+					response = removeCMD(msg)
+					for i in response:
+						self.sendBack(str(i) + "\n")
+
+				elif(data.startswith('/ip')):
+					msg = data.split(' ', 1)
+					if(len(msg) > 1):
+						# Atomisk ------
+						ClientMutex.acquire()
+						ip = socketArray[search(msg[1])].ADDR
+						ClientMutex.release()
+						# --------------
+						self.sendBack(msg[1] + " " + str(ip))
+				elif(data.startswith('/kick')):
+					msg = data.split(' ', 1)
+					if(len(msg) > 1):
+						atomic_disconnect(msg[1])
+
 				elif(data.startswith('/list')):
-					msg = data.split()
+					msg = data.split(' ')
 					msg.pop(0)
 					ip = listCMD(msg)
-
 					for i in ip:
-						self.sendBack(str(i))
+						self.sendBack(str(i) + "\n")
 
-				elif(data.startswith('/whisper')):
-					msg = data.split(' ', 2)
-					if(len(msg)>2):
-						atomic_setReply(msg[1], self.name)
-						atomic_sendTo(self.name + " (w): " + msg[2], msg[1])
-						self.sendBack("You whispered to " + msg[1])
-				elif(data.startswith('/reply')):
-					msg = data.split(' ', 1)
-					if(len(msg)>1):
-						i = search(self.lastWhisper)
-						atomic_setReply(self.lastWhisper, self.name)
-						atomic_sendTo(self.name + " (w): " + msg[1], self.lastWhisper)
-						self.sendBack("You whispered to " + self.lastWhisper)
 				elif(data.startswith('/ping')):
 					msg = data.split(' ', 1)
 					if(msg[0] == '/ping/'):
@@ -359,19 +485,23 @@ class sessionClass(Thread):
 						# --------------
 						if(temp != -1):	self.sendBack("/online " + msg[1])
 						else:	self.sendBack("/online/ " + msg[1])
-				elif(data.startswith('/kick')):
+				elif(data.startswith('/quit')):
+					break
+				elif(data.startswith('/reply')):
 					msg = data.split(' ', 1)
-					if(len(msg) > 1):
-						atomic_disconnect(msg[1])
-				elif(data.startswith('/ip')):
-					msg = data.split(' ', 1)
-					if(len(msg) > 1):
-						# Atomisk ------
-						ClientMutex.acquire()
-						ip = socketArray[search(msg[1])].ADDR
-						ClientMutex.release()
-						# --------------
-						self.sendBack(msg[1] + " " + str(ip))
+					if(len(msg)>1):
+						i = search(self.lastWhisper)
+						atomic_setReply(self.lastWhisper, self.name)
+						atomic_sendTo(self.name + " (w): " + msg[1], self.lastWhisper)
+						self.sendBack("You whispered to " + self.lastWhisper)
+				elif(data.startswith('/status')): 
+					self.sendBack("You are number " + str(search(self.name)))
+				elif(data.startswith('/whisper')):
+					msg = data.split(' ',2)
+					if(len(msg)>2):
+						atomic_setReply(msg[1], self.name)
+						atomic_sendTo(self.name + " (w): " + msg[2], msg[1])
+						self.sendBack("You whispered to " + msg[1])
 
 				elif(data != ""):
 					atomic_sendAll(self.name + ": " + data)
@@ -391,7 +521,7 @@ class sessionClass(Thread):
 print "Servermeddelande: Servern är redo."
 
 
-#Lyssnar efter klienter som vill ansluta.
+# Lyssnar efter klienter som vill ansluta.
 def listenToClients():
 	while 1:
 		socket, ADDR = copy(serverSocket.accept())
@@ -407,10 +537,10 @@ def listenToClients():
 
 thread.start_new_thread(listenToClients, ())
 
+# Här startar replikeringen.
 #thread.start_new_thread(copydb, ())
 
 SERVERRUN = 1
-
 
 while SERVERRUN:
 	String = raw_input()

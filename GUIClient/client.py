@@ -21,12 +21,11 @@ import clientSocket
 #msgQueue = list()
 
 R = clientSocket.Reciever()
-#S = clientSocket.Sender()
 
 clientSocket.connect()
 
 R.start()
-#S.start()
+
 
 class GUIClass(Thread):
 	
@@ -345,7 +344,4 @@ class GUIClass(Thread):
 G = GUIClass()
 G.start()
 
-#S.join()
-print "S off"
 clientSocket.clientSocket.close()
-print "S offiukyjt"
