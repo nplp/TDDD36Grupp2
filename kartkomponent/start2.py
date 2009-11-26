@@ -38,19 +38,6 @@ class Start(object):
 		self.map.add_object("Sjukhus1", data_storage.MapObject({"longitude":15.5629,
 			                                           "latitude":58.4093},
 			                                          "ikoner/sjukhus.png"))
-		#self.map.add_object("Tank", data_storage.MapObject({"longitude":(15.5726),
-								#"latitude":(58.4035)},
-							       #"ikoner/tank.png"))
-
-	#def init_tufftuff(self):
-		#try:
-			#print "kor den forsta try"
-			#subprocess.call('python GPS.py &', shell=True)
-			
-
-		#except Error, e:
-			#print "kor den andra except"
-			#subprocess.call('python Tufftuff.py &', shell=True)
 
 	def getcoords(self):
 		print "Efter subprocess"		
@@ -58,12 +45,9 @@ class Start(object):
 		self.osso_rpc = osso.Rpc(self.osso_c)
 		time.sleep(3)
 		while(self.gpsrun == True):		
-			#self.stringcoord = self.osso_rpc.rpc_run("thor.tufftuff", "/thor/tufftuff", "thor.tufftuff", "updatecoord", (), wait_reply = True)
-			print "vi sparar wowowo!"
 			self.stringcoord = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "updatecoord", (), wait_reply = True)
 			print self.stringcoord
 			time.sleep(5)
-
 			
 			if(self.stringcoord != 0):
 				print "ritar ut tanken nu"
@@ -81,23 +65,19 @@ class Start(object):
 
 	def run(self):
 		self.createmap()
-		#self.init_tufftuff()
-		self.startgui()
 		try:
 			if(sys.argv[1] == 'gps'):
+				self.startgui()
 				print "Going to coords"
 				self.getcoords()
 		except Exception, e:
 			print "gps av"
+			guitest.Gui(self.map).run()
 				
 
 		
 
-def main():
-    gtk.main()
 
 if __name__ == "__main__":
     Start().run()
-    while(1):
-    	x=0
-  #  main()
+
