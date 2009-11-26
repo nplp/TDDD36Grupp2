@@ -59,27 +59,6 @@ poi_table =Table('pois', metadata,
 	Column('subtype', Text)
 	)
 	
-#subtypes:
-#Obstacle:
-
-    #* tree
-    #* bridge
-    #* other
-
-#Structure
-
-    #* hospital
-    #* knullhuset
-    #* base
-    #* pasta_wagon
-    #* other
-
-#Event
-
-    #* fire
-    #* accident
-    #* other	
-	
 unit_table = Table('units',metadata,
 	Column('coordx', Float),
 	Column('coordy', Float),
@@ -115,7 +94,7 @@ Session.configure(bind=engine)
 
 ##############################definerar classer##################################
 class Message(object):
-	def __init__(self, sender=None, reciver=None, type=None, subtype=None, time_created=None, content=None, response_to=None):
+	def __init__(self, sender=None, reciver=None, type=None, time_created=None, content=None, response_to=None):
 		self.sender=sender
 		self.reciver=reciver
 		self.type=type
@@ -398,14 +377,16 @@ USERS = session.query(User).all() # radera kj?
 session.close()
 
 def getMessage(id_nr):
-	try:
+	#try:
 		m= session.query(Message).filter_by(id=id_nr).first()
 		return m.sender, m.reciver, m.type, m.time_created, m.content, m.response_to
-	except:
-		return None
+	#except:
+		#return None
 def removeMessage(id_nr):
 	m=session.query(Message).filter_by(id=id_nr).first()
 	session.delete(m)
+	
+	
 	
 def addUnit(coordx1,coordy1,id1,name1,timestamp1,type1):
 	pass
@@ -419,7 +400,7 @@ def getUnit():
 
 #skapar en session för att kunna komma åt databasen
 session = Session()
-
+print getMessage(1)
 #get_mission_by_id
 
 #sparar ändringar i databasen
