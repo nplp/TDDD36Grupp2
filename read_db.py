@@ -156,6 +156,13 @@ class Unit(object):
 		self.time_changed = time_changed
 		self.type = type
 		
+def fillOutList(arg, roof, fill):
+	diff = roof-len(arg)
+	if(diff > 0):
+		for i in range(diff):
+			arg.append(fill)
+
+	return arg
 		
 def dbClass(cl):
 	if(cl == "message"):
