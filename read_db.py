@@ -102,6 +102,10 @@ mission_group = Table('mission_group', metadata,
 	Column('mission_id', None, ForeignKey('missions.id'), primary_key=True),
 	Column('group_id', None, ForeignKey('group.id'), primary_key=True)
 	)
+mission_poi = Table ('mission_poi', metadata,
+	Column('mission_id', None, ForeignKey('missions.id'), primary_key=True),
+	Column('poi_id', None, ForeignKey('pois.id'), primary_key=True)
+	)
 
 #############################################################################
 
@@ -211,6 +215,12 @@ mapper(Unit, unit_table)
 mapper(Mission, mission_table, properties=dict(
 	groups=relation(Group, secondary= mission_group, backref='missions'))
 	)
+	
+#many to many relationer för att kunna länka uppdrag till Pois
+mapper(Mission, mission_table, properties=dict(
+	pois=relation(Poi, secondary= mission_poi, backref='missions'))
+	)
+	
 	
 #many to many relation för att kunna länka användarkonton till grupper
 mapper(User, user_table, properties=dict(
@@ -372,6 +382,9 @@ def get_mission_all(namn):
 	except:
 		return None
 
+def addPoi(coordx1, coordy1,name1,time_created1,type1,sub_type1):
+	session.save(Poi(coordx=coordx1, coordy=coordy1, name=name1, time_created=time_created1, type=type1, sub_type=sub_type1))
+
 #lägger in ett medelande i databasen
 def addMessage(sender1, reciver1, type1, time_created1, content1, response_to1):
 	session.save(Message(sender=sender1, reciver=reciver1, type=type1, time_created=time_created1, content=content1, response_to=response_to1))
@@ -402,6 +415,7 @@ def getUnit():
 
 #skapar en session för att kunna komma åt databasen
 session = Session()
+addPoi(55,55,"Pastavagnen", datetime.now(), "structure", "other")
 
 #sparar ändringar i databasen
 session.commit()
