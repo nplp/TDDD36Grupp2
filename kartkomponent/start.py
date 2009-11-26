@@ -3,14 +3,25 @@ import data_storage
 import map_xml_reader
 import gui_map
 import guitest
-import Tufftuff
 import time
 import thread
+import osso
+import gtk
+import subprocess
+import sys
 
 class Start(object):
 
 	def __init__(self):
-		self.coord = (0,0)		
+		self.coord = None
+		self.gpsrun = True
+		self.stringcoord = 0
+		self.tank_added = False
+		
+	def to_tuple(self, stringen):
+		tupeln = tuple(stringen.split())
+		tupeln = (float(tupeln[0]), float(tupeln[1]))
+		return tupeln
 
 	def createmap(self):
 		self.mapxml = map_xml_reader.MapXML("./kartdata/map.xml")
@@ -27,31 +38,46 @@ class Start(object):
 		self.map.add_object("Sjukhus1", data_storage.MapObject({"longitude":15.5629,
 			                                           "latitude":58.4093},
 			                                          "ikoner/sjukhus.png"))
-		self.map.add_object("Tank", data_storage.MapObject({"longitude":(15.5726),
-								"latitude":(58.4035)},
-							        "ikoner/tank.png"))
 
 	def getcoords(self):
-		Tufftuff.GPS.run()
-		time.sleep(2)
-		self.coord = Tufftuff.updatecoord()
-		print self.coord[0]
-		print self.coord[1]
-	
+		print "Efter subprocess"		
+		self.osso_c = osso.Context("start", "0.0.1", False)
+		self.osso_rpc = osso.Rpc(self.osso_c)
+		time.sleep(3)
+		while(self.gpsrun == True):		
+			self.stringcoord = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "updatecoord", (), wait_reply = True)
+			print self.stringcoord
+			time.sleep(5)
+			
+			if(self.stringcoord != 0):
+				print "ritar ut tanken nu"
+				self.coord = self.to_tuple(self.stringcoord)
+				if(self.tank_added == True):
+					self.map.delete_object("Tank")
+				self.map.add_object("Tank", data_storage.MapObject({"longitude":(self.coord[1]-0.0016),
+									"latitude":(self.coord[0]+0.00075)},
+									"ikoner/tank.png"))
+				self.tank_added = True
+			
 	def startgui(self):
-		self.app = guitest.Gui(self.map)
-		self.app.run()
+		self.gui = guitest.Gui(self.map)
+		thread.start_new_thread(self.gui.run, ())
 
 	def run(self):
 		self.createmap()
-		self.startgui()
-		thread.start_new_thread(self.getcoords, ())
-		#self.getcoords()
+		try:
+			if(sys.argv[1] == 'gps'):
+				self.startgui()
+				print "Going to coords"
+				self.getcoords()
+		except Exception, e:
+			print "gps av"
+			guitest.Gui(self.map).run()
+				
+
 		
 
-def main():
-    gtk.main()
 
 if __name__ == "__main__":
     Start().run()
-    main()
+
