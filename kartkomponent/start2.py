@@ -84,8 +84,12 @@ class Start(object):
 		#self.init_tufftuff()
 		self.startgui()
 		print "Going to coords"
-		if(sys.argv[1] == 'gps'):
-			self.getcoords()
+		try:
+			if(sys.argv[1] == 'gps'):
+				self.getcoords()
+		except Exception, e:
+			print "gps av"
+				
 
 		
 
