@@ -217,7 +217,7 @@ class Gui(hildon.Program):
 	self.map.hide()
 	self.scrolled_window.hide()
 	self.samtala.hbox.hide()	
-	self.meddela.vbox.show()
+	self.swindow.show()
 
 	
         #Avsluta programmet
@@ -363,6 +363,10 @@ class Gui(hildon.Program):
 	self.scroll_window.set_border_width(10)
 	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
 	
+	self.swindow=gtk.ScrolledWindow()
+	self.swindow.set_border_width(10)
+	self.swindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)	
+	
 	#self.batt = battery.Batteri()
 	self.label = gtk.Label(self.batt.getbattery())
         self.label.show()	
@@ -371,13 +375,14 @@ class Gui(hildon.Program):
 	#Packning
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
+	self.swindow.add_with_viewport(self.meddela.vbox)
 	self.vbox3.pack_start(self.samtala.hbox,False,False,0)
 	self.vbox3.pack_start(self.ringa.vbox,False,False,0)
 	self.vbox3.pack_start(self.map,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
 	self.vbox3.pack_start(self.scroll_window,True,True,0)
+	self.vbox3.pack_start(self.swindow,True,True,0)	
 	self.vbox3.pack_start(self._lager.lagerboxen,True,True,0)
-	self.vbox3.pack_start(self.meddela.vbox,True,True,0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
     	self.hbox.show()
 	self.window.add(self.hbox)
