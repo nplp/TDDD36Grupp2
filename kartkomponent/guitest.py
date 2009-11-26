@@ -13,7 +13,7 @@ import thread
 import time
 import osso
 import samtal
-#import lager
+import lager
 from databasklient import * 
 
 class Gui(hildon.Program):	
@@ -66,19 +66,19 @@ class Gui(hildon.Program):
 	self.scroll_window.hide()
         self.scrolled_window.hide()	
 	self.samtala.hbox.show()
+	self._lager.lagerboxen.hide()
 	
-    #def lagret(self,widget,event,data=None):
-	#print 'hej'
-	#self.verktyg.set_active(False)
-	#self.filer.set_active(False)
-	#self.kommunikation.set_active(False)
-	#self.vbox2.hide()	
-	#self.map.hide()
-	#self.meddela.vbox.hide()
-	#self.scroll_window.hide()
-        #self.scrolled_window.hide()	
-	#self.samtala.hbox.hide()	
-        #self.swindow.show()	
+    def lagret(self,widget,event,data=None):
+	self.verktyg.set_active(False)
+	self.filer.set_active(False)
+	self.kommunikation.set_active(False)
+	self.vbox2.hide()	
+	self.map.hide()
+	self.meddela.vbox.hide()
+	self.scroll_window.hide()
+        self.scrolled_window.hide()	
+	self.samtala.hbox.hide()	
+        self._lager.lagerboxen.show()
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
@@ -91,6 +91,7 @@ class Gui(hildon.Program):
         self.scrolled_window.hide()
 	self.samtala.hbox.hide()
         self.scroll_window.show()
+	self._lager.lagerboxen.hide()
 	
 	#Rapport
     def rapp(self, widget, event, data=None):
@@ -102,7 +103,8 @@ class Gui(hildon.Program):
 	self.meddela.vbox.hide()
 	self.scroll_window.hide()
 	self.samtala.hbox.hide()	
-        self.scrolled_window.show()	
+        self.scrolled_window.show()
+	self._lager.lagerboxen.hide()
 	
 	
 	#Kommunikation
@@ -322,7 +324,7 @@ class Gui(hildon.Program):
 	
 	#Lager
 	self.lager = gtk.Button("Lager")
-	self.lager.connect("clicked", self.callback, "Lager")
+	self.lager.connect("clicked", self.lagret, "Lager")
 	self.vbox2.pack_start(self.lager, True, True,0)
 	
 	#Enerigisparläge
@@ -353,7 +355,7 @@ class Gui(hildon.Program):
 	self.uppdraget = uppdrag.Uppdrag()
 	self.ringa = detringer.Ring()
 	self.samtala = samtal.Samtal()
-	#self.lag = lager.PyApp()
+	self._lager = lager.Lager()
 	
 	self.vbox3 = gtk.VBox(False, 0)
         self.vbox3.show()
@@ -386,7 +388,7 @@ class Gui(hildon.Program):
 	self.vbox3.pack_start(self.map,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
 	self.vbox3.pack_start(self.scroll_window,True,True,0)
-	#self.vbox3.pack_start(self.swindow,True,True,0)
+	self.vbox3.pack_start(self._lager.lagerboxen,True,True,0)
 	self.vbox3.pack_start(self.meddela.vbox,True,True,0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
     	self.hbox.show()
