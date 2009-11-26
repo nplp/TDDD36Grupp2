@@ -62,9 +62,10 @@ class Gui(hildon.Program):
 	self.kommunikation.set_active(False)
 	self.vbox2.hide()	
 	self.map.hide()
-	self.meddela.vbox.hide()
 	self.scroll_window.hide()
-        self.scrolled_window.hide()	
+        self.scrolled_window.hide()
+        self.swindow.hide()	
+	self._lager.lagerboxen.hide()	
 	self.samtala.hbox.show()
 	self._lager.lagerboxen.hide()
 	
@@ -74,10 +75,10 @@ class Gui(hildon.Program):
 	self.kommunikation.set_active(False)
 	self.vbox2.hide()	
 	self.map.hide()
-	self.meddela.vbox.hide()
 	self.scroll_window.hide()
         self.scrolled_window.hide()	
 	self.samtala.hbox.hide()	
+        self.swindow.hide()	
         self._lager.lagerboxen.show()
 	
 	#Uppdrag
@@ -87,11 +88,11 @@ class Gui(hildon.Program):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
 	self.map.hide()
-	self.meddela.vbox.hide()
         self.scrolled_window.hide()
 	self.samtala.hbox.hide()
-        self.scroll_window.show()
+        self.swindow.hide()	
 	self._lager.lagerboxen.hide()
+        self.scroll_window.show()
 	
 	#Rapport
     def rapp(self, widget, event, data=None):
@@ -100,11 +101,12 @@ class Gui(hildon.Program):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
 	self.map.hide()
-	self.meddela.vbox.hide()
 	self.scroll_window.hide()
-	self.samtala.hbox.hide()	
+	self.samtala.hbox.hide()
+        self.swindow.hide()	
+	self._lager.lagerboxen.hide()	
         self.scrolled_window.show()
-	self._lager.lagerboxen.hide()
+
 	
 	
 	#Kommunikation
@@ -203,10 +205,11 @@ class Gui(hildon.Program):
 	self.verktyg.set_active(False)
 	self.vbox2.hide()
 	self.scrolled_window.hide()
-	self.meddela.vbox.hide()
 	self.ringa.vbox.hide()
         self.scroll_window.hide()
-	self.samtala.hbox.hide()	
+	self.samtala.hbox.hide()
+        self.swindow.hide()	
+	self._lager.lagerboxen.hide()	
 	self.map.show()
 	 
     def textmedd(self, widget, event, data=None):
@@ -216,7 +219,9 @@ class Gui(hildon.Program):
 	self.vbox2.hide()
 	self.map.hide()
 	self.scrolled_window.hide()
-	self.samtala.hbox.hide()	
+	self.samtala.hbox.hide()
+	self._lager.lagerboxen.hide()		
+	self.ringa.vbox.hide()
 	self.swindow.show()
 
 	
