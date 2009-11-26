@@ -49,7 +49,7 @@ class Start(object):
 
 		except Error, e:
 			print "kor den andra except"
-			subprocess.call('python Tufftuff2.py', shell=True)
+			subprocess.call('python Tufftuff.py', shell=True)
 
 	def getcoords(self):
 		print "Efter subprocess"		
@@ -80,9 +80,10 @@ class Start(object):
 
 	def run(self):
 		self.createmap()
-		#self.init_tufftuff()
+		self.init_tufftuff()
 		self.startgui()
 		print "Going to coords"
+		time.sleep(6) #ge gps-processen tid att komma igang
 		self.getcoords()
 
 		
