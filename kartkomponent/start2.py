@@ -83,9 +83,9 @@ class Start(object):
 		self.createmap()
 		#self.init_tufftuff()
 		self.startgui()
-		print "Going to coords"
 		try:
 			if(sys.argv[1] == 'gps'):
+				print "Going to coords"
 				self.getcoords()
 		except Exception, e:
 			print "gps av"
@@ -98,4 +98,4 @@ def main():
 
 if __name__ == "__main__":
     Start().run()
-    main()
+  #  main()
