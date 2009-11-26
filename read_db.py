@@ -164,27 +164,34 @@ def fillOutList(arg, roof, fill):
 
 	return arg
 		
-def dbClass(cl):
+def dbClass(cl, arg):
 	if(cl == "message"):
+		arg = fillOutList(arg,6,None)
 		return Message()
 
 	if(cl == "user"):
+		arg = fillOutList(arg,3,None)
 		return User()
 
 	if(cl == "item"):
+		arg = fillOutList(arg,3,None)
 		return Item()
 
 	if(cl == "group"):
+		arg = fillOutList(arg,1,None)
 		return Group()
 
 	if(cl == "mission"):
+		arg = fillOutList(arg,10,None)
 		return Mission()
 
 	if(cl == "poi"):
+		arg = fillOutList(arg,7,None)
 		return Poi()
 
 	if(cl == "unit"):
-		return Unit()
+		arg = fillOutList(arg,6,None)
+		return Unit(tuple(arg))
 
 	return None
 
