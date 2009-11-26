@@ -274,11 +274,7 @@ class Gui(hildon.Program):
 	self.text = gtk.Button("Textmeddelande")
         self.text.connect("clicked", self.textmedd, "Textmeddelande")
 	self.vbox2.pack_start(self.text, True, True, 0)
-	
-	## Samtal
-	#self.samtal = gtk.Button("Samtal")
-        #self.samtal.connect("clicked", self.ring, "Samtal")
-	#self.vbox2.pack_start(self.samtal, True, True, 0)
+
 	
 	# Samtal
 	self.samtal = gtk.Button("Samtal")
@@ -348,8 +344,7 @@ class Gui(hildon.Program):
 	self.vbox2.pack_start(self.tillbaka, True, True, 0)
 	self.hbox.pack_start(self.vbox2, False, False, 0)
 	self.tbaka("clicked", "hej")
-
-	#self.startakarta = tupeltest.StartMap()
+	
 	self.rapportera = rapport.Mall()
 	self.meddela = meddelande.Meddelande()
 	self.uppdraget = uppdrag.Uppdrag()
@@ -368,21 +363,14 @@ class Gui(hildon.Program):
 	self.scroll_window.set_border_width(10)
 	self.scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
 	
-	#self.swindow=gtk.ScrolledWindow()
-	#self.swindow.set_border_width(10)
-	#self.swindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
-	
 	#self.batt = battery.Batteri()
 	self.label = gtk.Label(self.batt.getbattery())
-	#print "skapar label"
-	#self.label.set_alignment(0, 0)
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
 	
 	#Packning
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
-	#self.swindow.add_with_viewport(self.lag.label)
 	self.vbox3.pack_start(self.samtala.hbox,False,False,0)
 	self.vbox3.pack_start(self.ringa.vbox,False,False,0)
 	self.vbox3.pack_start(self.map,True,True,0)
