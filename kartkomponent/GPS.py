@@ -32,10 +32,6 @@ class GPS(object):
 		return self.to_string(self.coord)
 		#return False
 
-
-	def refresh(self):
-		self.coord = self.gps.get_position()
-	 
 	# Väntar på att gpsen ska hitta en kordinat
 	def waiting_for_a_fix(self):
 		print "Vi vantar pa en koordinat"
@@ -51,7 +47,6 @@ class GPS(object):
 			print self.coord[0]
 			print self.coord[1]
 			time.sleep(5)
-			self.refresh()
 			#self.updatecoord()
 
 	
@@ -66,7 +61,7 @@ class GPS(object):
 		# Vantar pa en gps koordinat
 		print "Waiting baby"
 		self.waiting_for_a_fix()
-		self.send_coordinates()
+		#self.send_coordinates()
 
 
 def main():
