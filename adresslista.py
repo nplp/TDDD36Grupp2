@@ -15,14 +15,7 @@ import gtk
 anvandare = [('Manuela', '66.249.65.81 ', 'offline'), ('Hanna', '66.249.65.83 ', 'online'),
     ('KJ', '66.249.65.91 ', 'online'), ('Christoffer', '66.249.65.85 ', 'offline'),
     ('Thor', '66.249.65.90 ', 'offline'), ('Niklas', '66.249.65.88 ', 'online'),('Mathias', '66.249.65.00 ', 'online')]
-    
-#def create_arrow_button(arrow_type, shadow_type):
-#   	button1 = gtk.Button();
-# 	arrow = gtk.Arrow(arrow_type, shadow_type);
-# 	button1.add(arrow)
-#  	button1.show()
-#  	arrow.show()
-#   	return button1
+
 
 class Adresslista(gtk.Window): 
 
