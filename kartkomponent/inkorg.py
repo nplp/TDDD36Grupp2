@@ -12,26 +12,27 @@ print n.sender
 anvandare = [(m.sender, m.reciver, m.type , m.time_created, m.content , m. response_to), (n.sender, n.reciver, n.type , n.time_created, n.content , n. response_to), ('Christoffer', '66.249.65.85 ', 'offline', 'online', '66.249.65.81 ', 'offline'), ('Thor', '66.249.65.90 ', 'offline', 'online', '66.249.65.81 ', 'offline'), ('Niklas', '66.249.65.88 ', 'online', 'online', '66.249.65.81 ', 'offline'),('Mathias', '66.249.65.00 ', 'online', 'online', '66.249.65.81 ', 'offline')]
 
 #('mathias1','hanna','text',"change",'jason.dums() sak ska vara har tex Unit', 1)
-class Adresslista(gtk.Window): 
+class Inkorg(gtk.Window): 
 
     def callback(self, widget, data=None):
-	print "Adresslista - %s was pressed" % data
+	print "Inkorg - %s was pressed" % data
 
     def __init__(self):
-        super(Adresslista, self).__init__()
+	print "kor"
+        #super(Inkorg, self).__init__()
         
-        self.set_size_request(350, 250)
-        self.set_position(gtk.WIN_POS_CENTER)
+        #self.set_size_request(350, 250)
+        #self.set_position(gtk.WIN_POS_CENTER)
         
-        self.connect("destroy", gtk.main_quit)
-        self.set_title("Adresslista")
-	self.show()
+        #self.connect("destroy", gtk.main_quit)
+        #self.set_title("Inkorg")
+	#self.show()
 
-        vbox = gtk.VBox(False, 0)
-	vbox.show()
+        self.vbox = gtk.VBox(False, 0)
+	self.vbox.show()
 	
 	hbox = gtk.HBox(True,0)
-	vbox.pack_start(hbox, False, False, 0)
+	self.vbox.pack_start(hbox, False, False, 0)
 	hbox.show()
 
         scrolled_window = gtk.ScrolledWindow()
@@ -39,7 +40,7 @@ class Adresslista(gtk.Window):
         scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 	scrolled_window.show()
         
-        vbox.pack_start(scrolled_window, True, True, 0)
+        self.vbox.pack_start(scrolled_window, True, True, 0)
 	#hbox.pack_start(scrolled_window, True, True,0)
 
         store = self.create_model()
@@ -48,7 +49,8 @@ class Adresslista(gtk.Window):
         treeView.connect("row-activated", self.on_activated)
         treeView.set_rules_hint(True)
         scrolled_window.add(treeView)
-
+	treeView.show()
+	
         self.create_columns(treeView)
 	#self.create_columns.show()
         self.statusbar = gtk.Statusbar()
@@ -60,26 +62,26 @@ class Adresslista(gtk.Window):
    	#button1 = create_arrow_button(gtk.ARROW_DOWN, gtk.SHADOW_OUT)
    	#hbox.pack_start(button1, False, False, 3)
 	#hbox.show()
-	
 
 	
 	button = gtk.Button("Klar")
 	button.set_size_request(70,30)
 	button.connect("clicked", self.callback, "Klar")
 	#button.add(hbox)
-	vbox.pack_start(button, False, False, 0)
-	hbox.show()
+	self.vbox.pack_start(button, False, False, 0)
 	button.show()
 	
-        vbox.pack_start(self.statusbar, False, False, 0)
+        self.vbox.pack_start(self.statusbar, False, False, 0)
+	print "slut"
 
-        self.add(vbox)
-	#self.add(hbox)
-        self.show_all()
+        #self.add(self.vbox)
+	##self.add(hbox)
+        self.vbox.show_all()
 
 
     def create_model(self):
         store = gtk.ListStore(str, str, str, str, str, str)
+	print "create_model"
 
         for act in anvandare:
             store.append([act[0], act[1], act[2], act[3], act[4], act[5]])
@@ -87,6 +89,7 @@ class Adresslista(gtk.Window):
 	
 
     def create_columns(self, treeView):
+	print "create_columns"
 	
     	#
         rendererText = gtk.CellRendererText()
@@ -140,10 +143,16 @@ class Adresslista(gtk.Window):
 	
 
     def on_activated(self, widget, row, col):
+	print "on_activated"
         
         model = widget.get_model()
         text = model[row][0] + ", " + model[row][1] + ", " + model[row][2] + ", " + model[row][3] + "," + model[row][4] + ", " + model[row][5] 
         self.statusbar.push(0, text)
+	
+def main():
+	gtk.main()
+	return 0
 
-Adresslista()
-gtk.main()
+if __name__ == "__main__":
+    Inkorg()
+    main()
