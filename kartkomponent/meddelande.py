@@ -6,7 +6,7 @@ import simplejson as json
 import gtk
 import osso
 import time
-#import adresslista
+import adresslista
 
 class Meddelande (object):
 	
@@ -23,7 +23,6 @@ class Meddelande (object):
 	
     def __init__(self):
 	print "hej"
-	#self.adress = adresslista.Adresslista()
 	#Vbox for innehall
 	self.vbox = gtk.VBox(False,5)
 	self.vbox.set_border_width(50)
@@ -58,7 +57,7 @@ class Meddelande (object):
 	
 	#Lagg till mottagre
 	self.skicka1 = gtk.Button("Lagg till mottagare")
-        #self.skicka1.connect("clicked", self.show_popup)
+        self.skicka1.connect("clicked", self.show_popup)
 	self.skicka1.show()
 	self.vbox.pack_start(self.skicka1,True,True,0)
 
@@ -80,19 +79,19 @@ class Meddelande (object):
 	self.skicka.show()
 	self.vbox.pack_start(self.skicka,True,True,0)
 	
-	
-	
-    #def show_popup(self, skicka1):
-	#print "hej"
-        #popup = gtk.Window(gtk.WINDOW_POPUP)
-        #popup.set_title( "Adresslista" )
-        #popup.add(self.adress.vbox)
-	##adress.vbox.show()	
-        #popup.set_modal(False)
-        ##popup.set_transient_for(self)
-        #popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
-        #popup.connect( "destroy", lambda *w: gtk.main_quit() )
-        #popup.show()
+    def show_popup(self, skicka1):
+	adress = adresslista.Adresslista()
+	print "hej"
+        popup = gtk.Window()
+        popup.set_title( "Adresslista" )
+	popup.set_size_request(500,500)
+        popup.add(adress.vbox)
+	#adress.vbox.show()	
+        popup.set_modal(False)
+        #popup.set_transient_for(self)
+        popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
+        popup.connect( "destroy", lambda *w: gtk.main_quit() )
+        popup.show()
 	
 def main():
 	gtk.main()

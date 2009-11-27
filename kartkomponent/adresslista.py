@@ -23,27 +23,27 @@ class Adresslista(gtk.Window):
 	print "Adresslista - %s was pressed" % data
 
     def __init__(self):
-        super(Adresslista, self).__init__()
+        #super(Adresslista, self).__init__()
         
-        self.set_size_request(350, 250)
-        self.set_position(gtk.WIN_POS_CENTER)
+        #self.set_size_request(350, 250)
+        #self.set_position(gtk.WIN_POS_CENTER)
         
-        self.connect("destroy", gtk.main_quit)
-        self.set_title("Adresslista")
+        #self.connect("destroy", gtk.main_quit)
+        #self.set_title("Adresslista")
 
-        vbox = gtk.VBox(False, 0)
-	vbox.show()
+        self.vbox = gtk.VBox(False, 0)
+	self.vbox.show()
 	
 	hbox = gtk.HBox(True,0)
-	vbox.pack_start(hbox, False, False, 0)
+	self.vbox.pack_start(hbox, False, False, 0)
 	hbox.show()
 
         scrolled_window = gtk.ScrolledWindow()
         scrolled_window.set_shadow_type(gtk.SHADOW_ETCHED_IN)
         scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         
-        vbox.pack_start(scrolled_window, True, True, 0)
-	hbox.pack_start(scrolled_window, True, True,0)
+        self.vbox.pack_start(scrolled_window, True, True, 0)
+	#hbox.pack_start(scrolled_window, True, True,0)
 
         store = self.create_model()
 
@@ -58,16 +58,16 @@ class Adresslista(gtk.Window):
 	button = gtk.Button("Klar")
 	button.set_size_request(70,30)
 	button.connect("clicked", self.callback, "Klar")
-	button.add(hbox)
-	vbox.pack_start(button, False, False, 0)
+	#button.add(hbox)
+	self.vbox.pack_start(button, False, False, 0)
 	hbox.show()
 	button.show()
 	
-        vbox.pack_start(self.statusbar, False, False, 0)
+        self.vbox.pack_start(self.statusbar, False, False, 0)
 
-        self.add(vbox)
-	self.add(hbox)
-        self.show_all()
+        #self.add(vbox)
+	#self.add(hbox)
+        self.vbox.show_all()
 
 
     def create_model(self):
@@ -99,20 +99,20 @@ class Adresslista(gtk.Window):
 	#Toggle Check
 	rendererCheck = gtk.CellRendererToggle()
 	rendererCheck.set_property('activatable', True)
-	rendererCheck.connect('toggled', self.desc_toggled, treeView )
+	#rendererCheck.connect('toggled', self.desc_toggled, treeView )
 	
 	column = gtk.TreeViewColumn("Check", rendererCheck)
 	column.add_attribute(rendererCheck, "active",3)
 	column.set_sort_column_id(3)
 	treeView.append_column(column)
 	
-    def desc_edited(self, caller, path, new_text, treeView):
-	model[path][0] = new_text
-	DEBUG("Desc %s changed to %s"%(path,new_text))
+    #def desc_edited(self, caller, path, new_text, treeView):
+	#model[path][0] = new_text
+	#DEBUG("Desc %s changed to %s"%(path,new_text))
 	
-    def desc_toggled(self, caller, path, treeView):
-		model[path][3] = not model[path][3]
-		DEBUG("Done %s changed to %s"%(path, model[path][3]))
+    #def desc_toggled(self, caller, path, treeView):
+		#model[path][3] = not model[path][3]
+		#DEBUG("Done %s changed to %s"%(path, model[path][3]))
 
     def on_activated(self, widget, row, col):
         
@@ -120,5 +120,10 @@ class Adresslista(gtk.Window):
         text = model[row][0] + ", " + model[row][1] + ", " + model[row][2] + ", " +model[row][3]
         self.statusbar.push(0, text)
 
-Adresslista()
-gtk.main()
+def main():
+	gtk.main()
+	return 0
+
+if __name__ == "__main__":
+    Adresslista()
+    main()
