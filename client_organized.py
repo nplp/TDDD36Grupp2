@@ -29,7 +29,7 @@ class Client(object):
 		self.PORT2 = 2017
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
-		self.BUFF = 1024
+		#self.BUFF = 1024
 		self.MYPORT = 2338
 		self.ADDR = ('127.0.0.1')
 		self.ADDR2 = ('127.0.0.1')
@@ -218,13 +218,14 @@ class recieverClass(Thread):
 	def __init__(self, _clientSocket, _ADDR,):
 		self.clientSocket = _clientSocket
 		self.ADDR = _ADDR
+		self.BUFF = 1024
 		Thread.__init__(self)
 	
 # Tar emot meddelanden
 	def reciever(self):
 		try:
 			while 1:
-				data = str(self.clientSocket.recv(self.BUFF))
+				data = str(self.clientSocket.recv(BUFF))
 				if(data != "" and data != "/x"):
 					if(data.startswith('/ping')):
 						s = data.split(' ', 1)
