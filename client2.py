@@ -49,11 +49,10 @@ class Client(object):
 		self.q = Queue()
 
 	def send(self, interface, method, arguments, user_data):
-		
 		self.dict = json.loads(arguments[0])
-		self.data = dict["content"]["message"]
-		self.msg = Message(data)
-		self.data = finishCMD(msg)
+		self.data = self.dict["content"]["message"]
+		self.msg = Message(self.data)
+		self.data = finishCMD(self.msg)
 		
 		if(self.data.startswith('/quit') or self.data.startswith('/exit')):
 			try:
@@ -82,9 +81,8 @@ class Client(object):
 			for n in contactList:
 				print n
 		elif(self.data != ""):
-			print "innnan queue"
 			#clientSocket.send(data)
-			self.q.put(data)
+			self.q.put(self.data)
 			#global primary
 			#print primary
 			#if(primary):
@@ -106,13 +104,12 @@ class Client(object):
 			self.clientSocket2.send(self.data)
 	
 	def deQueue(self):
-		print "kommer jag till dequeue?"
 		#print "online = "+str(online)
 		global mutex
 		#mutex.acquire()
 		while self.online:
 			temp = ""
-			sleep(1)
+			sleep(0.5)
 			try:
 				while not self.q.empty(): 
 					#print "tomat"
