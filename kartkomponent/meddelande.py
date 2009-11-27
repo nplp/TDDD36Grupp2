@@ -1,19 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import pygtk
+import guitest
 pygtk.require('2.0')
+import simplejson as json
 import gtk
+import osso
+import time
 class Meddelande (object):
 	
+    osso_c = osso.Context("meddelande", "0.0.1", False)
+    osso_rpc = osso.Rpc(osso_c)
+		
     def send(self, widget, event, data=None):
-    	print ("hej")	
+	self.tbuffer = self.entry1.get_buffer()
+	text = self.tbuffer.get_text(self.tbuffer.get_start_iter(), self.tbuffer.get_end_iter())
+	amne = self.entry.get_text()
+	dict = {"id": 1, "sender": "army" , "receiver": "army" ,"type": 'text' , "subtype": "add", "time_created": 34, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : 'mig'}
+	args = (json.dumps(dict),)
+	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "method1", args)
 	
+	
+
     def __init__(self):
 	    
 	#Vbox for innehall
 	self.vbox = gtk.VBox(False,5)
-	self.vbox.set_border_width(50)
-	self.vbox.show()	
+	self.vbox.set_border_width(50)	
 	
 	self.scrolled_window=gtk.ScrolledWindow()
 	self.scrolled_window.set_border_width(10)
@@ -26,28 +39,13 @@ class Meddelande (object):
 	self.amne.show()
 	self.vbox.pack_start(self.amne, False, False, 0)
 	
+	
 	self.entry = gtk.Entry()
         self.entry.set_max_length(250)
 	self.entry.show()	
 	self.vbox.pack_start(self.entry, True, True, 0)
-	
-	#Skriv ett amne
-        self.mottagare = gtk.Label("Mottagare")
-        self.mottagare.set_alignment(0, 0)
-	self.mottagare.show()
-	self.vbox.pack_start(self.mottagare , False, False, 0)
-	
-	self.entry1 = gtk.Entry()
-        self.entry1.set_max_length(250)
-	self.entry1.show()	
-	self.vbox.pack_start(self.entry1, True, True, 0)
-	
-	#Lagg till mottagre
-	self.skicka1 = gtk.Button("Lagg till mottagare")
-        self.skicka1.connect("clicked", self.send, "Lagg till mottagare")
-	self.skicka1.show()
-	self.vbox.pack_start(self.skicka1,True,True,0)
 
+	
 	#Skriv ett meddelande
         self.meddelande = gtk.Label("Meddelande")
         self.meddelande.set_alignment(0, 0)
@@ -66,3 +64,15 @@ class Meddelande (object):
 	self.skicka.show()
 	self.vbox.pack_start(self.skicka,True,True,0)
 	
+
+	
+def main():
+	gtk.main()
+	return 0
+
+if __name__ == "__main__":
+    Meddelande()
+    main()
+
+	
+
