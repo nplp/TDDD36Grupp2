@@ -6,7 +6,7 @@ import simplejson as json
 import gtk
 import osso
 import time
-import adresslista
+#import adresslista
 
 class Meddelande (object):
 	
@@ -23,7 +23,7 @@ class Meddelande (object):
 	
     def __init__(self):
 	print "hej"
-	self.adress = adresslista.Adresslista()
+	#self.adress = adresslista.Adresslista()
 	#Vbox for innehall
 	self.vbox = gtk.VBox(False,5)
 	self.vbox.set_border_width(50)

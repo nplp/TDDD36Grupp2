@@ -14,6 +14,7 @@ import time
 import osso
 import samtal
 import lager
+#import inkorg
 from databasklient import * 
 
 class Gui(hildon.Program):	
@@ -216,7 +217,8 @@ class Gui(hildon.Program):
 	self.vbox2.hide()
 	self.map.hide()
 	self.scrolled_window.hide()
-	self.samtala.hbox.hide()	
+	self.samtala.hbox.hide()
+	self._lager.lagerboxen.hide()	
 	self.swindow.show()
 
 	
@@ -351,6 +353,7 @@ class Gui(hildon.Program):
 	self.ringa = detringer.Ring()
 	self.samtala = samtal.Samtal()
 	self._lager = lager.Lager()
+	#self.inbox = inkorg.Adresslista()
 	
 	self.vbox3 = gtk.VBox(False, 0)
         self.vbox3.show()
@@ -383,7 +386,7 @@ class Gui(hildon.Program):
 	self.vbox3.pack_start(self.scroll_window,True,True,0)
 	self.vbox3.pack_start(self.swindow,True,True,0)	
 	self.vbox3.pack_start(self._lager.lagerboxen,True,True,0)
-	self.vbox3.pack_start(self.meddela.vbox,True,True,0)
+	#self.vbox3.pack_start(self.meddela.vbox,True,True,0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
     	self.hbox.show()
 	self.window.add(self.hbox)
