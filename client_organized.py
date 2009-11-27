@@ -107,7 +107,7 @@ class Client(object):
 		#print "online = "+str(online)
 		global mutex
 		#mutex.acquire()
-		while online:
+		while self.online:
 			temp = ""
 			sleep(1)
 			try:
@@ -224,7 +224,7 @@ class recieverClass(Thread):
 	def reciever(self):
 		try:
 			while 1:
-				data = str(self.clientSocket.recv(BUFF))
+				data = str(self.clientSocket.recv(self.BUFF))
 				if(data != "" and data != "/x"):
 					if(data.startswith('/ping')):
 						s = data.split(' ', 1)
