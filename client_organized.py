@@ -41,10 +41,12 @@ class Client(object):
 		self.osso_rpc.set_rpc_callback("thor.client","/thor/client","thor.client",self.send)
 		
 		#Aktivera clientsocket
-		clientSocket = socket(AF_INET, SOCK_STREAM)
-		clientSocket2 = socket(AF_INET, SOCK_STREAM)
-		clientSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-		clientSocket2.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+		self.clientSocket = socket(AF_INET, SOCK_STREAM)
+		self.clientSocket2 = socket(AF_INET, SOCK_STREAM)
+		self.clientSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+		self.clientSocket2.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+
+		self.q = Queue()
 
 	def send(self, interface, method, arguments, user_data):
 		
@@ -53,33 +55,33 @@ class Client(object):
 		self.msg = Message(data)
 		self.data = finishCMD(msg)
 		
-		if(data.startswith('/quit') or data.startswith('/exit')):
+		if(self.data.startswith('/quit') or self.data.startswith('/exit')):
 			try:
-				clientSocket.send('/quit')
+				self.clientSocket.send('/quit')
 			except Exception, e:
 				print "Server has gone down."
-				clientSocket.close()
-				clientSocket2.close()
-		if(data.startswith('/ping')):
-			temp = data.split(' ',1)
+				self.clientSocket.close()
+				self.clientSocket2.close()
+		if(self.data.startswith('/ping')):
+			temp = self.data.split(' ',1)
 			if(len(temp) == 1):
-				data = '/ping' + '/ ' + str(time())
-		elif(data.startswith('/addcontact')):
-			temp = data.split(' ',1)
-			data = ""
-			if(len(temp) > 1 and temp[1] not in contactList):
-				contactList.append(temp[1])
-		elif(data.startswith('/deletecontact')):
-			temp = data.split(' ',1)
-			data = ""
-			if(len(temp) > 1 and temp[1] in contactList):
-				contactList.remove(temp[1])
-		elif(data.startswith('/showcontactlist')):
-			data = ""
+				self.data = '/ping' + '/ ' + str(time())
+		elif(self.data.startswith('/addcontact')):
+			temp = self.data.split(' ',1)
+			self.data = ""
+			if(len(temp) > 1 and temp[1] not in self.contactList):
+				self.contactList.append(temp[1])
+		elif(self.data.startswith('/deletecontact')):
+			temp = self.data.split(' ',1)
+			self.data = ""
+			if(len(temp) > 1 and temp[1] in self.contactList):
+				self.contactList.remove(temp[1])
+		elif(self.data.startswith('/showcontactlist')):
+			self.data = ""
 			print "Online contacts: "
 			for n in contactList:
 				print n
-		elif(data != ""):
+		elif(self.data != ""):
 			#clientSocket.send(data)
 			q.put(data)
 			#global primary
@@ -89,43 +91,42 @@ class Client(object):
 			#else:
 				#clientSocket2.send(data)
 	
-	def sendfunction(data):
-		global primary
-		global clientSocket
-		global clientSocket2
+	def sendfunction(self, data):
+		self.primary
+		self.clientSocket
+		self.clientSocket2
 		#print "primary = "+str(primary)
-		if(primary):
+		if(self.primary):
 			#print "skickar till primary  "+data
-			clientSocket.send(data)
+			self.clientSocket.send(data)
 		else:
 			#print "skickar till backup  "+data
-			clientSocket2.send(data)
-	def deQueue():
+			self.clientSocket2.send(data)
+	def deQueue(self):
 		print "kommer jag till dequeue?"
 		#print "online = "+str(online)
 		global mutex
-		global q
 		#mutex.acquire()
 		while online:
 			temp = ""
 			sleep(1)
 			try:
-				while not q.empty(): 
+				while not self.q.empty(): 
 					#print "tomat"
-					temp = q.get()
+					temp = self.q.get()
 					print "sparar undan  "+temp
 					sendfunction(temp)
 			except Exception, e:
 				#print e
 				#print "gurka"
-				q._put(temp)
+				self.q._put(temp)
 				#fixa sa att det skickar nasta gang.
 		#mutex.release()
 	
-	def connect():
-		global MYPORT
-		global primary
-		global online
+	def connect(self):
+		self.MYPORT
+		self.primary
+		self.online
 		#clientSocket = socket(AF_INET, SOCK_STREAM)
 		print "wassap"
 		print "gor jag detta?"
@@ -140,38 +141,38 @@ class Client(object):
 		#except error:
 			#print 'no server baby i connect'
 		#print "waddap"
-		clientSocket.connect((ADDR, PORT))
+		self.clientSocket.connect((ADDR, PORT))
 		online = True
-		thread.start_new_thread(deQueue, ())
+		thread.start_new_thread(self.deQueue, ())
 		#print "waddap2"
-		recThread = recieverClass(clientSocket, (ADDR,MYPORT))
+		recThread = recieverClass(self.clientSocket, (ADDR,MYPORT))
 		#print "waddap3"
 		recThread.start()
 		#print "waddap4"
 		gtk.main()
 	
 	def reconnect():
-		global MYPORT
-		global primary
-		global online
-		#clientSocket2 = socket(AF_INET, SOCK_STREAM)
+		self.MYPORT
+		self.primary
+		self.online
+		#self.clientSocket2 = socket(AF_INET, SOCK_STREAM)
 		#print "did i do this reconnect?"
 		#print "primary i reconnect = "+str(primary)
 		#print "har borde jag satta primary till false"
-		primary = False
+		self.primary = False
 		#print "primary i reconnect igen = "+str(primary)
 			#SSH anrop, startar ssh tunnel mot servern
 		#try:
-			#MYPORT +=1
+			#self.MYPORT +=1
 			#subprocess.call('ssh -f nikpe890@'+HOST2+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT2)+' sleep 4', shell=True)
 		#except error:
 			#print 'no server baby i reconnect'
 		#print "baddap"
-		clientSocket2.connect((ADDR2, MYPORT))
+		self.clientSocket2.connect((ADDR2, MYPORT))
 		online = True
-		thread.start_new_thread(deQueue, ())
+		thread.start_new_thread(self.deQueue, ())
 		#print "baddap2"
-		recThread2 = recieverClass(clientSocket2, (ADDR2,MYPORT))
+		recThread2 = recieverClass(self.clientSocket2, (ADDR2,MYPORT))
 		#print "baddap3"
 		recThread2.start()
 		#print "baddap4"
@@ -193,11 +194,11 @@ class Client(object):
 			print "Du sitter pa en loser dator och har inget batteri"
 			
 			
-	de run():
+	def run(self):
 		#mutex = Lock()
 		#q = PriorityQueue(Queue())
-		q = Queue()
-		connect()
+		#q = Queue()
+		self.connect()
 	
 ### Klassen for prioritets ko
 #class PriorityQueue(Queue):
