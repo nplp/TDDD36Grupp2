@@ -14,7 +14,7 @@ import time
 import osso
 import samtal
 import lager
-#import inkorg
+import inkorg
 from databasklient import * 
 
 class Gui(hildon.Program):	
@@ -42,7 +42,7 @@ class Gui(hildon.Program):
         print "Hello again - %s was pressed" % data
 	
     def send(self, widget, data=None):
-        print "Hello again - %s was pressed" % data
+        print "Hello again - %s wa s pressed" % data
 	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
@@ -220,6 +220,17 @@ class Gui(hildon.Program):
 	self.samtala.hbox.hide()
 	self._lager.lagerboxen.hide()	
 	self.swindow.show()
+	
+    def inboxen(self, widget, event, data=None):
+	self.kommunikation.set_active(False)
+	self.filer.set_active(False)
+	self.verktyg.set_active(False)
+	self.vbox2.hide()
+	self.map.hide()
+	self.scrolled_window.hide()
+	self.samtala.hbox.hide()
+	self._lager.lagerboxen.hide()	
+	self.scwindow.show()
 
 	
         #Avsluta programmet
@@ -284,8 +295,8 @@ class Gui(hildon.Program):
 	self.vbox2.pack_start(self.samtal, True, True, 0)
 	
 	# Video
-	self.video = gtk.Button("Video")
-        self.video.connect("clicked", self.callback, "Video")
+	self.video = gtk.Button("Inkorg")
+        self.video.connect("clicked", self.inboxen, "Inkorg")
 	self.vbox2.pack_start(self.video, True, True, 0)
 	
 	# Tillbaka
@@ -353,7 +364,7 @@ class Gui(hildon.Program):
 	self.ringa = detringer.Ring()
 	self.samtala = samtal.Samtal()
 	self._lager = lager.Lager()
-	#self.inbox = inkorg.Adresslista()
+	self.inbox = inkorg.Inkorg()
 	
 	self.vbox3 = gtk.VBox(False, 0)
         self.vbox3.show()
@@ -370,23 +381,29 @@ class Gui(hildon.Program):
 	self.swindow.set_border_width(10)
 	self.swindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
 	
+	self.scwindow=gtk.ScrolledWindow()
+	self.scwindow.set_border_width(10)
+	self.scwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
+	
 	#self.batt = battery.Batteri()
 	self.label = gtk.Label(self.batt.getbattery())
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
 	
 	#Packning
+	print "packing"
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
 	self.swindow.add_with_viewport(self.meddela.vbox)
+	self.scwindow.add_with_viewport(self.inbox.vbox)
 	self.vbox3.pack_start(self.samtala.hbox,False,False,0)
 	self.vbox3.pack_start(self.ringa.vbox,False,False,0)
 	self.vbox3.pack_start(self.map,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
 	self.vbox3.pack_start(self.scroll_window,True,True,0)
 	self.vbox3.pack_start(self.swindow,True,True,0)	
+	self.vbox3.pack_start(self.scwindow,True,True,0)		
 	self.vbox3.pack_start(self._lager.lagerboxen,True,True,0)
-	#self.vbox3.pack_start(self.meddela.vbox,True,True,0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
     	self.hbox.show()
 	self.window.add(self.hbox)

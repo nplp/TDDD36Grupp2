@@ -69,7 +69,8 @@ class Meddelande (object):
 	
 	self.entry1 = gtk.TextView()
 	#self.entry1.set_size_request(50,200)
-	#self.entry1.modify_font(pango.FontDescription("Sans 12"))	
+	#self.entry1.modify_font(pango.FontDescription("Sans 12"))
+	self.entry1.set_wrap_mode(gtk.WRAP_WORD_CHAR)	
 	self.entry1.show()
 	self.scrolled_window.add_with_viewport(self.entry1)
 	self.vbox.pack_start(self.scrolled_window, True, True, 0)
