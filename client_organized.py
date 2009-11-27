@@ -225,7 +225,7 @@ class recieverClass(Thread):
 	def reciever(self):
 		try:
 			while 1:
-				data = str(self.clientSocket.recv(BUFF))
+				data = str(self.clientSocket.recv(self.BUFF))
 				if(data != "" and data != "/x"):
 					if(data.startswith('/ping')):
 						s = data.split(' ', 1)
