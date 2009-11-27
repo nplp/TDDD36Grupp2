@@ -82,8 +82,9 @@ class Client(object):
 			for n in contactList:
 				print n
 		elif(self.data != ""):
+			print "innnan queue"
 			#clientSocket.send(data)
-			q.put(data)
+			self.q.put(data)
 			#global primary
 			#print primary
 			#if(primary):
@@ -92,16 +93,18 @@ class Client(object):
 				#clientSocket2.send(data)
 	
 	def sendfunction(self, data):
+		self.data = data
 		self.primary
 		self.clientSocket
 		self.clientSocket2
 		#print "primary = "+str(primary)
 		if(self.primary):
 			#print "skickar till primary  "+data
-			self.clientSocket.send(data)
+			self.clientSocket.send(self.data)
 		else:
 			#print "skickar till backup  "+data
-			self.clientSocket2.send(data)
+			self.clientSocket2.send(self.data)
+	
 	def deQueue(self):
 		print "kommer jag till dequeue?"
 		#print "online = "+str(online)
@@ -115,7 +118,7 @@ class Client(object):
 					#print "tomat"
 					temp = self.q.get()
 					print "sparar undan  "+temp
-					sendfunction(temp)
+					self.sendfunction(temp)
 			except Exception, e:
 				#print e
 				#print "gurka"
@@ -124,15 +127,15 @@ class Client(object):
 		#mutex.release()
 	
 	def connect(self):
-		self.MYPORT
-		self.primary
-		self.online
+		#self.MYPORT
+		#self.primary
+		#self.online
 		#clientSocket = socket(AF_INET, SOCK_STREAM)
 		print "wassap"
 		print "gor jag detta?"
 		#print "primary i connect= "+str(primary)
 		#print "har borde jag satta primary till true"
-		primary = True
+		self.primary = True
 		#print "primary i connect igen = "+str(primary)
 		#SSH anrop, startar ssh tunnel mot servern
 		#try:
@@ -142,7 +145,7 @@ class Client(object):
 			#print 'no server baby i connect'
 		#print "waddap"
 		self.clientSocket.connect((self.ADDR, self.PORT))
-		online = True
+		self.online = True
 		thread.start_new_thread(self.deQueue, ())
 		#print "waddap2"
 		recThread = recieverClass(self.clientSocket, (self.ADDR,self.MYPORT))
@@ -152,9 +155,9 @@ class Client(object):
 		gtk.main()
 	
 	def reconnect():
-		self.MYPORT
-		self.primary
-		self.online
+		#self.MYPORT
+		#self.primary
+		#self.online
 		#self.clientSocket2 = socket(AF_INET, SOCK_STREAM)
 		#print "did i do this reconnect?"
 		#print "primary i reconnect = "+str(primary)
@@ -169,7 +172,7 @@ class Client(object):
 			#print 'no server baby i reconnect'
 		#print "baddap"
 		self.clientSocket2.connect((self.ADDR2, self.MYPORT))
-		online = True
+		self.online = True
 		thread.start_new_thread(self.deQueue, ())
 		#print "baddap2"
 		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.MYPORT))
