@@ -141,11 +141,11 @@ class Client(object):
 		#except error:
 			#print 'no server baby i connect'
 		#print "waddap"
-		self.clientSocket.connect((ADDR, PORT))
+		self.clientSocket.connect((self.ADDR, self.PORT))
 		online = True
 		thread.start_new_thread(self.deQueue, ())
 		#print "waddap2"
-		recThread = recieverClass(self.clientSocket, (ADDR,MYPORT))
+		recThread = recieverClass(self.clientSocket, (self.ADDR,self.MYPORT))
 		#print "waddap3"
 		recThread.start()
 		#print "waddap4"
@@ -164,15 +164,15 @@ class Client(object):
 			#SSH anrop, startar ssh tunnel mot servern
 		#try:
 			#self.MYPORT +=1
-			#subprocess.call('ssh -f nikpe890@'+HOST2+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT2)+' sleep 4', shell=True)
+			#subprocess.call('ssh -f nikpe890@'+self.HOST2+' -L'+str(self.MYPORT)+':127.0.0.1:'+str(self.PORT2)+' sleep 4', shell=True)
 		#except error:
 			#print 'no server baby i reconnect'
 		#print "baddap"
-		self.clientSocket2.connect((ADDR2, MYPORT))
+		self.clientSocket2.connect((self.ADDR2, self.MYPORT))
 		online = True
 		thread.start_new_thread(self.deQueue, ())
 		#print "baddap2"
-		recThread2 = recieverClass(self.clientSocket2, (ADDR2,MYPORT))
+		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.MYPORT))
 		#print "baddap3"
 		recThread2.start()
 		#print "baddap4"
@@ -189,7 +189,7 @@ class Client(object):
 			y = float(dev_obj.GetProperty('battery.reporting.design'))
 			bat = int((x/y)*100)
 			if(bat < 100):
-			print 'Nu har du',bat,'% kvar i batteri.'
+				print 'Nu har du',bat,'% kvar i batteri.'
 		except Exception, e :
 			print "Du sitter pa en loser dator och har inget batteri"
 			
@@ -251,8 +251,13 @@ class recieverClass(Thread):
 						break
 		except Exception, e:
 			print e
+
 	def run(self):
 		self.reciever()
-		
+
+
+if __name__ == "__main__":
+    Client().run()
+  
 
 
