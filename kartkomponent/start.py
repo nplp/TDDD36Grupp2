@@ -65,18 +65,24 @@ class Start(object):
 
 	def run(self):
 		self.createmap()
-		try:
+		if(len(sys.argv) > 1):
 			if(sys.argv[1] == 'gps'):
 				self.startgui()
 				print "Going to coords"
-				self.getcoords()
-		except Exception, e:
+				self.getcoords() #nu måste man ha startat gps processen innan detta steg och fått en lock
+			else:
+				print "gps av"
+				PORT = sys.argv[1]
+				subprocess.call('python2.5 ../client2.py '+ PORT + ' &', shell=True)
+				guitest.Gui(self.map).run()
+
+		else:
 			print "gps av"
+			subprocess.call('python2.5 ../client2.py &', shell=True)
 			guitest.Gui(self.map).run()
 				
 
 		
-
 
 if __name__ == "__main__":
     Start().run()
