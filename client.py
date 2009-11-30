@@ -112,7 +112,6 @@ class Client(object):
 		while self.online:
 			print "queue ska sleepas"
 			temp = ""
-			sleep(1)
 			print "queue kollar varje 1sekund"
 			try:
 				while not self.q.empty():
