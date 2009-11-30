@@ -23,14 +23,14 @@ class Client(object):
 	def __init__(self):
 		#Variabler
 		#HOST = '130.236.216.128'
-		self.HOST = '127.0.0.1'
+		self.HOST = '130.236.189.14'
 		self.HOST2 = '130.236.189.14'
-		self.PORT = 2150
+		self.PORT = 2051
 		self.PORT2 = 2017
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
-		self.MYPORT = 2338
+		self.MYPORT = 2317
 		self.ADDR = ('127.0.0.1')
 		self.ADDR2 = ('127.0.0.1')
 		self.contactList = list()
@@ -105,7 +105,7 @@ class Client(object):
 	
 	def deQueue(self):
 		#print "online = "+str(online)
-		global mutex
+		#global mutex
 		#mutex.acquire()
 		while self.online:
 			temp = ""
@@ -137,14 +137,16 @@ class Client(object):
 		except error:
 			print 'no server baby i connect'
 		print "waddap"
-		self.clientSocket.connect((self.ADDR, self.PORT))
+		print self.ADDR
+		print self.MYPORT
+		self.clientSocket.connect((self.ADDR, self.MYPORT))
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
-		#print "waddap2"
+		print "waddap2"
 		recThread = recieverClass(self.clientSocket, (self.ADDR,self.MYPORT))
-		#print "waddap3"
+		print "waddap3"
 		recThread.start()
-		#print "waddap4"
+		print "waddap4"
 		gtk.main()
 	
 	def reconnect():
@@ -165,7 +167,8 @@ class Client(object):
 		#print "baddap3"
 		recThread2.start()
 		#print "baddap4"
-	
+		gtk.main()
+		
 	def checkBattery():
 		try:
 			bus = dbus.SystemBus()
