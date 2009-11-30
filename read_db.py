@@ -94,9 +94,9 @@ Session.configure(bind=engine)
 
 ##############################definerar classer##################################
 class Message(object):
-	def __init__(self, sender=None, reciver=None, type=None, time_created=None, content=None, response_to=None):
+	def __init__(self, sender=None, receiver=None, type=None, time_created=None, content=None, response_to=None):
 		self.sender=sender
-		self.reciver=reciver
+		self.receiver=receiver
 		self.type=type
 		self.time_created=time_created
 		self.content=content
