@@ -9,6 +9,12 @@ os.system('rm data.db')
 os.system('rm data.db-journal')
 engine = create_engine('sqlite:///data.db', echo=False)
 metadata = MetaData()
+id_nr=0
+def generate_id():
+	global id_nr
+	id_nr+=1
+	id=(id_nr*10)+2
+	return id
 
 #######################skapar data tabeller############################33
 group_table = Table('group', metadata,
@@ -84,7 +90,7 @@ unit_table = Table('units',metadata,
 	Column('coordy', Float),
 	Column('id', Integer, primary_key=True),
 	Column('name', Text),
-	Column('time_changed', Float),
+	Column('time_changed', Integer),
 	Column('type', Text)
 	)
 		
@@ -105,6 +111,10 @@ mission_poi = Table ('mission_poi', metadata,
 	Column('mission_id', None, ForeignKey('missions.id'), primary_key=True),
 	Column('poi_id', None, ForeignKey('pois.id'), primary_key=True)
 	)
+mission_unit = Table ('mission_unit', metadata,
+	Column('mission_id', None, ForeignKey('missions.id'), primary_key=True),
+	Column('unit_id', None, ForeignKey('units.id'), primary_key=True)
+	)
 
 #############################################################################
 
@@ -123,32 +133,34 @@ class Message(object):
 		self.response_to=response_to
 
 class User(object):
-	def __init__(self, name=None, clearance=None,  password=None):
+	def __init__(self, name=None, id=None, clearance=None,  password=None):
 		self.name=name
+		self.id=generate_id()
 		self.clearance=clearance
 		self.password=password	
 	def __repr__(self):
 		return self.name
 class Item(object):
-	def __init__(self, name=None, count=None, location=None):
+	def __init__(self, name=None, id=None, count=None, location=None):
 		self.name=name
+		self.id=generate_id()
 		self.count=count
 		self.location=location
 	def __repr__(self):
 		return self.name, self.count, self.location
 class Group(object):
 	
-	def __init__(self, name=None):
+	def __init__(self, name=None, id=None):
 		self.name=name
-	def __repr__(self):
-		return self.name
+		self.id=generate_id()
+	
 
 class Mission(object):
 	def __init__(self, poi_id = None, unit_id=None, id=None, name= None, time_created=None, time_changed=None, status = None, desc=None, contact_person = None, contact_number = None):
 		#self.id = generate_id()
 		self.poi_id = poi_id
 		self.unit_id=unit_id
-		self.id=id
+		self.id=generate_id()
 		self.name = name
 		self.time_created = time_created
 		self.time_changed = time_changed
@@ -161,7 +173,7 @@ class Poi(object):
 	def __init__(self, coordx= None, coordy= None, id=None, name= None, time_created=None, time_changed=None, type=None, sub_type= None):
 		self.coordx = coordx
 		self.coordy = coordy
-		self.id = id
+		self.id=generate_id()
 		self.name = name
 		self.time_created = time_created
 		self.type = type
@@ -171,7 +183,7 @@ class Unit(object):
 	def __init__(self, coordx= None, coordy= None, id=None, name= None, time_changed=None, type= None):
 		self.coordx = coordx
 		self.coordy = coordy
-		self.id = id
+		self.id=generate_id()
 		self.name = name
 		self.time_changed = time_changed
 		self.type = type
@@ -207,13 +219,13 @@ metadata.create_all(engine)
 mapper(Message, message_table)
 mapper(Group, group_table)
 mapper(Poi, poi_table)
-
 mapper(Unit, unit_table)
 
 #many to many relationer för att kunna länka grupper till uppdrag
 mapper(Mission, mission_table, properties=dict(
 	groups=relation(Group, secondary= mission_group, backref='missions'),
-	pois=relation(Poi, secondary= mission_poi, backref='missions')
+	pois=relation(Poi, secondary= mission_poi, backref='missions'),
+	units=relation(Unit, secondary= mission_unit, backref='missions')
 	)
 	)
 	
@@ -227,6 +239,9 @@ mapper(Item, items_table)
 
 
 ############################Metoder###########################
+
+
+
 
 #retunerar alla användare
 def get_user_all():
@@ -406,15 +421,44 @@ def removeMessage(id_nr):
 	m=session.query(Message).filter_by(id=id_nr).first()
 	session.delete(m)
 	
-def addUnit(coordx1,coordy1,id1,name1,timestamp1,type1):
-	pass
+def addUnit(coordx1, coordy1, name1, time_changed1, type1):
+	session.save(Unit(coordx=coordx1, coordy=coordy1, name=name1, time_changed=time_changed1, type=type1))
+
+def add_mission_unit(mission_id, unit_id):
+	try:
+		m=session.query(Mission).filter_by(id=mission_id).first()
+		u=session.query(Unit).filter_by(id=unit_id).first()
+		m.units.append(u)
+		
+	except:
+		pass
 
 def removeUnit():
 	pass
 
-def getUnit():
-	pass
+def getUnits():
+	try:
+		m=session.query(Unit).first()
+		return m.coordx,m.coordy,m.name,m.time_changed,m.type
+	except:
+		return None
 
+def class2dict(o):
+    """Return a dictionary from object that has public
+       variable -> key pairs
+    """   
+    dict = {}
+    #Joy: all the attributes in a class are already in __dict__
+    for elem in o.__dict__.keys():
+        if elem.find("_" + o.__class__.__name__) == 0:
+            continue
+            #We discard private variables, which are automatically
+            #named _ClassName__variablename, when we define it in
+            #the class as __variablename
+        else:
+            dict[elem] = o.__dict__[elem]
+    return dict
+	
 #skapar en session för att kunna komma åt databasen
 session = Session()
 
@@ -477,9 +521,20 @@ addMission("Save the cat",datetime.now(), datetime.now(), "active", "Go and save
 addMission("Kill the cat",datetime.now(), datetime.now(), "active", "Go and kill the cat in the burning tree.","Popa Cat", "1987654321")
 
 addPoi(55,55,"Pastavagnen", datetime.now(), "structure", "other")
+addPoi(55,55,"zenit", datetime.now(), "structure", "other")
+addPoi(55,55,"skogsbrynet", datetime.now(), "structure", "other")
+add_mission_poi(1,1)
+
+add_mission_poi(1,3)
+
+addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
+addUnit(55, 55, "Sjukhus", datetime.now(), "army")
+addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
+
+add_mission_unit(1,1)
 
 addMessage('mathias1','hanna','text',"change",'jason.dums() sak ska vara har tex Unit', 1)
-print getMessage(1)
+#print getMessage(1)
 add_item('Pansarvagn', 10, 'Linkoping')
 add_item('Pansarvagn', 70, 'Linkoping')
 add_item('EMP', 1, 'Linkoping')
@@ -492,11 +547,24 @@ add_item('Lastbilar', 37, 'Linkoping')
 add_item('Diselvarmare', 59, 'Linkoping')
 add_item('Sprinterbuss', 5, 'Linkoping')
 session.commit()
+m=getUnits()
+print m
+#m= class2dict(m)
+#print m
+#print generate_id()
 
 
+
+
+
+
+#m= get_mission_by_id(1).pois
+#print m[0].name
+#print m[1].name
+#m=get_mission_by_id(1)
+#print m.units[0].name
 session = Session()
 #user2.groups.append(group2)
-
 
 
 
