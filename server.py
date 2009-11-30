@@ -503,7 +503,10 @@ class sessionClass(Thread):
 						atomic_sendTo(self.name + " (w): " + msg[2], msg[1])
 						self.sendBack("You whispered to " + msg[1])
 				# json-strängar! Startar med '{'. Vbf message
-				#elif(data.startswith('{')):
+				elif(data.startswith('{')):
+					msg = json.loads(data)
+					try: atomic_sendTo(data,msg["receiver"])
+					except KeyError, e: print "Not a msg"
 				elif(data != ""):
 					atomic_sendAll(self.name + ": " + data)
 		except Exception, e:
@@ -537,10 +540,6 @@ def listenToClients():
 		# --------------
 
 thread.start_new_thread(listenToClients, ())
-
-l = [0,1,2]
-l2 = fillOutList(l, 5, None)
-print l2
 
 # Här startar replikeringen.
 #thread.start_new_thread(copydb, ())
