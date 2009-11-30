@@ -4,13 +4,13 @@ import gtk
 from databasklient import *
 import visameddelande
 
-m = getMessage(1)
-n = getMessage(2)
+m = getMessage(202)
+n = getMessage(212)
 #m=m
 #n=n
 print m.sender
 print n.sender
-anvandare = [(m.sender, m.reciver, m.type , m.time_created, m.content , m. response_to), (n.sender, n.reciver, n.type , n.time_created, n.content , n. response_to), ('Christoffer', '66.249.65.85 ', 'offline', 'online', '66.249.65.81 ', 'offline'), ('Thor', '66.249.65.90 ', 'offline', 'online', '66.249.65.81 ', 'offline'), ('Niklas', '66.249.65.88 ', 'online', 'online', '66.249.65.81 ', 'offline'),('Mathias', '66.249.65.00 ', 'online', 'online', '66.249.65.81 ', 'offline')]
+anvandare = [(m.sender, m.receiver, m.type , m.time_created, m.content , m. response_to), (n.sender, n.receiver, n.type , n.time_created, n.content , n. response_to), ('Christoffer', '66.249.65.85 ', 'offline', 'online', '66.249.65.81 ', 'offline'), ('Thor', '66.249.65.90 ', 'offline', 'online', '66.249.65.81 ', 'offline'), ('Niklas', '66.249.65.88 ', 'online', 'online', '66.249.65.81 ', 'offline'),('Mathias', '66.249.65.00 ', 'online', 'online', '66.249.65.81 ', 'offline')]
 
 #('mathias1','hanna','text',"change",'jason.dums() sak ska vara har tex Unit', 1)
 class Inkorg(gtk.Window): 
