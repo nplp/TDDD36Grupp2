@@ -25,7 +25,7 @@ class Client(object):
 		#HOST = '130.236.216.128'
 		self.HOST = '130.236.189.14'
 		self.HOST2 = '130.236.189.14'
-		self.PORT = 2115
+		self.PORT = 2116
 		self.PORT2 = 2017
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
@@ -49,6 +49,7 @@ class Client(object):
 		self.q = Queue()
 
 	def send(self, interface, method, arguments, user_data):
+		print "kor send"
 		self.dict = json.loads(arguments[0])
 		self.data = self.dict["content"]["message"]
 		self.msg = Message(self.data)
@@ -82,6 +83,7 @@ class Client(object):
 				print n
 		elif(self.data != ""):
 			#clientSocket.send(data)
+			print "skickar till kon"
 			self.q.put(self.data)
 			#global primary
 			#print primary
@@ -97,10 +99,10 @@ class Client(object):
 		self.clientSocket2
 		#print "primary = "+str(primary)
 		if(self.primary):
-			#print "skickar till primary  "+data
+			print "skickar till primary  "+data
 			self.clientSocket.send(self.data)
 		else:
-			#print "skickar till backup  "+data
+			print "skickar till backup  "+data
 			self.clientSocket2.send(self.data)
 	
 	def deQueue(self):
