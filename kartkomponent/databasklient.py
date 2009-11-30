@@ -409,6 +409,15 @@ def getMessage(id_nr):
 		return m
 	#except:
 	#	return None
+	
+def getAllMessages():
+	try:
+		m = session.query(Message).all()
+		return m
+	except Exception, e:
+		print e 
+		
+
 def removeMessage(id_nr):
 	m=session.query(Message).filter_by(id=id_nr).first()
 	session.delete(m)
