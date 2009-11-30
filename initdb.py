@@ -97,7 +97,7 @@ unit_table = Table('units',metadata,
 message_table = Table('messages',metadata,
 	Column('id', Integer, primary_key=True),
 	Column('sender', Text),
-	Column('reciver', Text),
+	Column('receiver', Text),
 	Column('type', Text),
 	Column('time_created', Integer),
 	Column('content', Text),
@@ -124,9 +124,9 @@ Session.configure(bind=engine)
 
 ##############################definerar classer##################################
 class Message(object):
-	def __init__(self, sender=None, reciver=None, type=None, time_created=None, content=None, response_to=None):
+	def __init__(self, sender=None, receiver=None, type=None, time_created=None, content=None, response_to=None):
 		self.sender=sender
-		self.reciver=reciver
+		self.receiver=receiver
 		self.type=type
 		self.time_created=time_created
 		self.content=content
@@ -216,25 +216,25 @@ def dbClass(cl):
 metadata.create_all(engine)
 
 #länkar classobject till datatabeller
-mapper(Message, message_table)
-mapper(Group, group_table)
-mapper(Poi, poi_table)
-mapper(Unit, unit_table)
+mapper(Message, message_table, properties=dict())
+mapper(Group, group_table, properties=dict())
+mapper(Poi, poi_table, properties=dict())
+mapper(Unit, unit_table, properties=dict())
 
 #many to many relationer för att kunna länka grupper till uppdrag
-mapper(Mission, mission_table, properties=dict(
-	groups=relation(Group, secondary= mission_group, backref='missions'),
-	pois=relation(Poi, secondary= mission_poi, backref='missions'),
-	units=relation(Unit, secondary= mission_unit, backref='missions')
-	)
+mapper(Mission, mission_table, properties={
+	'groups': relation(Group, secondary= mission_group, backref='missions'),
+	'pois': relation(Poi, secondary= mission_poi, backref='missions'),
+	'units': relation(Unit, secondary= mission_unit, backref='missions')
+	}
 	)
 	
 #many to many relation för att kunna länka användarkonton till grupper
-mapper(User, user_table, properties=dict(
-	groups=relation(Group, secondary= user_group, backref='users'))
+mapper(User, user_table, properties={
+	'groups': relation(Group, secondary= user_group, backref='users')}
 	)
 
-mapper(Item, items_table)
+mapper(Item, items_table, properties=dict())
 
 
 
@@ -392,6 +392,12 @@ def get_mission_all(namn):
 	except:
 		return None
 
+def getPoi(namn):
+	try:
+		m=session.query(Poi).filter_by(name=namn).first()
+		return m
+	except:
+		return None
 def addPoi(coordx1, coordy1,name1,time_created1,type1,sub_type1):
 	session.save(Poi(coordx=coordx1, coordy=coordy1, name=name1, time_created=time_created1, type=type1, sub_type=sub_type1))
 #lägger in användare i en grupp	
@@ -404,8 +410,8 @@ def add_mission_poi(mission_id,poi_id):
 	except:
 		pass
 #lägger in ett medelande i databasen
-def addMessage(sender1, reciver1, type1, time_created1, content1, response_to1):
-	session.save(Message(sender=sender1, reciver=reciver1, type=type1, time_created=time_created1, content=content1, response_to=response_to1))
+def addMessage(sender1, receiver1, type1, time_created1, content1, response_to1):
+	session.save(Message(sender=sender1, receiver=receiver1, type=type1, time_created=time_created1, content=content1, response_to=response_to1))
 #######################################################	
 session = Session()
 USERS = session.query(User).all() # radera kj?
@@ -414,7 +420,7 @@ session.close()
 def getMessage(id_nr):
 	#try:
 		m= session.query(Message).filter_by(id=id_nr).first()
-		return m.sender, m.reciver, m.type, m.time_created, m.content, m.response_to
+		return m.sender, m.receiver, m.type, m.time_created, m.content, m.response_to
 	#except:
 	#	return None
 def removeMessage(id_nr):
@@ -436,12 +442,17 @@ def add_mission_unit(mission_id, unit_id):
 def removeUnit():
 	pass
 
+
+
 def getUnits():
 	try:
 		m=session.query(Unit).first()
 		return m.coordx,m.coordy,m.name,m.time_changed,m.type
 	except:
 		return None
+def getUnit(namn):
+	m=session.query(Unit).filter_by(name=namn).first()
+	return m
 
 def class2dict(o):
     """Return a dictionary from object that has public
@@ -523,15 +534,16 @@ addMission("Kill the cat",datetime.now(), datetime.now(), "active", "Go and kill
 addPoi(55,55,"Pastavagnen", datetime.now(), "structure", "other")
 addPoi(55,55,"zenit", datetime.now(), "structure", "other")
 addPoi(55,55,"skogsbrynet", datetime.now(), "structure", "other")
-add_mission_poi(1,1)
 
-add_mission_poi(1,3)
+add_mission_poi(122,152)
+
+add_mission_poi(122,162)
 
 addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
 addUnit(55, 55, "Sjukhus", datetime.now(), "army")
 addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
 
-add_mission_unit(1,1)
+add_mission_unit(122,172)
 
 addMessage('mathias1','hanna','text',"change",'jason.dums() sak ska vara har tex Unit', 1)
 #print getMessage(1)
@@ -548,14 +560,14 @@ add_item('Diselvarmare', 59, 'Linkoping')
 add_item('Sprinterbuss', 5, 'Linkoping')
 session.commit()
 m=getUnits()
-print m
+#print m
 #m= class2dict(m)
 #print m
 #print generate_id()
 
 
-
-
+print get_mission_object_by_name('Save the cat')
+print class2dict(get_mission_object_by_name('Save the cat'))
 
 
 #m= get_mission_by_id(1).pois
