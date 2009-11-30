@@ -2,6 +2,7 @@
 
 import gtk
 from databasklient import *
+import visameddelande
 
 m = getMessage(1)
 n = getMessage(2)
@@ -66,7 +67,7 @@ class Inkorg(gtk.Window):
 	
 	button = gtk.Button("Klar")
 	button.set_size_request(70,30)
-	button.connect("clicked", self.callback, "Klar")
+	button.connect("clicked", self.show_popup)
 	#button.add(hbox)
 	self.vbox.pack_start(button, False, False, 0)
 	button.show()
@@ -132,15 +133,6 @@ class Inkorg(gtk.Window):
 	column.set_sort_column_id(6)
 	treeView.append_column(column)
 	
-    #def desc_edited(self, caller, path, new_text, treeView):
-	#model[path][0] = new_text
-	#DEBUG("Desc %s changed to %s"%(path,new_text))
-	
-    #def desc_toggled(self, caller, path, treeView):
-		#model[path][6] = not model[path][6]
-		#DEBUG("Done %s changed to %s"%(path, model[path][6]))
-
-	
 
     def on_activated(self, widget, row, col):
 	print "on_activated"
@@ -148,6 +140,21 @@ class Inkorg(gtk.Window):
         model = widget.get_model()
         text = model[row][0] + ", " + model[row][1] + ", " + model[row][2] + ", " + model[row][3] + "," + model[row][4] + ", " + model[row][5] 
         self.statusbar.push(0, text)
+
+    def show_popup(self, button):
+	visa = visameddelande.VisaMeddelande()
+	print "hej"
+        popup = gtk.Window()
+        popup.set_title( "Meddelande" )
+	popup.set_size_request(500,500)
+        popup.add(visa.vbox)
+	#adress.vbox.show()	
+        popup.set_modal(False)
+        #popup.set_transient_for(self)
+        popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
+        popup.connect( "destroy", lambda *w: gtk.main_quit() )
+        popup.show()
+
 	
 def main():
 	gtk.main()
