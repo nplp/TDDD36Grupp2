@@ -114,6 +114,21 @@ def copydb():
 	ClientMutex.release()
 	sleep(60)
 
+
+# Atomisk ------
+def atomic_addUserToGroup(group,user):
+	ClientMutex.acquire()
+	session = Session()
+	try:
+		u=session.query(User).filter_by(name=user).first()
+		g=session.query(Group).filter_by(name=group).first()
+		u.groups.append(g)
+	except:
+		feedback.append(user + " couldn't join the group " + group)
+	session.commit()
+	session.close()
+	ClientMutex.release()
+
 # ----------------------------------------------------------------------------
 
 
@@ -270,21 +285,9 @@ def addCMD(arg):
 			temp.append(n.name) 
 		if(arg[1] in temp):
 			arg.pop(0)
-			username = arg.pop(0)
+			user = arg.pop(0)
 			for group in arg:
-				# Atomisk ------
-				ClientMutex.acquire()
-				session = Session()
-				try:
-					u=session.query(User).filter_by(name=username).first()
-					g=session.query(Group).filter_by(name=group).first()
-					u.groups.append(g)
-				except:
-					feedback.append("No group named " + group)
-				session.commit()
-				session.close()
-				ClientMutex.release()
-				# --------------
+				atomic_addUserToGroup(group,user)
 		else:
 			feedback.append("No user named " + arg[1])
 
@@ -298,20 +301,8 @@ def addCMD(arg):
 		if(arg[1] in temp):
 			arg.pop(0)
 			group = arg.pop(0)
-			for username in arg:
-				# Atomisk ------
-				ClientMutex.acquire()
-				session = Session()
-				try:
-					u=session.query(User).filter_by(name=username).first()
-					g=session.query(Group).filter_by(name=group).first()
-					u.groups.append(g)
-				except:
-					feedback.append("No user named " + username)
-				session.commit()
-				session.close()
-				ClientMutex.release()
-				# --------------
+			for user in arg:
+				atomic_addUserToGroup(group,user)
 		else:
 			feedback.append("No group named " + arg[1])
 
@@ -403,26 +394,34 @@ class sessionClass(Thread):
 				# Kicka om man inte skriver något efter 20 försök.
 				if(CLIENTNAME == ""):
 					return "/ERROR"
+
+				self.socket.send("Type your password " + CLIENTNAME)
+				# Läser in login och gör om åäö.
+				login = toEnglish(self.socket.recv(BUFF))
+
 				loginSession = Session()
-				if(is_user(CLIENTNAME)):
-					self.socket.send("Type your password " + CLIENTNAME)
-					# Läser in login och gör om åäö.
-					login = toEnglish(self.socket.recv(BUFF))
-					
+				# Atomisk ------
+				ClientMutex.acquire()
+				user = loginSession.query(User).filter_by(name = CLIENTNAME).first()
+				username = ""
 
-					# Atomisk ------
-					ClientMutex.acquire()
-					if(search(CLIENTNAME) == -1):
-						if(login == get_password(CLIENTNAME)):
+				try:
+					username = user.name
+				except Exception, e: pass
+
+				if(username == CLIENTNAME and search(CLIENTNAME) == -1):
+					p=loginSession.query(User).filter_by(name=CLIENTNAME).first()
+					try:
+						if(login == p.password):
 							self.name = CLIENTNAME
-					
-					ClientMutex.release()
-					# --------------
+					except Exception, e: pass
 
-					
-					if(self.name == CLIENTNAME):
-						return CLIENTNAME
+				ClientMutex.release()
+				# --------------
 				loginSession.close()
+
+				if(self.name == CLIENTNAME):
+					return CLIENTNAME
 		except Exception, e:
 			print "Client lost: " + CLIENTNAME + "\nException: " + str(e)	
 		return "/ERROR"
@@ -496,13 +495,15 @@ class sessionClass(Thread):
 						self.sendBack("You whispered to " + self.lastWhisper)
 				elif(data.startswith('/status')): 
 					self.sendBack("You are number " + str(search(self.name)))
+
 				elif(data.startswith('/whisper')):
 					msg = data.split(' ',2)
 					if(len(msg)>2):
 						atomic_setReply(msg[1], self.name)
 						atomic_sendTo(self.name + " (w): " + msg[2], msg[1])
 						self.sendBack("You whispered to " + msg[1])
-
+				# json-strängar! Startar med '{'. Vbf message
+				#elif(data.startswith('{')):
 				elif(data != ""):
 					atomic_sendAll(self.name + ": " + data)
 		except Exception, e:
@@ -536,6 +537,10 @@ def listenToClients():
 		# --------------
 
 thread.start_new_thread(listenToClients, ())
+
+l = [0,1,2]
+l2 = fillOutList(l, 5, None)
+print l2
 
 # Här startar replikeringen.
 #thread.start_new_thread(copydb, ())
