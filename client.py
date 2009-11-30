@@ -112,7 +112,7 @@ class Client(object):
 		while self.online:
 			temp = ""
 			sleep(1)
-			print "queue kolar varje 0.5sekund"
+			print "queue kollar varje 0.5sekund"
 			try:
 				while not self.q.empty():
 					#print "tomat"
@@ -151,7 +151,6 @@ class Client(object):
 		print "waddap3"
 		recThread.start()
 		print "waddap4"
-		gtk.main()
 	
 	def reconnect():
 		self.primary = False
@@ -171,7 +170,6 @@ class Client(object):
 		#print "baddap3"
 		recThread2.start()
 		#print "baddap4"
-		gtk.main()
 		
 	def checkBattery():
 		try:
@@ -255,6 +253,7 @@ class recieverClass(Thread):
 
 if __name__ == "__main__":
     Client().run()
+    gtk.main()
   
 
 
