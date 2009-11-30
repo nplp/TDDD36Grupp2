@@ -25,7 +25,7 @@ class Client(object):
 		#HOST = '130.236.216.128'
 		self.HOST = '130.236.189.14'
 		self.HOST2 = '130.236.189.14'
-		self.PORT = 2051
+		self.PORT = 2115
 		self.PORT2 = 2017
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
@@ -118,7 +118,7 @@ class Client(object):
 					self.sendfunction(temp)
 			except Exception, e:
 				#print e
-				#print "gurka"
+				print "gurka"
 				self.q._put(temp)
 				#fixa sa att det skickar nasta gang.
 		#mutex.release()
