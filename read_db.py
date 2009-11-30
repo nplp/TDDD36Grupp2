@@ -414,7 +414,7 @@ def getUnit():
 
 #skapar en session för att kunna komma åt databasen
 session = Session()
-print getMessage(1)
+#print getMessage(1)
 #get_mission_by_id
 
 #sparar ändringar i databasen
