@@ -64,6 +64,7 @@ class Gui(hildon.Program):
 	self.vbox2.hide()	
 	self.map.hide()
 	self.swindow.hide()
+	self.scwindow.hide()
 	self.scroll_window.hide()
         self.scrolled_window.hide()	
 	self.samtala.hbox.show()
@@ -76,6 +77,7 @@ class Gui(hildon.Program):
 	self.vbox2.hide()	
 	self.map.hide()
 	self.swindow.hide()
+	self.scwindow.hide()
 	self.scroll_window.hide()
         self.scrolled_window.hide()	
 	self.samtala.hbox.hide()	
@@ -89,6 +91,7 @@ class Gui(hildon.Program):
 	self.vbox2.hide()
 	self.map.hide()
 	self.swindow.hide()
+	self.scwindow.hide()
         self.scrolled_window.hide()
 	self.samtala.hbox.hide()
         self.scroll_window.show()
@@ -102,6 +105,7 @@ class Gui(hildon.Program):
 	self.vbox2.hide()
 	self.map.hide()
 	self.swindow.hide()
+	self.scwindow.hide()
 	self.scroll_window.hide()
 	self.samtala.hbox.hide()	
         self.scrolled_window.show()
@@ -205,6 +209,7 @@ class Gui(hildon.Program):
 	self.vbox2.hide()
 	self.scrolled_window.hide()
 	self.swindow.hide()
+	self.scwindow.hide()
 	self.ringa.vbox.hide()
         self.scroll_window.hide()
 	self.samtala.hbox.hide()	
@@ -219,6 +224,7 @@ class Gui(hildon.Program):
 	self.scrolled_window.hide()
 	self.samtala.hbox.hide()
 	self._lager.lagerboxen.hide()	
+	self.scwindow.hide()
 	self.swindow.show()
 	
     def inboxen(self, widget, event, data=None):
@@ -229,7 +235,8 @@ class Gui(hildon.Program):
 	self.map.hide()
 	self.scrolled_window.hide()
 	self.samtala.hbox.hide()
-	self._lager.lagerboxen.hide()	
+	self._lager.lagerboxen.hide()
+	self.swindow.hide()	
 	self.scwindow.show()
 
 	
