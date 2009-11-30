@@ -30,7 +30,7 @@ class Client(object):
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
-		self.MYPORT = 2317
+		self.MYPORT = 2329
 		self.ADDR = ('127.0.0.1')
 		self.ADDR2 = ('127.0.0.1')
 		self.contactList = list()
@@ -109,7 +109,7 @@ class Client(object):
 		#mutex.acquire()
 		while self.online:
 			temp = ""
-			sleep(0.5)
+			#sleep(0.5)
 			try:
 				while not self.q.empty(): 
 					#print "tomat"
