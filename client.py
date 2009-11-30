@@ -106,7 +106,7 @@ class Client(object):
 			self.clientSocket2.send(self.data)
 	
 	def deQueue(self):
-		#print "online = "+str(online)
+		print "online = "+str(online)
 		#global mutex
 		#mutex.acquire()
 		while self.online:
