@@ -4,12 +4,14 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 from databasklient import *
+import inkorg
 
-m= getMessage(1)
 
 class VisaMeddelande (object):
 	
-    def __init__(self):
+    def __init__(self, _args):
+	
+	self.args = _args
 	     
 	#self.window=gtk.Window()
 	#self.window.set_size_request(350, 250)
@@ -23,20 +25,22 @@ class VisaMeddelande (object):
 	self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
 	self.scrolled_window.show()
 	
+	#self.inkorg = inkorg.Inkorg()
+	
 	#Skriv ett amne
-        self.amne = gtk.Label("Avsandare: "+m.sender)
+        self.amne = gtk.Label("Amne: " + self.args["subject"])
         self.amne.set_alignment(0, 0)
 	self.amne.show()
 	self.vbox.pack_start(self.amne, False, False, 0)
 	
 	#Skriv ett amne
-        self.mottagare = gtk.Label("Amne: "+m.type)
+        self.mottagare = gtk.Label("Avsandare: " + self.args["sender"])
         self.mottagare.set_alignment(0, 0)
 	self.mottagare.show()
 	self.vbox.pack_start(self.mottagare , False, False, 0)
 	
 	#Skriv ett meddelande
-        self.meddelande = gtk.Label("Meddelande")
+        self.meddelande = gtk.Label("Meddelande: ")
         self.meddelande.set_alignment(0, 0)
 	self.meddelande.show()
         self.vbox.pack_start(self.meddelande, False, False, 0)
@@ -44,7 +48,7 @@ class VisaMeddelande (object):
 	self.entry1 = gtk.TextView()
 	self.entry1.set_wrap_mode(gtk.WRAP_WORD_CHAR)
 	self.textentry1 = self.entry1.get_buffer()
-	self.textentry1.set_text(m.content)	
+	self.textentry1.set_text(self.args["content"])	
 	self.entry1.show()
 	self.scrolled_window.add_with_viewport(self.entry1)
 	self.vbox.pack_start(self.scrolled_window, True, True, 0)

@@ -3,21 +3,18 @@ from databasklient import *
 import visameddelande
 
 
-anvandare = []
-
-
-for n in getAllMessages():
-	anvandare.append((n.sender, n.receiver, n.type , n.time_created, n.content , n. response_to))
-		
-
-
 class Inkorg(gtk.Window): 
 
     def callback(self, widget, data=None):
 	print "Inkorg - %s was pressed" % data
 
     def __init__(self):
-
+	    
+	self.one = ""
+	self.two = None
+	self.three = None
+	self.args = {}
+	
         self.vbox = gtk.VBox(False, 0)
 	self.vbox.show()
 	
@@ -53,24 +50,15 @@ class Inkorg(gtk.Window):
         self.vbox.show_all()
 	
     def get_messages(self):
-	    
-	hej = 0
-	#sajkd
-
+	self.anvandare = []
 	for n in getAllMessages():
-		print n
-		hej += 1
-	
-	print hej
+		self.anvandare.append((n.sender, n.receiver, n.type , n.time_created, n.content , n. response_to))
 		
-	m = getMessage(202)
-	n = getMessage(212)
-
-	#anvandare = [(m.sender, m.receiver, m.type , m.time_created, m.content , m. response_to), (n.sender, n.receiver, n.type , n.time_created, n.content , n. response_to), ('Christoffer', '66.249.65.85 ', 'offline', 'online', '66.249.65.81 ', 'offline'), ('Thor', '66.249.65.90 ', 'offline', 'online', '66.249.65.81 ', 'offline'), ('Niklas', '66.249.65.88 ', 'online', 'online', '66.249.65.81 ', 'offline'),('Mathias', '66.249.65.00 ', 'online', 'online', '66.249.65.81 ', 'offline')]
-		
+	return self.anvandare
 
     def create_model(self):
         store = gtk.ListStore(str, str, str, str, str, str)
+	anvandare = self.get_messages()
         for act in anvandare:
             store.append([act[0], act[1], act[2], act[3], act[4], act[5]])
         return store
@@ -110,10 +98,20 @@ class Inkorg(gtk.Window):
         model = widget.get_model()
         text = model[row][0] + ", " + model[row][2]+ ", " + model[row][4]
         self.statusbar.push(0, text)
-	print text
+	self.one = model[row][0]
+	self.two = model[row][2]
+	self.three = model[row][4]
+	print self.one
+	print self.two
+	print self.three
+	print model
+	self.args = {"sender":self.one,"subject":self.two,"content":self.three}
+	
+	print self.args["subject"]
 
     def show_popup(self, button):
-	visa = visameddelande.VisaMeddelande()
+	print self.args["sender"]
+	visa = visameddelande.VisaMeddelande(self.args)
         popup = gtk.Window()
         popup.set_title( "Meddelande" )
 	popup.set_size_request(500,500)
