@@ -397,17 +397,13 @@ def addMessage(sender1, receiver1, type1, time_created1, content1, response_to1)
 	
 	
 	
-#######################################################	
-session = Session()
-USERS = session.query(User).all() # radera kj?
-session.close()
 
 def getMessage(id_nr):
-	#try:
+	try:
 		m=session.query(Message).filter_by(id=id_nr).first()
 		return m
-	#except:
-	#	return None
+	except:
+		return None
 def removeMessage(id_nr):
 	m=session.query(Message).filter_by(id=id_nr).first()
 	session.delete(m)
@@ -457,9 +453,14 @@ def class2dict(o):
 		   dict[elem] = class2dict(o.__dict__[elem])
     return dict	
 
+#######################################################	
+
 
 #skapar en session för att kunna komma åt databasen
 session = Session()
+
+USERS = session.query(User).all() # radera kj?
+
 
 #user2.groups.append(group2)
 
@@ -534,6 +535,7 @@ addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
 #add_mission_unit(122,172)
 #print generate_id()
 addMessage('mathias1','hanna','text',"change",'jason.dums() sak ska vara har tex Unit', 1)
+
 #print getMessage(202)
 #print class2dict(getMessage(202))
 

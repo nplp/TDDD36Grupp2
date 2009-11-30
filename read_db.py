@@ -58,20 +58,20 @@ poi_table =Table('pois', metadata,
 	Column('type', Text),
 	Column('subtype', Text)
 	)
-	
+
 unit_table = Table('units',metadata,
 	Column('coordx', Float),
 	Column('coordy', Float),
 	Column('id', Integer, primary_key=True),
 	Column('name', Text),
-	Column('time_changed', Float),
+	Column('time_changed', Integer),
 	Column('type', Text)
 	)
 		
 message_table = Table('messages',metadata,
 	Column('id', Integer, primary_key=True),
 	Column('sender', Text),
-	Column('reciver', Text),
+	Column('receiver', Text),
 	Column('type', Text),
 	Column('time_created', Integer),
 	Column('content', Text),
@@ -85,6 +85,10 @@ mission_poi = Table ('mission_poi', metadata,
 	Column('mission_id', None, ForeignKey('missions.id'), primary_key=True),
 	Column('poi_id', None, ForeignKey('pois.id'), primary_key=True)
 	)
+mission_unit = Table ('mission_unit', metadata,
+	Column('mission_id', None, ForeignKey('missions.id'), primary_key=True),
+	Column('unit_id', None, ForeignKey('units.id'), primary_key=True)
+	)
 
 #############################################################################
 
@@ -94,7 +98,8 @@ Session.configure(bind=engine)
 
 ##############################definerar classer##################################
 class Message(object):
-	def __init__(self, sender=None, receiver=None, type=None, time_created=None, content=None, response_to=None):
+	def __init__(self, id=None, sender=None, receiver=None, type=None, time_created=None, content=None, response_to=None):
+		self.id=generate_id()
 		self.sender=sender
 		self.receiver=receiver
 		self.type=type
@@ -103,32 +108,34 @@ class Message(object):
 		self.response_to=response_to
 
 class User(object):
-	def __init__(self, name=None, clearance=None,  password=None):
+	def __init__(self, name=None, id=None, clearance=None,  password=None):
 		self.name=name
+		self.id=generate_id()
 		self.clearance=clearance
 		self.password=password	
 	def __repr__(self):
 		return self.name
 class Item(object):
-	def __init__(self, name=None, count=None, location=None):
+	def __init__(self, name=None, id=None, count=None, location=None):
 		self.name=name
+		self.id=generate_id()
 		self.count=count
 		self.location=location
 	def __repr__(self):
 		return self.name, self.count, self.location
 class Group(object):
 	
-	def __init__(self, name=None):
+	def __init__(self, name=None, id=None):
 		self.name=name
-	def __repr__(self):
-		return self.name
+		self.id=generate_id()
+	
 
 class Mission(object):
 	def __init__(self, poi_id = None, unit_id=None, id=None, name= None, time_created=None, time_changed=None, status = None, desc=None, contact_person = None, contact_number = None):
 		#self.id = generate_id()
 		self.poi_id = poi_id
 		self.unit_id=unit_id
-		self.id=id
+		self.id=generate_id()
 		self.name = name
 		self.time_created = time_created
 		self.time_changed = time_changed
@@ -141,7 +148,7 @@ class Poi(object):
 	def __init__(self, coordx= None, coordy= None, id=None, name= None, time_created=None, time_changed=None, type=None, sub_type= None):
 		self.coordx = coordx
 		self.coordy = coordy
-		self.id = id
+		self.id=generate_id()
 		self.name = name
 		self.time_created = time_created
 		self.type = type
@@ -151,76 +158,38 @@ class Unit(object):
 	def __init__(self, coordx= None, coordy= None, id=None, name= None, time_changed=None, type= None):
 		self.coordx = coordx
 		self.coordy = coordy
-		self.id = id
+		self.id=generate_id()
 		self.name = name
 		self.time_changed = time_changed
 		self.type = type
-		
-def fillOutList(arg, roof, fill):
-	diff = roof-len(arg)
-	if(diff > 0):
-		for i in range(diff):
-			arg.append(fill)
-
-	return arg
-		
-def dbClass(cl, arg):
-	if(cl == "message"):
-		arg = fillOutList(arg,6,None)
-		return Message()
-
-	if(cl == "user"):
-		arg = fillOutList(arg,3,None)
-		return User()
-
-	if(cl == "item"):
-		arg = fillOutList(arg,3,None)
-		return Item()
-
-	if(cl == "group"):
-		arg = fillOutList(arg,1,None)
-		return Group()
-
-	if(cl == "mission"):
-		arg = fillOutList(arg,10,None)
-		return Mission()
-
-	if(cl == "poi"):
-		arg = fillOutList(arg,7,None)
-		return Poi()
-
-	if(cl == "unit"):
-		arg = fillOutList(arg,6,None)
-		return Unit(tuple(arg))
-
-	return None
 
 metadata.create_all(engine)
 
 #länkar classobject till datatabeller
-mapper(Message, message_table)
-mapper(Group, group_table)
-mapper(Poi, poi_table)
+#länkar classobject till datatabeller
+mapper(Message, message_table, properties=dict())
+mapper(Group, group_table, properties=dict())
+mapper(Poi, poi_table, properties=dict())
+mapper(Unit, unit_table, properties=dict())
 
-mapper(Unit, unit_table)
-
-#many to many relationer för att kunna länka grupper till uppdrag & pois
-mapper(Mission, mission_table, properties=dict(
-	groups=relation(Group, secondary= mission_group, backref='missions'),
-	pois=relation(Poi, secondary= mission_poi, backref='missions')
-	)
+#many to many relationer för att kunna länka grupper till uppdrag
+mapper(Mission, mission_table, properties={
+	'groups': relation(Group, secondary= mission_group, backref='missions'),
+	'pois': relation(Poi, secondary= mission_poi, backref='missions'),
+	'units': relation(Unit, secondary= mission_unit, backref='missions')
+	}
 	)
 	
 #many to many relation för att kunna länka användarkonton till grupper
-mapper(User, user_table, properties=dict(
-	groups=relation(Group, secondary= user_group, backref='users'))
+mapper(User, user_table, properties={
+	'groups': relation(Group, secondary= user_group, backref='users')}
 	)
 
-mapper(Item, items_table)
-
+mapper(Item, items_table, properties=dict())
 
 
 ############################Metoder###########################
+
 
 #retunerar alla användare
 def get_user_all():
@@ -371,6 +340,12 @@ def get_mission_all(namn):
 	except:
 		return None
 
+def getPoi(namn):
+	try:
+		m=session.query(Poi).filter_by(name=namn).first()
+		return m
+	except:
+		return None
 def addPoi(coordx1, coordy1,name1,time_created1,type1,sub_type1):
 	session.save(Poi(coordx=coordx1, coordy=coordy1, name=name1, time_created=time_created1, type=type1, sub_type=sub_type1))
 #lägger in användare i en grupp	
@@ -382,34 +357,69 @@ def add_mission_poi(mission_id,poi_id):
 		
 	except:
 		pass
+	
 #lägger in ett medelande i databasen
-def addMessage(sender1, reciver1, type1, time_created1, content1, response_to1):
-	session.save(Message(sender=sender1, reciver=reciver1, type=type1, time_created=time_created1, content=content1, response_to=response_to1))
-#######################################################	
-session = Session()
-USERS = session.query(User).all() # radera kj?
-session.close()
+def addMessage(sender1, receiver1, type1, time_created1, content1, response_to1):
+	session.save(Message(sender=sender1, receiver=receiver1, type=type1, time_created=time_created1, content=content1, response_to=response_to1))
+	
+	
+	
+	
 
 def getMessage(id_nr):
-	#try:
-		m= session.query(Message).filter_by(id=id_nr).first()
-		return m.sender, m.reciver, m.type, m.time_created, m.content, m.response_to
-	#except:
-		#return None
+	try:
+		m=session.query(Message).filter_by(id=id_nr).first()
+		return m
+	except:
+		return None
 def removeMessage(id_nr):
 	m=session.query(Message).filter_by(id=id_nr).first()
 	session.delete(m)
 	
-	
-	
-def addUnit(coordx1,coordy1,id1,name1,timestamp1,type1):
-	pass
+def addUnit(coordx1, coordy1, name1, time_changed1, type1):
+	session.save(Unit(coordx=coordx1, coordy=coordy1, name=name1, time_changed=time_changed1, type=type1))
+
+def add_mission_unit(mission_id, unit_id):
+	try:
+		m=session.query(Mission).filter_by(id=mission_id).first()
+		u=session.query(Unit).filter_by(id=unit_id).first()
+		m.units.append(u)
+		
+	except:
+		pass
 
 def removeUnit():
 	pass
 
-def getUnit():
-	pass
+
+
+def getUnits():
+	try:
+		m=session.query(Unit).first()
+		return m.coordx,m.coordy,m.name,m.time_changed,m.type
+	except:
+		return None
+def getUnit(namn):
+	m=session.query(Unit).filter_by(name=namn).first()
+	return m
+	
+def class2dict(o):
+    """Return a dictionary from object that has public
+       variable -> key pairs
+    """    
+    dict = {}
+    #Joy: all the attributes in a class are already in __dict__
+    for elem in o.__dict__.keys():
+        if elem.find("_" + o.__class__.__name__) == 0:
+            continue
+            #We discard private variables, which are automatically
+            #named _ClassName__variablename, when we define it in
+            #the class as __variablename
+        else:
+            dict[elem] = o.__dict__[elem]
+	    if(str(dict[elem]).startswith('<') and not str(elem.startswith('_'))):#bugg: man far inte borja ett meddelande med <
+		   dict[elem] = class2dict(o.__dict__[elem])
+    return dict	
 ###########################Spårutskrifter############################	
 
 #skapar en session för att kunna komma åt databasen
