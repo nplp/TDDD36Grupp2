@@ -123,6 +123,7 @@ class Client(object):
 				#print e
 				print "gurka"
 				self.q._put(temp)
+		print "WTF? vi hoppade ur dequeue"
 				#fixa sa att det skickar nasta gang.
 		#mutex.release()
 	
