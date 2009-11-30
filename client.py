@@ -111,9 +111,10 @@ class Client(object):
 		#mutex.acquire()
 		while self.online:
 			temp = ""
-			#sleep(0.5)
+			sleep(0.5)
+			print "queue kolar varje 0.5sekund"
 			try:
-				while not self.q.empty(): 
+				while not self.q.empty():
 					#print "tomat"
 					temp = self.q.get()
 					print "sparar undan  "+temp
