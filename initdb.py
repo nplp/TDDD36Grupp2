@@ -63,28 +63,7 @@ poi_table =Table('pois', metadata,
 	Column('type', Text),
 	Column('subtype', Text)
 	)
-	
-#subtypes:
-#Obstacle:
 
-    #* tree
-    #* bridge
-    #* other
-
-#Structure
-
-    #* hospital
-    #* knullhuset
-    #* base
-    #* pasta_wagon
-    #* other
-
-#Event
-
-    #* fire
-    #* accident
-    #* other	
-	
 unit_table = Table('units',metadata,
 	Column('coordx', Float),
 	Column('coordy', Float),
@@ -124,7 +103,8 @@ Session.configure(bind=engine)
 
 ##############################definerar classer##################################
 class Message(object):
-	def __init__(self, sender=None, receiver=None, type=None, time_created=None, content=None, response_to=None):
+	def __init__(self, id=None, sender=None, receiver=None, type=None, time_created=None, content=None, response_to=None):
+		self.id=generate_id()
 		self.sender=sender
 		self.receiver=receiver
 		self.type=type
@@ -409,9 +389,14 @@ def add_mission_poi(mission_id,poi_id):
 		
 	except:
 		pass
+	
 #lägger in ett medelande i databasen
 def addMessage(sender1, receiver1, type1, time_created1, content1, response_to1):
 	session.save(Message(sender=sender1, receiver=receiver1, type=type1, time_created=time_created1, content=content1, response_to=response_to1))
+	
+	
+	
+	
 #######################################################	
 session = Session()
 USERS = session.query(User).all() # radera kj?
@@ -419,8 +404,8 @@ session.close()
 
 def getMessage(id_nr):
 	#try:
-		m= session.query(Message).filter_by(id=id_nr).first()
-		return m.sender, m.receiver, m.type, m.time_created, m.content, m.response_to
+		m=session.query(Message).filter_by(id=id_nr).first()
+		return m
 	#except:
 	#	return None
 def removeMessage(id_nr):
@@ -453,11 +438,11 @@ def getUnits():
 def getUnit(namn):
 	m=session.query(Unit).filter_by(name=namn).first()
 	return m
-
+	
 def class2dict(o):
     """Return a dictionary from object that has public
        variable -> key pairs
-    """   
+    """    
     dict = {}
     #Joy: all the attributes in a class are already in __dict__
     for elem in o.__dict__.keys():
@@ -468,8 +453,11 @@ def class2dict(o):
             #the class as __variablename
         else:
             dict[elem] = o.__dict__[elem]
-    return dict
-	
+	    if(str(dict[elem]).startswith('<') and not str(elem.startswith('_'))):#bugg: man far inte borja ett meddelande med <
+		   dict[elem] = class2dict(o.__dict__[elem])
+    return dict	
+
+
 #skapar en session för att kunna komma åt databasen
 session = Session()
 
@@ -543,10 +531,12 @@ addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
 addUnit(55, 55, "Sjukhus", datetime.now(), "army")
 addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
 
-add_mission_unit(122,172)
-
+#add_mission_unit(122,172)
+#print generate_id()
 addMessage('mathias1','hanna','text',"change",'jason.dums() sak ska vara har tex Unit', 1)
-#print getMessage(1)
+#print getMessage(202)
+#print class2dict(getMessage(202))
+
 add_item('Pansarvagn', 10, 'Linkoping')
 add_item('Pansarvagn', 70, 'Linkoping')
 add_item('EMP', 1, 'Linkoping')
@@ -566,8 +556,8 @@ m=getUnits()
 #print generate_id()
 
 
-print get_mission_object_by_name('Save the cat')
-print class2dict(get_mission_object_by_name('Save the cat'))
+#print get_mission_object_by_name('Save the cat')
+#print class2dict(get_mission_object_by_name('Save the cat'))
 
 
 #m= get_mission_by_id(1).pois
