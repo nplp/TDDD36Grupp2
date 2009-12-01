@@ -505,16 +505,16 @@ class Gui(hildon.Program):
 	
     def show_popup(self, anvanda):
 	logg = login.Inlogg()
-        popup = gtk.Window()
-        popup.set_title( "Login" )
-	popup.set_size_request(500,500)
-        popup.add(logg.vbox)
-	#adress.vbox.show()	
-        popup.set_modal(True)
-        #popup.set_transient_for(self)
-        popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
-        popup.connect( "destroy", lambda *w: gtk.main_quit() )
-        popup.show()
+        #popup = gtk.Window()
+        #popup.set_title( "Login" )
+	#popup.set_size_request(500,500)
+        #popup.add(logg.vbox)
+	##adress.vbox.show()	
+        #popup.set_modal(True)
+        ##popup.set_transient_for(self)
+        #popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
+        #popup.connect( "destroy", lambda *w: gtk.main_quit() )
+        logg.popup.show()
 
 
     def run(self):

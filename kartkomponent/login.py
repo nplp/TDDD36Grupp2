@@ -39,11 +39,27 @@ class Inlogg():
 	self.loggin.show()
 	self.vbox.pack_start(self.loggin,False,False,0)
 	
+	self.avsluta = gtk.Button("Avsluta")
+        self.avsluta.connect("clicked", self.avs, "Avsluta")
+	self.avsluta.show()
+	self.vbox.pack_start(self.avsluta,True,True,0)
+	
+	self.popup = gtk.Window()
+        self.popup.set_title( "Login" )
+	self.popup.set_size_request(500,500)
+        self.popup.add(vbox)
+	#adress.vbox.show()	
+        self.popup.set_modal(True)
+        #popup.set_transient_for(self)
+        self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
+	
+	
 	self.vbox.show()
 	#window.add(self.vbox)
 	#window.show()
-    
-    def send():
+    def avs(self, widget, event, data=None):
+	self.popup.destroy()
+    def send(self, widget, event, data=None):
     	print "nu loggas jag in"
 	
 def main():
