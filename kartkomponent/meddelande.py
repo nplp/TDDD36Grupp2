@@ -86,17 +86,19 @@ class Meddelande (object):
 	
     def show_popup(self, skicka1):
 	adress = adresslista.Adresslista()
-	print "hej"
-        popup = gtk.Window()
-        popup.set_title( "Adresslista" )
-	popup.set_size_request(500,500)
-        popup.add(adress.vbox)
-	#adress.vbox.show()	
-        popup.set_modal(False)
-        #popup.set_transient_for(self)
-        popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
-        popup.connect( "destroy", lambda *w: gtk.main_quit() )
-        popup.show()
+        adress.popup.show()
+	#adress = adresslista.Adresslista()
+	#print "hej"
+        #popup = gtk.Window()
+        #popup.set_title( "Adresslista" )
+	#popup.set_size_request(500,500)
+        #popup.add(adress.vbox)
+	##adress.vbox.show()	
+        #popup.set_modal(False)
+        ##popup.set_transient_for(self)
+        #popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
+        #popup.connect( "destroy", lambda *w: gtk.main_quit() )
+        #popup.show()
 	
 def main():
 	gtk.main()
