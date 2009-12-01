@@ -16,6 +16,7 @@ from message import *
 from time import *
 import subprocess
 #import dbus
+import gobject
 
 
 class Client(object):
@@ -249,11 +250,11 @@ class recieverClass(Thread):
 
 	def run(self):
 		self.reciever()
-
+	
 
 if __name__ == "__main__":
+    gobject.threads_init()
     Client().run()
     gtk.main()
-  
 
 
