@@ -19,15 +19,16 @@ anvandare = [('Manuela', '66.249.65.81 ', 'offline'), ('Hanna', '66.249.65.83 ',
 
 class Adresslista(gtk.Window): 
 
-    def callback(self, widget, data=None):
+    def klarlyssnare(self, widget, data=None):
 	print "Adresslista - %s was pressed" % data
-
+	self.popup.destroy()
+	
     def __init__(self):
         #super(Adresslista, self).__init__()
         
         #self.set_size_request(350, 250)
         #self.set_position(gtk.WIN_POS_CENTER)
-        
+      
         #self.connect("destroy", gtk.main_quit)
         #self.set_title("Adresslista")
 
@@ -57,18 +58,31 @@ class Adresslista(gtk.Window):
 	
 	button = gtk.Button("Klar")
 	button.set_size_request(70,30)
-	button.connect("clicked", self.callback, "Klar")
+	button.connect("clicked", self.klarlyssnare, "Klar")
 	#button.add(hbox)
 	self.vbox.pack_start(button, False, False, 0)
 	hbox.show()
 	button.show()
 	
+	self.avsluta = gtk.Button("Avsluta")
+        self.avsluta.connect("clicked", self.avs, "Avsluta")
+	self.avsluta.show()
+	self.vbox.pack_start(self.avsluta,True,True,0)
+	
         self.vbox.pack_start(self.statusbar, False, False, 0)
 
+	self.popup = gtk.Window()
+        self.popup.set_title( "Adresslista" )
+	self.popup.set_size_request(500,500)
+        self.popup.add(self.vbox)
+        self.popup.set_modal(False)
+        self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
         #self.add(vbox)
 	#self.add(hbox)
         self.vbox.show_all()
 
+    def avs(self, widget, event, data=None):
+	    self.popup.destroy()
 
     def create_model(self):
         store = gtk.ListStore(str, str, str)

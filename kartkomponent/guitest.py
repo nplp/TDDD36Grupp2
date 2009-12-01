@@ -16,6 +16,7 @@ import samtal
 import lager
 import inkorg
 from databasklient import * 
+import login
 
 class Gui(hildon.Program):	
     __map = None
@@ -328,10 +329,10 @@ class Gui(hildon.Program):
 	self.karta.connect("clicked", self.kartan, "Karta")
 	self.vbox2.pack_start(self.karta, True, True,0)
 	
-	# Tillbaka
-	self.tillbaka = gtk.Button("Tillbaka")
-        self.tillbaka.connect("clicked", self.tbaka, "Tillbaka")
-	self.vbox2.pack_start(self.tillbaka, True, True, 0)
+	## Tillbaka
+	#self.tillbaka = gtk.Button("Tillbaka")
+        #self.tillbaka.connect("clicked", self.tbaka, "Tillbaka")
+	#self.vbox2.pack_start(self.tillbaka, True, True, 0)
 	
 	#Knappar i filmenyn
 	#Uppdrag
@@ -360,8 +361,8 @@ class Gui(hildon.Program):
 	self.vbox2.pack_start(self.natverk, True, True,0)
 	
 	#Anvandarinstallningar
-	self.anvanda = gtk.Button("Anvanda")
-	self.anvanda.connect("clicked", self.callback, "Använda")
+	self.anvanda = gtk.Button("Logga in")
+	self.anvanda.connect("clicked", self.show_popup)
 	self.vbox2.pack_start(self.anvanda, True, True,0)
 	
 	# Tillbaka
@@ -404,7 +405,6 @@ class Gui(hildon.Program):
         self.vbox3.pack_start(self.label, False, False, 0)
 	
 	#Packning
-	print "packing"
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
 	self.swindow.add_with_viewport(self.meddela.vbox)
@@ -502,6 +502,19 @@ class Gui(hildon.Program):
             return treemodel.get_value(treemodel.get_iter(path), column)
         else:
             return None
+	
+    def show_popup(self, anvanda):
+	logg = login.Inlogg()
+        #popup = gtk.Window()
+        #popup.set_title( "Login" )
+	#popup.set_size_request(500,500)
+        #popup.add(logg.vbox)
+	##adress.vbox.show()	
+        #popup.set_modal(True)
+        ##popup.set_transient_for(self)
+        #popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
+        #popup.connect( "destroy", lambda *w: gtk.main_quit() )
+        logg.popup.show()
 
 
     def run(self):
