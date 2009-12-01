@@ -241,10 +241,10 @@ class recieverClass(Thread):
 					print "rerouting"
 					self.online = False
 					if(self.primary):
-						reconnect()
+						Client.reconnect()
 						break
 					else:
-						connect()
+						Client.connect()
 						break
 		except Exception, e:
 			print e
