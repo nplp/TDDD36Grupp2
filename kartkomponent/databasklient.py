@@ -79,8 +79,10 @@ message_table = Table('messages',metadata,
 	Column('sender', Text),
 	Column('receiver', Text),
 	Column('type', Text),
+	Column('subtype', Text),
 	Column('time_created', Integer),
-	Column('content', Text),
+	Column('subject', Text),
+	Column('message', Text),
 	Column('response_to', Integer)
 	)
 mission_group = Table('mission_group', metadata,
@@ -104,15 +106,17 @@ Session.configure(bind=engine)
 
 ##############################definerar classer##################################
 class Message(object):
-	def __init__(self, id=None, sender=None, receiver=None, type=None, time_created=None, content=None, response_to=None):
+	def __init__(self, id=None, sender=None, receiver=None, type=None, subtype=None, time_created=None, subject=None, message=None, response_to=None):
 		self.id=generate_id()
 		self.sender=sender
 		self.receiver=receiver
 		self.type=type
+		self.subtype=subtype
 		self.time_created=time_created
-		self.content=content
+		self.subject=subject
+		self.message=message
 		self.response_to=response_to
-
+		
 class User(object):
 	def __init__(self, name=None, id=None, clearance=None,  password=None):
 		self.name=name
@@ -392,8 +396,8 @@ def add_mission_poi(mission_id,poi_id):
 		pass
 	
 #lägger in ett medelande i databasen
-def addMessage(sender1, receiver1, type1, time_created1, content1, response_to1):
-	session.save(Message(sender=sender1, receiver=receiver1, type=type1, time_created=time_created1, content=content1, response_to=response_to1))
+def addMessage(sender1, receiver1, type1, subtype1, time_created1, subject1, message1,response_to1):
+	session.save(Message(sender=sender1, receiver=receiver1, type=type1, subtype=subtype1, time_created=time_created1, subject=subject1, message=message1, response_to=response_to1))
 	
 	
 	
