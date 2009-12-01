@@ -24,6 +24,13 @@ import simplejson as json
 
 ClientMutex = BoundedSemaphore(1)
 
+# Köfkn ----------------------------------------------------------------------
+
+MsgQueue = list()
+
+def sendString(msg, receiver):
+	pass
+
 # ATOMISKA FUNKTIONER --------------------------------------------------------
 
 # Broadcast. Atomisk.
@@ -142,7 +149,6 @@ def sendAll(message):
 		print "To all: " + message
 	for i in range(len(socketArray)):
 		if(socketArray[i].status > 0): # Skillnad mellan active och inactive
-			print "Send all: " + str(i)
 			socketArray[i].socket.send(message)
 
 
@@ -209,13 +215,18 @@ def listCMD(arg):
 	elif(arg[0].startswith('all')):
 		# Atomisk ------
 		ClientMutex.acquire()
-		for s in socketArray:
-			if(s.isAlive()):
-				ip.append(s.name + " " + str(s.ADDR))
+		temp = list()
+		for n in get_user_all():
+			temp.append(n.name) 
+
+		for t in temp:
+			if(search(t) > -1):
+				ip.append("/online " + t + '\n')
 			else:
-				ip.append("/ERROR")
+				ip.append("/online/ " + t + '\n')
 		ClientMutex.release()
 		# --------------
+
 
 	# Skickar man med argumentet "group" till /list får man alla grupper.
 	elif(arg[0].startswith('group')):
@@ -373,7 +384,7 @@ class sessionClass(Thread):
 
 
 	def sendBack(self, message):
-		#print "Back to " + self.name + ": " + message
+		print "Back to " + self.name + ": " + message
 		self.socket.send(message)
 	
 	# Sköter inloggningen.
@@ -478,7 +489,7 @@ class sessionClass(Thread):
 					msg.pop(0)
 					ip = listCMD(msg)
 					for i in ip:
-						self.sendBack(str(i) + "\n")
+						self.sendBack(str(i))
 
 				elif(data.startswith('/ping')):
 					msg = data.split(' ', 1)
