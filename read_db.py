@@ -11,6 +11,7 @@ engine = create_engine('sqlite:///data.db', echo=False)
 metadata = MetaData()
 
 
+
 #######################skapar data tabeller############################33
 group_table = Table('group', metadata,
 	Column('id', Integer, primary_key=True),
@@ -73,8 +74,10 @@ message_table = Table('messages',metadata,
 	Column('sender', Text),
 	Column('receiver', Text),
 	Column('type', Text),
+	Column('subtype', Text),
 	Column('time_created', Integer),
-	Column('content', Text),
+	Column('subject', Text),
+	Column('message', Text),
 	Column('response_to', Integer)
 	)
 mission_group = Table('mission_group', metadata,
@@ -98,13 +101,15 @@ Session.configure(bind=engine)
 
 ##############################definerar classer##################################
 class Message(object):
-	def __init__(self, id=None, sender=None, receiver=None, type=None, time_created=None, content=None, response_to=None):
+	def __init__(self, id=None, sender=None, receiver=None, type=None, subtype=None, time_created=None, subject=None, message=None, response_to=None):
 		self.id=generate_id()
 		self.sender=sender
 		self.receiver=receiver
 		self.type=type
+		sefl.subtype=subtype
 		self.time_created=time_created
-		self.content=content
+		self.subject=subject
+		self.message=message
 		self.response_to=response_to
 
 class User(object):
@@ -162,10 +167,34 @@ class Unit(object):
 		self.name = name
 		self.time_changed = time_changed
 		self.type = type
+		
+		
+def dbClass(cl):
+	if(cl == "message"):
+		return Message()
+
+	if(cl == "user"):
+		return User()
+
+	if(cl == "item"):
+		return Item()
+
+	if(cl == "group"):
+		return Group()
+
+	if(cl == "mission"):
+		return Mission()
+
+	if(cl == "poi"):
+		return Poi()
+
+	if(cl == "unit"):
+		return Unit()
+
+	return None
 
 metadata.create_all(engine)
 
-#länkar classobject till datatabeller
 #länkar classobject till datatabeller
 mapper(Message, message_table, properties=dict())
 mapper(Group, group_table, properties=dict())
@@ -188,7 +217,10 @@ mapper(User, user_table, properties={
 mapper(Item, items_table, properties=dict())
 
 
+
 ############################Metoder###########################
+
+
 
 
 #retunerar alla användare
@@ -359,8 +391,8 @@ def add_mission_poi(mission_id,poi_id):
 		pass
 	
 #lägger in ett medelande i databasen
-def addMessage(sender1, receiver1, type1, time_created1, content1, response_to1):
-	session.save(Message(sender=sender1, receiver=receiver1, type=type1, time_created=time_created1, content=content1, response_to=response_to1))
+def addMessage(sender1, receiver1, type1, subtype1, time_created1, subject1, message1,response_to1):
+	session.save(Message(sender=sender1, receiver=receiver1, type=type1,subtype=subtype1, time_created=time_created1, subject=subject1, messaage=message1, response_to=response_to1))
 	
 	
 	
@@ -420,6 +452,7 @@ def class2dict(o):
 	    if(str(dict[elem]).startswith('<') and not str(elem.startswith('_'))):#bugg: man far inte borja ett meddelande med <
 		   dict[elem] = class2dict(o.__dict__[elem])
     return dict	
+
 ###########################Spårutskrifter############################	
 
 #skapar en session för att kunna komma åt databasen
