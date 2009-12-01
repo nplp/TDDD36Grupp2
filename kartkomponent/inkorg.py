@@ -60,7 +60,7 @@ class Inkorg(gtk.Window):
         store = gtk.ListStore(str, str, str, str, str, str,str,str)
 	anvandare = self.get_messages()
         for act in anvandare:
-            store.append(act[0], act[1], act[2], act[3], act[4], act[5],act[6],act[7])
+            store.append((act[0], act[1], act[2], act[3], act[4], act[5],act[6],act[7]))
         return store
 
     def create_columns(self, treeView):
