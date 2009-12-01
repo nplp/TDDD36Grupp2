@@ -19,8 +19,10 @@ class Meddelande (object):
 	amne = self.entry.get_text()
 	mottagare = self.entry2.get_text()
 	dict = {"id": 1, "sender": "army" , "receiver": mottagare ,"type": 'text' , "subtype": "add", "time_created": 34, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : 'mig'}
-	args = (json.dumps(dict),)
-	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "method1", args)
+	self.args = (json.dumps(dict),)
+    
+    def release(self, widget, event, data=None):
+	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "method1", self.args)
 	
     def __init__(self):
 	print "hej"
@@ -77,7 +79,8 @@ class Meddelande (object):
 	self.vbox.pack_start(self.scrolled_window, True, True, 0)
 	
 	self.skicka = gtk.Button("Skicka")
-        self.skicka.connect("clicked", self.send, "Skicka")
+        self.skicka.connect("clicked", self.send, "Spara")
+	self.skicka.connect("released", self.release, "Skicka") 
 	self.skicka.show()
 	self.vbox.pack_start(self.skicka,True,True,0)
 	
