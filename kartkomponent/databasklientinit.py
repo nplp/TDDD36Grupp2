@@ -559,8 +559,9 @@ add_item('Sovsackar', 130, 'Linkoping')
 add_item('Lastbilar', 37, 'Linkoping')
 add_item('Diselvarmare', 59, 'Linkoping')
 add_item('Sprinterbuss', 5, 'Linkoping')
-session.commit()
 m=getUnits()
+session.commit()
+
 #print m
 #m= class2dict(m)
 #print m
@@ -576,7 +577,7 @@ m=getUnits()
 #print m[1].name
 #m=get_mission_by_id(1)
 #print m.units[0].name
-session = Session()
+
 #user2.groups.append(group2)
 
 
