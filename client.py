@@ -194,6 +194,7 @@ class Client(object):
 		#q = Queue()
 		self.connect()
 	
+	
 ### Klassen for prioritets ko
 #class PriorityQueue(Queue):
 ## Initialize the queue representation
@@ -206,6 +207,7 @@ class Client(object):
 ## Get an item from the queue
 #def _get(self):
 	#return heappop(self.queue)
+	
 	
 	
 class recieverClass(Thread):
@@ -241,10 +243,10 @@ class recieverClass(Thread):
 					print "rerouting"
 					self.online = False
 					if(self.primary):
-						Client.reconnect()
+						klienten.reconnect()
 						break
 					else:
-						Client.connect()
+						klienten.connect()
 						break
 		except Exception, e:
 			print e
@@ -255,7 +257,8 @@ class recieverClass(Thread):
 
 if __name__ == "__main__":
     gobject.threads_init()
-    Client().run()
+    klienten = Client()
+    klienten.run()
     gtk.main()
 
 
