@@ -383,46 +383,46 @@ class sessionClass(Thread):
 		try:
 			
 			while 1:
-				self.socket.send("Type a name: ")
-				CLIENTNAME = ""
+				self.socket.send("Login: (name pass): ")
+				name_pass = ""
 				i = 0
-				# Följande loop gör så att man slipper klienter som försöker ansluta och sedan bara lämna.
-				# Av någon anledning skickar dessa klienter en stadig ström av tomma strängar.
-				while(CLIENTNAME == "" and i<20):
-					CLIENTNAME = self.socket.recv(BUFF)
-					print "Login try: #" + CLIENTNAME + "#"
+				while(name_pass == "" and i<20):
+					name_pass = self.socket.recv(BUFF)
+					print "Login try: #" + name_pass + "#"
 					i = i+1
 				# Kicka om man inte skriver något efter 20 försök.
-				if(CLIENTNAME == ""):
+				if(name_pass == ""):
 					return "/ERROR"
 
-				self.socket.send("Type your password " + CLIENTNAME)
-				# Läser in login och gör om åäö.
-				login = toEnglish(self.socket.recv(BUFF))
+				temp = name_pass.split(' ')
+				uname = temp[0]
 
-				loginSession = Session()
-				# Atomisk ------
-				ClientMutex.acquire()
-				user = loginSession.query(User).filter_by(name = CLIENTNAME).first()
-				username = ""
+				if(len(temp) == 2):
+					login = temp[1]
 
-				try:
-					username = user.name
-				except Exception, e: pass
+					loginSession = Session()
+					# Atomisk ------
+					ClientMutex.acquire()
+					user = loginSession.query(User).filter_by(name = uname).first()
+					username = ""
 
-				if(username == CLIENTNAME and search(CLIENTNAME) == -1):
-					p=loginSession.query(User).filter_by(name=CLIENTNAME).first()
 					try:
-						if(login == p.password):
-							self.name = CLIENTNAME
+						username = user.name
 					except Exception, e: pass
 
-				ClientMutex.release()
-				# --------------
-				loginSession.close()
+					if(username == uname and search(uname) == -1):
+						p=loginSession.query(User).filter_by(name=uname).first()
+						try:
+							if(login == p.password):
+								self.name = uname
+						except Exception, e: pass
 
-				if(self.name == CLIENTNAME):
-					return CLIENTNAME
+					ClientMutex.release()
+					# --------------
+					loginSession.close()
+
+				if(self.name == uname):
+					return uname
 		except Exception, e:
 			print "Client lost: " + CLIENTNAME + "\nException: " + str(e)	
 		return "/ERROR"
