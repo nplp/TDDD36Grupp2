@@ -152,7 +152,7 @@ class Client(object):
 		recThread.start()
 		print "waddap4"
 	
-	def reconnect():
+	def reconnect(self):
 		self.primary = False
 		print "primary i reconnect igen = "+str(self.primary)
 			#SSH anrop, startar ssh tunnel mot servern
