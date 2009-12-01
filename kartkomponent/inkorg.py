@@ -52,7 +52,7 @@ class Inkorg(gtk.Window):
     def get_messages(self):
 	self.anvandare = []
 	for n in getAllMessages():
-		self.anvandare.append((n.sender, n.receiver, n.type, n.subtype, n.time_created, n.subject, n.message , n. response_to))
+		self.anvandare.append((n.sender, n.receiver, n.type, n.subtype, n.time_created, n.subject, n.message , n.response_to))
 		
 	return self.anvandare
 
