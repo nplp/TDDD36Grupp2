@@ -18,7 +18,7 @@ class Meddelande (object):
 	text = self.tbuffer.get_text(self.tbuffer.get_start_iter(), self.tbuffer.get_end_iter())
 	amne = self.entry.get_text()
 	mottagare = self.entry2.get_text()
-	dict = {"id": 1, "sender": "army" , "receiver": mottagare ,"type": 'text' , "subtype": "add", "time_created": 34, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : 'mig'}
+	dict = {"id": 1, "sender": "mathias" , "receiver": mottagare ,"type": 'login' , "subtype": "add", "time_created": 34, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : 'mig'}
 	self.args = (json.dumps(dict),)
     
     def release(self, widget, event, data=None):

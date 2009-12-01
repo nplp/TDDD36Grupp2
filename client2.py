@@ -8,6 +8,7 @@ import re
 import sys
 from socket import *
 import thread
+from kartkomponent.databasklient import *
 from threading import *
 import gtk
 import os
@@ -247,9 +248,9 @@ class recieverClass(Thread):
 					else:
 						if(data.startswith('{')):
 							dict = json.loads(data)
-							data = dict["content"]["message"]
-							
-							
+							addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["content"]["subject"], dict ["content"]["message"], dict["response_to"])
+							print "christoffer"	
+							print getAllMessages()						
 						else:
 							print data
 				else:
