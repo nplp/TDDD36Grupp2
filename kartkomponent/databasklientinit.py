@@ -83,10 +83,8 @@ message_table = Table('messages',metadata,
 	Column('sender', Text),
 	Column('receiver', Text),
 	Column('type', Text),
-	Column('subtype', Text),
 	Column('time_created', Integer),
-	Column('subject', Text),
-	Column('message', Text),
+	Column('content', Text),
 	Column('response_to', Integer)
 	)
 mission_group = Table('mission_group', metadata,
@@ -110,21 +108,19 @@ Session.configure(bind=engine)
 
 ##############################definerar classer##################################
 class Message(object):
-	def __init__(self, id=None, sender=None, receiver=None, type=None, subtype=None, time_created=None, subject=None, message=None, response_to=None):
-		self.id=id
+	def __init__(self, id=None, sender=None, receiver=None, type=None, time_created=None, content=None, response_to=None):
+		self.id=generate_id()
 		self.sender=sender
 		self.receiver=receiver
 		self.type=type
-		self.subtype=subtype
 		self.time_created=time_created
-		self.subject=subject
-		self.message=message
+		self.content=content
 		self.response_to=response_to
 
 class User(object):
 	def __init__(self, name=None, id=None, clearance=None,  password=None):
 		self.name=name
-		self.id=id
+		self.id=generate_id()
 		self.clearance=clearance
 		self.password=password	
 	def __repr__(self):
@@ -132,7 +128,7 @@ class User(object):
 class Item(object):
 	def __init__(self, name=None, id=None, count=None, location=None):
 		self.name=name
-		self.id=id
+		self.id=generate_id()
 		self.count=count
 		self.location=location
 	def __repr__(self):
@@ -141,7 +137,7 @@ class Group(object):
 	
 	def __init__(self, name=None, id=None):
 		self.name=name
-		self.id=id
+		self.id=generate_id()
 	
 
 class Mission(object):
@@ -149,7 +145,7 @@ class Mission(object):
 		#self.id = generate_id()
 		self.poi_id = poi_id
 		self.unit_id=unit_id
-		self.id=id
+		self.id=generate_id()
 		self.name = name
 		self.time_created = time_created
 		self.time_changed = time_changed
@@ -162,7 +158,7 @@ class Poi(object):
 	def __init__(self, coordx= None, coordy= None, id=None, name= None, time_created=None, time_changed=None, type=None, sub_type= None):
 		self.coordx = coordx
 		self.coordy = coordy
-		self.id=id
+		self.id=generate_id()
 		self.name = name
 		self.time_created = time_created
 		self.type = type
@@ -172,7 +168,7 @@ class Unit(object):
 	def __init__(self, coordx= None, coordy= None, id=None, name= None, time_changed=None, type= None):
 		self.coordx = coordx
 		self.coordy = coordy
-		self.id=id
+		self.id=generate_id()
 		self.name = name
 		self.time_changed = time_changed
 		self.type = type
@@ -205,10 +201,10 @@ def dbClass(cl):
 metadata.create_all(engine)
 
 #länkar classobject till datatabeller
-mapper(Message, message_table)
-mapper(Group, group_table)
-mapper(Poi, poi_table)
-mapper(Unit, unit_table)
+mapper(Message, message_table, properties=dict())
+mapper(Group, group_table, properties=dict())
+mapper(Poi, poi_table, properties=dict())
+mapper(Unit, unit_table, properties=dict())
 
 #many to many relationer för att kunna länka grupper till uppdrag
 mapper(Mission, mission_table, properties={
@@ -223,7 +219,7 @@ mapper(User, user_table, properties={
 	'groups': relation(Group, secondary= user_group, backref='users')}
 	)
 
-mapper(Item, items_table)
+mapper(Item, items_table, properties=dict())
 
 
 
@@ -400,19 +396,32 @@ def add_mission_poi(mission_id,poi_id):
 		pass
 	
 #lägger in ett medelande i databasen
-def addMessage(sender1, receiver1, type1, subtype1, time_created1, subject1, message1,response_to1):
-	session.save(Message(sender=sender1, receiver=receiver1, type=type1,subtype=subtype1, time_created=time_created1, subject=subject1, message=message1, response_to=response_to1))
+def addMessage(sender1, receiver1, type1, time_created1, content1, response_to1):
+	session.save(Message(sender=sender1, receiver=receiver1, type=type1, time_created=time_created1, content=content1, response_to=response_to1))
 	
 	
 	
 	
+#######################################################	
+session = Session()
+USERS = session.query(User).all() # radera kj?
+session.close()
 
 def getMessage(id_nr):
-	try:
+	#try:
 		m=session.query(Message).filter_by(id=id_nr).first()
 		return m
-	except:
-		return None
+	#except:
+	#	return None
+	
+def getAllMessages():
+	try:
+		m = session.query(Message).all()
+		return m
+	except Exception, e:
+		print e 
+		
+
 def removeMessage(id_nr):
 	m=session.query(Message).filter_by(id=id_nr).first()
 	session.delete(m)
@@ -461,6 +470,8 @@ def class2dict(o):
 	    if(str(dict[elem]).startswith('<') and not str(elem.startswith('_'))):#bugg: man far inte borja ett meddelande med <
 		   dict[elem] = class2dict(o.__dict__[elem])
     return dict	
+
+
 
 #######################################################	
 
