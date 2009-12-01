@@ -4,7 +4,7 @@ class Inlogg():
     
     def __init__(self):
 
-	window = gtk.Window()
+	#window = gtk.Window()
 	#window.connect("delete_event", self.delete_event)
 	#window.connect("destroy", self.destroy)
 	
@@ -40,8 +40,8 @@ class Inlogg():
 	self.vbox.pack_start(self.loggin,False,False,0)
 	
 	self.vbox.show()
-	window.add(self.vbox)
-	window.show()
+	#window.add(self.vbox)
+	#window.show()
     
     def send():
     	print "nu loggas jag in"
