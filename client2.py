@@ -15,6 +15,7 @@ import osso
 from message import *
 from time import *
 import subprocess
+import gobject
 #import dbus
 
 
@@ -24,7 +25,7 @@ class Client(object):
 		#Variabler
 		#HOST = '130.236.216.128'
 		self.HOST = '127.0.0.1'
-		self.HOST2 = '130.236.189.14'
+		self.HOST2 = '127.0.0.1'
 		self.PORT = 2150
 		self.PORT2 = 2017
 		if(len(sys.argv) > 1):
@@ -50,9 +51,14 @@ class Client(object):
 
 	def send(self, interface, method, arguments, user_data):
 		self.dict = json.loads(arguments[0])
-		self.data = self.dict["content"]["message"]
-		self.msg = Message(self.data)
-		self.data = finishCMD(self.msg)
+		if(self.dict['content']['subject'] == 'login'):
+			self.data = self.dict["content"]["message"]
+		else:
+			self.data = arguments[0]
+		#self.data = self.dict["content"]["message"]
+		#self.msg = Message(self.data)
+		#self.data = finishCMD(self.msg)
+		
 		
 		if(self.data.startswith('/quit') or self.data.startswith('/exit')):
 			try:
@@ -149,7 +155,6 @@ class Client(object):
 		#print "waddap3"
 		recThread.start()
 		#print "waddap4"
-		gtk.main()
 	
 	def reconnect():
 		#self.MYPORT
@@ -240,7 +245,13 @@ class recieverClass(Thread):
 							print s[1] + " is online."
 							contactList.append(s[1])
 					else:
-						print data
+						if(data.startswith('{')):
+							dict = json.loads(data)
+							data = dict["content"]["message"]
+							
+							
+						else:
+							print data
 				else:
 					print "rerouting"
 					online = False
@@ -258,7 +269,8 @@ class recieverClass(Thread):
 
 
 if __name__ == "__main__":
+    gobject.threads_init()
     Client().run()
-  
+    gtk.main()
 
 

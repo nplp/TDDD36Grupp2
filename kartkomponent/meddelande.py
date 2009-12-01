@@ -15,10 +15,10 @@ class Meddelande (object):
 		
     def send(self, widget, event, data=None):
 	self.tbuffer = self.entry1.get_buffer()
-	self.text = self.tbuffer.get_text(self.tbuffer.get_start_iter(), self.tbuffer.get_end_iter())
-	self.amne = self.entry.get_text()
-    def release(self, widget, event, data=None):
-	dict = {"id": 1, "sender": "army" , "receiver": "army" ,"type": 'text' , "subtype": "add", "time_created": 34, 'content' : {'subject' : self.amne, 'message' : self.text}, 'response_to' : 'mig'}
+	text = self.tbuffer.get_text(self.tbuffer.get_start_iter(), self.tbuffer.get_end_iter())
+	amne = self.entry.get_text()
+	mottagare = self.entry2.get_text()
+	dict = {"id": 1, "sender": "army" , "receiver": mottagare ,"type": 'text' , "subtype": "add", "time_created": 34, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : 'mig'}
 	args = (json.dumps(dict),)
 	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "method1", args)
 	
@@ -45,16 +45,16 @@ class Meddelande (object):
 	self.entry.show()	
 	self.vbox.pack_start(self.entry, True, True, 0)
 	
-	#Skriv ett amne
+	#Skriv en mottagare
         self.mottagare = gtk.Label("Mottagare")
         self.mottagare.set_alignment(0, 0)
 	self.mottagare.show()
 	self.vbox.pack_start(self.mottagare , False, False, 0)
 	
-	self.entry1 = gtk.Entry()
-        self.entry1.set_max_length(250)
-	self.entry1.show()	
-	self.vbox.pack_start(self.entry1, True, True, 0)
+	self.entry2 = gtk.Entry()
+        self.entry2.set_max_length(250)
+	self.entry2.show()	
+	self.vbox.pack_start(self.entry2, True, True, 0)
 	
 	#Lagg till mottagre
 	self.skicka1 = gtk.Button("Lagg till mottagare")
@@ -77,8 +77,7 @@ class Meddelande (object):
 	self.vbox.pack_start(self.scrolled_window, True, True, 0)
 	
 	self.skicka = gtk.Button("Skicka")
-        self.skicka.connect("clicked", self.send, "Spara")
-	self.skicka.connect("released", self.release, "Skicka")
+        self.skicka.connect("clicked", self.send, "Skicka")
 	self.skicka.show()
 	self.vbox.pack_start(self.skicka,True,True,0)
 	
