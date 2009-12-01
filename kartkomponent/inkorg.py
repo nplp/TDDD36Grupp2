@@ -57,16 +57,16 @@ class Inkorg(gtk.Window):
 	return self.anvandare
 
     def create_model(self):
-        store = gtk.ListStore(str, str, str, str, str, str)
+        store = gtk.ListStore(str, str, str, str, str, str,str,str)
 	anvandare = self.get_messages()
         for act in anvandare:
-            store.append([act[0], act[1], act[2], act[3], act[4], act[5]])
+            store.append([act[0], act[1], act[2], act[3], act[4], act[5]],act[6],act[7])
         return store
 
     def create_columns(self, treeView):
         rendererText = gtk.CellRendererText()
         column = gtk.TreeViewColumn("Sender", rendererText, text=0)
-        column.set_sort_column_id(0)    
+        column.set_sort_column_id(0)
         treeView.append_column(column)
         
         rendererText = gtk.CellRendererText()
@@ -80,18 +80,28 @@ class Inkorg(gtk.Window):
         treeView.append_column(column)
 	
 	rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Time", rendererText, text=3)
+        column = gtk.TreeViewColumn("Subtype", rendererText, text=3)
         column.set_sort_column_id(3)
         treeView.append_column(column)
 	
-        rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Content", rendererText, text=4)
+	rendererText = gtk.CellRendererText()
+        column = gtk.TreeViewColumn("Time", rendererText, text=4)
         column.set_sort_column_id(4)
         treeView.append_column(column)
 	
-        rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Response", rendererText, text=5)
+	rendererText = gtk.CellRendererText()
+        column = gtk.TreeViewColumn("Subject", rendererText, text=5)
         column.set_sort_column_id(5)
+        treeView.append_column(column)
+	
+        rendererText = gtk.CellRendererText()
+        column = gtk.TreeViewColumn("Message", rendererText, text=6)
+        column.set_sort_column_id(6)
+        treeView.append_column(column)
+	
+        rendererText = gtk.CellRendererText()
+        column = gtk.TreeViewColumn("Response", rendererText, text=7)
+        column.set_sort_column_id(7)
         treeView.append_column(column)
 	
     def on_activated(self, widget, row, col):
