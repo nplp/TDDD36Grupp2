@@ -57,61 +57,6 @@ class Gui(hildon.Program):
 	#print "vi sparar!"
 	#osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (1, "127.0.0.1", 4000, 4001))	
 	
-    def ringa(self,widget,event,data=None):
-	self.verktyg.set_active(False)
-	self.filer.set_active(False)
-	self.kommunikation.set_active(False)
-	self.vbox2.hide()	
-	self.map.hide()
-	self.swindow.hide()
-	self.scwindow.hide()
-	self.scroll_window.hide()
-        self.scrolled_window.hide()	
-	self.samtala.hbox.show()
-	self._lager.lagerboxen.hide()
-	
-    def lagret(self,widget,event,data=None):
-	self.verktyg.set_active(False)
-	self.filer.set_active(False)
-	self.kommunikation.set_active(False)
-	self.vbox2.hide()	
-	self.map.hide()
-	self.swindow.hide()
-	self.scwindow.hide()
-	self.scroll_window.hide()
-        self.scrolled_window.hide()	
-	self.samtala.hbox.hide()	
-        self._lager.lagerboxen.show()
-	
-	#Uppdrag
-    def upp(self, widget, event, data=None):
-	self.kommunikation.set_active(False)
-	self.filer.set_active(False)
-	self.verktyg.set_active(False)
-	self.vbox2.hide()
-	self.map.hide()
-	self.swindow.hide()
-	self.scwindow.hide()
-        self.scrolled_window.hide()
-	self.samtala.hbox.hide()
-        self.scroll_window.show()
-	self._lager.lagerboxen.hide()
-	
-	#Rapport
-    def rapp(self, widget, event, data=None):
-	self.kommunikation.set_active(False)
-	self.filer.set_active(False)
-	self.verktyg.set_active(False)
-	self.vbox2.hide()
-	self.map.hide()
-	self.swindow.hide()
-	self.scwindow.hide()
-	self.scroll_window.hide()
-	self.samtala.hbox.hide()	
-        self.scrolled_window.show()
-	self._lager.lagerboxen.hide()
-	
-	
 	#Kommunikation
     def komm(self, widget, event, data=None):
 	if widget.get_active():
@@ -196,25 +141,14 @@ class Gui(hildon.Program):
 		self.uppdrag.hide()
 		self.rapport.hide()
 		self.lager.hide()
-		self.tillbaka.show()		
 		self.energi.show()
 		self.natverk.show()
 		self.anvanda.show()
+		self.tillbaka.show()			
 	 else:
-          	self.tbaka(widget, data)		
+          	self.tbaka(widget, data)
 	
-	#Visa kartan
-    def kartan(self, widget, event, data=None):
-	self.verktyg.set_active(False)
-	self.vbox2.hide()
-	self.scrolled_window.hide()
-	self.swindow.hide()
-	self.scwindow.hide()
-	self.ringa.vbox.hide()
-        self.scroll_window.hide()
-	self.samtala.hbox.hide()	
-	self.map.show()
-	 
+	#Text
     def textmedd(self, widget, event, data=None):
 	self.kommunikation.set_active(False)
 	self.filer.set_active(False)
@@ -225,19 +159,91 @@ class Gui(hildon.Program):
 	self.samtala.hbox.hide()
 	self._lager.lagerboxen.hide()	
 	self.scwindow.hide()
-	self.swindow.show()
+	self.swindow.show()	
 	
-    def inboxen(self, widget, event, data=None):
-	self.kommunikation.set_active(False)
-	self.filer.set_active(False)
+	#Samtal
+    def ringa(self,widget,event,data=None):
 	self.verktyg.set_active(False)
-	self.vbox2.hide()
-	self.map.hide()
-	self.scrolled_window.hide()
-	self.samtala.hbox.hide()
+	self.filer.set_active(False)
+	self.kommunikation.set_active(False)
 	self._lager.lagerboxen.hide()
-	self.swindow.hide()	
+	self.map.hide()
+	self.samtala.hbox.show()
+	self.scwindow.hide()
+	self.scroll_window.hide()
+        self.scrolled_window.hide()	
+	self.swindow.hide()
+	self.vbox2.hide()
+	
+	#Visa Kartan
+    def kartan(self, widget, event, data=None):
+	self.verktyg.set_active(False)
+	self.filer.set_active(False)
+	self.kommunikation.set_active(False)
+	self._lager.lagerboxen.hide()
+	self.map.show()
+	self.samtala.hbox.hide()
+	self.scwindow.hide()
+	self.scroll_window.hide()
+        self.scrolled_window.hide()	
+	self.swindow.hide()
+	self.vbox2.hide()
+	
+	#Lager
+    def lagret(self,widget,event,data=None):
+	self.verktyg.set_active(False)
+	self.filer.set_active(False)
+	self.kommunikation.set_active(False)
+	self._lager.lagerboxen.show()
+	self.map.hide()
+	self.samtala.hbox.hide()
+	self.scwindow.hide()
+	self.scroll_window.hide()
+        self.scrolled_window.hide()	
+	self.swindow.hide()
+	self.vbox2.hide()
+	
+	#Uppdrag
+    def upp(self, widget, event, data=None):
+	self.verktyg.set_active(False)
+	self.filer.set_active(False)
+	self.kommunikation.set_active(False)
+	self._lager.lagerboxen.hide()
+	self.map.hide()
+	self.samtala.hbox.hide()
+	self.scwindow.hide()
+	self.scroll_window.show()
+        self.scrolled_window.hide()	
+	self.swindow.hide()
+	self.vbox2.hide()
+	
+	#Rapport
+    def rapp(self, widget, event, data=None):
+	self.verktyg.set_active(False)
+	self.filer.set_active(False)
+	self.kommunikation.set_active(False)
+	self._lager.lagerboxen.hide()
+	self.map.hide()
+	self.samtala.hbox.hide()
+	self.scwindow.hide()
+	self.scroll_window.hide()
+        self.scrolled_window.show()	
+	self.swindow.hide()
+	self.vbox2.hide()
+		
+	Inbox	
+    def inboxen(self, widget, event, data=None):
+	self.verktyg.set_active(False)
+	self.filer.set_active(False)
+	self.kommunikation.set_active(False)
+	self._lager.lagerboxen.hide()
+	self.map.hide()
+	self.samtala.hbox.hide()
 	self.scwindow.show()
+	self.scroll_window.hide()
+        self.scrolled_window.hide()	
+	self.swindow.hide()
+	self.vbox2.hide()
 
 	
         #Avsluta programmet
