@@ -112,14 +112,14 @@ class Inkorg(gtk.Window):
     def show_popup(self, button):
 	print self.args["sender"]
 	visa = visameddelande.VisaMeddelande(self.args)
-        popup = gtk.Window()
-        popup.set_title( "Meddelande" )
-	popup.set_size_request(500,500)
-        popup.add(visa.vbox)	
-        popup.set_modal(False)
-        popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
-        popup.connect( "destroy", lambda *w: gtk.main_quit() )
-        popup.show()
+        self.popup = gtk.Window()
+        self.popup.set_title( "Meddelande" )
+	self.popup.set_size_request(500,500)
+        self.popup.add(visa.vbox)	
+        self.popup.set_modal(False)
+        self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
+        self.popup.connect( "destroy", lambda *w: gtk.main_quit() )
+        self.popup.show()
 
 	
 def main():
