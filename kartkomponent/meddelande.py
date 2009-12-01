@@ -15,10 +15,10 @@ class Meddelande (object):
 		
     def send(self, widget, event, data=None):
 	self.tbuffer = self.entry1.get_buffer()
-	text = self.tbuffer.get_text(self.tbuffer.get_start_iter(), self.tbuffer.get_end_iter())
-	amne = self.entry.get_text()
+	self.text = self.tbuffer.get_text(self.tbuffer.get_start_iter(), self.tbuffer.get_end_iter())
+	self.amne = self.entry.get_text()
     def release(self, widget, event, data=None):
-	dict = {"id": 1, "sender": "army" , "receiver": "army" ,"type": 'text' , "subtype": "add", "time_created": 34, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : 'mig'}
+	dict = {"id": 1, "sender": "army" , "receiver": "army" ,"type": 'text' , "subtype": "add", "time_created": 34, 'content' : {'subject' : self.amne, 'message' : self.text}, 'response_to' : 'mig'}
 	args = (json.dumps(dict),)
 	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "method1", args)
 	
