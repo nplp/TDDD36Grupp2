@@ -111,7 +111,7 @@ Session.configure(bind=engine)
 ##############################definerar classer##################################
 class Message(object):
 	def __init__(self, id=None, sender=None, receiver=None, type=None, subtype=None, time_created=None, subject=None, message=None, response_to=None):
-		self.id=generate_id()
+		self.id=id
 		self.sender=sender
 		self.receiver=receiver
 		self.type=type
@@ -124,7 +124,7 @@ class Message(object):
 class User(object):
 	def __init__(self, name=None, id=None, clearance=None,  password=None):
 		self.name=name
-		self.id=generate_id()
+		self.id=id
 		self.clearance=clearance
 		self.password=password	
 	def __repr__(self):
@@ -132,7 +132,7 @@ class User(object):
 class Item(object):
 	def __init__(self, name=None, id=None, count=None, location=None):
 		self.name=name
-		self.id=generate_id()
+		self.id=id
 		self.count=count
 		self.location=location
 	def __repr__(self):
@@ -141,7 +141,7 @@ class Group(object):
 	
 	def __init__(self, name=None, id=None):
 		self.name=name
-		self.id=generate_id()
+		self.id=id
 	
 
 class Mission(object):
@@ -149,7 +149,7 @@ class Mission(object):
 		#self.id = generate_id()
 		self.poi_id = poi_id
 		self.unit_id=unit_id
-		self.id=generate_id()
+		self.id=id
 		self.name = name
 		self.time_created = time_created
 		self.time_changed = time_changed
@@ -162,7 +162,7 @@ class Poi(object):
 	def __init__(self, coordx= None, coordy= None, id=None, name= None, time_created=None, time_changed=None, type=None, sub_type= None):
 		self.coordx = coordx
 		self.coordy = coordy
-		self.id=generate_id()
+		self.id=id
 		self.name = name
 		self.time_created = time_created
 		self.type = type
@@ -172,7 +172,7 @@ class Unit(object):
 	def __init__(self, coordx= None, coordy= None, id=None, name= None, time_changed=None, type= None):
 		self.coordx = coordx
 		self.coordy = coordy
-		self.id=generate_id()
+		self.id=id
 		self.name = name
 		self.time_changed = time_changed
 		self.type = type
