@@ -394,6 +394,14 @@ class sessionClass(Thread):
 				if(name_pass == ""):
 					return "/ERROR"
 
+				# Gör om Message till sträng
+				if(name_pass[0] == '{'):
+					msg = json.loads(name_pass)
+					try:
+						if(msg["type"] == "login"):
+							name_pass = msg["sender"]+' '+msg["content"]["message"]
+					except KeyError, e: print "Unknown datatype"
+
 				temp = name_pass.split(' ')
 				uname = temp[0]
 
