@@ -554,7 +554,7 @@ addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
 
 #add_mission_unit(122,172)
 #print generate_id()
-addMessage('mathias1','hanna','text',"change",datetime.now(),"hej",'jason.dums() sak ska vara har tex Unit', 1)
+addMessage('mathias1','hanna',"change",datetime.now(),'jason.dums() sak ska vara har tex Unit', 1)
 
 #print getMessage(202)
 #print class2dict(getMessage(202))
