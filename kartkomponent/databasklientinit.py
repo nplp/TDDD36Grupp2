@@ -223,7 +223,7 @@ mapper(User, user_table, properties={
 	'groups': relation(Group, secondary= user_group, backref='users')}
 	)
 
-mapper(Item, items_table, properties=dict())
+mapper(Item, items_table)
 
 
 
