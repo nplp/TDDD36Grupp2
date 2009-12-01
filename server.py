@@ -13,6 +13,7 @@ from groups import *
 
 from read_db import *
 import os
+import simplejson as json
 
 # Kodkommentarer
 #

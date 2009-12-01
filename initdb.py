@@ -495,24 +495,24 @@ user_mathias.groups.append(pro)
 user_mathias.groups.append(go)
 
 
-user_thor= User('thor', 'normal', 'gobject')
+user_thor= User(name='thor', clearance='normal', password='gobject')
 user_thor.groups.append(g)
 user_thor.groups.append(go)
 
 
-user_christopher=User('christopher', 'normal', '123')
+user_christopher=User(name='christopher', clearance='normal', password='123')
 user_christopher.groups.append(g)
 
 
-user_hanna= User('hanna', 'normal', '123')
+user_hanna= User(name='hanna', clearance='normal', password='123')
 user_hanna.groups.append(g)
 
 
-user_manuela=User('manuela', 'normal', '123')
+user_manuela=User(name='manuela', clearance='normal', password='123')
 user_manuela.groups.append(g)
 
 
-user_kj=User('kj', 'normal', '123')
+user_kj=User(name='kj', clearance='normal', password='123')
 user_kj.groups.append(g)
 user_kj.groups.append(pro)
 
