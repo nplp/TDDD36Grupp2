@@ -31,7 +31,7 @@ class Client(object):
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
-		self.MYPORT = 2333
+		self.MYPORT = 2353
 		self.ADDR = ('127.0.0.1')
 		self.ADDR2 = ('127.0.0.1')
 		self.contactList = list()
