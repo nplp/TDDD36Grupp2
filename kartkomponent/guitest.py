@@ -232,7 +232,7 @@ class Gui(hildon.Program):
 	self.swindow.hide()
 	self.vbox2.hide()
 		
-	Inbox	
+	#Inbox	
     def inboxen(self, widget, event, data=None):
 	self.verktyg.set_active(False)
 	self.filer.set_active(False)
@@ -240,13 +240,12 @@ class Gui(hildon.Program):
 	self._lager.lagerboxen.hide()
 	self.map.hide()
 	self.samtala.hbox.hide()
-	self.scwindow.show()
 	self.scroll_window.hide()
         self.scrolled_window.hide()	
 	self.swindow.hide()
 	self.vbox2.hide()
 	inkorg.Inkorg.create_model()
-
+	self.scwindow.show()
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
