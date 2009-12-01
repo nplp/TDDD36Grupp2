@@ -79,8 +79,10 @@ message_table = Table('messages',metadata,
 	Column('sender', Text),
 	Column('receiver', Text),
 	Column('type', Text),
+	Column('subtype', Text),
 	Column('time_created', Integer),
-	Column('content', Text),
+	Column('subject', Text),
+	Column('message', Text),
 	Column('response_to', Integer)
 	)
 mission_group = Table('mission_group', metadata,
@@ -104,13 +106,15 @@ Session.configure(bind=engine)
 
 ##############################definerar classer##################################
 class Message(object):
-	def __init__(self, id=None, sender=None, receiver=None, type=None, time_created=None, content=None, response_to=None):
+	def __init__(self, id=None, sender=None, receiver=None, type=None, subtype=None, time_created=None, subject=None, message=None, response_to=None):
 		self.id=generate_id()
 		self.sender=sender
 		self.receiver=receiver
 		self.type=type
+		sefl.subtype=subtype
 		self.time_created=time_created
-		self.content=content
+		self.subject=subject
+		self.message=message
 		self.response_to=response_to
 
 class User(object):
@@ -392,32 +396,19 @@ def add_mission_poi(mission_id,poi_id):
 		pass
 	
 #lägger in ett medelande i databasen
-def addMessage(sender1, receiver1, type1, time_created1, content1, response_to1):
-	session.save(Message(sender=sender1, receiver=receiver1, type=type1, time_created=time_created1, content=content1, response_to=response_to1))
+def addMessage(sender1, receiver1, type1, subtype1, time_created1, subject1, message1,response_to1):
+	session.save(Message(sender=sender1, receiver=receiver1, type=type1,subtype=subtype1, time_created=time_created1, subject=subject1, messaage=message1, response_to=response_to1))
 	
 	
 	
 	
-#######################################################	
-session = Session()
-USERS = session.query(User).all() # radera kj?
-session.close()
 
 def getMessage(id_nr):
-	#try:
+	try:
 		m=session.query(Message).filter_by(id=id_nr).first()
 		return m
-	#except:
-	#	return None
-	
-def getAllMessages():
-	try:
-		m = session.query(Message).all()
-		return m
-	except Exception, e:
-		print e 
-		
-
+	except:
+		return None
 def removeMessage(id_nr):
 	m=session.query(Message).filter_by(id=id_nr).first()
 	session.delete(m)
@@ -466,13 +457,3 @@ def class2dict(o):
 	    if(str(dict[elem]).startswith('<') and not str(elem.startswith('_'))):#bugg: man far inte borja ett meddelande med <
 		   dict[elem] = class2dict(o.__dict__[elem])
     return dict	
-
-
-
-
-
-
-
-
-
-
