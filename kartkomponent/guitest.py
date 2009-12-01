@@ -245,6 +245,7 @@ class Gui(hildon.Program):
         self.scrolled_window.hide()	
 	self.swindow.hide()
 	self.vbox2.hide()
+	inkorg.Inkorg.create_model()
 
 	
         #Avsluta programmet
