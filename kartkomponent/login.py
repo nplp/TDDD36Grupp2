@@ -47,7 +47,7 @@ class Inlogg():
 	self.popup = gtk.Window()
         self.popup.set_title( "Login" )
 	self.popup.set_size_request(500,500)
-        self.popup.add(vbox)
+        self.popup.add(self.vbox)
 	#adress.vbox.show()	
         self.popup.set_modal(True)
         #popup.set_transient_for(self)
