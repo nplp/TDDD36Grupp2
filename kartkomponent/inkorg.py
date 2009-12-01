@@ -106,11 +106,11 @@ class Inkorg(gtk.Window):
 	
     def on_activated(self, widget, row, col):
         model = widget.get_model()
-        text = model[row][0] + ", " + model[row][2]+ ", " + model[row][4]
+        text = model[row][0] + ", " + model[row][5]+ ", " + model[row][6]
         self.statusbar.push(0, text)
 	self.one = model[row][0]
-	self.two = model[row][2]
-	self.three = model[row][4]
+	self.two = model[row][5]
+	self.three = model[row][6]
 	print self.one
 	print self.two
 	print self.three
