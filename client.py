@@ -147,7 +147,7 @@ class Client(object):
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
 		print "waddap2"
-		recThread = recieverClass(self.clientSocket, (self.ADDR,self.MYPORT))
+		recThread = recieverClass(self.clientSocket, (self.ADDR,self.MYPORT), self.primary, self.online)
 		print "waddap3"
 		recThread.start()
 		print "waddap4"
@@ -166,7 +166,7 @@ class Client(object):
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
 		print "baddap2"
-		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.MYPORT))
+		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.MYPORT), self.primary, self.online)
 		print "baddap3"
 		recThread2.start()
 		print "baddap4"
@@ -209,7 +209,9 @@ class Client(object):
 	
 	
 class recieverClass(Thread):
-	def __init__(self, _clientSocket, _ADDR,):
+	def __init__(self, _clientSocket, _ADDR, _primary, _online):
+		self.online = _online
+		self.primary = _primary
 		self.clientSocket = _clientSocket
 		self.ADDR = _ADDR
 		self.BUFF = 1024
@@ -237,7 +239,7 @@ class recieverClass(Thread):
 						print data
 				else:
 					print "rerouting"
-					online = False
+					self.online = False
 					if(self.primary):
 						reconnect()
 						break
