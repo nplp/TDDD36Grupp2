@@ -52,7 +52,7 @@ class Inkorg(gtk.Window):
     def get_messages(self):
 	self.anvandare = []
 	for n in getAllMessages():
-		self.anvandare.append((n.sender, n.receiver, n.type , n.time_created, n.content , n. response_to))
+		self.anvandare.append((n.sender, n.receiver, n.type, n.subtype, n.time_created, n.subject, n.message , n. response_to))
 		
 	return self.anvandare
 
@@ -110,20 +110,8 @@ class Inkorg(gtk.Window):
 	print self.args["subject"]
 
     def show_popup(self, button):
-	print self.args["sender"]
 	visa = visameddelande.VisaMeddelande(self.args)
-        self.popup = gtk.Window()
-        self.popup.set_title( "Meddelande" )
-	self.popup.set_size_request(500,500)
-        self.popup.add(visa.vbox)
-	self.avsluta.connect("clicked", self.avs, "Avsluta")
-        self.popup.set_modal(False)
-        self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
-        self.popup.connect( "destroy", lambda *w: gtk.main_quit() )
-        self.popup.show()
-
-    def avs(self, widget, event, data=None):
-	self.popup.destroy()
+        visa.popup.show()
 
 	
 def main():

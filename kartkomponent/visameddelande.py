@@ -63,13 +63,19 @@ class VisaMeddelande (object):
 	self.avsluta.show()
 	self.vbox.pack_start(self.avsluta,True,True,0)
 	
-	#self.window.add(self.vbox)
-	#self.window.show()
+	self.popup = gtk.Window()
+        self.popup.set_title( "Meddelande" )
+	self.popup.set_size_request(500,500)
+        self.popup.add(self.vbox)
+        self.popup.set_modal(False)
+        self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
 	
-    def send():
+    def send(self, widget, event, data=None):
 	print "hej hej"
+	
+	
     def avs(self, widget, event, data=None):
-	self.popup.destroy()
+	    self.popup.destroy()
 def main():
 	gtk.main()
 	return 0
