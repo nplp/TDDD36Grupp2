@@ -26,12 +26,12 @@ class Client(object):
 		#HOST = '130.236.216.128'
 		self.HOST = '130.236.189.14'
 		self.HOST2 = '130.236.189.14'
-		self.PORT = 2010
-		self.PORT2 = 2011
+		self.PORT = 2011
+		self.PORT2 = 2012
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
-		self.MYPORT = 2356
+		self.MYPORT = 2359
 		self.ADDR = ('127.0.0.1')
 		self.ADDR2 = ('127.0.0.1')
 		self.contactList = list()
@@ -238,7 +238,7 @@ class recieverClass(Thread):
 				else:
 					print "rerouting"
 					online = False
-					if(primary):
+					if(self.primary):
 						reconnect()
 						break
 					else:
