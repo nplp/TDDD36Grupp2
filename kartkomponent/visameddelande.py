@@ -69,7 +69,7 @@ class VisaMeddelande (object):
     def send():
 	print "hej hej"
     def avs(self, widget, event, data=None):
-	self.vbox.destroy()
+	self.popup.destroy()
 def main():
 	gtk.main()
 	return 0
