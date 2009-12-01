@@ -69,10 +69,6 @@ class VisaMeddelande (object):
         self.popup.add(self.vbox)
         self.popup.set_modal(False)
         self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
-        #self.popup.connect( "destroy", lambda *w: gtk.main_quit() )
-        #popup.show()
-	#self.window.add(self.vbox)
-	#self.window.show()
 	
     def send(self, widget, event, data=None):
 	print "hej hej"
