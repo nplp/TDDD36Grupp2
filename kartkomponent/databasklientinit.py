@@ -575,7 +575,7 @@ add_item('Sovsackar', 130, 'Linkoping')
 add_item('Lastbilar', 37, 'Linkoping')
 add_item('Diselvarmare', 59, 'Linkoping')
 add_item('Sprinterbuss', 5, 'Linkoping')
-m=getUnits()
+#m=getUnits()
 session.commit()
 
 #print m
