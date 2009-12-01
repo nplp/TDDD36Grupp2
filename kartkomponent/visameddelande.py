@@ -59,7 +59,7 @@ class VisaMeddelande (object):
 	self.vbox.pack_start(self.svara,True,True,0)
 	
 	self.avsluta = gtk.Button("Avsluta")
-        self.avsluta.connect("clicked", self.send, "Avsluta")
+        self.avsluta.connect("clicked", self.avs, "Avsluta")
 	self.avsluta.show()
 	self.vbox.pack_start(self.avsluta,True,True,0)
 	
@@ -68,7 +68,8 @@ class VisaMeddelande (object):
 	
     def send():
 	print "hej hej"
-	
+    def avs(self, widget, event, data=None):
+	self.vbox.destroy()
 def main():
 	gtk.main()
 	return 0
