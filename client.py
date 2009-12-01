@@ -26,12 +26,12 @@ class Client(object):
 		#HOST = '130.236.216.128'
 		self.HOST = '130.236.189.14'
 		self.HOST2 = '130.236.189.14'
-		self.PORT = 2116
-		self.PORT2 = 2017
+		self.PORT = 2010
+		self.PORT2 = 2011
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
-		self.MYPORT = 2353
+		self.MYPORT = 2356
 		self.ADDR = ('127.0.0.1')
 		self.ADDR2 = ('127.0.0.1')
 		self.contactList = list()
@@ -154,22 +154,22 @@ class Client(object):
 	
 	def reconnect():
 		self.primary = False
-		print "primary i reconnect igen = "+str(primary)
+		print "primary i reconnect igen = "+str(self.primary)
 			#SSH anrop, startar ssh tunnel mot servern
 		try:
 			self.MYPORT +=1
 			subprocess.call('ssh -f nikpe890@'+self.HOST2+' -L'+str(self.MYPORT)+':127.0.0.1:'+str(self.PORT2)+' sleep 4', shell=True)
 		except error:
 			print 'no server baby i reconnect'
-		#print "baddap"
+		print "baddap"
 		self.clientSocket2.connect((self.ADDR2, self.MYPORT))
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
-		#print "baddap2"
+		print "baddap2"
 		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.MYPORT))
-		#print "baddap3"
+		print "baddap3"
 		recThread2.start()
-		#print "baddap4"
+		print "baddap4"
 		
 	def checkBattery():
 		try:
