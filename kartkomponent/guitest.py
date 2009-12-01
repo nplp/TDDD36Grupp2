@@ -16,6 +16,7 @@ import samtal
 import lager
 import inkorg
 from databasklient import * 
+from gui_map import * 
 
 class Gui(hildon.Program):	
     __map = None
@@ -37,7 +38,11 @@ class Gui(hildon.Program):
 		self.label.set_text(str(self.batt.getbattery()))
 		#self.label = gtk.Label(self.batt.getbattery())
 		time.sleep(8)
-    
+		
+	#skriv klartttttttttttt	
+    def koordinater(self):
+	print
+
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 	
@@ -403,8 +408,13 @@ class Gui(hildon.Program):
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
 	
+
+	self.kords = gtk.Label("Koordinater")
+        self.kords.show()
+
+	
 	#Packning
-	print "packing"
+	#print "packing"
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
 	self.swindow.add_with_viewport(self.meddela.vbox)
@@ -417,6 +427,7 @@ class Gui(hildon.Program):
 	self.vbox3.pack_start(self.swindow,True,True,0)	
 	self.vbox3.pack_start(self.scwindow,True,True,0)		
 	self.vbox3.pack_start(self._lager.lagerboxen,True,True,0)
+        self.vbox3.pack_start(self.kords, False, False, 0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
     	self.hbox.show()
 	self.window.add(self.hbox)
