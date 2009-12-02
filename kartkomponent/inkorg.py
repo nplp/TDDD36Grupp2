@@ -55,6 +55,9 @@ class Inkorg(gtk.Window):
 		self.anvandare.append((n.sender, n.receiver, n.type, n.subtype, n.time_created, n.subject, n.message , n.response_to))
 		
 	return self.anvandare
+	
+    def get_messages1():
+	    get_messages(self)
 
     def create_model(self):
         store = gtk.ListStore(str, str, str, str, str, str,str,str)

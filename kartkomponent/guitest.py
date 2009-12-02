@@ -234,7 +234,7 @@ class Gui(hildon.Program):
 		
 	#Inbox	
     def inboxen(self, widget, event, data=None):
-	inkorg.Inkorg.get_messages(self)
+	inkorg.Inkorg.get_messages1()
 	#inkorg.Inkorg.create_model()
 	self.verktyg.set_active(False)
 	self.filer.set_active(False)
