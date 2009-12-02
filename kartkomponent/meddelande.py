@@ -7,25 +7,28 @@ import gtk
 import osso
 import time
 import adresslista
+import login
 
 class Meddelande (object):
 	
     osso_c = osso.Context("meddelande", "0.0.1", False)
     osso_rpc = osso.Rpc(osso_c)
+    argsy = None
 		
     def send(self, widget, event, data=None):
 	self.tbuffer = self.entry1.get_buffer()
 	text = self.tbuffer.get_text(self.tbuffer.get_start_iter(), self.tbuffer.get_end_iter())
 	amne = self.entry.get_text()
 	mottagare = self.entry2.get_text()
-	dict = {"id": 1, "sender": "mathias" , "receiver": mottagare ,"type": 'login' , "subtype": "add", "time_created": 34, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : 'mig'}
+	l = login.Inlogg()
+	anvandare = login.Inlogg.get_user(l)
+	dict = {"id": 1, "sender": anvandare , "receiver": mottagare ,"type": 'text' , "subtype": "add", "time_created": 34, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : anvandare}
 	self.args = (json.dumps(dict),)
     
     def release(self, widget, event, data=None):
 	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "method1", self.args)
 	
     def __init__(self):
-	print "hej"
 	#Vbox for innehall
 	self.vbox = gtk.VBox(False,5)
 	self.vbox.set_border_width(50)
@@ -80,7 +83,7 @@ class Meddelande (object):
 	
 	self.skicka = gtk.Button("Skicka")
         self.skicka.connect("clicked", self.send, "Spara")
-	self.skicka.connect("released", self.release, "Skicka") 
+	self.skicka.connect("released", self.release, "Skicka")
 	self.skicka.show()
 	self.vbox.pack_start(self.skicka,True,True,0)
 	

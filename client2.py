@@ -51,11 +51,7 @@ class Client(object):
 		self.q = Queue()
 
 	def send(self, interface, method, arguments, user_data):
-		self.dict = json.loads(arguments[0])
-		if(self.dict['content']['subject'] == 'login'):
-			self.data = self.dict["content"]["message"]
-		else:
-			self.data = arguments[0]
+		self.data = arguments[0]
 		#self.data = self.dict["content"]["message"]
 		#self.msg = Message(self.data)
 		#self.data = finishCMD(self.msg)
@@ -248,9 +244,9 @@ class recieverClass(Thread):
 					else:
 						if(data.startswith('{')):
 							dict = json.loads(data)
-							addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["content"]["subject"], dict ["content"]["message"], dict["response_to"])
-							print "christoffer"	
-							print getAllMessages()						
+							if(dict["type"] == "text"):
+								addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["content"]["subject"], dict ["content"]["message"], dict["response_to"])
+								session.commit()
 						else:
 							print data
 				else:

@@ -1,12 +1,29 @@
 import gtk
+import simplejson as json
+import osso
 
 class Inlogg():
     
+    USER = ""
+    osso_c = osso.Context("login", "0.0.1", False)
+    osso_rpc = osso.Rpc(osso_c)
+    
+    def send(self, widget, event, data=None):
+	global USER
+	anvandare = self.entry.get_text()
+	losen = self.entry1.get_text()
+	USER = anvandare
+	dict = {"id": 1, "sender": anvandare , "receiver": "" ,"type": 'login' , "subtype": "", "time_created": 34, 'content' : {'subject' : '', 'message' : losen}, 'response_to' : ''}
+	self.args = (json.dumps(dict),)
+    
+    def release(self, widget, event, data=None):
+	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "method1", self.args)
+        
     def __init__(self):
 
 	#window = gtk.Window()
 	#window.connect("delete_event", self.delete_event)
-	#window.connect("destroy", self.destroy)
+	#window.connect("destroy", self.destroy
 	
 	#Vbox for innehall
 	self.vbox = gtk.VBox(False,5)
@@ -36,6 +53,7 @@ class Inlogg():
 	
 	self.loggin = gtk.Button("Logga in")
         self.loggin.connect("clicked", self.send, "Logga in")
+	self.loggin.connect("released", self.release, "Skicka") 
 	self.loggin.show()
 	self.vbox.pack_start(self.loggin,False,False,0)
 	
@@ -57,10 +75,13 @@ class Inlogg():
 	self.vbox.show()
 	#window.add(self.vbox)
 	#window.show()
+    
     def avs(self, widget, event, data=None):
 	self.popup.destroy()
-    def send(self, widget, event, data=None):
-    	print "nu loggas jag in"
+
+    def get_user(self):
+    	global USER
+	return USER
 	
 def main():
 	gtk.main()
