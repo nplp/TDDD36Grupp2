@@ -384,7 +384,7 @@ class sessionClass(Thread):
 
 
 	def sendBack(self, message):
-		print "Back to " + self.name + ": " + message
+		#print "Back to " + self.name + ": " + message
 		self.socket.send(message)
 	
 	# Sköter inloggningen.
