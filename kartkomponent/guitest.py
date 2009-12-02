@@ -431,6 +431,7 @@ class Gui(hildon.Program):
 
 
     def __init__(self, map):
+	self.show_popup(self)
 	self.batt = battery.Batteri()
 	thread.start_new_thread(self.batt.run,())
 	thread.start_new_thread(self.listenBattery,())
