@@ -60,8 +60,9 @@ class Inlogg():
 	self.avsluta = gtk.Button("Avsluta")
         self.avsluta.connect("clicked", self.avs, "Avsluta")
 	self.avsluta.show()
-	self.vbox.pack_start(self.avsluta,True,True,0)
+	self.vbox.pack_start(self.avsluta,False,False,0)
 	
+	#popup fran login
 	self.popup = gtk.Window()
         self.popup.set_title( "Login" )
 	self.popup.set_size_request(500,500)
