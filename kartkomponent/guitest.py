@@ -42,7 +42,7 @@ class Gui(hildon.Program):
 		self.label.set_text(str(self.batt.getbattery())) 
 		#self.label = gtk.Label(self.batt.getbattery())
 		sleep(8)
-    
+		
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 	
@@ -164,7 +164,8 @@ class Gui(hildon.Program):
 	self.samtala.hbox.hide()
 	self._lager.lagerboxen.hide()	
 	self.scwindow.hide()
-	self.swindow.show()	
+	self.swindow.show()
+	self.kords.hide()	
 	
 	#Samtal
     def ringa(self,widget,event,data=None):
@@ -179,6 +180,7 @@ class Gui(hildon.Program):
         self.scrolled_window.hide()	
 	self.swindow.hide()
 	self.vbox2.hide()
+	self.kords.hide()
 	
 	#Visa Kartan
     def kartan(self, widget, event, data=None):
@@ -193,6 +195,7 @@ class Gui(hildon.Program):
         self.scrolled_window.hide()	
 	self.swindow.hide()
 	self.vbox2.hide()
+	self.kords.show()
 	
 	#Lager
     def lagret(self,widget,event,data=None):
@@ -207,6 +210,7 @@ class Gui(hildon.Program):
         self.scrolled_window.hide()	
 	self.swindow.hide()
 	self.vbox2.hide()
+	self.kords.hide()
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
@@ -221,6 +225,7 @@ class Gui(hildon.Program):
         self.scrolled_window.hide()	
 	self.swindow.hide()
 	self.vbox2.hide()
+	self.kords.hide()
 	
 	#Rapport
     def rapp(self, widget, event, data=None):
@@ -235,6 +240,7 @@ class Gui(hildon.Program):
         self.scrolled_window.show()	
 	self.swindow.hide()
 	self.vbox2.hide()
+	self.kords.hide()
 		
 	#Inbox	
     def inboxen(self, widget, event, data=None):
@@ -251,6 +257,7 @@ class Gui(hildon.Program):
 	self.swindow.hide()
 	self.vbox2.hide()
 	self.scwindow.show()
+	self.kords.hide()
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
@@ -384,7 +391,7 @@ class Gui(hildon.Program):
 	self.samtala = samtal.Samtal()
 	self._lager = lager.Lager()
 	self.inbox = inkorg.Inkorg()
-	
+
 	self.vbox3 = gtk.VBox(False, 0)
         self.vbox3.show()
 	
@@ -409,11 +416,10 @@ class Gui(hildon.Program):
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
 	
+	#self.kords = gtk.Label()
+
 	
-	self.kords = gtk.Label("Koordinater")
-        self.kords.show()	
-        
-	
+  
 	#Packning
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
@@ -426,7 +432,7 @@ class Gui(hildon.Program):
 	self.vbox3.pack_start(self.scroll_window,True,True,0)
 	self.vbox3.pack_start(self.swindow,True,True,0)	
 	self.vbox3.pack_start(self.scwindow,True,True,0)	
-	self.vbox3.pack_start(self.kords, False, False, 0)	
+	#self.vbox3.pack_start(self.kords, False, False, 0)	
 	self.vbox3.pack_start(self._lager.lagerboxen,True,True,0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
     	self.hbox.show()
@@ -482,6 +488,8 @@ class Gui(hildon.Program):
     def create_map_view(self):
         self.map = gui_map.Map(self.__map)
         self.__map_change_zoom = self.map.change_zoom
+	
+    
 
     def get_treeview(self, args):
         if len(args) == 1:
