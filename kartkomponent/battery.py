@@ -10,7 +10,7 @@ class Batteri():
 	self.hal_obj = self.bus.get_object ('org.freedesktop.Hal', '/org/freedesktop/Hal/Manager')
 	self.hal = dbus.Interface (self.hal_obj, 'org.freedesktop.Hal.Manager')
 	self.uids = self.hal.FindDeviceByCapability('battery')
-	self.dev_obj = self.bus.get_object ('org.freedesktop.Hal', uids[0])
+	self.dev_obj = self.bus.get_object ('org.freedesktop.Hal', self.uids[0])
  	'''
 	self.x = float(self.dev_obj.GetProperty('battery.reporting.current'))
 	self.y = float(self.dev_obj.GetProperty('battery.reporting.design'))
