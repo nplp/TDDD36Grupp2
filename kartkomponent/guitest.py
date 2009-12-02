@@ -10,7 +10,8 @@ import uppdrag
 import detringer
 import battery
 import thread
-import time
+#import time
+from time import *
 import osso
 import samtal
 import lager
@@ -35,9 +36,12 @@ class Gui(hildon.Program):
     def listenBattery(self):
 	while(1):
 		print self.batt.getbattery()
-		self.label.set_text(str(self.batt.getbattery()))
+		#hej = self.batt.getbattery()
+		#hej2 = str(hej)
+		#self.label.set_text(hej2)
+		self.label.set_text(str(self.batt.getbattery())) 
 		#self.label = gtk.Label(self.batt.getbattery())
-		time.sleep(8)
+		sleep(8)
     
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
@@ -401,7 +405,7 @@ class Gui(hildon.Program):
 	self.scwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
 	
 	#self.batt = battery.Batteri()
-	self.label = gtk.Label(self.batt.getbattery())
+	#self.label = gtk.Label(self.batt.getbattery())
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
 	
@@ -431,9 +435,11 @@ class Gui(hildon.Program):
 
 
     def __init__(self, map):
+	gobject.threads_init()
 	self.show_popup(self)
+	self.label = gtk.Label()
 	self.batt = battery.Batteri()
-	thread.start_new_thread(self.batt.run,())
+	#thread.start_new_thread(self.batt.run,())
 	thread.start_new_thread(self.listenBattery,())
         # Initierar hildon (GUI-biblioteket för N810)
         hildon.Program.__init__(self)
@@ -446,7 +452,7 @@ class Gui(hildon.Program):
         # Funktion som körs när prorammet ska stängas av
         #self.window.connect("destroy", self.menu_exit)
         self.add_window(self.window)
-	self.label = gtk.Label()
+	
 	self.create_map_view()	
 	self.oldbuttonsandwindows()
 	#self.label = gtk.label()
