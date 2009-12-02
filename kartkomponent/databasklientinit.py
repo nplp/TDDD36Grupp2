@@ -246,11 +246,11 @@ def get_last_id():
 		return None
 
 def add_last_id(idnummer1):
-	i=session.query(Idnumber).first()
-	print i
+	idSession=Session()
+	i=idSession.query(Idnumber).first()
 	i.idnummer=idnummer1
-	print i.idnummer
-	session.add(i)
+	idSession.add(i)
+	idSession.commit()
 
 
 #retunerar alla användare
