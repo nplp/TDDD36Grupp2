@@ -102,7 +102,7 @@ Session.configure(bind=engine)
 ##############################definerar classer##################################
 class Message(object):
 	def __init__(self, id=None, sender=None, receiver=None, type=None, subtype=None, time_created=None, subject=None, message=None, response_to=None):
-		self.id=generate_id()
+		self.id=id
 		self.sender=sender
 		self.receiver=receiver
 		self.type=type
@@ -444,14 +444,17 @@ def class2dict(o):
     for elem in o.__dict__.keys():
         if elem.find("_" + o.__class__.__name__) == 0:
             continue
+        elif(elem.startswith('_')):
+            pass
             #We discard private variables, which are automatically
             #named _ClassName__variablename, when we define it in
             #the class as __variablename
         else:
             dict[elem] = o.__dict__[elem]
-	    if(str(dict[elem]).startswith('<') and not str(elem.startswith('_'))):#bugg: man far inte borja ett meddelande med <
+	    if(str(dict[elem]).startswith('<')):#bugg: man far inte borja ett meddelande med <
 		   dict[elem] = class2dict(o.__dict__[elem])
     return dict	
+
 
 ###########################Spårutskrifter############################	
 
