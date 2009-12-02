@@ -73,12 +73,12 @@ class Start(object):
 			else:
 				print "gps av"
 				PORT = sys.argv[1]
-				subprocess.call('python2.5 ../client.py '+ PORT + ' &', shell=True)
+				subprocess.call('python2.5 ../client2.py '+ PORT + ' &', shell=True)
 				guitest.Gui(self.map).run()
 
 		else:
 			print "gps av"
-			subprocess.call('python2.5 ../client.py &', shell=True)
+			subprocess.call('python2.5 ../client2.py &', shell=True)
 			guitest.Gui(self.map).run()
 				
 
