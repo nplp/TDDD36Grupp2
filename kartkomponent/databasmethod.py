@@ -263,7 +263,7 @@ def add_last_id(idnummer1):
 def get_user_all():
 	try:
 		session_getuser= Session()
-		return session.query(User).all()
+		return session_getuser.query(User).all()
 		session_getuser.close()
 	except:
 		return None
@@ -491,6 +491,15 @@ def getMessage(id_nr):
 	except:
 		return None
 	session_getMessage.close()
+
+def getAllMessages():
+	session_getAllMessages=Session()
+	try:
+		m=session_getAllMessages.query(Message).all()
+		return m
+	except:
+		return None
+	session_getAllMessages.close()
 	
 def removeMessage(id_nr):
 	session_removeMessage=Session()
