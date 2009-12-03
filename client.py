@@ -50,11 +50,7 @@ class Client(object):
 		self.q = Queue()
 
 	def send(self, interface, method, arguments, user_data):
-		print "kor send"
-		self.dict = json.loads(arguments[0])
-		self.data = self.dict["content"]["message"]
-		self.msg = Message(self.data)
-		self.data = finishCMD(self.msg)
+		self.data = arguments[0]
 		
 		if(self.data.startswith('/quit') or self.data.startswith('/exit')):
 			try:
@@ -83,15 +79,8 @@ class Client(object):
 			for n in contactList:
 				print n
 		elif(self.data != ""):
-			#clientSocket.send(data)
-			print "skickar till kon"
 			self.q.put(self.data)
-			#global primary
-			#print primary
-			#if(primary):
-				#clientSocket.send(data)
-			#else:
-				#clientSocket2.send(data)
+			
 	
 	def sendfunction(self, data):
 		self.data = data
@@ -100,15 +89,15 @@ class Client(object):
 		self.clientSocket2
 		#print "primary = "+str(primary)
 		if(self.primary):
-			print "skickar till primary  "+data
+			#print "skickar till primary  "+data
 			self.clientSocket.send(self.data)
 		else:
-			print "skickar till backup  "+data
+			#print "skickar till backup  "+data
 			self.clientSocket2.send(self.data)
 	
 	def deQueue(self):
-		print "online = "+str(self.online)
-		#global mutex
+		#print "online = "+str(self.online)
+		global mutex
 		#mutex.acquire()
 		while self.online:
 			sleep(0.5)
@@ -121,7 +110,7 @@ class Client(object):
 					self.sendfunction(temp)
 			except Exception, e:
 				#print e
-				print "gurka"
+				#print "gurka"
 				self.q._put(temp)
 		print "WTF? vi hoppade ur dequeue"
 				#fixa sa att det skickar nasta gang.
@@ -131,7 +120,6 @@ class Client(object):
 		print "wassap"
 		print "gor jag detta?"
 		#print "primary i connect= "+str(primary)
-		#print "har borde jag satta primary till true"
 		self.primary = True
 		#print "primary i connect igen = "+str(primary)
 		#SSH anrop, startar ssh tunnel mot servern
@@ -140,17 +128,17 @@ class Client(object):
 			subprocess.call('ssh -f nikpe890@'+self.HOST+' -L'+str(self.MYPORT)+':127.0.0.1:'+str(self.PORT)+' sleep 4', shell=True)
 		except error:
 			print 'no server baby i connect'
-		print "waddap"
-		print self.ADDR
-		print self.MYPORT
+		#print "waddap"
+		#print self.ADDR
+		#print self.MYPORT
 		self.clientSocket.connect((self.ADDR, self.MYPORT))
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
-		print "waddap2"
+		#print "waddap2"
 		recThread = recieverClass(self.clientSocket, (self.ADDR,self.MYPORT), self.primary, self.online)
-		print "waddap3"
+		#print "waddap3"
 		recThread.start()
-		print "waddap4"
+		#print "waddap4"
 	
 	def reconnect(self):
 		self.primary = False
@@ -161,15 +149,15 @@ class Client(object):
 			subprocess.call('ssh -f nikpe890@'+self.HOST2+' -L'+str(self.MYPORT)+':127.0.0.1:'+str(self.PORT2)+' sleep 4', shell=True)
 		except error:
 			print 'no server baby i reconnect'
-		print "baddap"
+		#print "baddap"
 		self.clientSocket2.connect((self.ADDR2, self.MYPORT))
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
-		print "baddap2"
+		#print "baddap2"
 		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.MYPORT), self.primary, self.online)
-		print "baddap3"
+		#print "baddap3"
 		recThread2.start()
-		print "baddap4"
+		#print "baddap4"
 		
 	def checkBattery():
 		try:
@@ -238,7 +226,12 @@ class recieverClass(Thread):
 							print s[1] + " is online."
 							contactList.append(s[1])
 					else:
-						print data
+						if(data.startswith('{')):
+							dict = json.loads(data)
+							if(dict["type"] == "text"):
+								addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["content"]["subject"], dict ["content"]["message"], dict["response_to"])
+						else:
+							print data
 				else:
 					print "rerouting"
 					self.online = False

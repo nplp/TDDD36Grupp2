@@ -25,16 +25,16 @@ class Client(object):
 	def __init__(self):
 		#Variabler
 		#HOST = '130.236.216.128'
-		self.HOST = '130.236.189.14'
-		self.HOST2 = '130.236.189.14'
+		self.HOST = '127.0.0.1'
+		self.HOST2 = '127.0.0.1'
 		self.PORT = 2150
 		self.PORT2 = 2017
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
 		self.MYPORT = 2338
-		self.ADDR = ('130.236.189.14')
-		self.ADDR2 = ('130.236.189.14')
+		self.ADDR = ('127.0.0.1')
+		self.ADDR2 = ('127.0.0.1')
 		self.contactList = list()
 		self.primary = False
 		self.online = False		
@@ -52,11 +52,7 @@ class Client(object):
 
 	def send(self, interface, method, arguments, user_data):
 		self.data = arguments[0]
-		#self.data = self.dict["content"]["message"]
-		#self.msg = Message(self.data)
-		#self.data = finishCMD(self.msg)
-		
-		
+			
 		if(self.data.startswith('/quit') or self.data.startswith('/exit')):
 			try:
 				self.clientSocket.send('/quit')
@@ -84,14 +80,8 @@ class Client(object):
 			for n in contactList:
 				print n
 		elif(self.data != ""):
-			#clientSocket.send(data)
 			self.q.put(self.data)
-			#global primary
-			#print primary
-			#if(primary):
-				#clientSocket.send(data)
-			#else:
-				#clientSocket2.send(data)
+			
 	
 	def sendfunction(self, data):
 		self.data = data
@@ -121,20 +111,14 @@ class Client(object):
 					self.sendfunction(temp)
 			except Exception, e:
 				#print e
-				#print "gurka"
 				self.q._put(temp)
 				#fixa sa att det skickar nasta gang.
 		#mutex.release()
 	
 	def connect(self):
-		#self.MYPORT
-		#self.primary
-		#self.online
-		#clientSocket = socket(AF_INET, SOCK_STREAM)
 		print "wassap"
 		print "gor jag detta?"
 		#print "primary i connect= "+str(primary)
-		#print "har borde jag satta primary till true"
 		self.primary = True
 		#print "primary i connect igen = "+str(primary)
 		#SSH anrop, startar ssh tunnel mot servern
@@ -154,13 +138,6 @@ class Client(object):
 		#print "waddap4"
 	
 	def reconnect():
-		#self.MYPORT
-		#self.primary
-		#self.online
-		#self.clientSocket2 = socket(AF_INET, SOCK_STREAM)
-		#print "did i do this reconnect?"
-		#print "primary i reconnect = "+str(primary)
-		#print "har borde jag satta primary till false"
 		self.primary = False
 		#print "primary i reconnect igen = "+str(primary)
 			#SSH anrop, startar ssh tunnel mot servern
@@ -217,7 +194,9 @@ class Client(object):
 	
 	
 class recieverClass(Thread):
-	def __init__(self, _clientSocket, _ADDR,):
+	def __init__(self, _clientSocket, _ADDR, _primary, _online):
+		self.online = _online
+		self.primary = _primary
 		self.clientSocket = _clientSocket
 		self.ADDR = _ADDR
 		self.BUFF = 1024
@@ -246,7 +225,6 @@ class recieverClass(Thread):
 							dict = json.loads(data)
 							if(dict["type"] == "text"):
 								addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["content"]["subject"], dict ["content"]["message"], dict["response_to"])
-								session.commit()
 						else:
 							print data
 				else:
