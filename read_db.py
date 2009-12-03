@@ -16,7 +16,6 @@ def generate_id():
 	id_nr+=1
 	add_last_id(id_nr)
 	idn=(id_nr*10)+2
-	print idn
 	return idn
 
 #######################skapar data tabeller############################33
@@ -120,7 +119,7 @@ class Idnumber(object):
 
 class Message(object):
 	def __init__(self, id=None, sender=None, receiver=None, type=None, subtype=None, time_created=None, subject=None, message=None, response_to=None):
-		self.id=id
+		self.id=generate_id()
 		self.sender=sender
 		self.receiver=receiver
 		self.type=type
