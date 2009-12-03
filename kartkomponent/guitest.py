@@ -244,8 +244,9 @@ class Gui(hildon.Program):
 		
 	#Inbox	
     def inboxen(self, widget, event, data=None):
+	print "schmack"
 	#inkorg.Inkorg.get_messages(self.inbox)
-	inkorg.Inkorg.create_model(self.inbox)
+	self.inbox.update_messages()
 	self.verktyg.set_active(False)
 	self.filer.set_active(False)
 	self.kommunikation.set_active(False)
@@ -257,7 +258,7 @@ class Gui(hildon.Program):
 	self.swindow.hide()
 	self.vbox2.hide()
 	self.scwindow.show()
-	self.kords.hide()
+	#self.kords.hide()
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
