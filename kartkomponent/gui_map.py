@@ -14,6 +14,7 @@ class Map(gtk.DrawingArea):
         
         # Variabler
         self.__map = map
+	self.koordinat = ()
         self.__pos = {"x":0, "y":0}
         self.__origin_position = None
         self.__cols = 0
@@ -60,12 +61,22 @@ class Map(gtk.DrawingArea):
         self.__origin_position = self.__map.get_focus()
         self.__last_movement_timestamp = time.time()
         self.__allow_movement = True
-
-        return True
+        
+	return True
 
     def handle_button_release_event(self, widget, event):
         self.__allow_movement = False
+	if time.time() < self.__last_movement_timestamp + 0.1:
+		lon, lat =  self.pixel_to_gps(self.__movement_from["x"]-self._width/2, self.__movement_from["y"]-self._height/2)
+		lon = self.__origin_position["longitude"] + lon
+		lat = self.__origin_position["latitude"] - lat
+	
+		#Har borde vi skicka till en label som visar vara koordinater"
+		self.koordinat = (lon,lat)
+		print self.koordinat
         return True
+    
+    
 
     def handle_motion_notify_event(self, widget, event):
         if self.__allow_movement:
@@ -99,6 +110,8 @@ class Map(gtk.DrawingArea):
                                event.area.y,
                                event.area.width,
                                event.area.height)
+	self._height = event.area.height
+	self._width = event.area.width
         self.context.clip()
         self.draw()
 
@@ -137,6 +150,7 @@ class Map(gtk.DrawingArea):
             if x != 0 and y != 0:
                 item["object"].draw(self.context, x, y)
 	self.queue_draw()	###### Test #######
+
    
     def gps_to_pixel(self, lon, lat):
         cols = self.__cols
@@ -162,7 +176,7 @@ class Map(gtk.DrawingArea):
         # Räknar ut position:
         x += (where_lon - where_focus_lon) * (cols * 300.0)
         y += (where_lat - where_focus_lat) * (rows * 160.0)
-      
+	
         return [round(x), round(y)]
    
     def pixel_to_gps(self, movement_x, movement_y):
@@ -176,10 +190,12 @@ class Map(gtk.DrawingArea):
         height = self.__bounds["min_latitude"] - self.__bounds["max_latitude"]
         gps_per_pix_width = width / (cols * 300)
         gps_per_pix_height = height / (rows * 160)
+	
       
         # Observera att kartans GPS-koordinatsystem börjar i vänstra nedre
         # hörnet, medan cairo börjar i vänstra övre hörnet! På grund av detta
         # inverterar vi värdet vi räknar fram så båda koordinatsystemen
         # överensstämmer.
-        return [gps_per_pix_width * movement_x,
-                gps_per_pix_height * movement_y]
+
+	return [gps_per_pix_width * movement_x, gps_per_pix_height * movement_y]
+		
