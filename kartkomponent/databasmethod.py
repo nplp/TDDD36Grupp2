@@ -609,7 +609,7 @@ def create_users():
 	user_thor.groups.append(go)
 	
 	
-	user_christopher=User(name='christopher', clearance='normal', password='123')
+	user_christopher=User(name='christoffer', clearance='normal', password='123')
 	user_christopher.groups.append(g)
 	
 	
@@ -624,6 +624,8 @@ def create_users():
 	user_kj=User(name='kj', clearance='normal', password='123')
 	user_kj.groups.append(g)
 	user_kj.groups.append(pro)
+	
+	user_secret=User(name='secret', clearance='normal', password='321')
 	
 	session_user.commit()
 	
