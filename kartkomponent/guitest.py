@@ -36,11 +36,7 @@ class Gui(hildon.Program):
     def listenBattery(self):
 	while(1):
 		print self.batt.getbattery()
-		#hej = self.batt.getbattery()
-		#hej2 = str(hej)
-		#self.label.set_text(hej2)
 		self.label.set_text(str(self.batt.getbattery())) 
-		#self.label = gtk.Label(self.batt.getbattery())
 		sleep(8)
 		
     def callback(self, widget, data=None):
@@ -165,7 +161,6 @@ class Gui(hildon.Program):
 	self._lager.lagerboxen.hide()	
 	self.scwindow.hide()
 	self.swindow.show()
-	self.kords.hide()	
 	
 	#Samtal
     def ringa(self,widget,event,data=None):
@@ -180,7 +175,6 @@ class Gui(hildon.Program):
         self.scrolled_window.hide()	
 	self.swindow.hide()
 	self.vbox2.hide()
-	self.kords.hide()
 	
 	#Visa Kartan
     def kartan(self, widget, event, data=None):
@@ -195,7 +189,6 @@ class Gui(hildon.Program):
         self.scrolled_window.hide()	
 	self.swindow.hide()
 	self.vbox2.hide()
-	self.kords.show()
 	
 	#Lager
     def lagret(self,widget,event,data=None):
@@ -210,7 +203,6 @@ class Gui(hildon.Program):
         self.scrolled_window.hide()	
 	self.swindow.hide()
 	self.vbox2.hide()
-	self.kords.hide()
 	
 	#Uppdrag
     def upp(self, widget, event, data=None):
@@ -225,7 +217,6 @@ class Gui(hildon.Program):
         self.scrolled_window.hide()	
 	self.swindow.hide()
 	self.vbox2.hide()
-	self.kords.hide()
 	
 	#Rapport
     def rapp(self, widget, event, data=None):
@@ -240,12 +231,10 @@ class Gui(hildon.Program):
         self.scrolled_window.show()	
 	self.swindow.hide()
 	self.vbox2.hide()
-	self.kords.hide()
 		
 	#Inbox	
     def inboxen(self, widget, event, data=None):
 	print "schmack"
-	#inkorg.Inkorg.get_messages(self.inbox)
 	self.inbox.update_messages()
 	self.verktyg.set_active(False)
 	self.filer.set_active(False)
@@ -258,7 +247,6 @@ class Gui(hildon.Program):
 	self.swindow.hide()
 	self.vbox2.hide()
 	self.scwindow.show()
-	#self.kords.hide()
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
@@ -342,11 +330,6 @@ class Gui(hildon.Program):
 	self.karta.connect("clicked", self.kartan, "Karta")
 	self.vbox2.pack_start(self.karta, True, True,0)
 	
-	## Tillbaka
-	#self.tillbaka = gtk.Button("Tillbaka")
-        #self.tillbaka.connect("clicked", self.tbaka, "Tillbaka")
-	#self.vbox2.pack_start(self.tillbaka, True, True, 0)
-	
 	#Knappar i filmenyn
 	#Uppdrag
 	self.uppdrag = gtk.Button("       Uppdrag      ")
@@ -411,15 +394,9 @@ class Gui(hildon.Program):
 	self.scwindow=gtk.ScrolledWindow()
 	self.scwindow.set_border_width(10)
 	self.scwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
-	
-	#self.batt = battery.Batteri()
-	#self.label = gtk.Label(self.batt.getbattery())
+
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
-	
-	#self.kords = gtk.Label()
-
-	
   
 	#Packning
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
@@ -432,8 +409,7 @@ class Gui(hildon.Program):
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
 	self.vbox3.pack_start(self.scroll_window,True,True,0)
 	self.vbox3.pack_start(self.swindow,True,True,0)	
-	self.vbox3.pack_start(self.scwindow,True,True,0)	
-	#self.vbox3.pack_start(self.kords, False, False, 0)	
+	self.vbox3.pack_start(self.scwindow,True,True,0)		
 	self.vbox3.pack_start(self._lager.lagerboxen,True,True,0)
 	self.hbox.pack_start(self.vbox3, True, True, 0)
     	self.hbox.show()
@@ -462,8 +438,7 @@ class Gui(hildon.Program):
 	
 	self.create_map_view()	
 	self.oldbuttonsandwindows()
-	#self.label = gtk.label()
-	#print "label1"
+
 	
 
         # Möjliggör fullscreen-läge
