@@ -32,6 +32,7 @@ class Map(gtk.DrawingArea):
         self.connect("expose_event", self.handle_expose_event)
         self.connect("button_press_event", self.handle_button_press_event)
         self.connect("button_release_event", self.handle_button_release_event)
+	#self.connect("button_release_event", self.show_popup)
         self.connect("motion_notify_event", self.handle_motion_notify_event)
         self.set_events(gtk.gdk.BUTTON_PRESS_MASK |
                         gtk.gdk.BUTTON_RELEASE_MASK |
@@ -39,6 +40,55 @@ class Map(gtk.DrawingArea):
                         gtk.gdk.LEAVE_NOTIFY_MASK |
                         gtk.gdk.POINTER_MOTION_MASK |
                         gtk.gdk.POINTER_MOTION_HINT_MASK)
+	
+    def on_click_popup(self, _coord):
+	#Vbox for innehall
+	self.vbox = gtk.VBox(False,5)
+	self.vbox.set_border_width(50)	
+	self.vbox.show()
+
+	#Vbox for innehall
+	self.hbox = gtk.HBox(False,5)
+	self.hbox.set_border_width(50)	
+	self.hbox.show()
+	
+	#Skriv in en anvandare
+        self.fraga = gtk.Label("Vill du satta ut en POI")
+        self.fraga.set_alignment(0, 0)
+	self.fraga.show()
+	self.vbox.pack_start(self.fraga, False, False, 0)
+
+	self.ja = gtk.Button("Ja!")
+        self.ja.connect("clicked", self.clicked, 'huggabugga', _coord)
+	self.ja.show()
+	self.hbox.pack_start(self.ja,False,False,0)
+
+	self.nej = gtk.Button("Nej!")
+        self.nej.connect("clicked", self.avs, "hej")
+	self.nej.show()
+	self.hbox.pack_start(self.nej,False,False,0)
+	
+	self.vbox.pack_start(self.hbox,False,False,0)
+	
+		#popup fran login
+	self.popup = gtk.Window()
+        self.popup.set_title( "POI" )
+	#self.popup.set_size_request(500,500)
+        self.popup.add(self.vbox)
+	#adress.vbox.show()	
+        self.popup.set_modal(True)
+        #popup.set_transient_for(self)
+        self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )	
+	
+	self.popup.add(self.vbox)
+	self.popup.show()
+	
+    def clicked(self, widget, event, __coord):
+	self.add_object(__coord)
+	self.popup.destroy()
+	
+    def avs(self, widget, event, data=None):
+	self.popup.destroy()
 
     def change_zoom(self, change):
         # Frigör minnet genom att ladda ur alla tiles för föregående nivå
@@ -74,7 +124,9 @@ class Map(gtk.DrawingArea):
 	
 		#Har borde vi skicka till en label som visar vara koordinater"
 		self.koordinat = (lon,lat)
-		self.add_object(self.koordinat)
+		self.on_click_popup(self.koordinat)
+		
+		#self.add_object(self.koordinat)
 		print self.koordinat
         return True
 	
