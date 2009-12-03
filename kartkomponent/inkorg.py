@@ -41,7 +41,7 @@ class Inkorg(gtk.Window):
 	self.statusbar.show()
 	
 	
-	button = gtk.Button("Klar")
+	button = gtk.Button("Öppna")
 	button.set_size_request(70,30)
 	button.connect("clicked", self.show_popup)
 	self.vbox.pack_start(button, False, False, 0)
