@@ -25,16 +25,16 @@ class Client(object):
 	def __init__(self):
 		#Variabler
 		#HOST = '130.236.216.128'
-		self.HOST = '127.0.0.1'
-		self.HOST2 = '127.0.0.1'
+		self.HOST = '130.236.189.25'
+		self.HOST2 = '130.236.189.25'
 		self.PORT = 2150
 		self.PORT2 = 2017
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
 		self.MYPORT = 2338
-		self.ADDR = ('127.0.0.1')
-		self.ADDR2 = ('127.0.0.1')
+		self.ADDR = ('130.236.189.25')
+		self.ADDR2 = ('130.236.189.25')
 		self.contactList = list()
 		self.primary = False
 		self.online = False		
@@ -132,12 +132,12 @@ class Client(object):
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
 		#print "waddap2"
-		recThread = recieverClass(self.clientSocket, (self.ADDR,self.MYPORT))
+		recThread = recieverClass(self.clientSocket, (self.ADDR,self.MYPORT), self.primary, self.online)
 		#print "waddap3"
 		recThread.start()
 		#print "waddap4"
 	
-	def reconnect():
+	def reconnect(self):
 		self.primary = False
 		#print "primary i reconnect igen = "+str(primary)
 			#SSH anrop, startar ssh tunnel mot servern
@@ -151,7 +151,7 @@ class Client(object):
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
 		#print "baddap2"
-		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.MYPORT))
+		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.MYPORT), self.primary, self.online)
 		#print "baddap3"
 		recThread2.start()
 		#print "baddap4"
@@ -222,9 +222,11 @@ class recieverClass(Thread):
 							contactList.append(s[1])
 					else:
 						if(data.startswith('{')):
+							print "tog emot ett stycke json"
 							dict = json.loads(data)
 							if(dict["type"] == "text"):
 								addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["content"]["subject"], dict ["content"]["message"], dict["response_to"])
+							print "lade in ett stycket meddelande i databasen"
 						else:
 							print data
 				else:

@@ -35,7 +35,6 @@ class Gui(hildon.Program):
     
     def listenBattery(self):
 	while(1):
-		print self.batt.getbattery()
 		self.label.set_text(str(self.batt.getbattery())) 
 		sleep(8)
 		

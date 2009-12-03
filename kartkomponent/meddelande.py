@@ -5,9 +5,10 @@ pygtk.require('2.0')
 import simplejson as json
 import gtk
 import osso
-import time
+#import time
 import adresslista
 import login
+from datetime import *
 
 class Meddelande (object):
 	
@@ -22,7 +23,9 @@ class Meddelande (object):
 	mottagare = self.entry2.get_text()
 	l = login.Inlogg()
 	anvandare = login.Inlogg.get_user(l)
-	dict = {"id": 1, "sender": anvandare , "receiver": mottagare ,"type": 'text' , "subtype": "add", "time_created": 34, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : anvandare}
+	datum = datetime.now()
+	datum = str(datum)
+	dict = {"id": 1, "sender": anvandare , "receiver": mottagare ,"type": 'text' , "subtype": "add", "time_created": datum, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : anvandare}
 	self.args = (json.dumps(dict),)
     
     def release(self, widget, event, data=None):
