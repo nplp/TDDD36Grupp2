@@ -26,10 +26,7 @@ ClientMutex = BoundedSemaphore(1)
 
 # Köfkn ----------------------------------------------------------------------
 
-MsgQueue = list()
 
-def sendString(msg, receiver):
-	pass
 
 # ATOMISKA FUNKTIONER --------------------------------------------------------
 
@@ -386,6 +383,40 @@ class sessionClass(Thread):
 	def sendBack(self, message):
 		#print "Back to " + self.name + ": " + message
 		self.socket.send(message)
+
+	# Replikerar alla Message:s.
+	def replicateMsg(self, arg):
+		intarg = list()
+		for a in arg:
+			intarg.append(int(a))
+		msgQueue = list()
+
+		try:	
+			session = Session()
+			# Atomisk ------
+			ClientMutex.acquire()
+			msgQueue.extend(session.query(Message).filter_by(receiver=self.name).all())
+			ClientMutex.release()
+			# --------------
+			session.close()
+		except Exception, e: print e
+
+		# Sorterar ut meddelanden som klienten redan har
+		while(len(intarg) != 0):
+			j = -1
+			for i in range(len(msgQueue)):
+				if(msgQueue[i].id == intarg[0]):
+					j = i
+					break
+			if(j!=-1):
+				msgQueue.pop(j)
+			intarg.pop(0)
+
+		for m in msgQueue:
+			data = json.dumps(class2dict(m))
+			self.sendBack(data)
+
+
 	
 	# Sköter inloggningen.
 	def authentication(self):
@@ -449,7 +480,7 @@ class sessionClass(Thread):
 
 	# Behandlar övergripande kommunikationen med och mellan klienterna. Sköter även kommandon.
 	def handler(self,zero):
-		try:
+		if 1:#try:
 			atomic_sendAll("Server message: " + str(self.name) + " connected.")
 			self.sendBack("Inloggad på " + str(ADDR))
 
@@ -513,8 +544,11 @@ class sessionClass(Thread):
 						atomic_setReply(self.lastWhisper, self.name)
 						atomic_sendTo(self.name + " (w): " + msg[1], self.lastWhisper)
 						self.sendBack("You whispered to " + self.lastWhisper)
-				elif(data.startswith('/status')): 
-					self.sendBack("You are number " + str(search(self.name)))
+				# Replikering mot klienten
+				elif(data.startswith('/sync')):
+					msg = data.split(' ')
+					msg.pop(0)
+					self.replicateMsg(msg)
 
 				elif(data.startswith('/whisper')):
 					msg = data.split(' ',2)
@@ -525,12 +559,18 @@ class sessionClass(Thread):
 				# json-strängar! Startar med '{'. Vbf message
 				elif(data.startswith('{')):
 					msg = json.loads(data)
-					try: atomic_sendTo(data,msg["receiver"])
+					try:
+						# Atomisk ------
+						ClientMutex.acquire()
+						addMessage(msg["sender"], msg["receiver"], 'text', "change", datetime.now(), msg["subject"], msg["message"], 1)
+						ClientMutex.release()
+						# --------------
+						
 					except KeyError, e: print "Not a msg"
 				elif(data != ""):
 					atomic_sendAll(self.name + ": " + data)
-		except Exception, e:
-			print "client lost (handler): " + str(e)
+		#except Exception, e:
+		#	print "client lost (handler): " + str(e)
 
 	# körs när man anropar start()
 	def run(self):

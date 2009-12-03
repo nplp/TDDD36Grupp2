@@ -3,9 +3,9 @@
 # Ovanstående rad är ISO-kodning för att åäö ska funka.
 
 # Borde kanske hasha cmdArray för optimering egentligen.
-cmdArray = ("/addcontact", "/cleanup", "/deletecontact", "/exit", "/ip", "/kick", "/list", "/ping", "/quit", "/reply", "/showcontactlist", "/whisper")
+cmdArray = ("/add", "/addcontact", "/cleanup", "/delete", "/deletecontact", "/exit", "/ip", "/kick", "/list", "/ping", "/quit", "/reply", "/showcontactlist", "/sync", "/whisper")
 
-class Message:
+class sysMessage:
 	text = ""
 	def __init__(self, _text):
 		self.text = _text
