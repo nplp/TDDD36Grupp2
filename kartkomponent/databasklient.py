@@ -16,6 +16,7 @@ def generate_id():
 	id_nr+=1
 	add_last_id(id_nr)
 	idn=(id_nr*10)+2
+	print idn
 	return idn
 
 #######################skapar data tabeller############################33
@@ -250,7 +251,9 @@ def add_last_id(idnummer1):
 	i=idSession.query(Idnumber).first()
 	i.idnummer=idnummer1
 	idSession.add(i)
+	print "id:",i.idnummer
 	idSession.commit()
+
 	
 #retunerar alla användare
 def get_user_all():
@@ -427,9 +430,7 @@ def addMessage(sender1, receiver1, type1, subtype1, time_created1, subject1, mes
 	
 	
 #######################################################	
-session = Session()
-USERS = session.query(User).all() # radera kj?
-session.close()
+
 
 def getMessage(id_nr):
 	#try:
@@ -494,7 +495,11 @@ def class2dict(o):
 	    if(str(dict[elem]).startswith('<') and not str(elem.startswith('_'))):#bugg: man far inte borja ett meddelande med <
 		   dict[elem] = class2dict(o.__dict__[elem])
     return dict	
+	    
+session = Session()
+USERS = session.query(User).all() # radera kj?
 
+session.commit()
 
 
 
