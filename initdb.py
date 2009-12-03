@@ -420,8 +420,9 @@ def add_mission_poi(mission_id,poi_id):
 	
 #lägger in ett medelande i databasen
 def addMessage(sender1, receiver1, type1, subtype1, time_created1, subject1, message1,response_to1):
-	session.save(Message(sender=sender1, receiver=receiver1, type=type1, subtype=subtype1, time_created=time_created1, subject=subject1, message=message1, response_to=response_to1))
-	
+	sessionTemp = Session()
+	sessionTemp.save(Message(sender=sender1, receiver=receiver1, type=type1, subtype=subtype1, time_created=time_created1, subject=subject1, message=message1, response_to=response_to1))
+	sessionTemp.commit()
 	
 	
 	
