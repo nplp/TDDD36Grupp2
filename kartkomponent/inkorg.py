@@ -22,21 +22,21 @@ class Inkorg(gtk.Window):
 	self.vbox.pack_start(hbox, False, False, 0)
 	hbox.show()
 
-        scrolled_window = gtk.ScrolledWindow()
-        scrolled_window.set_shadow_type(gtk.SHADOW_ETCHED_IN)
-        scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-	scrolled_window.show()
+        self.scrolled_window = gtk.ScrolledWindow()
+        self.scrolled_window.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+        self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+	self.scrolled_window.show()
         
-        self.vbox.pack_start(scrolled_window, True, True, 0)
+        self.vbox.pack_start(self.scrolled_window, True, True, 0)
         store = self.create_model()
 
-        treeView = gtk.TreeView(store)
-        treeView.connect("row-activated", self.on_activated)
-        treeView.set_rules_hint(True)
-        scrolled_window.add(treeView)
-	treeView.show()
+        self.treeView = gtk.TreeView(store)
+        self.treeView.connect("row-activated", self.on_activated)
+        self.treeView.set_rules_hint(True)
+        self.scrolled_window.add(self.treeView)
+	self.treeView.show()
 	
-        self.create_columns(treeView)
+        self.create_columns(self.treeView)
         self.statusbar = gtk.Statusbar()
 	self.statusbar.show()
 	
@@ -49,18 +49,29 @@ class Inkorg(gtk.Window):
         self.vbox.pack_start(self.statusbar, False, False, 0)
         self.vbox.show_all()
 	
-    def get_messages(self):
-	self.anvandare = []
-	for n in getAllMessages():
-		self.anvandare.append((n.sender, n.receiver, n.type, n.subtype, n.time_created, n.subject, n.message , n.response_to))
+	
+    def update_messages(self):
+	print "nu ska vi uppdatera"
+	store = self.create_model()
+	self.treeView.set_model(store)
+	#self.treeView = gtk.TreeView(store)
+	#self.create_columns(self.treeView)
+	#self.scrolled_window.add(self.treeView)
+	print "nu har vi uppdaterat"
 		
-	return self.anvandare
+    def get_messages(self):
+	self.meddelanden = []
+	for n in getAllMessages():
+		self.meddelanden.append((n.sender, n.receiver, n.type, n.subtype, n.time_created, n.subject, n.message , n.response_to))
+		
+	return self.meddelanden
 
     def create_model(self):
-        store = gtk.ListStore(str, str, str, str, str, str,str,str)
-	anvandare = self.get_messages()
-        for act in anvandare:
-            store.append((act[0], act[1], act[2], act[3], act[4], act[5],act[6],act[7]))
+        store = gtk.ListStore(str, str, str, str, str, str, str, str)
+	meddelanden = self.get_messages()
+	print meddelanden
+        for act in meddelanden:
+            store.append((act[0], act[1], act[2], act[3], act[4], act[5], act[6], act[7]))
         return store
 
     def create_columns(self, treeView):
