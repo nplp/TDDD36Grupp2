@@ -11,8 +11,20 @@ engine = create_engine('sqlite:///data.db', echo=False)
 metadata = MetaData()
 
 
+def generate_id():
+	id_nr=get_last_id()
+	id_nr+=1
+	add_last_id(id_nr)
+	idn=(id_nr*10)+2
+	print idn
+	return idn
 
 #######################skapar data tabeller############################33
+last_id_table = Table('idnumbers', metadata, 
+	Column('id', Integer, primary_key=True),
+	Column('idnummer', Integer)
+	)
+
 group_table = Table('group', metadata,
 	Column('id', Integer, primary_key=True),
 	Column('name', Text)
@@ -100,6 +112,12 @@ Session = sessionmaker()
 Session.configure(bind=engine)
 
 ##############################definerar classer##################################
+
+class Idnumber(object):
+	def __init__(self, idnummer=None):
+		self.idnummer = idnummer
+
+
 class Message(object):
 	def __init__(self, id=None, sender=None, receiver=None, type=None, subtype=None, time_created=None, subject=None, message=None, response_to=None):
 		self.id=id
@@ -200,7 +218,7 @@ mapper(Message, message_table, properties=dict())
 mapper(Group, group_table, properties=dict())
 mapper(Poi, poi_table, properties=dict())
 mapper(Unit, unit_table, properties=dict())
-
+mapper(Idnumber, last_id_table)
 #many to many relationer för att kunna länka grupper till uppdrag
 mapper(Mission, mission_table, properties={
 	'groups': relation(Group, secondary= mission_group, backref='missions'),
@@ -220,7 +238,23 @@ mapper(Item, items_table, properties=dict())
 
 ############################Metoder###########################
 
+def get_last_id():
+	try:
+		hej=session.query(Idnumber).first()
+		return hej.idnummer
+	
+	except:
+		return None
 
+def add_last_id(idnummer1):
+	idSession=Session()
+	i=idSession.query(Idnumber).first()
+	i.idnummer=idnummer1
+	idSession.add(i)
+	print "id:",i.idnummer
+	idSession.commit()
+
+	
 
 
 #retunerar alla användare
@@ -392,7 +426,9 @@ def add_mission_poi(mission_id,poi_id):
 	
 #lägger in ett medelande i databasen
 def addMessage(sender1, receiver1, type1, subtype1, time_created1, subject1, message1,response_to1):
-	session.save(Message(sender=sender1, receiver=receiver1, type=type1, subtype=subtype1, time_created=time_created1, subject=subject1, message=message1, response_to=response_to1))
+	sessionTemp = Session()
+	sessionTemp.save(Message(sender=sender1, receiver=receiver1, type=type1, subtype=subtype1, time_created=time_created1, subject=subject1, message=message1, response_to=response_to1))
+	sessionTemp.commit()
 	
 	
 	
