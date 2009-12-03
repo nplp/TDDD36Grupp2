@@ -2,6 +2,7 @@
 import gtk
 import math
 import time
+import data_storage
 
 class Map(gtk.DrawingArea):
     __bounds = {"min_latitude":0,
@@ -73,11 +74,22 @@ class Map(gtk.DrawingArea):
 	
 		#Har borde vi skicka till en label som visar vara koordinater"
 		self.koordinat = (lon,lat)
+		self.add_object(self.koordinat)
 		print self.koordinat
         return True
-    
-    
-
+	
+    def add_object(self, _coord):
+	    self.coord = (float(_coord[0]),float(_coord[1]))
+	    lon = float(_coord[0])
+	    lat = float(_coord[1])
+	    #print self.coord
+	    self.__map.add_object("Tannnk", data_storage.MapObject({"longitude":(self.coord[0]-0.0016),
+			                                            "latitude":(self.coord[1]+0.00075)},
+			                                           "ikoner/tank.png"))
+								   
+	#({"longitude":(self.coord[0]-0,0016),
+			                                            #"latitude":(self.coord[1]+0,00075)},
+			                                           #"ikoner/tank.png"))
     def handle_motion_notify_event(self, widget, event):
         if self.__allow_movement:
             if event.is_hint:
