@@ -9,6 +9,7 @@ import osso
 import gtk
 import subprocess
 import sys
+import gobject
 
 class Start(object):
 
@@ -46,11 +47,11 @@ class Start(object):
 		time.sleep(3)
 		while(self.gpsrun == True):		
 			self.stringcoord = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "updatecoord", (), wait_reply = True)
-			print self.stringcoord
-			time.sleep(5)
+			#print self.stringcoord
+			time.sleep(4)
 			
 			if(self.stringcoord != 0):
-				print "ritar ut tanken nu"
+				#print "ritar ut tanken nu"
 				self.coord = self.to_tuple(self.stringcoord)
 				if(self.tank_added == True):
 					self.map.delete_object("Tank")
@@ -70,10 +71,17 @@ class Start(object):
 				self.startgui()
 				print "Going to coords"
 				self.getcoords() #nu måste man ha startat gps processen innan detta steg och fått en lock
+			#### Skickar fejk koordinater till clienten ####
+			if(sys.argv[1] == 'tuff'):
+				print 'Tuffe tuffe tuff då tåget går'
+				self.startgui()
+				subprocess.call('python2.5 Tufftuff.py' + ' &', shell=True)
+				self.getcoords()
 			else:
 				print "gps av"
 				PORT = sys.argv[1]
-				subprocess.call('python2.5 ../client2.py '+ PORT + ' &', shell=True)
+				subprocess.call('python2.5 ../client2.py'+ PORT + ' &', shell=True)
+				subprocess.call('python2.5 ../client2.py &', shell=True)
 				guitest.Gui(self.map).run()
 
 		else:
@@ -85,5 +93,6 @@ class Start(object):
 		
 
 if __name__ == "__main__":
+    gobject.threads_init()
     Start().run()
 
