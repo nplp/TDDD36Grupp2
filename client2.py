@@ -231,12 +231,12 @@ class recieverClass(Thread):
 							print data
 				else:
 					print "rerouting"
-					online = False
-					if(primary):
-						reconnect()
+					self.online = False
+					if(self.primary):
+						klienten.reconnect()
 						break
 					else:
-						connect()
+						klienten.connect()
 						break
 		except Exception, e:
 			print e
@@ -247,7 +247,9 @@ class recieverClass(Thread):
 
 if __name__ == "__main__":
     gobject.threads_init()
-    Client().run()
+    klienten = Client()
+    klienten.run()
+    #Client().run()
     gtk.main()
 
 
