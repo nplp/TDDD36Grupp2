@@ -50,6 +50,13 @@ class Client(object):
 
 		self.q = Queue()
 
+	def popuplogin(self):
+		#Sag till anvandaren att man ska logga in
+		print "kommer vi hit login popup"
+		self.osso_rpc.rpc_run("thor.guitest", "/thor/guitest", "thor.guitest", "show_popup")
+		
+
+
 	def send(self, interface, method, arguments, user_data):
 		self.data = arguments[0]
 			
@@ -234,9 +241,11 @@ class recieverClass(Thread):
 					self.online = False
 					if(self.primary):
 						klienten.reconnect()
+						klienten.popuplogin()
 						break
 					else:
 						klienten.connect()
+						klienten.popuplogin()
 						break
 		except Exception, e:
 			print e
