@@ -240,14 +240,16 @@ mapper(Item, items_table, properties=dict())
 ############################Metoder###########################
 
 def get_last_id():
+	session_get_last_id=Session()
 	try:
-		session_getid=Session()
-		hej=session_getid.query(Idnumber).first()
-		session_getid.close()
+		
+		hej=session_get_last_id.query(Idnumber).first()
+		
 		return hej.idnummer
 	
 	except:
 		return None
+	session_get_last_id.close()
 
 def add_last_id(idnummer1):
 	idSession=Session()
@@ -261,27 +263,35 @@ def add_last_id(idnummer1):
 
 #retunerar alla användare
 def get_user_all():
+	session_getuser= Session()
 	try:
-		session_getuser= Session()
+		
 		return session_getuser.query(User).all()
-		session_getuser.close()
+		
 	except:
 		return None
+	session_getuser.close()
+	
 #retunerar lösenord hos en användare
 def get_password(namn):
+	session_getpw= Session()
 	try:
-		session_getpw= Session()
+		
 		p=session_getpw.query(User).filter_by(name=namn).first()
-		session_getpw.close()
+		
 		return p.password
 	
 	except:
 		return None
+	session_getpw.close()
 
 #retunerar True eller False beroende om en användare finns i databasen eller inte
 def is_user(clientname):
-	
-	user= loginSession.query(User).filter_by(name =clientname).first()
+	loginSession=Session()
+	try:
+		user= loginSession.query(User).filter_by(name =clientname).first()
+	except:
+		return False
 
 	def get_name(user):
 		try:
@@ -295,88 +305,106 @@ def is_user(clientname):
 		return True
 	else:
 		return False
+	loginSession.close()
 
 #retunerar grupper som en användare tillhör
 def get_user_groups(namn):
+	session_user_g = Session()
 	try:
-		session_user_g = Session()
+		
 		snubbe=session_user_g.query(User).filter_by(name=namn).first()
-		session_user_g.close()
+		
 		return snubbe.groups
 	except:
 		return None
-
+	session_user_g.close()
+	
 #retunerar retunerar användare som finns i en grupp
 def get_group_users(namn):
+	session_get_gropu_user= Session()
 	try:	
-		session_get_gropu_user= Session()
+		
 		s=session.query(Group).filter_by(name=namn).first()
-		session_get_gropu_user.close()
+		
 		return s.users
 	except:
 		return None
+	session_get_gropu_user.close()
 
 #raderar en grupp (obs! raderar inte användare)
 def delete_group(namn):
+	session_delete_group=Session()
 	try:
-		session_delete_group=Session()
+		
 		session_delete_group.delete(get_group(namn))
-		session_delete_group.close()
+		
 	except:
 		pass
+	session_delete_group.close()
 	
 #raderar enskilda användare i en grupp
 def delete_group_user(groupname,username):
+	session_delete_group_user = Session()
 	try:
-		session_delete_group_user = Session()
+		
 		u=session_delete_group_user.query(User).filter_by(name=username).first()
 		g=session_delete_group_user.query(Group).filter_by(name=groupname).first()
 		u.groups.remove(g)
-		session_delete_group_user.close()
+		
 		
 	except:
 		pass
+	session_delete_group_user.close()
 
 #lägger in användare i en grupp	
 def add_group_user(groupname,username):
+	session_add_group_user=Session()
 	try:
-		session_add_group_user=Session()
+		
 		u=add_group_user.query(User).filter_by(name=username).first()
 		g=add_group_user.query(Group).filter_by(name=groupname).first()
 		u.groups.append(g)
-		add_group_user.close()
+		
 		
 	except:
 		pass
-
+	add_group_user.close()
+	
 #retunerar alla grupper
 def get_group_all():
+	session_get_group_all=Session()
 	try:	
-		session_get_group_all=Session()
+		
 		g=session_get_group_all.query(Group).all()
-		session_get_group_all.close()
+		
 		return g
 	except:
 		return None
+	session_get_group_all.close()
 #retunerar namnet på en grupp 
 def get_group(namn):
+	session_get_group=Session()
 	try:
-		session_get_group=Session()
+		
 		g=session_get_group.query(Group).filter_by(name=namn).first()
-		session_get_group.close()
+		
 		return g
 	except:
 		return None
+	session_get_group.close()
+	
 #retunerar antalet items som finns (obs! endast första träffen)
 def getCount(namn):
+	session_getCount=Session()
 	try:
-		session_getCount=Session()
+		
 		c=session_getCount.query(Item).filter_by(name=namn).first().count
-		session_getCount.close()
+		
 		return c
 	except:
 		return None
-
+	session_getCount.close()
+	
 #lägger in ett item
 def add_item(name1,count1,location1):
 	session_add_item=Session()
@@ -384,53 +412,65 @@ def add_item(name1,count1,location1):
 	session_add_item.commit()
 	
 def get_item_all():
+	session_get_item_all=Session()
 	try:
-		session_get_item_all=Session()
+		
 		i=session_get_item_all.query(Item).all()
-		session_get_item_all.close()
+		
 		return i
 	except:
 		return None
+	session_get_item_all.close()
 
 # Retunerar totala antalet av ett item (summerar)
 def getTotal(namn):	
+	session_getTotal=Session()
 	try:	
-		session_getTotal=Session()
+		
 		temp=0
 		for item in session_getTotal.query(Item).filter_by(name=namn):
 			temp = item.count + temp
-		session_getTotal.close()
+		
 		return temp
 	except:
 		return None
+	session_getTotal.close()
 	
 #retunerar ett mission object (sökning med namn)
 def get_mission_object_by_name(namn):
+	session_get_mission_object_by_name=Session()
 	try:
-		session_get_mission_object_by_name=Session
+		
 		m=session_get_mission_object_by_name.query(Mission).filter_by(name=namn).first()
-		session_get_mission_object_by_name.close()
+		
 		return m
 	except:
 		return None
-
+	session_get_mission_object_by_name.close()
+	
 #retunerar ett mission object (sökning med id)
 def get_mission_by_id(id_nr):
+	session_get_mission_by_id=Session()
 	try:
-		session_get_mission_by_id=Session()
+		
 		m=session_get_mission_by_id.query(Mission).filter_by(id=id_nr).first()
-		session_get_mission_by_id.close()
+		
 		return m
 	except:
 		return None
+	session_get_mission_by_id.close()
+	
 def get_mission_by_id_all(id_nr):
+	session_get_mission_by_id_all=Session()
 	try:
-		session_get_mission_by_id_all=Session()
+		
 		m=session_get_mission_by_id_all.query(Mission).filter_by(id=id_nr).first()
 		return m.name, m.time_created, m.time_changed, m.status, m.desc, m.contact_person, m.contact_number
-		session_get_mission_by_id_all.close()
+		
 	except:
 		return None
+	session_get_mission_by_id_all.close()
+	
 #Lägger in ett uppdrag
 #obs! lägg inte in ett uppdrag med samma namn om du vill söka med namn!
 def addMission(name1, time_created1, time_changed1, status1, desc1, contact_person1, contact_number1):
@@ -626,7 +666,7 @@ def create_users():
 	user_kj.groups.append(pro)
 	
 	user_secret=User(name='secret', clearance='normal', password='321')
-	
+	user_secret.groups.append(pro)
+	#commitar alla users
 	session_user.commit()
 	
-#skapar en session för att kunna komma åt databasen
