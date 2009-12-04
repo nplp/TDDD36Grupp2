@@ -47,11 +47,11 @@ class Start(object):
 		time.sleep(3)
 		while(self.gpsrun == True):		
 			self.stringcoord = self.osso_rpc.rpc_run("thor.gps", "/thor/gps", "thor.gps", "updatecoord", (), wait_reply = True)
-			print self.stringcoord
+			#print self.stringcoord
 			time.sleep(4)
 			
 			if(self.stringcoord != 0):
-				print "ritar ut tanken nu"
+				#print "ritar ut tanken nu"
 				self.coord = self.to_tuple(self.stringcoord)
 				if(self.tank_added == True):
 					self.map.delete_object("Tank")
