@@ -10,8 +10,7 @@ import uppdrag
 import detringer
 import battery
 import thread
-#import time
-from time import *
+import time
 import osso
 import samtal
 import lager
@@ -35,17 +34,16 @@ class Gui(hildon.Program):
     
     def listenBattery(self):
 	while(1):
-		self.label.set_text(str(self.batt.getbattery())) 
-		sleep(8)
-		
+		print self.batt.getbattery()
+		self.label.set_text(str(self.batt.getbattery()))
+		#self.label = gtk.Label(self.batt.getbattery())
+		time.sleep(8)
+    
     def callback(self, widget, data=None):
         print "Hello again - %s was pressed" % data
 	
     def send(self, widget, data=None):
         print "Hello again - %s wa s pressed" % data
-	
-    def callback_func(self, interface, method, arguments, user_data):
-	show_popup(self,anvanda)
 	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
@@ -162,7 +160,7 @@ class Gui(hildon.Program):
 	self.samtala.hbox.hide()
 	self._lager.lagerboxen.hide()	
 	self.scwindow.hide()
-	self.swindow.show()
+	self.swindow.show()	
 	
 	#Samtal
     def ringa(self,widget,event,data=None):
@@ -234,21 +232,20 @@ class Gui(hildon.Program):
 	self.swindow.hide()
 	self.vbox2.hide()
 		
-	#Inbox	
+	Inbox	
     def inboxen(self, widget, event, data=None):
-	print "schmack"
-	self.inbox.update_messages()
 	self.verktyg.set_active(False)
 	self.filer.set_active(False)
 	self.kommunikation.set_active(False)
 	self._lager.lagerboxen.hide()
 	self.map.hide()
 	self.samtala.hbox.hide()
+	self.scwindow.show()
 	self.scroll_window.hide()
         self.scrolled_window.hide()	
 	self.swindow.hide()
 	self.vbox2.hide()
-	self.scwindow.show()
+
 	
         #Avsluta programmet
     def delete_event(self, widget, event, data=None):
@@ -332,6 +329,11 @@ class Gui(hildon.Program):
 	self.karta.connect("clicked", self.kartan, "Karta")
 	self.vbox2.pack_start(self.karta, True, True,0)
 	
+	## Tillbaka
+	#self.tillbaka = gtk.Button("Tillbaka")
+        #self.tillbaka.connect("clicked", self.tbaka, "Tillbaka")
+	#self.vbox2.pack_start(self.tillbaka, True, True, 0)
+	
 	#Knappar i filmenyn
 	#Uppdrag
 	self.uppdrag = gtk.Button("       Uppdrag      ")
@@ -377,7 +379,7 @@ class Gui(hildon.Program):
 	self.samtala = samtal.Samtal()
 	self._lager = lager.Lager()
 	self.inbox = inkorg.Inkorg()
-
+	
 	self.vbox3 = gtk.VBox(False, 0)
         self.vbox3.show()
 	
@@ -396,10 +398,12 @@ class Gui(hildon.Program):
 	self.scwindow=gtk.ScrolledWindow()
 	self.scwindow.set_border_width(10)
 	self.scwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
-
+	
+	#self.batt = battery.Batteri()
+	self.label = gtk.Label(self.batt.getbattery())
         self.label.show()	
         self.vbox3.pack_start(self.label, False, False, 0)
-  
+	
 	#Packning
 	self.scrolled_window.add_with_viewport(self.rapportera.vbox4)	
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
@@ -420,14 +424,8 @@ class Gui(hildon.Program):
 
 
     def __init__(self, map):
-	gobject.threads_init()
-	self.show_popup(self)
-	self.osso_c = osso.Context("guitest", "0.0.1", False)
-	self.osso_rpc = osso.Rpc(self.osso_c)
-	self.osso_rpc.set_rpc_callback("thor.guitest","/thor/guitest","thor.guitest",self.callback_func)
-	self.label = gtk.Label()
 	self.batt = battery.Batteri()
-	#thread.start_new_thread(self.batt.run,())
+	thread.start_new_thread(self.batt.run,())
 	thread.start_new_thread(self.listenBattery,())
         # Initierar hildon (GUI-biblioteket för N810)
         hildon.Program.__init__(self)
@@ -440,10 +438,11 @@ class Gui(hildon.Program):
         # Funktion som körs när prorammet ska stängas av
         #self.window.connect("destroy", self.menu_exit)
         self.add_window(self.window)
-	
+	self.label = gtk.Label()
 	self.create_map_view()	
 	self.oldbuttonsandwindows()
-
+	#self.label = gtk.label()
+	#print "label1"
 	
 
         # Möjliggör fullscreen-läge
@@ -469,8 +468,6 @@ class Gui(hildon.Program):
     def create_map_view(self):
         self.map = gui_map.Map(self.__map)
         self.__map_change_zoom = self.map.change_zoom
-	
-    
 
     def get_treeview(self, args):
         if len(args) == 1:
@@ -508,16 +505,16 @@ class Gui(hildon.Program):
 	
     def show_popup(self, anvanda):
 	logg = login.Inlogg()
-        #popup = gtk.Window()
-        #popup.set_title( "Login" )
-	#popup.set_size_request(500,500)
-        #popup.add(logg.vbox)
-	##adress.vbox.show()	
-        #popup.set_modal(True)
-        ##popup.set_transient_for(self)
-        #popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
-        #popup.connect( "destroy", lambda *w: gtk.main_quit() )
-        logg.popup.show()
+        popup = gtk.Window()
+        popup.set_title( "Login" )
+	popup.set_size_request(500,500)
+        popup.add(logg.vbox)
+	#adress.vbox.show()	
+        popup.set_modal(True)
+        #popup.set_transient_for(self)
+        popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
+        popup.connect( "destroy", lambda *w: gtk.main_quit() )
+        popup.show()
 
 
     def run(self):

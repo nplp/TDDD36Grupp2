@@ -8,7 +8,6 @@ import re
 import sys
 from socket import *
 import thread
-from kartkomponent.databasklient import *
 from threading import *
 import gtk
 import os
@@ -25,16 +24,16 @@ class Client(object):
 	def __init__(self):
 		#Variabler
 		#HOST = '130.236.216.128'
-		self.HOST = '130.236.189.14'
-		self.HOST2 = '130.236.189.14'
+		self.HOST = '127.0.0.1'
+		self.HOST2 = '127.0.0.1'
 		self.PORT = 2150
-		self.PORT2 = 2151
+		self.PORT2 = 2017
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
 		self.MYPORT = 2338
-		self.ADDR = ('130.236.189.14')
-		self.ADDR2 = ('130.236.189.14')
+		self.ADDR = ('127.0.0.1')
+		self.ADDR2 = ('127.0.0.1')
 		self.contactList = list()
 		self.primary = False
 		self.online = False		
@@ -50,16 +49,17 @@ class Client(object):
 
 		self.q = Queue()
 
-	def popuplogin(self):
-		#Sag till anvandaren att man ska logga in
-		print "kommer vi hit login popup"
-		self.osso_rpc.rpc_run("thor.guitest", "/thor/guitest", "thor.guitest", "show_popup")
-		
-
-
 	def send(self, interface, method, arguments, user_data):
-		self.data = arguments[0]
-			
+		self.dict = json.loads(arguments[0])
+		if(self.dict['content']['subject'] == 'login'):
+			self.data = self.dict["content"]["message"]
+		else:
+			self.data = arguments[0]
+		#self.data = self.dict["content"]["message"]
+		#self.msg = Message(self.data)
+		#self.data = finishCMD(self.msg)
+		
+		
 		if(self.data.startswith('/quit') or self.data.startswith('/exit')):
 			try:
 				self.clientSocket.send('/quit')
@@ -87,8 +87,14 @@ class Client(object):
 			for n in contactList:
 				print n
 		elif(self.data != ""):
+			#clientSocket.send(data)
 			self.q.put(self.data)
-			
+			#global primary
+			#print primary
+			#if(primary):
+				#clientSocket.send(data)
+			#else:
+				#clientSocket2.send(data)
 	
 	def sendfunction(self, data):
 		self.data = data
@@ -118,14 +124,20 @@ class Client(object):
 					self.sendfunction(temp)
 			except Exception, e:
 				#print e
+				#print "gurka"
 				self.q._put(temp)
 				#fixa sa att det skickar nasta gang.
 		#mutex.release()
 	
 	def connect(self):
+		#self.MYPORT
+		#self.primary
+		#self.online
+		#clientSocket = socket(AF_INET, SOCK_STREAM)
 		print "wassap"
 		print "gor jag detta?"
 		#print "primary i connect= "+str(primary)
+		#print "har borde jag satta primary till true"
 		self.primary = True
 		#print "primary i connect igen = "+str(primary)
 		#SSH anrop, startar ssh tunnel mot servern
@@ -139,12 +151,19 @@ class Client(object):
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
 		#print "waddap2"
-		recThread = recieverClass(self.clientSocket, (self.ADDR,self.PORT), self.primary, self.online)
+		recThread = recieverClass(self.clientSocket, (self.ADDR,self.MYPORT))
 		#print "waddap3"
 		recThread.start()
 		#print "waddap4"
 	
-	def reconnect(self):
+	def reconnect():
+		#self.MYPORT
+		#self.primary
+		#self.online
+		#self.clientSocket2 = socket(AF_INET, SOCK_STREAM)
+		#print "did i do this reconnect?"
+		#print "primary i reconnect = "+str(primary)
+		#print "har borde jag satta primary till false"
 		self.primary = False
 		#print "primary i reconnect igen = "+str(primary)
 			#SSH anrop, startar ssh tunnel mot servern
@@ -154,11 +173,11 @@ class Client(object):
 		#except error:
 			#print 'no server baby i reconnect'
 		#print "baddap"
-		self.clientSocket2.connect((self.ADDR2, self.PORT2))
+		self.clientSocket2.connect((self.ADDR2, self.MYPORT))
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
 		#print "baddap2"
-		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.PORT2), self.primary, self.online)
+		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.MYPORT))
 		#print "baddap3"
 		recThread2.start()
 		#print "baddap4"
@@ -201,9 +220,7 @@ class Client(object):
 	
 	
 class recieverClass(Thread):
-	def __init__(self, _clientSocket, _ADDR, _primary, _online):
-		self.online = _online
-		self.primary = _primary
+	def __init__(self, _clientSocket, _ADDR,):
 		self.clientSocket = _clientSocket
 		self.ADDR = _ADDR
 		self.BUFF = 1024
@@ -229,23 +246,20 @@ class recieverClass(Thread):
 							contactList.append(s[1])
 					else:
 						if(data.startswith('{')):
-							print "tog emot ett stycke json"
 							dict = json.loads(data)
-							if(dict["type"] == "text"):
-								addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["content"]["subject"], dict ["content"]["message"], dict["response_to"])
-							print "lade in ett stycket meddelande i databasen"
+							data = dict["content"]["message"]
+							
+							
 						else:
 							print data
 				else:
 					print "rerouting"
-					self.online = False
-					if(self.primary):
-						klienten.reconnect()
-						klienten.popuplogin()
+					online = False
+					if(primary):
+						reconnect()
 						break
 					else:
-						klienten.connect()
-						klienten.popuplogin()
+						connect()
 						break
 		except Exception, e:
 			print e
@@ -256,8 +270,7 @@ class recieverClass(Thread):
 
 if __name__ == "__main__":
     gobject.threads_init()
-    klienten = Client()
-    klienten.run()
+    Client().run()
     gtk.main()
 
 
