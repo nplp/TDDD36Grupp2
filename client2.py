@@ -132,7 +132,7 @@ class Client(object):
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
 		#print "waddap2"
-		recThread = recieverClass(self.clientSocket, (self.ADDR,self.MYPORT), self.primary, self.online)
+		recThread = recieverClass(self.clientSocket, (self.ADDR,self.PORT), self.primary, self.online)
 		#print "waddap3"
 		recThread.start()
 		#print "waddap4"
@@ -147,11 +147,11 @@ class Client(object):
 		#except error:
 			#print 'no server baby i reconnect'
 		#print "baddap"
-		self.clientSocket2.connect((self.ADDR2, self.MYPORT))
+		self.clientSocket2.connect((self.ADDR2, self.PORT2))
 		self.online = True
 		thread.start_new_thread(self.deQueue, ())
 		#print "baddap2"
-		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.MYPORT), self.primary, self.online)
+		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.PORT2), self.primary, self.online)
 		#print "baddap3"
 		recThread2.start()
 		#print "baddap4"
@@ -249,7 +249,6 @@ if __name__ == "__main__":
     gobject.threads_init()
     klienten = Client()
     klienten.run()
-    #Client().run()
     gtk.main()
 
 
