@@ -11,7 +11,7 @@ from threading import *
 from time import *
 from groups import *
 
-from read_db import *
+from kartkomponent.databasmethod import *
 import os
 import simplejson as json
 
