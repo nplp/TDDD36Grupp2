@@ -32,7 +32,7 @@ class GPS(object):
 			self.listspot = 0
 		temptupel = self.going_to_da_balja[self.listspot]
 		self.listspot += 1
-		print temptupel
+		#print temptupel
 		self.coord = (temptupel[1],temptupel[0])
 		return self.to_string(self.coord)
 		
