@@ -76,12 +76,12 @@ class Start(object):
 				print 'Tuffe tuffe tuff då tåget går'
 				self.startgui()
 				subprocess.call('python2.5 Tufftuff.py' + ' &', shell=True)
+				subprocess.call('python2.5 ../client2.py &', shell=True)
 				self.getcoords()
 			else:
 				print "gps av"
 				PORT = sys.argv[1]
-				subprocess.call('python2.5 ../client2.py'+ PORT + ' &', shell=True)
-				subprocess.call('python2.5 ../client2.py &', shell=True)
+				subprocess.call('python2.5 ../client2.py '+ PORT + ' &', shell=True)
 				guitest.Gui(self.map).run()
 
 		else:
