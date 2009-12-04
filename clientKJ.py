@@ -123,6 +123,7 @@ while 1:
 		break
 	elif(data.startswith('/lo')):
 		LOGGED_IN = True
+
 	if(data.startswith('/ping')):
 		temp = data.split(' ',1)
 		if(len(temp) == 1):
@@ -151,6 +152,7 @@ while 1:
 			for r in recMsgs:
 				data = data + ' ' + str(r)
 	elif(not data.startswith('/') and LOGGED_IN == True):
+
 		msg = data.split(' ',1)
 		if(len(msg) > 1):
 			m = Message()

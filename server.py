@@ -396,6 +396,7 @@ class sessionClass(Thread):
 			# Atomisk ------
 			ClientMutex.acquire()
 			msgQueue.extend(session.query(Message).filter_by(receiver=self.name).all())
+			msgQueue.extend(session.query(Poi).all())
 			ClientMutex.release()
 			# --------------
 			session.close()
@@ -565,8 +566,14 @@ class sessionClass(Thread):
 						addMessage(msg["sender"], msg["receiver"], 'text', "change", datetime.now(), msg["subject"], msg["message"], 1)
 						ClientMutex.release()
 						# --------------
-						
-					except KeyError, e: print "Not a msg"
+					except KeyError, e:
+						try:
+							# Atomisk ------
+							ClientMutex.acquire()
+							addPoi(msg["coordx"], msg["coordy"], msg["type"], datetime.now(), msg["type"], msg["sub_type"])
+							ClientMutex.release()
+							# --------------
+						except KeyError, e1: pass
 				elif(data != ""):
 					atomic_sendAll(self.name + ": " + data)
 		#except Exception, e:
