@@ -25,16 +25,16 @@ class Client(object):
 	def __init__(self):
 		#Variabler
 		#HOST = '130.236.216.128'
-		self.HOST = '130.236.189.25'
-		self.HOST2 = '130.236.189.25'
+		self.HOST = '130.236.189.14'
+		self.HOST2 = '130.236.189.14'
 		self.PORT = 2150
-		self.PORT2 = 2017
+		self.PORT2 = 2151
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
 		self.MYPORT = 2338
-		self.ADDR = ('130.236.189.25')
-		self.ADDR2 = ('130.236.189.25')
+		self.ADDR = ('130.236.189.14')
+		self.ADDR2 = ('130.236.189.14')
 		self.contactList = list()
 		self.primary = False
 		self.online = False		
