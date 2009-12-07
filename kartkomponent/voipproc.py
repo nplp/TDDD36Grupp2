@@ -9,8 +9,8 @@ import gst
 
 class Mainstream:
 	def __init__(self):
-		self.choose = 0
-		self.HOSTIP = '127.0.0.1'
+		self.choose = 1
+		self.HOSTIP = '130.236.216.227'
 		self.MYPORT = 5000
 		self.HOSTPORT = 5000
 	def run(self, choose, HOSTIP, MYPORT, HOSTPORT):
