@@ -44,6 +44,10 @@ class Gui(hildon.Program):
     def send(self, widget, data=None):
         print "Hello again - %s wa s pressed" % data
 	
+    def callback_func(self, interface, method, arguments, user_data):
+	print "kommer vi till guitest?"
+	self.show_popup(self)
+	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
 	self.verktyg.set_active(False)
@@ -419,6 +423,9 @@ class Gui(hildon.Program):
     def __init__(self, map):
 	gobject.threads_init()
 	self.show_popup(self)
+	self.osso_c = osso.Context("guitest", "0.0.1", False)
+	self.osso_rpc = osso.Rpc(self.osso_c)
+	self.osso_rpc.set_rpc_callback("thor.guitest","/thor/guitest","thor.guitest",self.callback_func)
 	self.label = gtk.Label()
 	self.batt = battery.Batteri()
 	#thread.start_new_thread(self.batt.run,())
@@ -500,7 +507,8 @@ class Gui(hildon.Program):
         else:
             return None
 	
-    def show_popup(self, anvanda):
+    def show_popup(self, event):
+	print "ritar upp en loginruta"
 	logg = login.Inlogg()
         #popup = gtk.Window()
         #popup.set_title( "Login" )
