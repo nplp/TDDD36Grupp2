@@ -22,9 +22,9 @@ class Lager():
 	
 	self.lagerboxen = gtk.VBox(False, 0)
 	self.lagerboxen.pack_start(combobox, False, False, 0)
-	self.lagerboxen.set_active(0)
-	#self.lagerboxen.set_size_request(50, 250)
 	
+	#self.lagerboxen.set_size_request(50, 250)
+	combobox.set_active(0)
 	combobox.show()
 
 def main():
