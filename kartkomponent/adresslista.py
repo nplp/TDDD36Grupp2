@@ -35,9 +35,8 @@ class Adresslista(gtk.Window):
         self.vbox = gtk.VBox(False, 0)
 	self.vbox.show()
 	
-	hbox = gtk.HBox(True,0)
-	self.vbox.pack_start(hbox, False, False, 0)
-	hbox.show()
+	self.hbox = gtk.HBox(True,0)
+	self.hbox.show()
 
         scrolled_window = gtk.ScrolledWindow()
         scrolled_window.set_shadow_type(gtk.SHADOW_ETCHED_IN)
@@ -57,23 +56,23 @@ class Adresslista(gtk.Window):
         self.statusbar = gtk.Statusbar()
 	
 	button = gtk.Button("Klar")
-	button.set_size_request(70,30)
+	#button.set_size_request(70,30)
 	button.connect("clicked", self.klarlyssnare, "Klar")
 	#button.add(hbox)
-	self.vbox.pack_start(button, False, False, 0)
-	hbox.show()
+	self.hbox.pack_start(button, False, False, 0)
+	self.hbox.show()
 	button.show()
 	
 	self.avsluta = gtk.Button("Avsluta")
         self.avsluta.connect("clicked", self.avs, "Avsluta")
 	self.avsluta.show()
-	self.vbox.pack_start(self.avsluta,True,True,0)
-	
-        self.vbox.pack_start(self.statusbar, False, False, 0)
+	self.hbox.pack_start(self.avsluta,False,False,5)
+        self.vbox.pack_start(self.statusbar, False, False,5)
+	self.vbox.pack_start(self.hbox,False,False,0)
 
 	self.popup = gtk.Window()
         self.popup.set_title( "Adresslista" )
-	self.popup.set_size_request(500,500)
+	self.popup.set_size_request(400,300)
         self.popup.add(self.vbox)
         self.popup.set_modal(False)
         self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )
