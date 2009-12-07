@@ -41,7 +41,31 @@ class Map(gtk.DrawingArea):
                         gtk.gdk.POINTER_MOTION_MASK |
                         gtk.gdk.POINTER_MOTION_HINT_MASK)
 	
+    def check_objects(self, _coord):
+	self.map_objects = self.__map.get_objects()
+	self.object_coordinates = []
+	self.clickpixlar = self.gps_to_pixel(_coord[0],_coord[1])
+	## Hämtar ut kordinaterna på alla object på kartan
+	for n in self.map_objects:
+		self.object_coordinates.append(n["object"].get_coordinate())
+	## 
+	for n in self.object_coordinates:
+		object_pixlar = self.gps_to_pixel(n["longitude"],n["latitude"])
+		print self.clickpixlar
+		print object_pixlar
+	######	ng knas med if satsen #######
+		if(object_pixlar[0] < self.clickpixlar and (object_pixlar[0]-50) > self.clickpixlar and object_pixlar[1] < self.clickpixlar and (object_pixlar[1]-50) > self.clickpixlar):
+			print "Yeah baby yeah"
+				
+	
+	#print self.object_coordinates
+    
+    
     def on_click_popup(self, _coord):
+	### Anropar metod som kollar om det finns ett objekt på platsen man clickat
+	self.check_objects(_coord)
+		
+	
 	#Vbox for innehall
 	self.vbox = gtk.VBox(False,5)
 	self.vbox.set_border_width(50)	
