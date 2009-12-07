@@ -11,8 +11,6 @@ class Samtal():
 	print "vi sparar!"
 	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (self.choose, "130.236.216.227", 5000, 5000))
 	
-	
-	
     def samma(self,widget,event,data=None):
 	self.rostknapp.set_active(False)
 	self.rovknapp.set_active(False)
