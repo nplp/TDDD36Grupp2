@@ -1,6 +1,7 @@
 import gtk
 import simplejson as json
 import osso
+from databasmethod import *
 
 class Inlogg():
     
@@ -17,8 +18,17 @@ class Inlogg():
 	self.args = (json.dumps(dict),)
     
     def release(self, widget, event, data=None):
-	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "method1", self.args)
-        
+	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "sendfunction", self.args)
+	#idstr = ""
+	#print getAllMessageID()
+	#for item in getAllMessageID():
+		#idstr += " " + str(item)
+	#print idstr
+	#self.args = ('/sync' + idstr,)
+	#print self.args
+	#self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "sendfunction", self.args)
+        self.popup.destroy()
+	
     def __init__(self):
 
 	#window = gtk.Window()
