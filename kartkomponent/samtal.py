@@ -9,7 +9,7 @@ class Samtal():
 	osso_c = osso.Context("ring", "0.0.1", False)
 	osso_rpc = osso.Rpc(osso_c)
 	print "vi sparar!"
-	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (self.choose, "130.236.216.174", 5000, 5000))
+	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (self.choose, "130.236.216.227", 5000, 5000))
 	
 	
 	
