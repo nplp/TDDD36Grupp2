@@ -35,7 +35,12 @@ class Gui(hildon.Program):
     
     def listenBattery(self):
 	while(1):
-		self.label.set_text(str(self.batt.getbattery())) 
+		if(self.online == True):
+			statusstring = ' ONLINE'
+		if(self.online == False):
+			"satter jag label till offline?"
+			statusstring = ' OFFLINE'
+		self.label.set_text(str(self.batt.getbattery()) + statusstring) 
 		sleep(8)
 		
     def callback(self, widget, data=None):
@@ -45,8 +50,12 @@ class Gui(hildon.Program):
         print "Hello again - %s wa s pressed" % data
 	
     def callback_func(self, interface, method, arguments, user_data):
-	print "kommer vi till guitest?"
-	self.show_popup(self)
+	
+	if(method == 'show_popup'):
+		self.show_popup(self)
+	if(method == 'online_status'):
+		self.online = arguments[0]
+	
 	
 	#Tillbaka
     def tbaka(self,widget,event,data=None):
@@ -428,6 +437,7 @@ class Gui(hildon.Program):
 	self.osso_rpc.set_rpc_callback("thor.guitest","/thor/guitest","thor.guitest",self.callback_func)
 	self.label = gtk.Label()
 	self.batt = battery.Batteri()
+	self.online = False
 	#thread.start_new_thread(self.batt.run,())
 	thread.start_new_thread(self.listenBattery,())
         # Initierar hildon (GUI-biblioteket för N810)
@@ -508,7 +518,6 @@ class Gui(hildon.Program):
             return None
 	
     def show_popup(self, event):
-	print "ritar upp en loginruta"
 	logg = login.Inlogg()
         #popup = gtk.Window()
         #popup.set_title( "Login" )

@@ -388,7 +388,9 @@ class sessionClass(Thread):
 	def replicateMsg(self, arg):
 		intarg = list()
 		for a in arg:
-			intarg.append(int(a))
+			try:
+				intarg.append(int(a))
+			except: print "a är inget nummer"
 		msgQueue = list()
 
 		try:	
@@ -415,7 +417,7 @@ class sessionClass(Thread):
 
 		for m in msgQueue:
 			data = json.dumps(class2dict(m))
-			self.sendBack(data)
+			self.sendBack(data + '\n')
 
 
 	
@@ -560,20 +562,16 @@ class sessionClass(Thread):
 				# json-strängar! Startar med '{'. Vbf message
 				elif(data.startswith('{')):
 					msg = json.loads(data)
+					# Atomisk ------
+					ClientMutex.acquire()
 					try:
-						# Atomisk ------
-						ClientMutex.acquire()
-						addMessage(msg["sender"], msg["receiver"], 'text', "change", datetime.now(), msg["subject"], msg["message"], 1)
-						ClientMutex.release()
-						# --------------
-					except KeyError, e:
-						try:
-							# Atomisk ------
-							ClientMutex.acquire()
+						if(msg['type']=='text'):
+							addMessage(msg["sender"], msg["receiver"], 'text', "change", datetime.now(), msg["subject"], msg["message"], 1)
+						else:
 							addPoi(msg["coordx"], msg["coordy"], msg["type"], datetime.now(), msg["type"], msg["sub_type"])
-							ClientMutex.release()
-							# --------------
-						except KeyError, e1: pass
+					except KeyError, e: pass
+					ClientMutex.release()
+					# --------------
 				elif(data != ""):
 					atomic_sendAll(self.name + ": " + data)
 		#except Exception, e:
