@@ -54,6 +54,33 @@ def checkServer():
 
 ''' 
 
+# Saker som inte får vara i ett objekt: { } < > /
+def sortOutDict(string):
+	output = list()
+	if string:
+		# Delar upp meddelanden i {}-strängar. Man får inte använda }.
+		packets = string.split('}')
+
+		# Om '' finns i packets innebär det att string slutar med ett }.
+		if('' in packets):
+			packets.pop(-1)
+			packets[-1] = packets[-1] + '}'
+		if(len(packets) > 1):
+			for i in range(len(packets)-1):
+				output.append(packets[i] + '}')
+				print output[i]
+		output.append(packets[-1])
+
+	return output
+
+def addMsgs(p):
+	if(p):
+		print '#' + p + '#'
+		msg = json.loads(p)
+		try:
+			recMsgs.append(msg["id"])
+			print recMsgs	
+		except KeyError, e: print "Not a msg"
 
 
 class recieverClass(Thread):
@@ -64,16 +91,17 @@ class recieverClass(Thread):
     
     # Tar emot meddelanden
 	def reciever(self):
+		rest = ""
 		try:
 			while 1:
-				data = str(self.clientSocket.recv(BUFF))
-				if(data != "" and data != "/x"):
-					if(data.startswith('/ping')):
-						s = data.split(' ', 1)
+				self.data = str(self.clientSocket.recv(BUFF))
+				if(self.data != "" and self.data != "/x"):
+					if(self.data.startswith('/ping')):
+						s = self.data.split(' ', 1)
 						print "Ping: " + str(time() - float(s[1]))
-					elif(data.startswith('/online')):
-						s = data.split(' ', 1)
-						if(data[7] == '/'):
+					elif(self.data.startswith('/online')):
+						s = self.data.split(' ', 1)
+						if(self.data[7] == '/'):
 							print s[1] + " is not online."
 							if(s[1] in contactList):
 								contactList.remove(s[1])
@@ -81,20 +109,23 @@ class recieverClass(Thread):
 							print s[1] + " is online."
 							contactList.append(s[1])
 					else:
-						if(data.startswith('{')):
-							# Delar upp meddelanden i {}-strängar. Man får inte använda }.
-							packets = data.split('}')
+						if(self.data.startswith('{')):
+							packets = self.data.split('\n')
 							while('' in packets):
 								packets.remove('')
-							for p in packets:
-								p = p + '}'
-								print p
-								msg = json.loads(p)
-								try:
-									recMsgs.append(msg["id"])
-									print recMsgs	
-								except KeyError, e: print "Not a msg"
-						else: print data
+							print packets
+
+							if(len(packets) > 1):
+								for p in packets[0:-2]: addMsgs(p)
+
+							if(len(packets) > 0 and len(packets[-1]) > 0):
+								if(packets[-1][-1] == '}'): addMsgs(packets[-1])
+								elif(packets[-1][0] == '{'): rest = packets[-1]
+						elif(len(rest) > 0):
+							self.data = rest + self.data
+							rest = ""
+
+						else: print self.data
 				else:
 					break
 		except Exception, e:
@@ -105,6 +136,7 @@ class recieverClass(Thread):
 clientSocket.connect((ADDR, PORT))
 recThread = recieverClass(clientSocket, (ADDR,PORT))
 recThread.start()
+clientSocket.send("kj 123")
 
 idnr = 56
 
@@ -152,7 +184,6 @@ while 1:
 			for r in recMsgs:
 				data = data + ' ' + str(r)
 	elif(not data.startswith('/') and LOGGED_IN == True):
-
 		msg = data.split(' ',1)
 		if(len(msg) > 1):
 			m = Message()
