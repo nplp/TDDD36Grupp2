@@ -68,7 +68,7 @@ class Meddelande (object):
 	self.skicka1 = gtk.Button("Lagg till mottagare")
         self.skicka1.connect("clicked", self.show_popup)
 	self.skicka1.show()
-	self.vbox.pack_start(self.skicka1,True,True,0)
+	self.vbox.pack_start(self.skicka1,True,True,10)
 
 	#Skriv ett meddelande
         self.meddelande = gtk.Label("Meddelande")
