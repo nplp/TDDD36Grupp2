@@ -44,96 +44,160 @@ class Map(gtk.DrawingArea):
     def check_objects(self, _coord):
 	self.map_objects = self.__map.get_objects()
 	self.object_coordinates = []
+	self.object_nr = 0
+	self.hit = False
 	self.clickpixlar = self.gps_to_pixel(_coord[0],_coord[1])
 	## Hämtar ut kordinaterna på alla object på kartan
 	for n in self.map_objects:
 		self.object_coordinates.append(n["object"].get_coordinate())
-	## 
+
 	for n in self.object_coordinates:
 		object_pixlar = self.gps_to_pixel(n["longitude"],n["latitude"])
-		print self.clickpixlar
-		print object_pixlar
-	######	ng knas med if satsen #######
-		if(object_pixlar[0] < self.clickpixlar and (object_pixlar[0]-50) > self.clickpixlar and object_pixlar[1] < self.clickpixlar and (object_pixlar[1]-50) > self.clickpixlar):
-			print "Yeah baby yeah"
+		if(object_pixlar[0] <= self.clickpixlar[0] and (object_pixlar[0]+32) >= self.clickpixlar[0] and object_pixlar[1] <= self.clickpixlar[1] 		and (object_pixlar[1]+32) >= self.clickpixlar[1]):
+			self.hit = True
+			return self.map_objects[self.object_nr]		
+		self.object_nr += 1
 				
-	
-	#print self.object_coordinates
-    
-    
+
     def on_click_popup(self, _coord):
 	### Anropar metod som kollar om det finns ett objekt på platsen man clickat
-	self.check_objects(_coord)
+	self.focus_target = self.check_objects(_coord)
+	
+	if(self.hit):
 		
-	
-	self.vbox = gtk.VBox(False, 0)
-	self.vbox.set_border_width(50)	
-        self.vbox.show()
-	
-	combobox = gtk.combo_box_new_text()
-	combobox.append_text("Poi")
-	combobox.append_text("Mission")
-	combobox.append_text("Unit")
-	combobox.set_active(0)
-	combobox.show()	
-	self.vbox.pack_start(combobox, False, False, 0)
-	
-	self.x_coord = gtk.Label("X-kordinat")
-        self.x_coord.set_alignment(0, 0)
-	self.x_coord.show()
-	self.vbox.pack_start(self.x_coord, False, False, 0)
-	
-	self.xentry = gtk.Entry()
-	self.xentry.set_text(str(_coord[0]))
-	self.xentry.show()	
-	self.vbox.pack_start(self.xentry, False, False, 0)
+		self.vbox = gtk.VBox(False, 0)
+		self.vbox.set_border_width(20)	
+		self.vbox.show()
 
-	self.y_coord = gtk.Label("Y-kordinat")
-        self.y_coord.set_alignment(0, 0)
-	self.y_coord.show()
-	self.vbox.pack_start(self.y_coord, False, False, 0)
-	
-	self.yentry = gtk.Entry()
-	self.yentry.set_text(str(_coord[1]))
-	self.yentry.show()
-	self.vbox.pack_start(self.yentry, False, False, 0)
 
-	self.beskrivning = gtk.Label("Beskrivning")
-        self.beskrivning.set_alignment(0, 0)
-	self.beskrivning.show()
-	self.vbox.pack_start(self.beskrivning, False, False, 0)
+		self.hbox = gtk.HBox(False, 0)
+		self.hbox.set_border_width(5)
+		self.hbox.show()
 
-	self.beskriv = gtk.TextView()
-	self.beskriv.set_wrap_mode(gtk.WRAP_WORD_CHAR)	
-	self.beskriv.show()
-	self.vbox.pack_start(self.beskriv, False, False, 0)
+		self.bild = gtk.Image()
+		self.bild.set_from_file("ikoner/tank.png")
+		self.bild.show()
+		self.hbox.pack_start(self.bild, expand = False, fill = False, padding = 2)
 	
-	self.hbox = gtk.HBox(False, 0)
-	self.hbox.set_size_request(198, 95)
-        self.hbox.show()
+		self.enhet = gtk.Label("  " + str(self.focus_target['id']))
+		self.enhet.set_alignment(0, 0)
+		self.enhet.show()
+		self.hbox.pack_start(self.enhet, False, False, 0)
+
+		self.vbox.pack_start(self.hbox, False, False, 2)
 	
-	self.skapa = gtk.Button("Skapa")
-        self.skapa.connect("clicked", self.clicked, "Skapa", _coord)
-	self.skapa.show()
-	self.hbox.pack_start(self.skapa,False,False,0)
+		self.x_coord = gtk.Label("X-kordinat: ")
+		self.x_coord.set_alignment(0, 0)
+		self.x_coord.show()
+		self.vbox.pack_start(self.x_coord, False, False, 2)
 	
-	self.avbryt = gtk.Button("Avbryt")
-        self.avbryt.connect("clicked", self.avs, "Avbryt")
-	self.avbryt.show()
-	self.hbox.pack_start(self.avbryt,False,False,0)
-	self.vbox.pack_start(self.hbox,True,True,0)
+		self.xentry = gtk.Entry()
+		self.xentry.set_text(str(_coord[0]))
+		self.xentry.show()	
+		self.vbox.pack_start(self.xentry, False, False, 2)
+
+		self.y_coord = gtk.Label("Y-kordinat: ")
+		self.y_coord.set_alignment(0, 0)
+		self.y_coord.show()
+		self.vbox.pack_start(self.y_coord, False, False, 2)
 	
-		#popup fran login
-	self.popup = gtk.Window()
-        self.popup.set_title( "POI" )
-	#self.popup.set_size_request(500,500)
-        self.popup.add(self.vbox)
-	#adress.vbox.show()	
-        self.popup.set_modal(True)
-        #popup.set_transient_for(self)
-        self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )	
+		self.yentry = gtk.Entry()
+		self.yentry.set_text(str(_coord[1]))
+		self.yentry.show()	
+		self.vbox.pack_start(self.yentry, False, False, 2)
+
+		self.beskrivning = gtk.Label("Beskrivning: ")
+		self.beskrivning.set_alignment(0, 0)
+		self.beskrivning.show()
+		self.vbox.pack_start(self.beskrivning, False, False, 3)
+
+		self.beskriv = gtk.TextView()
+		self.beskriv.set_wrap_mode(gtk.WRAP_WORD_CHAR)
+		self.beskriv.set_size_request(300, 100)	
+		self.beskriv.show()
+		self.vbox.pack_start(self.beskriv, False, False, 2)
 	
-	self.popup.show()
+		self.stang = gtk.Button("Stang")
+		self.stang.connect("clicked", self.avs, "Stang")
+		self.stang.show()
+		self.vbox.pack_start(self.stang,True,True,0)
+
+		self.popup = gtk.Window()
+		self.popup.set_title(" ")
+		self.popup.set_size_request(300,500)
+		self.popup.add(self.vbox)
+		self.popup.set_modal(True)
+		self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )	
+	
+		self.popup.show()
+
+	else:
+		self.vbox = gtk.VBox(False, 0)
+		self.vbox.set_border_width(50)	
+		self.vbox.show()
+	
+		combobox = gtk.combo_box_new_text()
+		combobox.append_text("Poi")
+		combobox.append_text("Mission")
+		combobox.append_text("Unit")
+		combobox.set_active(0)
+		combobox.show()	
+		self.vbox.pack_start(combobox, False, False, 3)
+	
+		self.x_coord = gtk.Label("X-kordinat: ")
+		self.x_coord.set_alignment(0, 0)
+		self.x_coord.show()
+		self.vbox.pack_start(self.x_coord, False, False, 2)
+	
+		self.xentry = gtk.Entry()
+		self.xentry.set_text(str(_coord[0]))
+		self.xentry.show()	
+		self.vbox.pack_start(self.xentry, False, False, 2)
+
+		self.y_coord = gtk.Label("Y-kordinat: ")
+		self.y_coord.set_alignment(0, 0)
+		self.y_coord.show()
+		self.vbox.pack_start(self.y_coord, False, False, 2)
+	
+		self.yentry = gtk.Entry()
+		self.yentry.set_text(str(_coord[1]))
+		self.yentry.show()
+		self.vbox.pack_start(self.yentry, False, False, 2)
+
+		self.beskrivning = gtk.Label("Beskrivning")
+		self.beskrivning.set_alignment(0, 0)
+		self.beskrivning.show()
+		self.vbox.pack_start(self.beskrivning, False, False, 3)
+
+		self.beskriv = gtk.TextView()
+		self.beskriv.set_wrap_mode(gtk.WRAP_WORD_CHAR)
+		self.beskriv.set_size_request(300, 100)
+		self.beskriv.show()
+		self.vbox.pack_start(self.beskriv, False, False, 2)
+	
+		self.hbox = gtk.HBox(False, 0)
+		self.hbox.set_size_request(198, 95)
+		self.hbox.show()
+	
+		self.skapa = gtk.Button("Skapa")
+		self.skapa.connect("clicked", self.clicked, "Skapa", _coord)
+		self.skapa.show()
+		self.hbox.pack_start(self.skapa,False,False,0)
+	
+		self.avbryt = gtk.Button("Avbryt")
+		self.avbryt.connect("clicked", self.avs, "Avbryt")
+		self.avbryt.show()
+		self.hbox.pack_start(self.avbryt,False,False,2)
+		self.vbox.pack_start(self.hbox,True,True,2)
+	
+		self.popup = gtk.Window()
+		self.popup.set_title(" ")
+		self.popup.set_size_request(300,500)
+		self.popup.add(self.vbox)
+		self.popup.set_modal(True)
+		self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )	
+	
+		self.popup.show()
 	
     def clicked(self, widget, event, __coord):
 	self.add_object(__coord)
@@ -178,8 +242,6 @@ class Map(gtk.DrawingArea):
 		self.koordinat = (lon,lat)
 		self.on_click_popup(self.koordinat)
 		
-		#self.add_object(self.koordinat)
-		print self.koordinat
         return True
 	
     def add_object(self, _coord):
