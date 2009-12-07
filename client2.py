@@ -33,7 +33,7 @@ class Client(object):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
 		self.MYPORT = 2338
-		self.ADDR = ('130.236.189.14')
+		self.ADDR = ('127.0.0.1')
 		self.ADDR2 = ('130.236.189.14')
 		self.contactList = list()
 		self.primary = False
@@ -52,7 +52,6 @@ class Client(object):
 
 	def popuplogin(self):
 		#Sag till anvandaren att man ska logga in
-		print "kommer vi hit login popup"
 		self.osso_rpc.rpc_run("thor.guitest", "/thor/guitest", "thor.guitest", "show_popup")
 		
 
@@ -122,6 +121,11 @@ class Client(object):
 				#fixa sa att det skickar nasta gang.
 		#mutex.release()
 	
+	
+	def update_online_status(self, online):
+		self.osso_rpc.rpc_run("thor.guitest", "/thor/guitest", "thor.guitest", "online_status", (online,))
+		
+	
 	def connect(self):
 		print "wassap"
 		print "gor jag detta?"
@@ -137,6 +141,7 @@ class Client(object):
 		#print "waddap"
 		self.clientSocket.connect((self.ADDR, self.PORT))
 		self.online = True
+		#self.update_online_status(self.online)
 		thread.start_new_thread(self.deQueue, ())
 		#print "waddap2"
 		recThread = recieverClass(self.clientSocket, (self.ADDR,self.PORT), self.primary, self.online)
@@ -156,6 +161,7 @@ class Client(object):
 		#print "baddap"
 		self.clientSocket2.connect((self.ADDR2, self.PORT2))
 		self.online = True
+		#self.update_online_status()
 		thread.start_new_thread(self.deQueue, ())
 		#print "baddap2"
 		recThread2 = recieverClass(self.clientSocket2, (self.ADDR2,self.PORT2), self.primary, self.online)
@@ -218,6 +224,9 @@ class recieverClass(Thread):
 					if(data.startswith('/ping')):
 						s = data.split(' ', 1)
 						print "Ping: " + str(time() - float(s[1]))
+					elif(data.startswith('Inloggad')):
+						self.online = True
+						klienten.update_online_status(self.online)
 					elif(data.startswith('/online')):
 						s = data.split(' ', 1)
 						if(data[7] == '/'):
@@ -234,11 +243,13 @@ class recieverClass(Thread):
 							if(dict["type"] == "text"):
 								addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["content"]["subject"], dict ["content"]["message"], dict["response_to"])
 							print "lade in ett stycket meddelande i databasen"
+							print "dicten var : " + str(dict)
 						else:
 							print data
 				else:
 					print "rerouting"
 					self.online = False
+					klienten.update_online_status(self.online)
 					if(self.primary):
 						klienten.reconnect()
 						klienten.popuplogin()
