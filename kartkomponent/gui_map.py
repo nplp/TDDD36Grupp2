@@ -7,6 +7,7 @@ import osso
 import data_storage
 import thread
 import gobject
+from databasklient import*
 
 class Map(gtk.DrawingArea):
     __bounds = {"min_latitude":0,
@@ -52,7 +53,9 @@ class Map(gtk.DrawingArea):
 
     def refresh(self):
 	while 1:
-		print "boobies"
+		self.poi_list = []
+		for n in getAllPois():
+			self.poi_list.append((n.coordx, n.coordy, n.name, n.time_created, n.type, n.sub_type))		
 		time.sleep(5)
 
 	
