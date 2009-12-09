@@ -541,6 +541,27 @@ def getAllMessages():
 		return None
 	session_getAllMessages.close()
 	
+def getAllPois():
+	session_getAllPois=Session()
+	try:
+		m=session_getAllPois.query(Poi).all()
+		return m
+	except:
+		return None
+	session_getAllMPois.close()
+	
+def getAllMessageID():
+	idList=[]
+	for item in getAllMessages():
+		idList.append(item.id)
+	return idList
+	
+def getAllPoiID():
+	idList=[]
+	for item in getAllPois():
+		idList.append(item.id)
+	return idList
+	
 def removeMessage(id_nr):
 	session_removeMessage=Session()
 	try:

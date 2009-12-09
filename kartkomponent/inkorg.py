@@ -1,6 +1,8 @@
+# coding:utf-8
 import gtk
 from databasklient import *
 import visameddelande
+from login import *
 
 
 class Inkorg(gtk.Window): 
@@ -15,6 +17,9 @@ class Inkorg(gtk.Window):
 	self.three = None
 	self.args = {}
 	
+	self.osso_c = osso.Context("inkorg", "0.0.1", False)
+	self.osso_rpc = osso.Rpc(self.osso_c)
+    
         self.vbox = gtk.VBox(False, 0)
 	self.vbox.show()
 	
@@ -53,18 +58,42 @@ class Inkorg(gtk.Window):
     def update_messages(self):
 	store = self.create_model()
 	self.treeView.set_model(store)
+	
+		
+    #Tar in en lista med meddelanden, returnerar den som e filtrerad pa anvandare, EJ implementerad (tenkt som skydd mot flera pa 1 enhet)
+    def filter_messages(self, unfiltered_list):
+	    filtered_list = []
+	    print "HÄR KOMMET DET; BANG!"
+	    l = Inlogg()
+	    for item in unfiltered_list:
+		    if(item[0] == 'niklas'):
+			    print item[0]#filtered_list.append(item[0])
+    	    print "KLARTKLARTKLARTKLART"
+
+
 	    
     def get_messages(self):
 	self.meddelanden = []
 	for n in getAllMessages():
 		self.meddelanden.append((n.sender, n.receiver, n.type, n.subtype, n.time_created, n.subject, n.message , n.response_to))
 		
+	
+	
+	#self.filter_messages(self.meddelanden)
 	return self.meddelanden
 
     def create_model(self):
+	#idstr = ""
+	#print getAllMessageID()
+	#for item in getAllMessageID():
+		#idstr += " " + str(item)
+	#print idstr
+	#self.argsy = ('/sync' + idstr,)
+	#print self.argsy
+	#self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "sendfunction", self.argsy)
+	
         store = gtk.ListStore(str, str, str, str, str, str, str, str)
 	meddelanden = self.get_messages()
-	print meddelanden
         for act in meddelanden:
             store.append((act[0], act[1], act[2], act[3], act[4], act[5], act[6], act[7]))
         return store
@@ -122,8 +151,10 @@ class Inkorg(gtk.Window):
 	print self.three
 	print model
 	self.args = {"sender":self.one,"subject":self.two,"content":self.three}
-	
+
 	print self.args["subject"]
+	
+	
 
     def show_popup(self, button):
 	visa = visameddelande.VisaMeddelande(self.args)

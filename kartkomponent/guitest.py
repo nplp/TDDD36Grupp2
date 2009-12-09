@@ -246,7 +246,6 @@ class Gui(hildon.Program):
 		
 	#Inbox	
     def inboxen(self, widget, event, data=None):
-	print "schmack"
 	self.inbox.update_messages()
 	self.verktyg.set_active(False)
 	self.filer.set_active(False)

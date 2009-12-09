@@ -19,6 +19,8 @@ import subprocess
 import gobject
 #import dbus
 
+logged_in = False		
+
 
 class Client(object):
 	
@@ -37,7 +39,7 @@ class Client(object):
 		self.ADDR2 = ('130.236.189.14')
 		self.contactList = list()
 		self.primary = False
-		self.online = False		
+		self.online = False
 		self.osso_c = osso.Context("client", "0.0.1", False)
 		self.osso_rpc = osso.Rpc(self.osso_c)
 		self.osso_rpc.set_rpc_callback("thor.client","/thor/client","thor.client",self.send)
@@ -113,7 +115,6 @@ class Client(object):
 				while not self.q.empty(): 
 					#print "tomat"
 					temp = self.q.get()
-					print "sparar undan  "+temp
 					self.sendfunction(temp)
 			except Exception, e:
 				#print e
@@ -127,8 +128,6 @@ class Client(object):
 		
 	
 	def connect(self):
-		print "wassap"
-		print "gor jag detta?"
 		#print "primary i connect= "+str(primary)
 		self.primary = True
 		#print "primary i connect igen = "+str(primary)
@@ -190,8 +189,25 @@ class Client(object):
 		#mutex = Lock()
 		#q = PriorityQueue(Queue())
 		#q = Queue()
+		thread.start_new_thread(self.message_sync, ())
+
 		self.connect()
 	
+	#metod som kors i en trad och hemtar nya objekt fran servern var 10:de sekund
+	def message_sync(self):
+		global logged_in
+		while(1):
+			sleep(10)
+			try:
+				if(logged_in):
+					idstr = ""
+					for item in getAllMessageID():
+						idstr += " " + str(item)
+					for item in getAllPoiID():
+						idstr += " " + str(item)
+					args = '/sync' + idstr
+					self.sendfunction(args)
+			except: print "klienten er inte startad ennu sa man vet ej om den er online"
 ### Klassen for prioritets ko
 #class PriorityQueue(Queue):
 ## Initialize the queue representation
@@ -217,6 +233,7 @@ class recieverClass(Thread):
 	
 # Tar emot meddelanden
 	def reciever(self):
+		global logged_in
 		try:
 			while 1:
 				data = str(self.clientSocket.recv(self.BUFF))
@@ -227,6 +244,7 @@ class recieverClass(Thread):
 					elif(data.startswith('Inloggad')):
 						self.online = True
 						klienten.update_online_status(self.online)
+						logged_in = True
 					elif(data.startswith('/online')):
 						s = data.split(' ', 1)
 						if(data[7] == '/'):
@@ -238,12 +256,12 @@ class recieverClass(Thread):
 							contactList.append(s[1])
 					else:
 						if(data.startswith('{')):
-							print "tog emot ett stycke json"
 							dict = json.loads(data)
 							if(dict["type"] == "text"):
-								addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["content"]["subject"], dict ["content"]["message"], dict["response_to"])
-							print "lade in ett stycket meddelande i databasen"
-							print "dicten var : " + str(dict)
+								addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["subject"], dict["message"], dict["response_to"])
+							elif(dict["type"] == "poi"):
+								addPoi(dict["coordx"], dict["coordy"], dict["name"], dict["time_created"], dict["type"], dict["subtype"])
+							
 						else:
 							print data
 				else:
