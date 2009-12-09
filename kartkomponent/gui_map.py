@@ -133,7 +133,7 @@ class Map(gtk.DrawingArea):
 
 	else:
 		self.vbox = gtk.VBox(False, 0)
-		self.vbox.set_border_width(50)	
+		self.vbox.set_border_width(10)	
 		self.vbox.show()
 	
 		combobox = gtk.combo_box_new_text()
@@ -171,7 +171,7 @@ class Map(gtk.DrawingArea):
 
 		self.beskriv = gtk.TextView()
 		self.beskriv.set_wrap_mode(gtk.WRAP_WORD_CHAR)
-		self.beskriv.set_size_request(300, 100)
+		#self.beskriv.set_size_request(200, 50)
 		self.beskriv.show()
 		self.vbox.pack_start(self.beskriv, False, False, 2)
 	
@@ -192,7 +192,7 @@ class Map(gtk.DrawingArea):
 	
 		self.popup = gtk.Window()
 		self.popup.set_title(" ")
-		self.popup.set_size_request(300,500)
+		self.popup.set_size_request(250,350)
 		self.popup.add(self.vbox)
 		self.popup.set_modal(True)
 		self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )	
