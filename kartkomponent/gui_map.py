@@ -2,6 +2,8 @@
 import gtk
 import math
 import time
+import simplejson as json
+import osso
 import data_storage
 import thread
 import gobject
@@ -27,6 +29,9 @@ class Map(gtk.DrawingArea):
         self.__allow_movement = False
         self.__last_movement_timestamp = 0.0
         self.__zoom_level = 1
+	
+	self.osso_c = osso.Context("meddelande", "0.0.1", False)
+    	self.osso_rpc = osso.Rpc(self.osso_c)
         
         # queue_draw() ärvs från klassen gtk.DrawingArea
         map.set_redraw_function(self.queue_draw)
@@ -209,7 +214,13 @@ class Map(gtk.DrawingArea):
 		self.popup.show()
 	
     def clicked(self, widget, event, __coord):
+	tbuffer = self.beskriv.get_buffer()
+	text = tbuffer.get_text(tbuffer.get_start_iter(), tbuffer.get_end_iter())
+	temp = {"coordx": __coord[0], "coordy": __coord[1], "name": text, "time_created": time.time(), "type": "poi", "subtype": "struct"}
+	print temp
 	self.add_object(__coord)
+	args = (json.dumps(temp),)
+	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "method1", args)
 	self.popup.destroy()
 	
     def avs(self, widget, event, data=None):
