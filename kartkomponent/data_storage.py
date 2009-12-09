@@ -311,9 +311,8 @@ class MapData(Bounds, Name):
     def remove_objects(self):
         self.__objects = []
 
-    def add_object(self, object_id, map_object):
-        self.__objects.append({"id":object_id,
-                               "object":map_object})
+    def add_object(self, object_id, map_object, time_created, time_changed, name, type, subtype):
+        self.__objects.append({"id":object_id, "object":map_object, "time_created":time_created, "time_changed":time_changed, "name":name, "type":type, "subtype":subtype})
 	self.redraw()
 
     def delete_object(self, object_id):

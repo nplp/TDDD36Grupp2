@@ -29,16 +29,13 @@ class Start(object):
 		self.map = data_storage.MapData(self.mapxml.get_name(),
 		                   self.mapxml.get_levels())
 		self.map.set_focus(15.5726, 58.4035)
-
-		self.map.add_object("Ambulans1", data_storage.MapObject({"longitude":15.57796,
-			                                            "latitude":58.40479},
-			                                           "ikoner/ambulans.png"))
+		self.map.add_object("Ambulans1", data_storage.MapObject({"longitude":15.57796, "latitude":58.40479}, "ikoner/ambulans.png"), time.time(), None, 'tuttifrutti', 'poi', 'struct')
 		self.map.add_object("Brandbil1", data_storage.MapObject({"longitude":15.5729,
 			                                            "latitude":58.40193},
-			                                           "ikoner/brandbil.png"))
+			                                           "ikoner/brandbil.png"), time.time(), None, 'hubbabubba', 'poi', 'struct')
 		self.map.add_object("Sjukhus1", data_storage.MapObject({"longitude":15.5629,
 			                                           "latitude":58.4093},
-			                                          "ikoner/sjukhus.png"))
+			                                          "ikoner/sjukhus.png"), time.time(), None, 'belsebubb', 'poi', 'struct')
 
 	def getcoords(self):
 		print "Efter subprocess"		
@@ -57,7 +54,7 @@ class Start(object):
 					self.map.delete_object("Tank")
 				self.map.add_object("Tank", data_storage.MapObject({"longitude":(self.coord[1]-0.0016),
 									"latitude":(self.coord[0]+0.00075)},
-									"ikoner/tank.png"))
+									"ikoner/tank.png"), time.time(), None, 'tufftuff', 'poi', 'struct')
 				self.tank_added = True
 			
 	def startgui(self):

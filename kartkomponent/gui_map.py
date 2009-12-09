@@ -3,6 +3,8 @@ import gtk
 import math
 import time
 import data_storage
+import thread
+import gobject
 
 class Map(gtk.DrawingArea):
     __bounds = {"min_latitude":0,
@@ -12,7 +14,7 @@ class Map(gtk.DrawingArea):
 
     def __init__(self, map):
         gtk.DrawingArea.__init__(self)
-        
+	gobject.threads_init()        
         # Variabler
         self.__map = map
 	self.koordinat = ()
@@ -40,6 +42,14 @@ class Map(gtk.DrawingArea):
                         gtk.gdk.LEAVE_NOTIFY_MASK |
                         gtk.gdk.POINTER_MOTION_MASK |
                         gtk.gdk.POINTER_MOTION_HINT_MASK)
+
+	thread.start_new_thread(self.refresh, ())
+
+    def refresh(self):
+	while 1:
+		print "boobies"
+		time.sleep(5)
+
 	
     def check_objects(self, _coord):
 	self.map_objects = self.__map.get_objects()
@@ -68,7 +78,6 @@ class Map(gtk.DrawingArea):
 		self.vbox = gtk.VBox(False, 0)
 		self.vbox.set_border_width(20)	
 		self.vbox.show()
-
 
 		self.hbox = gtk.HBox(False, 0)
 		self.hbox.set_border_width(5)
@@ -246,16 +255,11 @@ class Map(gtk.DrawingArea):
 	
     def add_object(self, _coord):
 	    self.coord = (float(_coord[0]),float(_coord[1]))
-	    lon = float(_coord[0])
-	    lat = float(_coord[1])
-	    #print self.coord
 	    self.__map.add_object("Tannnk", data_storage.MapObject({"longitude":(self.coord[0]-0.0016),
 			                                            "latitude":(self.coord[1]+0.00075)},
-			                                           "ikoner/tank.png"))
+			                                           "ikoner/tank.png"), time.time(), None, 'hej', 'poi', 'struct')
 								   
-	#({"longitude":(self.coord[0]-0,0016),
-			                                            #"latitude":(self.coord[1]+0,00075)},
-			                                           #"ikoner/tank.png"))
+	
     def handle_motion_notify_event(self, widget, event):
         if self.__allow_movement:
             if event.is_hint:
