@@ -265,6 +265,7 @@ class Map(gtk.DrawingArea):
         return True
 	
     def add_object(self, _coord):
+		# tjuppski
 	    self.coord = (float(_coord[0]),float(_coord[1]))
 	    self.__map.add_object("Tannnk", data_storage.MapObject({"longitude":(self.coord[0]-0.0016),
 			                                            "latitude":(self.coord[1]+0.00075)},
