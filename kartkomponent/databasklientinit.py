@@ -29,9 +29,6 @@ add_mission_poi(122,152)
 
 add_mission_poi(122,162)
 
-addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
-addUnit(55, 55, "Sjukhus", datetime.now(), "army")
-addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
 
 addMessage('mathias1','hanna','text',"change",datetime.now(),"hej",'jason.dums() sak ska vara har tex Unit', 1)
 
