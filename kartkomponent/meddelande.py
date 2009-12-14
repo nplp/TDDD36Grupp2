@@ -25,7 +25,7 @@ class Meddelande (object):
 	anvandare = login.Inlogg.get_user(l)
 	datum = datetime.now()
 	datum = str(datum)
-	dict = {"id": 1, "sender": anvandare , "receiver": mottagare ,"type": 'text' , "subtype": "add", "time_created": datum, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : anvandare}
+	dict = {"id": 1, "sender": anvandare , "receiver": mottagare ,"type": 'text' , "subtype": "add", "time_created": datum, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : 1}
 	self.args = (json.dumps(dict),)
     
     def release(self, widget, event, data=None):
