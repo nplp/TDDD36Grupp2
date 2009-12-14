@@ -20,6 +20,10 @@ class VisaMeddelande (object):
 	self.vbox.set_border_width(50)
 	self.vbox.show()	
 	
+	self.hbox = gtk.HBox(False,5)
+	self.hbox.set_border_width(0)
+	self.hbox.show()
+	
 	self.scrolled_window=gtk.ScrolledWindow()
 	self.scrolled_window.set_border_width(10)
 	self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
@@ -56,12 +60,13 @@ class VisaMeddelande (object):
 	self.svara = gtk.Button("Svara")
         self.svara.connect("clicked", self.send, "Svara")
 	self.svara.show()
-	self.vbox.pack_start(self.svara,True,True,0)
+	self.hbox.pack_start(self.svara,True,True,0)
 	
 	self.avsluta = gtk.Button("Avsluta")
         self.avsluta.connect("clicked", self.avs, "Avsluta")
 	self.avsluta.show()
-	self.vbox.pack_start(self.avsluta,True,True,0)
+	self.hbox.pack_start(self.avsluta,True,True,0)
+	self.vbox.pack_start(self.hbox,True,True,0)
 	
 	self.popup = gtk.Window()
         self.popup.set_title( "Meddelande" )
