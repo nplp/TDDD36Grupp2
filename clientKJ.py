@@ -191,6 +191,7 @@ while 1:
 			m.sender = "kj"
 			m.receiver = msg[0]
 			m.message = msg[1]
+			m.type = "text"
 			d = class2dict(m)
 			print d
 			data = json.dumps(d)
