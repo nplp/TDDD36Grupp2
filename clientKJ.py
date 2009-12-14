@@ -190,7 +190,7 @@ while 1:
 			m.id = idnr
 			m.sender = "kj"
 			m.receiver = msg[0]
-			m.content.message = msg[1]
+			m.message = msg[1]
 			m.type = "text"
 			d = class2dict(m)
 			print d
