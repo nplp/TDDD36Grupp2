@@ -34,9 +34,9 @@ class Client(object):
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
-		self.MYPORT = 2338
+		self.MYPORT = 2400
 		self.ADDR = ('127.0.0.1')
-		self.ADDR2 = ('130.236.189.14')
+		self.ADDR2 = ('127.0.0.1')
 		self.contactList = list()
 		self.primary = False
 		self.online = False
@@ -132,13 +132,13 @@ class Client(object):
 		self.primary = True
 		#print "primary i connect igen = "+str(primary)
 		#SSH anrop, startar ssh tunnel mot servern
-		#try:
-			#MYPORT +=1
-			#subprocess.call('ssh -f nikpe890@'+HOST+' -L'+str(MYPORT)+':127.0.0.1:'+str(PORT)+' sleep 4', shell=True)
-		#except error:
-			#print 'no server baby i connect'
+		try:
+			self.MYPORT +=1
+			subprocess.call('ssh -f nikpe890@'+self.HOST+' -L'+str(self.MYPORT)+':127.0.0.1:'+str(self.PORT)+' sleep 4', shell=True)
+		except error:
+			print 'no server baby i connect'
 		#print "waddap"
-		self.clientSocket.connect((self.ADDR, self.PORT))
+		self.clientSocket.connect((self.ADDR, self.MYPORT))
 		self.online = True
 		#self.update_online_status(self.online)
 		thread.start_new_thread(self.deQueue, ())
@@ -152,13 +152,13 @@ class Client(object):
 		self.primary = False
 		#print "primary i reconnect igen = "+str(primary)
 			#SSH anrop, startar ssh tunnel mot servern
-		#try:
-			#self.MYPORT +=1
-			#subprocess.call('ssh -f nikpe890@'+self.HOST2+' -L'+str(self.MYPORT)+':127.0.0.1:'+str(self.PORT2)+' sleep 4', shell=True)
-		#except error:
-			#print 'no server baby i reconnect'
+		try:
+			self.MYPORT +=1
+			subprocess.call('ssh -f nikpe890@'+self.HOST2+' -L'+str(self.MYPORT)+':127.0.0.1:'+str(self.PORT2)+' sleep 4', shell=True)
+		except error:
+			print 'no server baby i reconnect'
 		#print "baddap"
-		self.clientSocket2.connect((self.ADDR2, self.PORT2))
+		self.clientSocket2.connect((self.ADDR2, self.MYPORT2))
 		self.online = True
 		#self.update_online_status()
 		thread.start_new_thread(self.deQueue, ())
