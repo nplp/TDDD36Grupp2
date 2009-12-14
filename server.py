@@ -564,12 +564,12 @@ class sessionClass(Thread):
 					msg = json.loads(data)
 					# Atomisk ------
 					ClientMutex.acquire()
-					if 1:#try:
+					try:
 						if(msg['type']=='text'):
-							addMessage(msg["sender"], msg["receiver"], 'text', "change", datetime.now(), msg['content']["subject"], msg['content']["message"], 1)
+							addMessage(msg["sender"], msg["receiver"], 'text', "change", datetime.now(), msg["subject"], msg["message"], 1)
 						else:
-							addPoi(msg["coordx"], msg["coordy"], msg["name"], datetime.now(), msg["type"], msg["subtype"])
-					#except KeyError, e: pass
+							addPoi(msg["coordx"], msg["coordy"], msg["type"], datetime.now(), msg["type"], msg["sub_type"])
+					except KeyError, e: pass
 					ClientMutex.release()
 					# --------------
 				elif(data != ""):
