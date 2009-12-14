@@ -408,7 +408,7 @@ def getCount(namn):
 #lägger in ett item
 def add_item(name1,count1,location1):
 	session_add_item=Session()
-	session_add_item.save(Item(name=name1,count=count1,location=location1))
+	session_add_item.add(Item(name=name1,count=count1,location=location1))
 	session_add_item.commit()
 	
 def get_item_all():
@@ -475,7 +475,7 @@ def get_mission_by_id_all(id_nr):
 #obs! lägg inte in ett uppdrag med samma namn om du vill söka med namn!
 def addMission(name1, time_created1, time_changed1, status1, desc1, contact_person1, contact_number1):
 	session_addMission=Session()
-	session_addMission.save(Mission(name=name1, time_created=time_created1, time_changed=time_changed1, status=status1, desc=desc1, contact_person=contact_person1, contact_number=contact_number1))
+	session_addMission.add(Mission(name=name1, time_created=time_created1, time_changed=time_changed1, status=status1, desc=desc1, contact_person=contact_person1, contact_number=contact_number1))
 	session_addMission.commit()	
 	
 #retunerar all uppdragsdata	
@@ -498,7 +498,7 @@ def getPoi(namn):
 	
 def addPoi(coordx1, coordy1,name1,time_created1,type1,sub_type1):
 	session_addPoi=Session()
-	session_addPoi.save(Poi(coordx=coordx1, coordy=coordy1, name=name1, time_created=time_created1, type=type1, sub_type=sub_type1))
+	session_addPoi.add(Poi(coordx=coordx1, coordy=coordy1, name=name1, time_created=time_created1, type=type1, sub_type=sub_type1))
 	session_addPoi.commit()
 	
 #lägger in användare i en grupp	
@@ -516,7 +516,7 @@ def add_mission_poi(mission_id,poi_id):
 #lägger in ett medelande i databasen
 def addMessage(sender1, receiver1, type1, subtype1, time_created1, subject1, message1,response_to1):
 	session_addMessage = Session()
-	session_addMessage.save(Message(sender=sender1, receiver=receiver1, type=type1, subtype=subtype1, time_created=time_created1, subject=subject1, message=message1, response_to=response_to1))
+	session_addMessage.add(Message(sender=sender1, receiver=receiver1, type=type1, subtype=subtype1, time_created=time_created1, subject=subject1, message=message1, response_to=response_to1))
 	session_addMessage.commit()
 	
 	
@@ -573,7 +573,7 @@ def removeMessage(id_nr):
 	
 def addUnit(coordx1, coordy1, name1, time_changed1, type1):
 	session_addUnit=Session()
-	session_addUnit.save(Unit(coordx=coordx1, coordy=coordy1, name=name1, time_changed=time_changed1, type=type1))
+	session_addUnit.add(Unit(coordx=coordx1, coordy=coordy1, name=name1, time_changed=time_changed1, type=type1))
 	session_addUnit.commit()
 	
 def add_mission_unit(mission_id, unit_id):
@@ -640,7 +640,7 @@ def create_users():
 	user_niklas.name='niklas'
 	user_niklas.clearance='normal'
 	user_niklas.password='123'
-	session_user.save(user_niklas)
+	session_user.add(user_niklas)
 	
 	#skapar grupper
 	g=Group()
@@ -652,10 +652,10 @@ def create_users():
 	go=Group()
 	go.name='teamgobject'
 	
-	session_user.save(g)
-	session_user.save(g2)
-	session_user.save(pro)
-	session_user.save(go)
+	session_user.add(g)
+	session_user.add(g2)
+	session_user.add(pro)
+	session_user.add(go)
 	user_niklas.groups.append(g)
 	user_niklas.groups.append(g2)
 	
