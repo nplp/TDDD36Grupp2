@@ -7,7 +7,7 @@ import osso
 import data_storage
 import thread
 import gobject
-from databasklient import*
+import databasklient
 
 class Map(gtk.DrawingArea):
     __bounds = {"min_latitude":0,
@@ -49,14 +49,21 @@ class Map(gtk.DrawingArea):
                         gtk.gdk.POINTER_MOTION_MASK |
                         gtk.gdk.POINTER_MOTION_HINT_MASK)
 
-	thread.start_new_thread(self.refresh, ())
+	
+	
+	
+	
+	#thread.start_new_thread(self.refresh, ())
 
-    def refresh(self):
-	while 1:
-		self.poi_list = []
-		for n in getAllPois():
-			self.poi_list.append((n.coordx, n.coordy, n.name, n.time_created, n.type, n.sub_type))		
-		time.sleep(5)
+
+    #TODO REFRESHAR KARTAN MED OBJEKTEN FRAN DATABASEN
+    #def refresh(self):
+	#while 1:
+		#self.poi_list = []
+		#for n in getAllPois():
+			#self.poi_list.append((n.coordx, n.coordy, n.name, n.time_created, n.type, n.subtype))
+		#print self.poi_list		
+		#sleep(5)
 
 	
     def check_objects(self, _coord):
