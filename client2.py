@@ -19,7 +19,7 @@ import subprocess
 import gobject
 #import dbus
 
-logged_in = False		
+	
 
 
 class Client(object):
@@ -34,7 +34,7 @@ class Client(object):
 		if(len(sys.argv) > 1):
 			self.PORT = int(sys.argv[1])
 		#self.BUFF = 1024
-		self.MYPORT = 2400
+		self.MYPORT = 2800
 		self.ADDR = ('127.0.0.1')
 		self.ADDR2 = ('127.0.0.1')
 		self.contactList = list()
@@ -43,7 +43,6 @@ class Client(object):
 		self.osso_c = osso.Context("client", "0.0.1", False)
 		self.osso_rpc = osso.Rpc(self.osso_c)
 		self.osso_rpc.set_rpc_callback("thor.client","/thor/client","thor.client",self.send)
-		
 		#Aktivera clientsocket
 		self.clientSocket = socket(AF_INET, SOCK_STREAM)
 		self.clientSocket2 = socket(AF_INET, SOCK_STREAM)
@@ -56,8 +55,6 @@ class Client(object):
 		#Sag till anvandaren att man ska logga in
 		self.osso_rpc.rpc_run("thor.guitest", "/thor/guitest", "thor.guitest", "show_popup")
 		
-
-
 	def send(self, interface, method, arguments, user_data):
 		self.data = arguments[0]
 			
@@ -96,9 +93,9 @@ class Client(object):
 		self.primary
 		self.clientSocket
 		self.clientSocket2
-		#print "primary = "+str(primary)
+		print "primary = "+str(self.primary)
 		if(self.primary):
-			#print "skickar till primary  "+data
+			print "skickar till primary  "+self.data
 			self.clientSocket.send(self.data)
 		else:
 			#print "skickar till backup  "+data
@@ -113,7 +110,7 @@ class Client(object):
 			sleep(0.5)
 			try:
 				while not self.q.empty(): 
-					#print "tomat"
+					print "tomat"
 					temp = self.q.get()
 					self.sendfunction(temp)
 			except Exception, e:
@@ -128,7 +125,7 @@ class Client(object):
 		
 	
 	def connect(self):
-		#print "primary i connect= "+str(primary)
+		print "primary i connect= "+str(self.primary)
 		self.primary = True
 		#print "primary i connect igen = "+str(primary)
 		#SSH anrop, startar ssh tunnel mot servern
@@ -150,7 +147,7 @@ class Client(object):
 	
 	def reconnect(self):
 		self.primary = False
-		#print "primary i reconnect igen = "+str(primary)
+		print "primary i reconnect igen = "+str(self.primary)
 			#SSH anrop, startar ssh tunnel mot servern
 		try:
 			self.MYPORT +=1
@@ -158,7 +155,7 @@ class Client(object):
 		except error:
 			print 'no server baby i reconnect'
 		#print "baddap"
-		self.clientSocket2.connect((self.ADDR2, self.MYPORT2))
+		self.clientSocket2.connect((self.ADDR2, self.MYPORT))
 		self.online = True
 		#self.update_online_status()
 		thread.start_new_thread(self.deQueue, ())
@@ -190,23 +187,25 @@ class Client(object):
 		#q = PriorityQueue(Queue())
 		#q = Queue()
 		thread.start_new_thread(self.message_sync, ())
-
 		self.connect()
 	
 	#metod som kors i en trad och hemtar nya objekt fran servern var 10:de sekund
 	def message_sync(self):
-		global logged_in
+		#global logged_in
+		#print "detta ar vad logged_in ar i message_sync"+logged_in
 		while(1):
 			sleep(10)
 			try:
-				if(logged_in):
+				if(self.online):
 					idstr = ""
 					for item in getAllMessageID():
 						idstr += " " + str(item)
-					for item in getAllPoiID():
-						idstr += " " + str(item)
+					#for item in getAllPoiID():
+					#	idstr += " " + str(item)
 					args = '/sync' + idstr
+					print idstr
 					self.sendfunction(args)
+					
 			except: print "klienten er inte startad ennu sa man vet ej om den er online"
 ### Klassen for prioritets ko
 #class PriorityQueue(Queue):
@@ -221,6 +220,19 @@ class Client(object):
 #def _get(self):
 	#return heappop(self.queue)
 	
+def addMsgs(p):
+	if(p):
+		print '#' + p + '#'
+		msg = json.loads(p)
+		try:
+			if(msg["type"] == "text"):
+				print "lagger till ett textmeddelande i klientdatabasen"+str(msg)
+				addMessage(msg["sender"], msg["receiver"], msg["type"], msg["subtype"], msg["time_created"], msg["subject"], msg["message"], msg["response_to"])
+			elif(msg["type"] == "poi"):
+				print "lagger till en poi i klientdatabasen"+str(msg)
+				addPoi(msg["coordx"], msg["coordy"], msg["name"], msg["time_created"], msg["type"], msg["subtype"])
+		except KeyError, e: print "Not a msg"
+
 	
 class recieverClass(Thread):
 	def __init__(self, _clientSocket, _ADDR, _primary, _online):
@@ -233,18 +245,18 @@ class recieverClass(Thread):
 	
 # Tar emot meddelanden
 	def reciever(self):
-		global logged_in
+		rest = ""
 		try:
 			while 1:
 				data = str(self.clientSocket.recv(self.BUFF))
 				if(data != "" and data != "/x"):
+					print data
 					if(data.startswith('/ping')):
 						s = data.split(' ', 1)
 						print "Ping: " + str(time() - float(s[1]))
 					elif(data.startswith('Inloggad')):
 						self.online = True
 						klienten.update_online_status(self.online)
-						logged_in = True
 					elif(data.startswith('/online')):
 						s = data.split(' ', 1)
 						if(data[7] == '/'):
@@ -256,14 +268,29 @@ class recieverClass(Thread):
 							contactList.append(s[1])
 					else:
 						if(data.startswith('{')):
-							dict = json.loads(data)
-							if(dict["type"] == "text"):
-								addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["subject"], dict["message"], dict["response_to"])
-							elif(dict["type"] == "poi"):
-								addPoi(dict["coordx"], dict["coordy"], dict["name"], dict["time_created"], dict["type"], dict["subtype"])
-							
-						else:
-							print data
+							#dict = json.loads(data)
+							packets = data.split('\n')
+							while('' in packets):
+								packets.remove('')
+							print packets
+							if(len(packets) > 1):
+								for p in packets[0:-2]: addMsgs(p)
+
+							if(len(packets) > 0 and len(packets[-1]) > 0):
+								if(packets[-1][-1] == '}'): addMsgs(packets[-1])
+								elif(packets[-1][0] == '{'): rest = packets[-1]
+							#if(dict["type"] == "text"):
+							#	print "lagger till ett textmeddelande i klientdatabasen"+str(dict)
+							#	addMessage(dict["sender"], dict["receiver"], dict["type"], dict["subtype"], dict["time_created"], dict["subject"], dict["message"], dict["response_to"])
+							#elif(dict["type"] == "poi"):
+							#	print "lagger till en poi i klientdatabasen"+str(dict)
+							#	addPoi(dict["coordx"], dict["coordy"], dict["name"], dict["time_created"], dict["type"], dict["subtype"])
+						elif(len(rest) > 0):
+							data = rest + data
+							rest = ""
+
+						else: print data
+
 				else:
 					print "rerouting"
 					self.online = False
