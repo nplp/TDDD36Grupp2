@@ -16,8 +16,8 @@ generate_init()
 #skapa anvnandare
 create_users()
 
-addMission("Save the cat",datetime.now(), datetime.now(), "active", "Go and save the cat from the burning tree.","moma Cat", "1987654321")
-addMission("Kill the cat",datetime.now(), datetime.now(), "active", "Go and kill the cat in the burning tree.","Popa Cat", "1987654321")
+#addMission("Save the cat",datetime.now(), datetime.now(), "active", "Go and save the cat from the burning tree.","moma Cat", "1987654321")
+#addMission("Kill the cat",datetime.now(), datetime.now(), "active", "Go and kill the cat in the burning tree.","Popa Cat", "1987654321")
 
 #addPoi(55,55,"Pastavagnen", datetime.now(), "structure", "other")
 #addPoi(55,55,"zenit", datetime.now(), "structure", "other")
