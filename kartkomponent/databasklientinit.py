@@ -36,7 +36,7 @@ addMessage('mathias','kj','text',"change",datetime.now(),"hej",'hejejehejejkheje
 
 
 add_item('Pansarvagn', 10, 'Linkoping')
-add_item('Pansarvagn', 70, 'Linkoping')
+add_item('Pansarvagn', 70, 'Norrkoping')
 add_item('EMP', 1, 'Linkoping')
 add_item('Stege', 10, 'Linkoping')
 add_item('El-Verk', 50, 'Linkoping')

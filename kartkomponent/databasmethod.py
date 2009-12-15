@@ -324,7 +324,7 @@ def get_group_users(namn):
 	session_get_gropu_user= Session()
 	try:	
 		
-		s=session.query(Group).filter_by(name=namn).first()
+		s=session_get_gropu_user.query(Group).filter_by(name=namn).first()
 		
 		return s.users
 	except:
@@ -411,16 +411,38 @@ def add_item(name1,count1,location1):
 	session_add_item.add(Item(name=name1,count=count1,location=location1))
 	session_add_item.commit()
 	
+def remove_item(id_nr):
+	remove_item=Session()
+	try:
+		it=remove_item.query(Item).filter_by(item_id=id_nr).first()
+		remove_item.delete(it)
+	
+	except:
+		
+		pass
+	remove_item.commit()
+	
+def change_item(id_nr, name1, location1, count1):
+	change_item=Session()
+	try:
+		it=change_item.query(Item).filter_by(item_id=id_nr).first()
+		change_item.delete(it)
+		add_item(name=name1,count=count1,location=location1)
+	except:
+		
+		pass
+	change_item.commit()
+	
 def get_item_all():
 	session_get_item_all=Session()
+	i = list()
 	try:
-		
 		i=session_get_item_all.query(Item).all()
-		
-		return i
 	except:
-		return None
+		i = None
 	session_get_item_all.close()
+	return i
+	
 
 # Retunerar totala antalet av ett item (summerar)
 def getTotal(namn):	
