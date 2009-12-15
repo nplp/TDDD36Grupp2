@@ -94,6 +94,19 @@ class Map(gtk.DrawingArea):
 	print self.focus_target
 	
 	if(self.hit):
+		#print self.focus_target['id']
+		try:
+			if (self.focus_target['id'].startswith('A')):
+				ikon = 'ikoner/ambulans.png'
+			elif (self.focus_target['id'].startswith('B')):
+				ikon = 'ikoner/brandbil.png'
+			elif (self.focus_target['id'].startswith('S')):
+				ikon = 'ikoner/sjukhus.png'
+			else:
+				ikon = 'ikoner/tank.png'
+		except:
+			ikon = 'ikoner/tank.png'
+		
 		self.vbox = gtk.VBox(False, 0)
 		self.vbox.set_border_width(10)	
 		self.vbox.show()
@@ -103,7 +116,7 @@ class Map(gtk.DrawingArea):
 		self.hbox.show()
 
 		self.bild = gtk.Image()
-		self.bild.set_from_file("ikoner/tank.png")
+		self.bild.set_from_file(ikon)
 		self.bild.show()
 		self.hbox.pack_start(self.bild, expand = False, fill = False, padding = 2)
 	
