@@ -121,7 +121,7 @@ class Idnumber(object):
 
 class Message(object):
 	def __init__(self, id=None, sender=None, receiver=None, type=None, subtype=None, time_created=None, subject=None, message=None, response_to=None):
-		self.id=generate_id()
+		self.id=id
 		self.sender=sender
 		self.receiver=receiver
 		self.type=type
@@ -516,12 +516,14 @@ def add_mission_poi(mission_id,poi_id):
 #lägger in ett medelande i databasen
 def addMessage(sender1, receiver1, type1, subtype1, time_created1, subject1, message1,response_to1):
 	session_addMessage = Session()
-	session_addMessage.add(Message(sender=sender1, receiver=receiver1, type=type1, subtype=subtype1, time_created=time_created1, subject=subject1, message=message1, response_to=response_to1))
+	session_addMessage.add(Message(sender=sender1, receiver=receiver1, id=generate_id(), type=type1, subtype=subtype1, time_created=time_created1, subject=subject1, message=message1, response_to=response_to1))
 	session_addMessage.commit()
 	
-	
-	
-	
+def addMessageClient(sender1, receiver1, id1, type1, subtype1, time_created1, subject1, message1,response_to1):
+	session_addMessage = Session()
+	session_addMessage.add(Message(sender=sender1, receiver=receiver1, id=id1, type=type1, subtype=subtype1, time_created=time_created1, subject=subject1, message=message1, response_to=response_to1))
+	session_addMessage.commit()
+
 
 def getMessage(id_nr):
 	session_getMessage=Session()
