@@ -29,13 +29,13 @@ class Start(object):
 		self.map = data_storage.MapData(self.mapxml.get_name(),
 		                   self.mapxml.get_levels())
 		self.map.set_focus(15.5726, 58.4035)
-		self.map.add_object("Ambulans1", data_storage.MapObject({"longitude":15.57796, "latitude":58.40479}, "ikoner/ambulans.png"), time.time(), None, 'tuttifrutti', 'poi', 'struct')
+		self.map.add_object("Ambulans1", data_storage.MapObject({"longitude":15.57796, "latitude":58.40479}, "ikoner/ambulans.png"), time.time(), None, 'Transporterar sjuklingar', 'poi', 'struct')
 		self.map.add_object("Brandbil1", data_storage.MapObject({"longitude":15.5729,
 			                                            "latitude":58.40193},
-			                                           "ikoner/brandbil.png"), time.time(), None, 'hubbabubba', 'poi', 'struct')
+			                                           "ikoner/brandbil.png"), time.time(), None, 'Slacker brander', 'poi', 'struct')
 		self.map.add_object("Sjukhus1", data_storage.MapObject({"longitude":15.5629,
 			                                           "latitude":58.4093},
-			                                          "ikoner/sjukhus.png"), time.time(), None, 'belsebubb', 'poi', 'struct')
+			                                          "ikoner/sjukhus.png"), time.time(), None, 'Hit tas de sjuka', 'poi', 'struct')
 
 	def getcoords(self):
 		print "Efter subprocess"		
