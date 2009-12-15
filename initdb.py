@@ -19,17 +19,17 @@ create_users()
 addMission("Save the cat",datetime.now(), datetime.now(), "active", "Go and save the cat from the burning tree.","moma Cat", "1987654321")
 addMission("Kill the cat",datetime.now(), datetime.now(), "active", "Go and kill the cat in the burning tree.","Popa Cat", "1987654321")
 
-addPoi(55,55,"Pastavagnen", datetime.now(), "structure", "other")
-addPoi(55,55,"zenit", datetime.now(), "structure", "other")
-addPoi(55,55,"skogsbrynet", datetime.now(), "structure", "other")
+#addPoi(55,55,"Pastavagnen", datetime.now(), "structure", "other")
+#addPoi(55,55,"zenit", datetime.now(), "structure", "other")
+#addPoi(55,55,"skogsbrynet", datetime.now(), "structure", "other")
 
-add_mission_poi(122,152)
+#add_mission_poi(122,152)
 
-add_mission_poi(122,162)
+#add_mission_poi(122,162)
 
-addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
-addUnit(55, 55, "Sjukhus", datetime.now(), "army")
-addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
+#addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
+#addUnit(55, 55, "Sjukhus", datetime.now(), "army")
+#addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
 
 addMessage('mathias','hanna','text',"change",datetime.now(),"Uppdrag",'Hej hanna, hur mar du. Har du det bra dar ute pa falt, halsa baevrarna', 1)
 
