@@ -200,8 +200,8 @@ class Client(object):
 					idstr = ""
 					for item in getAllMessageID():
 						idstr += " " + str(item)
-					#for item in getAllPoiID():
-					#	idstr += " " + str(item)
+					for item in getAllPoiID():
+						idstr += " " + str(item)
 					args = '/sync' + idstr
 					print idstr
 					self.sendfunction(args)
