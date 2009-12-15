@@ -53,17 +53,21 @@ class Map(gtk.DrawingArea):
 	
 	
 	
-	#thread.start_new_thread(self.refresh, ())
+	thread.start_new_thread(self.refresh, ())
 
 
     #TODO REFRESHAR KARTAN MED OBJEKTEN FRAN DATABASEN
-    #def refresh(self):
-	#while 1:
-		#self.poi_list = []
-		#for n in getAllPois():
-			#self.poi_list.append((n.coordx, n.coordy, n.name, n.time_created, n.type, n.subtype))
+    def refresh(self):
+	while 1:
+		#print "poi poi"
+		self.poi_list = []
+		for n in databasklient.getAllPois():
+			self.poi_list.append((n.coordx, n.coordy, n.id, n.name, n.time_created, n.type, n.subtype))
+		for n in self.poi_list:
+			#print n
+			self.add_object(n[0], n[1], n[2], n[3])
 		#print self.poi_list		
-		#sleep(5)
+		time.sleep(5)
 
 	
     def check_objects(self, _coord):
@@ -87,9 +91,9 @@ class Map(gtk.DrawingArea):
     def on_click_popup(self, _coord):
 	### Anropar metod som kollar om det finns ett objekt på platsen man clickat
 	self.focus_target = self.check_objects(_coord)
+	print self.focus_target
 	
 	if(self.hit):
-		
 		self.vbox = gtk.VBox(False, 0)
 		self.vbox.set_border_width(10)	
 		self.vbox.show()
@@ -137,7 +141,9 @@ class Map(gtk.DrawingArea):
 
 		self.beskriv = gtk.TextView()
 		self.beskriv.set_wrap_mode(gtk.WRAP_WORD_CHAR)
-		self.beskriv.set_size_request(100, 100)	
+		self.bufferbeskriv = self.beskriv.get_buffer()
+		self.bufferbeskriv.set_text(str(self.focus_target['name']))
+		self.beskriv.set_size_request(100, 100)
 		self.beskriv.set_editable(False)
 		self.beskriv.show()
 		self.vbox.pack_start(self.beskriv, False, False, 2)
@@ -230,7 +236,7 @@ class Map(gtk.DrawingArea):
 	tbuffer = self.beskriv.get_buffer()
 	text = tbuffer.get_text(tbuffer.get_start_iter(), tbuffer.get_end_iter())
 	temp = {"coordx": __coord[0], "coordy": __coord[1], "name": text, "time_created": time.time(), "type": "poi", "subtype": "struct"}
-	self.add_object(__coord)
+	#self.add_object(__coord)
 	args = (json.dumps(temp),)
 	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "method1", args)
 	self.popup.destroy()
@@ -276,12 +282,12 @@ class Map(gtk.DrawingArea):
 		
         return True
 	
-    def add_object(self, _coord):
+    def add_object(self, _coordx, _coordy, _id, _name):
 		# tjuppski
-	    self.coord = (float(_coord[0]),float(_coord[1]))
-	    self.__map.add_object("Tannnk", data_storage.MapObject({"longitude":(self.coord[0]-0.0016),
-			                                            "latitude":(self.coord[1]+0.00075)},
-			                                           "ikoner/tank.png"), time.time(), None, 'hej', 'poi', 'struct')
+	    #self.coord = (float(_coord[0]),float(_coord[1]))
+	    self.__map.add_object(_id, data_storage.MapObject({"longitude":(_coordx-0.0016),
+			                                            "latitude":(_coordy+0.00075)},
+			                                           "ikoner/tank.png"), time.time(), None, _name, 'poi', 'struct')
 								   
 	
     def handle_motion_notify_event(self, widget, event):
