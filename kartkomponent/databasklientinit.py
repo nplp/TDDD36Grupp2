@@ -30,9 +30,9 @@ add_mission_poi(122,152)
 add_mission_poi(122,162)
 
 
-addMessage('mathias1','hanna','text',"change",datetime.now(),"hej",'jason.dums() sak ska vara har tex Unit', 1)
+#addMessage('mathias1','hanna','text',"change",datetime.now(),"hej",'jason.dums() sak ska vara har tex Unit', 1)
 
-addMessage('mathias','kj','text',"change",datetime.now(),"hej",'hejejehejejkheje', 1)
+#addMessage('mathias','kj','text',"change",datetime.now(),"hej",'hejejehejejkheje', 1)
 
 
 add_item('Pansarvagn', 10, 'Linkoping')
