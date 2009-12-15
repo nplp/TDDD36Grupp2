@@ -21,7 +21,7 @@ class Lager():
 	self.osso_rpc = osso.Rpc(self.osso_c)
     
         self.lagerboxen = gtk.VBox(False, 0)
-	self.lagerboxen.show()
+	#self.lagerboxen.show()
 	
 	hbox = gtk.HBox(True,0)
 	self.lagerboxen.pack_start(hbox, False, False, 0)
@@ -52,7 +52,7 @@ class Lager():
 	#self.vbox.pack_start(button, False, False, 0)
 	#button.show()
         self.lagerboxen.pack_start(self.statusbar, False, False, 0)
-        self.lagerboxen.show_all()
+        #self.lagerboxen.show_all()
 	
 	
     def update_messages(self):

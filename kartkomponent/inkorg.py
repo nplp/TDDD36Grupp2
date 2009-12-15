@@ -92,6 +92,9 @@ class Inkorg(gtk.Window):
         store = gtk.ListStore(str, str, str, str)
 	meddelanden = self.get_messages()
 	store.append(("Sandare", "Amne", "Meddelande", "Tid"))
+	#store.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("lightgray"))
+	#store.set_property("cell-background", "yellow")
+	#store.set_property('cell-background', 'pink')
         for act in meddelanden:
             store.append((act[0], act[5], act[6], act[4]))
         return store
@@ -100,7 +103,6 @@ class Inkorg(gtk.Window):
         rendererText = gtk.CellRendererText()
         column = gtk.TreeViewColumn("Sender", rendererText, text=0)
         column.set_sort_column_id(0)
-	#column.modify_color(gtk.STATE_NORMAL, gtk.gdk.color_parse("lightgray"))
         treeView.append_column(column)
         
         rendererText = gtk.CellRendererText()
@@ -126,13 +128,13 @@ class Inkorg(gtk.Window):
 	self.one = model[row][0]
 	self.two = model[row][1]
 	self.three = model[row][2]
-	print self.one
-	print self.two
-	print self.three
-	print model
+	#print self.one
+	#print self.two
+	#print self.three
+	#print model
 	self.args = {"sender":self.one,"subject":self.two,"content":self.three}
 
-	print self.args["subject"]
+	#print self.args["subject"]
 
     def show_popup(self, button):
 	visa = visameddelande.VisaMeddelande(self.args)
