@@ -91,7 +91,7 @@ class Map(gtk.DrawingArea):
 	if(self.hit):
 		
 		self.vbox = gtk.VBox(False, 0)
-		self.vbox.set_border_width(20)	
+		self.vbox.set_border_width(10)	
 		self.vbox.show()
 
 		self.hbox = gtk.HBox(False, 0)
@@ -137,22 +137,23 @@ class Map(gtk.DrawingArea):
 
 		self.beskriv = gtk.TextView()
 		self.beskriv.set_wrap_mode(gtk.WRAP_WORD_CHAR)
-		self.beskriv.set_size_request(300, 100)	
+		self.beskriv.set_size_request(100, 100)	
+		self.beskriv.set_editable(False)
 		self.beskriv.show()
 		self.vbox.pack_start(self.beskriv, False, False, 2)
 	
 		self.stang = gtk.Button("Stang")
 		self.stang.connect("clicked", self.avs, "Stang")
 		self.stang.show()
-		self.vbox.pack_start(self.stang,True,True,0)
+		self.vbox.pack_start(self.stang,True,True,10)
 
 		self.popup = gtk.Window()
-		self.popup.set_title(" ")
+		self.popup.set_title("Overblick")
 		self.popup.set_size_request(300,500)
+		self.popup.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("lightgray"))
 		self.popup.add(self.vbox)
 		self.popup.set_modal(True)
 		self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )	
-	
 		self.popup.show()
 
 	else:
@@ -195,39 +196,40 @@ class Map(gtk.DrawingArea):
 
 		self.beskriv = gtk.TextView()
 		self.beskriv.set_wrap_mode(gtk.WRAP_WORD_CHAR)
-		#self.beskriv.set_size_request(200, 50)
+		self.beskriv.set_size_request(100, 80)
 		self.beskriv.show()
 		self.vbox.pack_start(self.beskriv, False, False, 2)
 	
-		self.hbox = gtk.HBox(False, 0)
-		self.hbox.set_size_request(198, 95)
+		self.hbox = gtk.HBox(False, 20)
+		#self.hbox.set_size_request(198, 95)
 		self.hbox.show()
 	
 		self.skapa = gtk.Button("Skapa")
 		self.skapa.connect("clicked", self.clicked, "Skapa", _coord)
+		#self.skapa.set_size_request(100, 50)	
 		self.skapa.show()
-		self.hbox.pack_start(self.skapa,False,False,0)
+		self.hbox.pack_start(self.skapa,False,False,5)
 	
 		self.avbryt = gtk.Button("Avbryt")
 		self.avbryt.connect("clicked", self.avs, "Avbryt")
+		#self.avbryt.set_size_request(100, 50)			
 		self.avbryt.show()
-		self.hbox.pack_start(self.avbryt,False,False,2)
+		self.hbox.pack_start(self.avbryt,False,False,5)
 		self.vbox.pack_start(self.hbox,True,True,2)
 	
 		self.popup = gtk.Window()
-		self.popup.set_title(" ")
+		self.popup.set_title(" Skapa ")
 		self.popup.set_size_request(250,350)
+		self.popup.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("lightgray"))
 		self.popup.add(self.vbox)
 		self.popup.set_modal(True)
 		self.popup.set_type_hint( gtk.gdk.WINDOW_TYPE_HINT_DIALOG )	
-	
 		self.popup.show()
 	
     def clicked(self, widget, event, __coord):
 	tbuffer = self.beskriv.get_buffer()
 	text = tbuffer.get_text(tbuffer.get_start_iter(), tbuffer.get_end_iter())
 	temp = {"coordx": __coord[0], "coordy": __coord[1], "name": text, "time_created": time.time(), "type": "poi", "subtype": "struct"}
-	print temp
 	self.add_object(__coord)
 	args = (json.dumps(temp),)
 	self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "method1", args)
