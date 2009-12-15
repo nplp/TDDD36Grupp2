@@ -25,7 +25,7 @@ class Meddelande (object):
 	anvandare = login.Inlogg.get_user(l)
 	datum = datetime.now()
 	datum = str(datum)
-	dict = {"id": 1, "sender": anvandare , "receiver": mottagare ,"type": 'text' , "subtype": "add", "time_created": datum, 'content' : {'subject' : amne, 'message' : text}, 'response_to' : 1}
+	dict = {"id": 1, "sender": anvandare , "receiver": mottagare ,"type": 'text' , "subtype": "add", "time_created": datum, 'subject' : amne, 'message' : text, 'response_to' : 1}
 	self.args = (json.dumps(dict),)
     
     def release(self, widget, event, data=None):
@@ -67,6 +67,7 @@ class Meddelande (object):
 	#Lagg till mottagre
 	self.skicka1 = gtk.Button("Lagg till mottagare")
         self.skicka1.connect("clicked", self.show_popup)
+	self.skicka1.set_size_request(130,50)	
 	self.skicka1.show()
 	self.vbox.pack_start(self.skicka1,True,True,10)
 
@@ -87,8 +88,9 @@ class Meddelande (object):
 	self.skicka = gtk.Button("Skicka")
         self.skicka.connect("clicked", self.send, "Spara")
 	self.skicka.connect("released", self.release, "Skicka")
+	self.skicka.set_size_request(130,50)
 	self.skicka.show()
-	self.vbox.pack_start(self.skicka,True,True,0)
+	self.vbox.pack_start(self.skicka,True,True,10)
 	
     def show_popup(self, skicka1):
 	adress = adresslista.Adresslista()

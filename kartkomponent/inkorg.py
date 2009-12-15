@@ -63,13 +63,10 @@ class Inkorg(gtk.Window):
     #Tar in en lista med meddelanden, returnerar den som e filtrerad pa anvandare, EJ implementerad (tenkt som skydd mot flera pa 1 enhet)
     def filter_messages(self, unfiltered_list):
 	    filtered_list = []
-	    print "HÄR KOMMET DET; BANG!"
 	    l = Inlogg()
 	    for item in unfiltered_list:
 		    if(item[0] == 'niklas'):
 			    print item[0]#filtered_list.append(item[0])
-    	    print "KLARTKLARTKLARTKLART"
-
 
 	    
     def get_messages(self):
@@ -92,60 +89,43 @@ class Inkorg(gtk.Window):
 	#print self.argsy
 	#self.osso_rpc.rpc_run("thor.client", "/thor/client", "thor.client", "sendfunction", self.argsy)
 	
-        store = gtk.ListStore(str, str, str, str, str, str, str, str)
+        store = gtk.ListStore(str, str, str, str)
 	meddelanden = self.get_messages()
+	store.append(("Sandare", "Amne", "Meddelande", "Tid"))
         for act in meddelanden:
-            store.append((act[0], act[1], act[2], act[3], act[4], act[5], act[6], act[7]))
+            store.append((act[0], act[5], act[6], act[4]))
         return store
 
     def create_columns(self, treeView):
         rendererText = gtk.CellRendererText()
         column = gtk.TreeViewColumn("Sender", rendererText, text=0)
         column.set_sort_column_id(0)
+	#column.modify_color(gtk.STATE_NORMAL, gtk.gdk.color_parse("lightgray"))
         treeView.append_column(column)
         
         rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Reciver", rendererText, text=1)
+        column = gtk.TreeViewColumn("Subject", rendererText, text=1)
         column.set_sort_column_id(1)
         treeView.append_column(column)
 
         rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Type", rendererText, text=2)
+        column = gtk.TreeViewColumn("Message", rendererText, text=2)
         column.set_sort_column_id(2)
         treeView.append_column(column)
 	
 	rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Subtype", rendererText, text=3)
+        column = gtk.TreeViewColumn("Time", rendererText, text=3)
         column.set_sort_column_id(3)
         treeView.append_column(column)
 	
-	rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Time", rendererText, text=4)
-        column.set_sort_column_id(4)
-        treeView.append_column(column)
-	
-	rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Subject", rendererText, text=5)
-        column.set_sort_column_id(5)
-        treeView.append_column(column)
-	
-        rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Message", rendererText, text=6)
-        column.set_sort_column_id(6)
-        treeView.append_column(column)
-	
-        rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Response", rendererText, text=7)
-        column.set_sort_column_id(7)
-        treeView.append_column(column)
-	
+
     def on_activated(self, widget, row, col):
         model = widget.get_model()
-        text = model[row][0] + ", " + model[row][5]+ ", " + model[row][6]
+        text = model[row][0] + ", " + model[row][1]+ ", " + model[row][2]
         self.statusbar.push(0, text)
 	self.one = model[row][0]
-	self.two = model[row][5]
-	self.three = model[row][6]
+	self.two = model[row][1]
+	self.three = model[row][2]
 	print self.one
 	print self.two
 	print self.three
@@ -153,8 +133,6 @@ class Inkorg(gtk.Window):
 	self.args = {"sender":self.one,"subject":self.two,"content":self.three}
 
 	print self.args["subject"]
-	
-	
 
     def show_popup(self, button):
 	visa = visameddelande.VisaMeddelande(self.args)

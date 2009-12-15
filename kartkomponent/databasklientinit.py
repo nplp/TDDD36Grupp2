@@ -21,18 +21,18 @@ create_users()
 addMission("Save the cat",datetime.now(), datetime.now(), "active", "Go and save the cat from the burning tree.","moma Cat", "1987654321")
 addMission("Kill the cat",datetime.now(), datetime.now(), "active", "Go and kill the cat in the burning tree.","Popa Cat", "1987654321")
 
-addPoi(55,55,"Pastavagnen", datetime.now(), "structure", "other")
-addPoi(55,55,"zenit", datetime.now(), "structure", "other")
-addPoi(55,55,"skogsbrynet", datetime.now(), "structure", "other")
+#addPoi(55,55,"Pastavagnen", datetime.now(), "structure", "other")
+#addPoi(55,55,"zenit", datetime.now(), "structure", "other")
+#addPoi(55,55,"skogsbrynet", datetime.now(), "structure", "other")
 
 add_mission_poi(122,152)
 
 add_mission_poi(122,162)
 
 
-addMessage('mathias1','hanna','text',"change",datetime.now(),"hej",'jason.dums() sak ska vara har tex Unit', 1)
+#addMessage('mathias1','hanna','text',"change",datetime.now(),"hej",'jason.dums() sak ska vara har tex Unit', 1)
 
-addMessage('mathias','kj','text',"change",datetime.now(),"hej",'hejejehejejkheje', 1)
+#addMessage('mathias','kj','text',"change",datetime.now(),"hej",'hejejehejejkheje', 1)
 
 
 add_item('Pansarvagn', 10, 'Linkoping')
