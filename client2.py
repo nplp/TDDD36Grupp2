@@ -227,10 +227,10 @@ def addMsgs(p):
 		try:
 			if(msg["type"] == "text"):
 				print "lagger till ett textmeddelande i klientdatabasen"+str(msg)
-				addMessage(msg["sender"], msg["receiver"], msg["type"], msg["subtype"], msg["time_created"], msg["subject"], msg["message"], msg["response_to"])
+				addMessageClient(msg["sender"], msg["receiver"], msg["id"], msg["type"], msg["subtype"], msg["time_created"], msg["subject"], msg["message"], msg["response_to"])
 			elif(msg["type"] == "poi"):
 				print "lagger till en poi i klientdatabasen"+str(msg)
-				addPoi(msg["coordx"], msg["coordy"], msg["name"], msg["time_created"], msg["type"], msg["subtype"])
+				addPoiClient(msg["coordx"], msg["coordy"], msg["id"], msg["name"], msg["time_created"], msg["type"], msg["subtype"])
 		except KeyError, e: print "Not a msg"
 
 	
@@ -250,7 +250,7 @@ class recieverClass(Thread):
 			while 1:
 				data = str(self.clientSocket.recv(self.BUFF))
 				if(data != "" and data != "/x"):
-					print data
+					#print data
 					if(data.startswith('/ping')):
 						s = data.split(' ', 1)
 						print "Ping: " + str(time() - float(s[1]))

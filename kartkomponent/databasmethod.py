@@ -172,7 +172,7 @@ class Poi(object):
 	def __init__(self, coordx= None, coordy= None, id=None, name= None, time_created=None, time_changed=None, type=None, sub_type= None):
 		self.coordx = coordx
 		self.coordy = coordy
-		self.id=generate_id()
+		self.id=id
 		self.name = name
 		self.time_created = time_created
 		self.type = type
@@ -498,8 +498,15 @@ def getPoi(namn):
 	
 def addPoi(coordx1, coordy1,name1,time_created1,type1,sub_type1):
 	session_addPoi=Session()
-	session_addPoi.add(Poi(coordx=coordx1, coordy=coordy1, name=name1, time_created=time_created1, type=type1, sub_type=sub_type1))
+	session_addPoi.add(Poi(coordx=coordx1, coordy=coordy1, id=generate_id(), name=name1, time_created=time_created1, type=type1, sub_type=sub_type1))
 	session_addPoi.commit()
+	
+def addPoiClient(coordx1,coordy1,id1,name1,time_created1,type1,sub_type1):
+	session_addPoi=Session()
+	session_addPoi.add(Poi(coordx=coordx1, coordy=coordy1, id=id1, name=name1, time_created=time_created1, type=type1, sub_type=sub_type1))
+	session_addPoi.commit()
+	
+
 	
 #lägger in användare i en grupp	
 def add_mission_poi(mission_id,poi_id):
