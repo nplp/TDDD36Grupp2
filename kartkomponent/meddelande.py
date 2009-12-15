@@ -67,6 +67,7 @@ class Meddelande (object):
 	#Lagg till mottagre
 	self.skicka1 = gtk.Button("Lagg till mottagare")
         self.skicka1.connect("clicked", self.show_popup)
+	self.skicka1.set_size_request(130,50)	
 	self.skicka1.show()
 	self.vbox.pack_start(self.skicka1,True,True,10)
 
@@ -87,8 +88,9 @@ class Meddelande (object):
 	self.skicka = gtk.Button("Skicka")
         self.skicka.connect("clicked", self.send, "Spara")
 	self.skicka.connect("released", self.release, "Skicka")
+	self.skicka.set_size_request(130,50)
 	self.skicka.show()
-	self.vbox.pack_start(self.skicka,True,True,0)
+	self.vbox.pack_start(self.skicka,True,True,10)
 	
     def show_popup(self, skicka1):
 	adress = adresslista.Adresslista()

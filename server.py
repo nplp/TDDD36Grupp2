@@ -197,6 +197,13 @@ def toEnglish(string):
 def listCMD(arg):
 	ip = list()
 
+	def banan():
+		try:	
+			g=session_get.query(Message).all()
+			return g
+		except:
+			return None
+
 	# Skickar man inte med argument till /list får man alla användare som är online
 	if not arg:
 		# Atomisk ------
@@ -275,7 +282,22 @@ def listCMD(arg):
 				for u in temp:
 					ip.append(u.name)
 			ClientMutex.release()
-			# --------------
+			# --------------	
+
+	# Skickar man med argumentet "msg" till /list får man alla meddelanden. Analysverktyg, ska inte funka.
+	elif(arg[0].startswith('msg')): pass
+		# Skickar man med några användarnamn returneras de grupper de är med i.
+
+		# Atomisk ------
+		#ClientMutex.acquire()
+		#session_get=Session()
+		#temp = banan()
+		#session_get.close()
+		#if temp:
+		#	for t in temp:
+		#		ip.append("Msg: " + t.message + '\n')
+		#ClientMutex.release()
+		# --------------
 	return ip
 
 
@@ -399,7 +421,7 @@ class sessionClass(Thread):
 			# Atomisk ------
 			ClientMutex.acquire()
 			msgQueue.extend(session.query(Message).filter_by(receiver=self.name).all())
-			msgQueue.extend(session.query(Poi).all())
+			#msgQueue.extend(session.query(Poi).all())
 			ClientMutex.release()
 			# --------------
 			session.close()
@@ -439,7 +461,7 @@ class sessionClass(Thread):
 				# Kicka om man inte skriver något efter 20 försök.
 				if(name_pass == ""):
 					return "/ERROR"
-
+				name_pass = name_pass.lower()
 				# Gör om Message till sträng
 				if(name_pass[0] == '{'):
 					msg = json.loads(name_pass)
@@ -568,12 +590,17 @@ class sessionClass(Thread):
 					ClientMutex.acquire()
 					try:
 						if(msg['type']=='text'):
+							msg["receiver"] = msg["receiver"].lower()
 							addMessage(msg["sender"], msg["receiver"], 'text', "change", datetime.now(), msg["subject"], msg["message"], 1)
 						else:
 							addPoi(msg["coordx"], msg["coordy"], msg["name"], datetime.now(), msg["type"], msg["subtype"])
 					except KeyError, e: pass
 					ClientMutex.release()
 					# --------------
+					ip = listCMD(["msg"])
+					for i in ip:
+						self.sendBack(str(i))
+
 				elif(data != ""):
 					atomic_sendAll(self.name + ": " + data)
 		#except Exception, e:

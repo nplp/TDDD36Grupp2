@@ -89,6 +89,7 @@ class Gui(hildon.Program):
 		self.energi.hide()
 		self.natverk.hide()
 		self.anvanda.hide()
+		self.samtala.hbox.hide()	
 		self.tillbaka.show()
       	else:
           	self.tbaka(widget, data)		
@@ -112,6 +113,7 @@ class Gui(hildon.Program):
 		self.energi.hide()
 		self.natverk.hide()
 		self.anvanda.hide()
+		self.samtala.hbox.hide()	
 		self.tillbaka.show()
 	else:
           	self.tbaka(widget, data)
@@ -135,6 +137,7 @@ class Gui(hildon.Program):
 		self.energi.hide()
 		self.natverk.hide()
 		self.anvanda.hide()
+		self.samtala.hbox.hide()
 		self.tillbaka.show()
 	 else:
           	self.tbaka(widget, data)
@@ -157,6 +160,7 @@ class Gui(hildon.Program):
 		self.energi.show()
 		self.natverk.show()
 		self.anvanda.show()
+		self.samtala.hbox.hide()		
 		self.tillbaka.show()			
 	 else:
           	self.tbaka(widget, data)

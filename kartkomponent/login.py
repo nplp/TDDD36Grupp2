@@ -81,6 +81,7 @@ class Inlogg():
 	#popup fran login
 	self.popup = gtk.Window()
         self.popup.set_title( "Login" )
+	self.popup.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("lightgray"))
 	self.popup.set_size_request(400,300)
         self.popup.add(self.vbox)
 	#adress.vbox.show()	
