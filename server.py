@@ -381,6 +381,7 @@ class sessionClass(Thread):
 
 
 	def sendBack(self, message):
+		print "SKICKAR TILL KLIENT"+message
 		#print "Back to " + self.name + ": " + message
 		self.socket.send(message)
 
@@ -484,7 +485,7 @@ class sessionClass(Thread):
 	# Behandlar övergripande kommunikationen med och mellan klienterna. Sköter även kommandon.
 	def handler(self,zero):
 		if 1:#try:
-			atomic_sendAll("Server message: " + str(self.name) + " connected.")
+			#atomic_sendAll("Server message: " + str(self.name) + " connected.")
 			self.sendBack("Inloggad på " + str(ADDR))
 
 			while 1:
@@ -561,6 +562,7 @@ class sessionClass(Thread):
 						self.sendBack("You whispered to " + msg[1])
 				# json-strängar! Startar med '{'. Vbf message
 				elif(data.startswith('{')):
+					print "###TAR EMOT!###"+ data
 					msg = json.loads(data)
 					# Atomisk ------
 					ClientMutex.acquire()
@@ -568,7 +570,7 @@ class sessionClass(Thread):
 						if(msg['type']=='text'):
 							addMessage(msg["sender"], msg["receiver"], 'text', "change", datetime.now(), msg["subject"], msg["message"], 1)
 						else:
-							addPoi(msg["coordx"], msg["coordy"], msg["type"], datetime.now(), msg["type"], msg["sub_type"])
+							addPoi(msg["coordx"], msg["coordy"], msg["name"], datetime.now(), msg["type"], msg["subtype"])
 					except KeyError, e: pass
 					ClientMutex.release()
 					# --------------
