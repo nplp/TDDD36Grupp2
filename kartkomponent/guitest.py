@@ -13,7 +13,7 @@ import thread
 #import time
 from time import *
 import osso
-import samtal
+import ring
 import lager
 import inkorg
 from databasklient import * 
@@ -89,7 +89,7 @@ class Gui(hildon.Program):
 		self.energi.hide()
 		self.natverk.hide()
 		self.anvanda.hide()
-		self.samtala.hbox.hide()	
+		self.samtala.vbox.hide()	
 		self.tillbaka.show()
       	else:
           	self.tbaka(widget, data)		
@@ -113,7 +113,7 @@ class Gui(hildon.Program):
 		self.energi.hide()
 		self.natverk.hide()
 		self.anvanda.hide()
-		self.samtala.hbox.hide()	
+		self.samtala.vbox.hide()	
 		self.tillbaka.show()
 	else:
           	self.tbaka(widget, data)
@@ -137,7 +137,7 @@ class Gui(hildon.Program):
 		self.energi.hide()
 		self.natverk.hide()
 		self.anvanda.hide()
-		self.samtala.hbox.hide()
+		self.samtala.vbox.hide()
 		self.tillbaka.show()
 	 else:
           	self.tbaka(widget, data)
@@ -160,7 +160,7 @@ class Gui(hildon.Program):
 		self.energi.show()
 		self.natverk.show()
 		self.anvanda.show()
-		self.samtala.hbox.hide()		
+		self.samtala.vbox.hide()		
 		self.tillbaka.show()			
 	 else:
           	self.tbaka(widget, data)
@@ -173,7 +173,7 @@ class Gui(hildon.Program):
 	self.vbox2.hide()
 	self.map.hide()
 	self.scrolled_window.hide()
-	self.samtala.hbox.hide()
+	self.samtala.vbox.hide()
 	self._lager.lagerboxen.hide()	
 	self.scwindow.hide()
 	self.swindow.show()
@@ -185,7 +185,7 @@ class Gui(hildon.Program):
 	self.kommunikation.set_active(False)
 	self._lager.lagerboxen.hide()
 	self.map.hide()
-	self.samtala.hbox.show()
+	self.samtala.vbox.show()
 	self.scwindow.hide()
 	self.scroll_window.hide()
         self.scrolled_window.hide()	
@@ -199,7 +199,7 @@ class Gui(hildon.Program):
 	self.kommunikation.set_active(False)
 	self._lager.lagerboxen.hide()
 	self.map.show()
-	self.samtala.hbox.hide()
+	self.samtala.vbox.hide()
 	self.scwindow.hide()
 	self.scroll_window.hide()
         self.scrolled_window.hide()	
@@ -213,7 +213,7 @@ class Gui(hildon.Program):
 	self.kommunikation.set_active(False)
 	self._lager.lagerboxen.show()
 	self.map.hide()
-	self.samtala.hbox.hide()
+	self.samtala.vbox.hide()
 	self.scwindow.hide()
 	self.scroll_window.hide()
         self.scrolled_window.hide()	
@@ -227,7 +227,7 @@ class Gui(hildon.Program):
 	self.kommunikation.set_active(False)
 	self._lager.lagerboxen.hide()
 	self.map.hide()
-	self.samtala.hbox.hide()
+	self.samtala.vbox.hide()
 	self.scwindow.hide()
 	self.scroll_window.show()
         self.scrolled_window.hide()	
@@ -241,7 +241,7 @@ class Gui(hildon.Program):
 	self.kommunikation.set_active(False)
 	self._lager.lagerboxen.hide()
 	self.map.hide()
-	self.samtala.hbox.hide()
+	self.samtala.vbox.hide()
 	self.scwindow.hide()
 	self.scroll_window.hide()
         self.scrolled_window.show()	
@@ -256,7 +256,7 @@ class Gui(hildon.Program):
 	self.kommunikation.set_active(False)
 	self._lager.lagerboxen.hide()
 	self.map.hide()
-	self.samtala.hbox.hide()
+	self.samtala.vbox.hide()
 	self.scroll_window.hide()
         self.scrolled_window.hide()	
 	self.swindow.hide()
@@ -387,7 +387,7 @@ class Gui(hildon.Program):
 	self.meddela = meddelande.Meddelande()
 	self.uppdraget = uppdrag.Uppdrag()
 	self.ringa = detringer.Ring()
-	self.samtala = samtal.Samtal()
+	self.samtala = ring.Samtal()
 	self._lager = lager.Lager()
 	self.inbox = inkorg.Inkorg()
 
@@ -418,7 +418,7 @@ class Gui(hildon.Program):
 	self.scroll_window.add_with_viewport(self.uppdraget.vbox4)
 	self.swindow.add_with_viewport(self.meddela.vbox)
 	self.scwindow.add_with_viewport(self.inbox.vbox)
-	self.vbox3.pack_start(self.samtala.hbox,False,False,0)
+	self.vbox3.pack_start(self.samtala.vbox,False,False,0)
 	self.vbox3.pack_start(self.ringa.vbox,False,False,0)
 	self.vbox3.pack_start(self.map,True,True,0)
 	self.vbox3.pack_start(self.scrolled_window, True, True, 0)
