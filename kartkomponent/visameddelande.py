@@ -70,6 +70,7 @@ class VisaMeddelande (object):
 	
 	self.popup = gtk.Window()
         self.popup.set_title( "Meddelande" )
+	self.popup.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("lightgray"))	
 	self.popup.set_size_request(500,500)
         self.popup.add(self.vbox)
         self.popup.set_modal(False)

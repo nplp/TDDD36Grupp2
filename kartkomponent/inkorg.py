@@ -63,13 +63,10 @@ class Inkorg(gtk.Window):
     #Tar in en lista med meddelanden, returnerar den som e filtrerad pa anvandare, EJ implementerad (tenkt som skydd mot flera pa 1 enhet)
     def filter_messages(self, unfiltered_list):
 	    filtered_list = []
-	    print "HÄR KOMMET DET; BANG!"
 	    l = Inlogg()
 	    for item in unfiltered_list:
 		    if(item[0] == 'niklas'):
 			    print item[0]#filtered_list.append(item[0])
-    	    print "KLARTKLARTKLARTKLART"
-
 
 	    
     def get_messages(self):
@@ -94,6 +91,7 @@ class Inkorg(gtk.Window):
 	
         store = gtk.ListStore(str, str, str, str)
 	meddelanden = self.get_messages()
+	store.append(("Sandare", "Amne", "Meddelande", "Tid"))
         for act in meddelanden:
             store.append((act[0], act[5], act[6], act[4]))
         return store
@@ -102,6 +100,7 @@ class Inkorg(gtk.Window):
         rendererText = gtk.CellRendererText()
         column = gtk.TreeViewColumn("Sender", rendererText, text=0)
         column.set_sort_column_id(0)
+	#column.modify_color(gtk.STATE_NORMAL, gtk.gdk.color_parse("lightgray"))
         treeView.append_column(column)
         
         rendererText = gtk.CellRendererText()
