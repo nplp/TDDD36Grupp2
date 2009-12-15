@@ -75,7 +75,7 @@ class Inlogg():
 	self.avsluta.set_size_request(130,50)
 	self.avsluta.show()
 	self.hbox.pack_start(self.avsluta,False,False,0)
-	self.vbox.pack_start(self.hbox,False,False,0)
+	self.vbox.pack_start(self.hbox,False,False,20)
 	self.hbox.show()
 	
 	#popup fran login
