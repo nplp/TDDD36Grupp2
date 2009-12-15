@@ -31,9 +31,9 @@ addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
 addUnit(55, 55, "Sjukhus", datetime.now(), "army")
 addUnit(55, 55, "Fallskarmsjagare", datetime.now(), "army")
 
-addMessage('mathias1','hanna','text',"change",datetime.now(),"hej",'jason.dums() sak ska vara har tex Unit', 1)
+addMessage('mathias','hanna','text',"change",datetime.now(),"Uppdrag",'Hej hanna, hur mår du. Har du det bra dar ute pa falt, halsa baevrarna', 1)
 
-addMessage('mathias','kj','text',"change",datetime.now(),"hej",'hejejehejejkheje', 1)
+#addMessage('mathias','kj','text',"change",datetime.now(),"hej",'hejejehejejkheje', 1)
 
 
 add_item('Pansarvagn', 10, 'Linkoping')
