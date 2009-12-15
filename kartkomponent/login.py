@@ -39,7 +39,7 @@ class Inlogg():
 	self.vbox = gtk.VBox(False,5)
 	self.vbox.set_border_width(50)	
 	
-	self.hbox = gtk.HBox(False,30)
+	self.hbox = gtk.HBox(False,35)
 	
 	#Skriv in en anvandare
         self.anvandare = gtk.Label("Anvandarnamn")
@@ -68,14 +68,14 @@ class Inlogg():
 	self.loggin.connect("released", self.release, "Skicka") 
 	self.loggin.set_size_request(130,50)
 	self.loggin.show()
-	self.hbox.pack_start(self.loggin,False,False,10)
+	self.hbox.pack_start(self.loggin,False,False,2)
 	
 	self.avsluta = gtk.Button("Avsluta")
         self.avsluta.connect("clicked", self.avs, "Avsluta")
 	self.avsluta.set_size_request(130,50)
 	self.avsluta.show()
-	self.hbox.pack_start(self.avsluta,False,False,10)
-	self.vbox.pack_start(self.hbox,False,False,0)
+	self.hbox.pack_start(self.avsluta,False,False,0)
+	self.vbox.pack_start(self.hbox,False,False,20)
 	self.hbox.show()
 	
 	#popup fran login
