@@ -421,7 +421,7 @@ class sessionClass(Thread):
 			# Atomisk ------
 			ClientMutex.acquire()
 			msgQueue.extend(session.query(Message).filter_by(receiver=self.name).all())
-			#msgQueue.extend(session.query(Poi).all())
+			msgQueue.extend(session.query(Poi).all())
 			ClientMutex.release()
 			# --------------
 			session.close()
@@ -461,7 +461,7 @@ class sessionClass(Thread):
 				# Kicka om man inte skriver något efter 20 försök.
 				if(name_pass == ""):
 					return "/ERROR"
-				name_pass = name_pass.lower()
+				#name_pass = name_pass.lower()
 				# Gör om Message till sträng
 				if(name_pass[0] == '{'):
 					msg = json.loads(name_pass)
@@ -590,7 +590,7 @@ class sessionClass(Thread):
 					ClientMutex.acquire()
 					try:
 						if(msg['type']=='text'):
-							msg["receiver"] = msg["receiver"].lower()
+							#msg["receiver"] = msg["receiver"].lower()
 							addMessage(msg["sender"], msg["receiver"], 'text', "change", datetime.now(), msg["subject"], msg["message"], 1)
 						else:
 							addPoi(msg["coordx"], msg["coordy"], msg["name"], datetime.now(), msg["type"], msg["subtype"])
