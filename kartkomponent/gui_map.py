@@ -103,9 +103,9 @@ class Map(gtk.DrawingArea):
 			elif (self.focus_target['id'].startswith('S')):
 				ikon = 'ikoner/sjukhus.png'
 			else:
-				ikon = 'ikoner/tank.png'
+				ikon = 'ikoner/poi.png'
 		except:
-			ikon = 'ikoner/tank.png'
+			ikon = 'ikoner/poi.png'
 		
 		self.vbox = gtk.VBox(False, 0)
 		self.vbox.set_border_width(10)	
@@ -300,7 +300,7 @@ class Map(gtk.DrawingArea):
 	    #self.coord = (float(_coord[0]),float(_coord[1]))
 	    self.__map.add_object(_id, data_storage.MapObject({"longitude":(_coordx-0.0016),
 			                                            "latitude":(_coordy+0.00075)},
-			                                           "ikoner/tank.png"), time.time(), None, _name, 'poi', 'struct')
+			                                           "ikoner/poi.png"), time.time(), None, _name, 'poi', 'struct')
 								   
 	
     def handle_motion_notify_event(self, widget, event):
