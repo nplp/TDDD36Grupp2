@@ -8,8 +8,8 @@ import gst
 
 class Mainstream:
 	def __init__(self):
-		self.choose = 0
-		self.HOSTIP = '130.236.218.178'
+		self.choose = 2
+		self.HOSTIP = '130.236.217.43'
 		self.MYPORT = 5000
 		self.HOSTPORT = 5000
 	def run(self, choose, HOSTIP, MYPORT, HOSTPORT):
@@ -18,7 +18,7 @@ class Mainstream:
 		self.MYPORT = MYPORT
 		self.HOSTPORT = HOSTPORT
 		window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		window.set_title("Awesome AP")
+		window.set_title("Videosamtal")
 		window.set_default_size(500, 400)
 		window.connect("destroy", gtk.main_quit, "WM destroy")
 		vbox = gtk.VBox()
@@ -169,7 +169,7 @@ def main():
 	gtk.main()
 
 if __name__ == "__main__":
-	Mainstream().run(1,'130.236.218.178', '5000','5000')
+	Mainstream().run(2,'130.236.217.43', '5000','5000')
 	gtk.gdk.threads_init()
 	main()
 
