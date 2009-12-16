@@ -73,6 +73,7 @@ class Start(object):
 				print 'Tuffe tuffe tuff då tåget går'
 				self.startgui()
 				subprocess.call('python2.5 Tufftuff.py' + ' &', shell=True)
+				time.sleep(3)
 				subprocess.call('python2.5 ../client2.py &', shell=True)
 				self.getcoords()
 			else:
