@@ -8,13 +8,13 @@ import osso
 
 	
 class Samtal():	
-    choose = 1	
+    choose = 2	
 	
     def ringa(self, widget, event, data=None):
 	osso_c = osso.Context("ring", "0.0.1", False)
 	osso_rpc = osso.Rpc(osso_c)
 	print "vi sparar!"
-	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (self.choose, "130.236.217.248", 5000, 5000))
+	osso_rpc.rpc_run("thor.voipproc", "/thor/voipproc", "thor.voipproc", "onlyone", (self.choose, "130.236.217.66", 5000, 5000))
 	
     def samma(self,widget,event,data=None):
 	self.rostknapp.set_active(False)

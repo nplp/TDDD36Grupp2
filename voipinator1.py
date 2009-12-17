@@ -9,7 +9,7 @@ import gst
 class Mainstream:
 	def __init__(self):
 		self.choose = 2
-		self.HOSTIP = '130.236.217.43'
+		self.HOSTIP = '130.236.218.252'
 		self.MYPORT = 5000
 		self.HOSTPORT = 5000
 	def run(self, choose, HOSTIP, MYPORT, HOSTPORT):
@@ -169,7 +169,7 @@ def main():
 	gtk.main()
 
 if __name__ == "__main__":
-	Mainstream().run(2,'130.236.217.43', '5000','5000')
+	Mainstream().run(2,'130.236.218.252', '5000','5000')
 	gtk.gdk.threads_init()
 	main()
 
