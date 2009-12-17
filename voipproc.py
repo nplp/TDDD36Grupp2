@@ -10,7 +10,7 @@ import gst
 class Mainstream:
 	def __init__(self):
 		self.choose = 1
-		self.HOSTIP = '130.236.216.227'
+		self.HOSTIP = '130.236.217.66'
 		self.MYPORT = 5000
 		self.HOSTPORT = 5000
 	def run(self, choose, HOSTIP, MYPORT, HOSTPORT):
@@ -19,7 +19,7 @@ class Mainstream:
 		self.MYPORT = MYPORT
 		self.HOSTPORT = HOSTPORT
 		window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		window.set_title("Awesome AP")
+		window.set_title("Videosamtal")
 		window.set_default_size(500, 400)
 		window.connect("destroy", gtk.main_quit, "WM destroy")
 		vbox = gtk.VBox()
